@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
-    <title>Webpack 3 Tutorial - Webpack Dev Server - Anny Chang - F2E &amp; UI Designer</title>
+    <title>D3 v4 with Vue - SVG Horizontal Bar Chart - Anny Chang - F2E &amp; UI Designer</title>
     <meta name="author" content="Anny Chang">
     
         <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
@@ -17,21 +17,20 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <meta name="description" content="此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。">
-<meta name="keywords" content="Webpack">
+    <meta name="description" content="今天要來練習用 D3 搭配 Vue 做簡易的 SVG 橫條圖囉～">
+<meta name="keywords" content="D3,Vue,SVG">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Webpack 3 Tutorial - Webpack Dev Server">
-<meta property="og:url" content="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/index.html">
+<meta property="og:title" content="D3 v4 with Vue - SVG Horizontal Bar Chart">
+<meta property="og:url" content="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
-<meta property="og:description" content="此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。">
+<meta property="og:description" content="今天要來練習用 D3 搭配 Vue 做簡易的 SVG 橫條圖囉～">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0927.png">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0928.png">
-<meta property="og:updated_time" content="2017-09-01T16:00:00.000Z">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2018-03-04_1029.png">
+<meta property="og:updated_time" content="2018-03-03T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Webpack 3 Tutorial - Webpack Dev Server">
-<meta name="twitter:description" content="此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。">
-<meta name="twitter:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0927.png">
+<meta name="twitter:title" content="D3 v4 with Vue - SVG Horizontal Bar Chart">
+<meta name="twitter:description" content="今天要來練習用 D3 搭配 Vue 做簡易的 SVG 橫條圖囉～">
+<meta name="twitter:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2018-03-04_1029.png">
     
         <link rel="publisher" href="https://plus.google.com/+張巧倪"/>
     
@@ -42,12 +41,12 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
     
     
-        <meta property="og:image" content="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" />
+        <meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png" />
     
     
-        <meta property="og:image" content="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png" />
+        <meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner-blog.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner-blog.png" />
     
     
     <!--STYLES-->
@@ -251,7 +250,7 @@
         <div class="post-header-cover
                     text-left
                     "
-             style="background-image:url('https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png');"
+             style="background-image:url('http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner-blog.png');"
              data-behavior="4">
             
         </div>
@@ -267,20 +266,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title" itemprop="headline">
-            Webpack 3 Tutorial - Webpack Dev Server
+            D3 v4 with Vue - SVG Horizontal Bar Chart
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2017-09-02T00:00:00+08:00">
+    <time itemprop="datePublished" datetime="2018-03-04T00:00:00+08:00">
 	
-		    9月 02, 2017
+		    3月 04, 2018
     	
     </time>
     
         <span>分類 </span>
         
-    <a class="category-link" href="/categories/Webpack/">Webpack</a>
+    <a class="category-link" href="/categories/D3/">D3</a>
 
 
     
@@ -291,33 +290,50 @@
     
     <div class="post-content markdown" itemprop="articleBody">
         <div class="main-content-wrap">
-            <p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br><a id="more"></a></p>
-<h2 id="安裝-webpack-dev-server"><a href="#安裝-webpack-dev-server" class="headerlink" title="安裝 webpack-dev-server"></a>安裝 <code>webpack-dev-server</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D webpack-dev-server</span><br></pre></td></tr></table></figure>
-<h2 id="設定-webpack-config-js"><a href="#設定-webpack-config-js" class="headerlink" title="設定 webpack.config.js"></a>設定 <code>webpack.config.js</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ......</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    contentBase: path.join(__dirname, <span class="string">"dist"</span>), <span class="comment">// 從哪裡提供內容</span></span><br><span class="line">    port: <span class="number">9000</span> <span class="comment">// http://localhost:9000</span></span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="設定-package-json"><a href="#設定-package-json" class="headerlink" title="設定 package.json"></a>設定 <code>package.json</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"dev"</span>: <span class="string">"webpack-dev-server --open"</span>,</span><br><span class="line">    ......</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p>
+<a id="more"></a>
+<p>上一篇有描述過:</p>
 <ul>
-<li>–open: 自動開啟預設瀏覽器</li>
-</ul>
-<p>執行 <code>npm</code> 指令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure></p>
-<p>就會自動開啟瀏覽器看到預覽的畫面囉！</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0927.png" alt="執行 npm run dev" title="dist/index.html"></p>
-<p>疑？內容的文字怎麼好像被切掉了。我們趕緊來試試看修改 <code>css</code> 的部分，順便看看  <code>Hot Reload</code> 的威力吧～</p>
-<blockquote>
-<p>關於實時加載（Live Reload）和熱加載（Hot Reload）的區別在於:實時加載應用更新時需要刷新當前頁面，可以看到明顯的全局刷新效果;而熱加載基本上看不出刷新的效果，類似於局部刷新。</p>
-</blockquote>
-<h2 id="測試-Hot-Reload"><a href="#測試-Hot-Reload" class="headerlink" title="測試 Hot Reload"></a>測試 <code>Hot Reload</code></h2><p>修改 <code>src/app.scss</code>，把字體變形的樣式註解掉</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">background-color</span>: yellowgreen;</span><br><span class="line">    h1 &#123;</span><br><span class="line">        <span class="selector-tag">color</span>: <span class="selector-tag">green</span>;</span><br><span class="line">        // transform: scale(1.5);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>結果 <code>webpack-dev-server</code> 就幫我們即時打包並刷新瀏覽器頁面，所以我們就可以專心的寫code，畫面就會即時的自動更新囉，是不是超方便的啊？</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0928.png" alt="Hot Reload" title="dist/index.html"></p>
-<p>今天的範例程式檔<a href="https://github.com/Annilla/webpack_practice/tree/v1.3.0" target="_blank" rel="noopener">github</a>，感謝收看。</p>
-<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
-<li><p><a href="https://webpack.js.org/guides/development/#using-webpack-dev-server" target="_blank" rel="noopener">Use Webpack Dev Server</a></p>
+<li><p>準備 <code>SVG</code> 畫布</p>
 </li>
-<li><p><a href="https://webpack.js.org/configuration/dev-server/" target="_blank" rel="noopener">Webpack Dev Server Configuration</a></p>
+<li><p>準備隨機資料</p>
 </li>
-<li><p><a href="http://www.jianshu.com/p/1fa6e9c0799f" target="_blank" rel="noopener">React Native 热加载（Hot Reload）原理简介</a></p>
+<li><p>加上提示資料的 tooltip</p>
 </li>
 </ul>
+<p>這幾個部分大同小異，所以這裡就不再次解釋，我們直接從處理座標軸開始說起。</p>
+<hr>
+<h2 id="插入座標軸"><a href="#插入座標軸" class="headerlink" title="插入座標軸"></a>插入座標軸</h2><ul>
+<li>HTML</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- X軸座標 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">g</span> <span class="attr">:transform</span>=<span class="string">"`translate(0, $&#123;chart.height&#125;)`"</span> <span class="attr">class</span>=<span class="string">"axis axisX"</span> <span class="attr">fill</span>=<span class="string">"none"</span> <span class="attr">font-size</span>=<span class="string">"10"</span> <span class="attr">font-family</span>=<span class="string">"sans-serif"</span> <span class="attr">text-anchor</span>=<span class="string">"middle"</span>&gt;</span><span class="tag">&lt;/<span class="name">g</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Y軸座標 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">g</span> <span class="attr">class</span>=<span class="string">"axis axisY"</span> <span class="attr">fill</span>=<span class="string">"none"</span> <span class="attr">font-size</span>=<span class="string">"10"</span> <span class="attr">font-family</span>=<span class="string">"sans-serif"</span> <span class="attr">text-anchor</span>=<span class="string">"end"</span>&gt;</span><span class="tag">&lt;/<span class="name">g</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Y軸標籤 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"axisYText"</span> <span class="attr">:x</span>=<span class="string">"axisYText[0]"</span> <span class="attr">:y</span>=<span class="string">"axisYText[1]"</span> <span class="attr">dy</span>=<span class="string">"1em"</span> <span class="attr">text-anchor</span>=<span class="string">"middle"</span>&gt;</span>件數<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>CSS</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.chart</span> &#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="selector-class">.chartWrap</span> &#123;</span><br><span class="line">    .axis.axisX &#123;</span><br><span class="line">      <span class="selector-class">.domain</span> &#123;</span><br><span class="line">        <span class="attribute">display</span>: none;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="selector-class">.tick</span> &#123;</span><br><span class="line">        line &#123;</span><br><span class="line">          <span class="selector-tag">stroke</span>: <span class="selector-id">#efefef</span>;</span><br><span class="line">          <span class="selector-tag">stroke-width</span>: 2;</span><br><span class="line">          <span class="selector-tag">stroke-dasharray</span>: 1, 6;</span><br><span class="line">          <span class="selector-tag">stroke-linecap</span>: <span class="selector-tag">round</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>JS</li>
+</ul>
+<p>因程式碼過多，這邊只講用到的 D3 函數部分，文章最後會有完整程式碼連結。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// X軸線性比例縮放</span></span><br><span class="line">xScale() &#123;</span><br><span class="line">  <span class="keyword">let</span> Xmin = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">let</span> Xmax; <span class="comment">// 找出所有X值的最大</span></span><br><span class="line">  <span class="keyword">let</span> newArray = [];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 找出所有X值的最大數</span></span><br><span class="line">  <span class="keyword">this</span>.data.value.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    newArray.push(e.number);</span><br><span class="line">  &#125;);</span><br><span class="line">  Xmax = d3.max(newArray);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> d3</span><br><span class="line">    .scaleLinear() <span class="comment">// 線性縮放函式</span></span><br><span class="line">    .domain([Xmin, Xmax]) <span class="comment">// 設定轉換後的定義域</span></span><br><span class="line">    .range([<span class="number">0</span>, <span class="keyword">this</span>.chart.width]); <span class="comment">// 設定轉換前的範圍</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// X軸設定</span></span><br><span class="line">xAxis() &#123;</span><br><span class="line">  <span class="keyword">return</span> d3</span><br><span class="line">    .axisBottom(<span class="keyword">this</span>.xScale) <span class="comment">// 下方座標軸函式</span></span><br><span class="line">    .tickSizeInner(-<span class="keyword">this</span>.chart.width); <span class="comment">// 設定内侧刻度大小</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Y軸線性比例縮放</span></span><br><span class="line">yScale() &#123;</span><br><span class="line">  <span class="keyword">return</span> d3</span><br><span class="line">    .scaleLinear() <span class="comment">// 線性縮放函式</span></span><br><span class="line">    .domain([<span class="number">0</span>, <span class="keyword">this</span>.data.value.length + <span class="number">1</span>]) <span class="comment">// 設定轉換後的定義域</span></span><br><span class="line">    .range([<span class="keyword">this</span>.chart.height, <span class="number">0</span>]); <span class="comment">// 設定轉換前的範圍</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// Y軸設定</span></span><br><span class="line">yAxis() &#123;</span><br><span class="line">  <span class="comment">// 計算座標軸標註點個數，小於三個月要多加一個標註點 （ex: 6~10月，共 5 個標註點）</span></span><br><span class="line">  <span class="keyword">let</span> tickNum =</span><br><span class="line">    <span class="keyword">this</span>.valueLength &lt; <span class="number">3</span> ? <span class="keyword">this</span>.valueLength + <span class="number">1</span> : <span class="keyword">this</span>.valueLength;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> d3</span><br><span class="line">    .axisLeft(<span class="keyword">this</span>.yScale) <span class="comment">// 左方座標軸函式</span></span><br><span class="line">    .ticks(tickNum) <span class="comment">// 設定座標軸標註點個數</span></span><br><span class="line">    .tickFormat(<span class="function">(<span class="params">d, i</span>) =&gt;</span> &#123; <span class="comment">// 設定標註點呈現的文字陣列</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.yLabel[i];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>在每次隨機資料後，動態插入座標軸。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">randomData() &#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="comment">//清除坐標軸</span></span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">".chart .axisX"</span>).innerHTML = <span class="string">""</span>;</span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">".chart .axisY"</span>).innerHTML = <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 插入X軸座標</span></span><br><span class="line">  d3.select(<span class="string">".chart .axisX"</span>).call(<span class="keyword">this</span>.xAxis);</span><br><span class="line">  <span class="comment">// 插入Y軸座標</span></span><br><span class="line">  d3.select(<span class="string">".chart .axisY"</span>).call(<span class="keyword">this</span>.yAxis);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="繪製橫條"><a href="#繪製橫條" class="headerlink" title="繪製橫條"></a>繪製橫條</h2><ul>
+<li>HTML</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 橫條 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">transition-group</span> <span class="attr">tag</span>=<span class="string">"g"</span> <span class="attr">name</span>=<span class="string">"growBarp"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">rect</span> <span class="attr">class</span>=<span class="string">"bar"</span> <span class="attr">v-for</span>=<span class="string">"(rect, key) in bar"</span> <span class="attr">:key</span>=<span class="string">"`$&#123;key&#125;$&#123;rect.width&#125;$&#123;rect.y&#125;`"</span> <span class="attr">:fill</span>=<span class="string">"rect.color"</span> <span class="attr">:x</span>=<span class="string">"rect.x"</span> <span class="attr">:y</span>=<span class="string">"rect.y"</span> <span class="attr">:width</span>=<span class="string">"rect.width"</span> <span class="attr">:height</span>=<span class="string">"rect.height"</span> <span class="attr">v-on:mouseover</span>=<span class="string">"showTooltip(key, $event)"</span> <span class="attr">v-on:mouseout</span>=<span class="string">"hiddenTooltip"</span>&gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">transition-group</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>CSS</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 動畫 */</span></span><br><span class="line"><span class="selector-class">.growBarp-enter-active</span> &#123; <span class="comment">/* 進入動畫：進行中 */</span></span><br><span class="line">  <span class="attribute">transition</span>: all <span class="number">1s</span>; <span class="comment">/* 動畫時間： 1秒 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.growBarp-enter</span> &#123; <span class="comment">/* 進入動畫：開始 */</span></span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">scaleX</span>(0); <span class="comment">/* 水平縮放從0開始 */</span></span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">0</span>; <span class="comment">/* 淡入從透明度0開始 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>JS</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 顏色函數</span></span><br><span class="line">color() &#123;</span><br><span class="line">  <span class="comment">// 使用 D3 內建 10種顏色輪迴的函式</span></span><br><span class="line">  <span class="keyword">return</span> d3.scaleOrdinal(d3.schemeCategory10);</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// 橫條寬度、間隔設定</span></span><br><span class="line">barWidth() &#123;</span><br><span class="line">  <span class="comment">// 間隔</span></span><br><span class="line">  <span class="keyword">let</span> gap = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 計算橫條的寬度</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.chart.height / (<span class="keyword">this</span>.valueLength + <span class="number">1</span>) - gap;</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// 橫條座標、顏色</span></span><br><span class="line">bar() &#123;</span><br><span class="line">  <span class="keyword">let</span> rectArray = [];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 產生橫條的陣列</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.data.value) &#123;</span><br><span class="line">    <span class="keyword">this</span>.data.value.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">      rectArray.push(&#123;</span><br><span class="line">        color: <span class="keyword">this</span>.color(<span class="number">0</span>), <span class="comment">// 設定顏色</span></span><br><span class="line">        x: <span class="number">0</span>, <span class="comment">// 設定x座標</span></span><br><span class="line">        y: <span class="keyword">this</span>.yScale(i + <span class="number">1</span>) - <span class="keyword">this</span>.barWidth / <span class="number">2</span>, <span class="comment">// 設定y座標</span></span><br><span class="line">        width: <span class="keyword">this</span>.xScale(e.number), <span class="comment">// 設定寬度</span></span><br><span class="line">        height: <span class="keyword">this</span>.barWidth <span class="comment">// 設定高度</span></span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> rectArray;</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// 橫條文字座標、內容</span></span><br><span class="line">barText() &#123;</span><br><span class="line">  <span class="keyword">let</span> textArray = [];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 產生橫條文字的陣列</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.data.value) &#123;</span><br><span class="line">    <span class="keyword">this</span>.data.value.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">      textArray.push(&#123;</span><br><span class="line">        x: <span class="keyword">this</span>.xScale(e.number) - <span class="number">20</span>, <span class="comment">// 設定x座標</span></span><br><span class="line">        y: <span class="keyword">this</span>.yScale(i + <span class="number">1</span>) + <span class="number">5</span>, <span class="comment">// 設定y座標</span></span><br><span class="line">        number: e.number <span class="comment">// 設定顯示的值</span></span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> textArray;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>全部畫好的樣子如下圖，可以去 <a href="https://github.com/Annilla/d3-practice-vue-svg/blob/master/src/components/BarPChart.vue" target="_blank" rel="noopener">Github</a> 查看完整程式碼喔！也可以在<a href="https://annilla.github.io/d3-practice-vue-svg/dist/">這裡</a>查看橫條圖的 Demo，我們下回見～</p>
+<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2018-03-04_1029.png" alt="橫條圖完成" title="橫條圖"></p>
 
             
 
@@ -328,7 +344,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">標籤</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Webpack/">Webpack</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/D3/">D3</a> <a class="tag tag--primary tag--small t-link" href="/tags/SVG/">SVG</a> <a class="tag tag--primary tag--small t-link" href="/tags/Vue/">Vue</a>
 
             </div>
         
@@ -339,7 +355,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/" data-tooltip="Webpack 3 Tutorial - add Babel loader to write js use ES6" aria-label="上一篇: Webpack 3 Tutorial - add Babel loader to write js use ES6">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/09/30/Resume/" data-tooltip="Anny Chang&#39;s Resume - 履歷" aria-label="上一篇: Anny Chang&#39;s Resume - 履歷">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -348,7 +364,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/" data-tooltip="Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders" aria-label="下一篇: Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/" data-tooltip="D3 v4 with Vue - SVG Line Chart" aria-label="下一篇: D3 v4 with Vue - SVG Line Chart">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -366,7 +382,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/" title="分享到 Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -374,7 +390,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/" title="分享到 Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -382,7 +398,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/" title="分享到 Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -435,7 +451,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/" data-tooltip="Webpack 3 Tutorial - add Babel loader to write js use ES6" aria-label="上一篇: Webpack 3 Tutorial - add Babel loader to write js use ES6">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/09/30/Resume/" data-tooltip="Anny Chang&#39;s Resume - 履歷" aria-label="上一篇: Anny Chang&#39;s Resume - 履歷">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -444,7 +460,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/" data-tooltip="Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders" aria-label="下一篇: Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/" data-tooltip="D3 v4 with Vue - SVG Line Chart" aria-label="下一篇: D3 v4 with Vue - SVG Line Chart">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -462,7 +478,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/" title="分享到 Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -470,7 +486,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/" title="分享到 Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -478,7 +494,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/" title="分享到 Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -511,7 +527,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i><span>分享到 Facebook</span>
                 </a>
             </li>
@@ -519,7 +535,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
                     <i class="fa fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                 </a>
             </li>
@@ -527,7 +543,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
                     <i class="fa fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                 </a>
             </li>
@@ -866,9 +882,9 @@
     
         <script>
              var disqus_config = function () {
-                 this.page.url = 'http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/';
+                 this.page.url = 'http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/';
                  
-                    this.page.identifier = '2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/';
+                    this.page.identifier = '2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/';
                  
              };
             (function() {
