@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
-    <title>所有文章 - Anny Chang - F2E &amp; UI Designer</title>
+    <title>D3 v4 with Vue - SVG VS CANVAS - Anny Chang - F2E &amp; UI Designer</title>
     <meta name="author" content="Anny Chang">
     
         <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
@@ -17,17 +17,28 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <meta name="description" content="Anny&apos;s blog">
-<meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking">
+    <meta name="description" content="本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。">
+<meta name="keywords" content="D3,Vue,SVG,CANVAS">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Anny Chang - F2E &amp; UI Designer">
-<meta property="og:url" content="http://annilla.github.io/archives/index.html">
+<meta property="og:title" content="D3 v4 with Vue - SVG VS CANVAS">
+<meta property="og:url" content="http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
-<meta property="og:description" content="Anny&apos;s blog">
+<meta property="og:description" content="本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。">
 <meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/lineChartSVG.gif">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/lineChartCANVAS.gif">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/Can%20I%20use%20SVG.jpg">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/Can%20I%20use%20CANVAS.jpg">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/SVG%20code%20length.jpg">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/CANVAS%20code%20length.jpg">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/SVG%20Perform.jpg">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/CANVAS%20Perform.jpg">
+<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/canvasVSsvgTABLE.jpg">
+<meta property="og:updated_time" content="2018-06-16T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Anny Chang - F2E &amp; UI Designer">
-<meta name="twitter:description" content="Anny&apos;s blog">
+<meta name="twitter:title" content="D3 v4 with Vue - SVG VS CANVAS">
+<meta name="twitter:description" content="本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。">
+<meta name="twitter:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/lineChartSVG.gif">
     
         <link rel="publisher" href="https://plus.google.com/+張巧倪"/>
     
@@ -38,6 +49,12 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
     
     
+        <meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png" />
+    
+    
+        <meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner-blog.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner-blog.png" />
     
     
     <!--STYLES-->
@@ -67,7 +84,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">Anny Chang - F2E &amp; UI Designer</a>
@@ -89,7 +106,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -238,126 +255,30 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner-blog.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/3017/12/03/Resume/">
-                            Anny Chang&#39;s Resume - 履歷
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="3017-12-03T00:00:00+08:00">
-	
-		    12月 03, 3017
-    	
-    </time>
+        <div class="post-header main-content-wrap text-left">
     
-        <span>分類 </span>
-        
-    <a class="category-link" href="/categories/Resume/">Resume</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p>My resume.</p>
-                    
-                        <a href="/3017/12/03/Resume/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/3017/12/03/Resume/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="https://images.unsplash.com/photo-1484755560615-a4c64e778a6c?auto=format&amp;fit=crop&amp;w=1360&amp;h=200&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D"/>
-                </div>
-            </a>
-            
-        
-    </article>
+        <h1 class="post-title" itemprop="headline">
+            D3 v4 with Vue - SVG VS CANVAS
+        </h1>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/3017/12/01/Portfolio/">
-                            Anny Chang&#39;s Portfolio - 作品集
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="3017-12-01T00:00:00+08:00">
-	
-		    12月 01, 3017
-    	
-    </time>
-    
-        <span>分類 </span>
-        
-    <a class="category-link" href="/categories/Portfolio/">Portfolio</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p>My portfolio.</p>
-                    
-                        <a href="/3017/12/01/Portfolio/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/3017/12/01/Portfolio/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?auto=format&amp;fit=crop&amp;w=1000&amp;h=200&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/">
-                            D3 v4 with Vue - SVG VS CANVAS
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
+        <div class="post-meta">
     <time itemprop="datePublished" datetime="2018-06-17T00:00:00+08:00">
 	
 		    6月 17, 2018
@@ -366,383 +287,148 @@
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p>本篇主要是針對 <code>SVG</code> 和 <code>CANVAS</code> 兩種繪圖方式作比較，並整理各自的優勢。</p>
-                    
-                        <a href="/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/">
-                            D3 v4 with Vue - CANVAS Line Chart
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2018-06-16T00:00:00+08:00">
-	
-		    6月 16, 2018
-    	
-    </time>
     
 </div>
+    
+    <div class="post-content markdown" itemprop="articleBody">
+        <div class="main-content-wrap">
+            <p>本篇主要是針對 <code>SVG</code> 和 <code>CANVAS</code> 兩種繪圖方式作比較，並整理各自的優勢。</p>
+<a id="more"></a>
+<hr>
+<h2 id="SVG-amp-CANVAS-繪製原理"><a href="#SVG-amp-CANVAS-繪製原理" class="headerlink" title="SVG &amp; CANVAS 繪製原理"></a>SVG &amp; CANVAS 繪製原理</h2><h3 id="SVG"><a href="#SVG" class="headerlink" title="SVG"></a>SVG</h3><blockquote>
+<p>用 D3 把算好的陣列，呈現在 SVG 的 DOM 上，讓 Vue 來做 rendor 的動作，最後使用 CSS transition 做動畫。</p>
+</blockquote>
+<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/lineChartSVG.gif" alt="SVG Rendor DOM" title="SVG"></p>
+<h3 id="CANVAS"><a href="#CANVAS" class="headerlink" title="CANVAS"></a>CANVAS</h3><blockquote>
+<p> Canvas 則是用 “命令” 的方式作圖，JS 就如同一隻虛擬的筆，下指令一筆一畫把圖畫出來。所以，畫出來的東西沒有實體 DOM。動畫也是靠 JS 命令，每段時間清除畫布，不斷地做重新繪製。</p>
+</blockquote>
+<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/lineChartCANVAS.gif" alt="JS Draw CANVAS" title="CANVAS"></p>
+<hr>
+<h2 id="CAN-I-USE"><a href="#CAN-I-USE" class="headerlink" title="CAN I USE?"></a>CAN I USE?</h2><h3 id="SVG-1"><a href="#SVG-1" class="headerlink" title="SVG"></a>SVG</h3><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/Can%20I%20use%20SVG.jpg" alt="CAN I USE SVG" title="SVG"></p>
+<h3 id="CANVAS-1"><a href="#CANVAS-1" class="headerlink" title="CANVAS"></a>CANVAS</h3><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/Can%20I%20use%20CANVAS.jpg" alt="CAN I USE CANVAS" title="CANVAS"></p>
+<hr>
+<h2 id="程式碼長度"><a href="#程式碼長度" class="headerlink" title="程式碼長度"></a>程式碼長度</h2><h3 id="SVG-2"><a href="#SVG-2" class="headerlink" title="SVG"></a>SVG</h3><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/SVG%20code%20length.jpg" alt="SVG 程式碼長度" title="SVG"></p>
+<blockquote>
+<p>SVG 399 行 (Whoa! Excellent ~)</p>
+</blockquote>
+<h3 id="CANVAS-2"><a href="#CANVAS-2" class="headerlink" title="CANVAS"></a>CANVAS</h3><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/CANVAS%20code%20length.jpg" alt="CANVAS 程式碼長度" title="CANVAS"></p>
+<blockquote>
+<p>CANVAS 603 行 (Oh-no!! So Terrible ~)</p>
+</blockquote>
+<hr>
+<h2 id="執行效能"><a href="#執行效能" class="headerlink" title="執行效能"></a>執行效能</h2><h3 id="SVG-3"><a href="#SVG-3" class="headerlink" title="SVG"></a>SVG</h3><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/SVG%20Perform.jpg" alt="SVG 執行效能" title="SVG"></p>
+<blockquote>
+<p>SVG 364 ms</p>
+</blockquote>
+<h3 id="CANVAS-3"><a href="#CANVAS-3" class="headerlink" title="CANVAS"></a>CANVAS</h3><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/CANVAS%20Perform.jpg" alt="CANVAS 執行效能" title="CANVAS"></p>
+<blockquote>
+<p>CANVAS 177 ms</p>
+</blockquote>
+<hr>
+<h2 id="整體分析"><a href="#整體分析" class="headerlink" title="整體分析"></a>整體分析</h2><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/canvasVSsvgTABLE.jpg" alt="整體分析" title="SVG VS CANVAS"></p>
+<blockquote>
+<p>整體來說，像工業 4.0 這種大數據的資料使用 CANVAS 來繪製會是最恰當的（速度才不會卡卡）。相反的，如果是簡單的數據圖，使用 SVG 會比較容易開發和維護。</p>
+</blockquote>
+<p>本篇就分析到此，下一篇會繼續解說 CANVAS 如何繪製其他種類（ex: 長條圖、圓餅圖…）的數據圖。</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/CANVAS/">CANVAS</a> <a class="tag tag--primary tag--small t-link" href="/tags/D3/">D3</a> <a class="tag tag--primary tag--small t-link" href="/tags/SVG/">SVG</a> <a class="tag tag--primary tag--small t-link" href="/tags/Vue/">Vue</a>
 
             </div>
-            
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p>前幾篇介紹完 <code>SVG</code> 的基本繪圖方式後，我們要來練習使用 <code>CANVAS</code> 來做一樣的折線圖，並在下一篇比較兩者的優缺點。</p>
-                    
-                        <a href="/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
         
-            <a href="/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png"/>
-                </div>
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/12/01/Portfolio/" data-tooltip="Anny Chang&#39;s Portfolio - 作品集" aria-label="上一篇: Anny Chang&#39;s Portfolio - 作品集">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/" data-tooltip="D3 v4 with Vue - CANVAS Line Chart" aria-label="下一篇: D3 v4 with Vue - CANVAS Line Chart">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/" title="分享到 Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/" title="分享到 Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/" title="分享到 Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
             
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
+        <li class="post-action">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/">
-                            D3 v4 with Vue - SVG Donut Chart
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2018-05-01T00:00:00+08:00">
-	
-		    5月 01, 2018
-    	
-    </time>
-    
-</div>
-
-            </div>
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p>這次要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做 <code>SVG</code> 甜甜圈圖囉～如果要做中間不要洞的圓餅圖，把內圈半徑改成 0 即可。</p>
-                    
-                        <a href="/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png"/>
-                </div>
+                <i class="fa fa-list" aria-hidden="true"></i>
             </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/">
-                            D3 v4 with Vue - SVG Vertical Bar Chart
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2018-04-06T00:00:00+08:00">
-	
-		    4月 06, 2018
-    	
-    </time>
-    
-        <span>分類 </span>
-        
-    <a class="category-link" href="/categories/D3/">D3</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p>這次要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做多組動態的 <code>SVG</code> 直條圖囉～<br>
-                    
-                        <a href="/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
-                            D3 v4 with Vue - SVG Horizontal Bar Chart
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2018-03-04T00:00:00+08:00">
-	
-		    3月 04, 2018
-    	
-    </time>
-    
-        <span>分類 </span>
-        
-    <a class="category-link" href="/categories/D3/">D3</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p>
-                    
-                        <a href="/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/">
-                            D3 v4 with Vue - SVG Line Chart
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2018-02-03T00:00:00+08:00">
-	
-		    2月 03, 2018
-    	
-    </time>
-    
-        <span>分類 </span>
-        
-    <a class="category-link" href="/categories/D3/">D3</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p>
-                    
-                        <a href="/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/">
-                            .NET Core 2.0 Debug with VScode
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2017-12-25T00:00:00+08:00">
-	
-		    12月 25, 2017
-    	
-    </time>
-    
-        <span>分類 </span>
-        
-    <a class="category-link" href="/categories/NET-Core/">.NET Core</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br>
-                    
-                        <a href="/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/">
-                            .NET Core 2.0 SPA with Vue-Cli - Start New Project
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2017-12-02T00:00:00+08:00">
-	
-		    12月 02, 2017
-    	
-    </time>
-    
-        <span>分類 </span>
-        
-    <a class="category-link" href="/categories/NET-Core/">.NET Core</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt" itemprop="articleBody">
-                    <p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br>
-                    
-                        <a href="/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/" class="postShorten-excerpt_link link">
-                            繼續閱讀
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" itemprop="image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-        
-          <li class="pagination-next">
-            <a class="btn btn--default btn--small" href="/archives/page/2/">
-              <span>下一頁</span>
-              <i class="fa fa-angle-right text-base icon-ml"></i>
-            </a>
-          </li>
-        
-        <li class="pagination-number">第 1 頁 共 2 頁</li>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
 
 
 
@@ -753,6 +439,114 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/12/01/Portfolio/" data-tooltip="Anny Chang&#39;s Portfolio - 作品集" aria-label="上一篇: Anny Chang&#39;s Portfolio - 作品集">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/" data-tooltip="D3 v4 with Vue - CANVAS Line Chart" aria-label="下一篇: D3 v4 with Vue - CANVAS Line Chart">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/" title="分享到 Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/" title="分享到 Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/" title="分享到 Google+">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment-o"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>分享到 Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/">
+                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -1080,6 +874,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-peofhqjkzcghmndknakluequy1y6owxdwpaqyju9ntl9zxnk7rdolb3rjjoj.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/';
+                 
+                    this.page.identifier = '2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'anny-chang';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
