@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
-    <title>Webpack 3 Tutorial - add PUG templates to write html - Anny Chang - F2E &amp; UI Designer</title>
+    <title>D3 v4 with Vue - CANVAS Horizontal Bar Chart - Anny Chang - F2E &amp; UI Designer</title>
     <meta name="author" content="Anny Chang">
     
         <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
@@ -17,20 +17,18 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <meta name="description" content="此篇介紹如何加入並使用 pug-loader，並使用 PUG 語法測試撰寫 html。">
-<meta name="keywords" content="Webpack">
+    <meta name="description" content="此篇練習使用 CANVAS 來做橫條圖。主要的隨機資料和準備 Canvas 畫布在折線圖那篇有解釋過，所以這邊就直接進入橫條圖動畫的部分。">
+<meta name="keywords" content="D3,Vue,CANVAS">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Webpack 3 Tutorial - add PUG templates to write html">
-<meta property="og:url" content="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/index.html">
+<meta property="og:title" content="D3 v4 with Vue - CANVAS Horizontal Bar Chart">
+<meta property="og:url" content="http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
-<meta property="og:description" content="此篇介紹如何加入並使用 pug-loader，並使用 PUG 語法測試撰寫 html。">
+<meta property="og:description" content="此篇練習使用 CANVAS 來做橫條圖。主要的隨機資料和準備 Canvas 畫布在折線圖那篇有解釋過，所以這邊就直接進入橫條圖動畫的部分。">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-10-28_1131.png">
-<meta property="og:updated_time" content="2017-10-31T16:00:00.000Z">
+<meta property="og:updated_time" content="2018-07-06T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Webpack 3 Tutorial - add PUG templates to write html">
-<meta name="twitter:description" content="此篇介紹如何加入並使用 pug-loader，並使用 PUG 語法測試撰寫 html。">
-<meta name="twitter:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-10-28_1131.png">
+<meta name="twitter:title" content="D3 v4 with Vue - CANVAS Horizontal Bar Chart">
+<meta name="twitter:description" content="此篇練習使用 CANVAS 來做橫條圖。主要的隨機資料和準備 Canvas 畫布在折線圖那篇有解釋過，所以這邊就直接進入橫條圖動畫的部分。">
     
         <link rel="publisher" href="https://plus.google.com/+張巧倪"/>
     
@@ -41,12 +39,12 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
     
     
-        <meta property="og:image" content="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" />
+        <meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png" />
     
     
-        <meta property="og:image" content="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png" />
+        <meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner-blog.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner-blog.png" />
     
     
     <!--STYLES-->
@@ -250,7 +248,7 @@
         <div class="post-header-cover
                     text-left
                     "
-             style="background-image:url('https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png');"
+             style="background-image:url('http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner-blog.png');"
              data-behavior="4">
             
         </div>
@@ -266,20 +264,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title" itemprop="headline">
-            Webpack 3 Tutorial - add PUG templates to write html
+            D3 v4 with Vue - CANVAS Horizontal Bar Chart
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2017-11-01T00:00:00+08:00">
+    <time itemprop="datePublished" datetime="2018-07-07T00:00:00+08:00">
 	
-		    11月 01, 2017
+		    7月 07, 2018
     	
     </time>
     
         <span>分類 </span>
         
-    <a class="category-link" href="/categories/Webpack/">Webpack</a>
+    <a class="category-link" href="/categories/D3/">D3</a>
 
 
     
@@ -290,20 +288,16 @@
     
     <div class="post-content markdown" itemprop="articleBody">
         <div class="main-content-wrap">
-            <p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br><a id="more"></a></p>
-<h2 id="安裝-pug-loader"><a href="#安裝-pug-loader" class="headerlink" title="安裝 pug-loader"></a>安裝 <code>pug-loader</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D pug pug-loader</span><br></pre></td></tr></table></figure>
-<h2 id="設定-webpack-config-js"><a href="#設定-webpack-config-js" class="headerlink" title="設定 webpack.config.js"></a>設定 <code>webpack.config.js</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      ......</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.pug$/</span>,</span><br><span class="line">        use: <span class="string">'pug-loader'</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="撰寫-index-pug"><a href="#撰寫-index-pug" class="headerlink" title="撰寫 index.pug"></a>撰寫 <code>index.pug</code></h2><p>接著我們嘗試把 <code>index.html</code> 改檔名為 <code>index.pug</code>，並把內容換成以下 <code>Pug</code> 範例。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">doctype html</span><br><span class="line">html(lang=&quot;en&quot;)</span><br><span class="line">  head</span><br><span class="line">    title= pageTitle</span><br><span class="line">    script(type=&apos;text/javascript&apos;).</span><br><span class="line">      if (foo) bar(1 + 5)</span><br><span class="line">  body</span><br><span class="line">    h1 Pug - node template engine</span><br><span class="line">    #container.col</span><br><span class="line">      if youAreUsingPug</span><br><span class="line">        p You are amazing</span><br><span class="line">      else</span><br><span class="line">        p Get on it!</span><br><span class="line">      p.</span><br><span class="line">        Pug is a terse and simple templating language with a</span><br><span class="line">        strong focus on performance and powerful features.</span><br></pre></td></tr></table></figure>
-<p>接著記得把 <code>webpack.config.js</code> plugin 中的 <code>HtmlWebpackPlugin</code> 設定換成現在新的 <code>Pug</code> 檔案。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ......</span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">      template: <span class="string">'./src/index.pug'</span></span><br><span class="line">    &#125;),</span><br><span class="line">    ......</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>執行 <code>npm run dev</code>，就可以看到 <code>Pug</code> 執行出來的畫面囉。</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-10-28_1131.png" alt="執行 npm run dev 後畫面" title="dist/index.pug"></p>
-<p>今天的範例 <a href="https://github.com/Annilla/webpack_practice/tree/v1.5.0" target="_blank" rel="noopener">Github</a> 在此，下次見～</p>
-<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
-<li><a href="https://github.com/pugjs/pug-loader" target="_blank" rel="noopener">pug-loader</a></li>
-<li><a href="https://github.com/pugjs/pug" target="_blank" rel="noopener">Pug</a></li>
-</ul>
+            <p>此篇練習使用 <code>CANVAS</code> 來做橫條圖。主要的隨機資料和準備 <code>Canvas</code> 畫布在折線圖那篇有解釋過，所以這邊就直接進入橫條圖動畫的部分。</p>
+<a id="more"></a>
+<hr>
+<h2 id="橫條圖動畫"><a href="#橫條圖動畫" class="headerlink" title="橫條圖動畫"></a>橫條圖動畫</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">animationLine(elapsed) &#123;</span><br><span class="line">  <span class="keyword">let</span> duration = <span class="number">800</span>;</span><br><span class="line">  <span class="keyword">let</span> t = <span class="built_in">Math</span>.min(<span class="number">1</span>, elapsed / duration); <span class="comment">// compute how far through the animation we are (0 to 1)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Clear Canvas</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.clearRect(<span class="number">0</span>, <span class="number">0</span>, <span class="keyword">this</span>.conWidth, <span class="keyword">this</span>.conHeight);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製不須動畫的元素</span></span><br><span class="line">  <span class="keyword">this</span>.drawStatic();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">  橫條</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.save();</span><br><span class="line">  <span class="keyword">this</span>.bars.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 開始繪製</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">    <span class="keyword">this</span>.ctx.rect(e.x, e.y, e.width * t, e.height);</span><br><span class="line">    <span class="keyword">this</span>.ctx.globalAlpha = t;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fillStyle = e.color;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fill();</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">  橫條文字</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.textBaseline = <span class="string">"middle"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.font = <span class="string">"16px sans-serif"</span>;</span><br><span class="line">  <span class="keyword">this</span>.bars.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> x = e.width + <span class="keyword">this</span>.chartLeft - <span class="number">5</span>; <span class="comment">// 修正x太低數值的文字改在橫條外顯示</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 修正x太低數值的文字改在橫條外顯示</span></span><br><span class="line">  <span class="keyword">if</span> (x &lt; <span class="keyword">this</span>.chartLeft + <span class="number">50</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fillStyle = <span class="string">"#000"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.textAlign = <span class="string">"left"</span>;</span><br><span class="line">    x = e.width + <span class="keyword">this</span>.chartLeft + <span class="number">5</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fillStyle = <span class="string">"#fff"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.textAlign = <span class="string">"right"</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.ctx.fillText(e.number, x, e.y + <span class="keyword">this</span>.barWidth / <span class="number">2</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">this</span>.ctx.restore();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// if this animation is over</span></span><br><span class="line">  <span class="keyword">if</span> (t === <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="comment">// stop this timer since we are done animating.</span></span><br><span class="line">    <span class="keyword">this</span>.timer.stop();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>繪製的前後順序會影響繪製出來的圖層疊加效果，越後面繪製出來的元素會蓋在舊的元素上方。所以不需動畫的元素(ex: X軸、Y軸、標籤…)才特別拉出來寫成一個 function 放在繪製動畫之前。</p>
+</blockquote>
+<hr>
+<h2 id="不需動畫的元素"><a href="#不需動畫的元素" class="headerlink" title="不需動畫的元素"></a>不需動畫的元素</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line">drawStatic() &#123; <span class="comment">// 繪製不須動畫的元素</span></span><br><span class="line">  <span class="keyword">let</span> tickSize = <span class="number">6</span>; <span class="comment">// 軸點大小</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    X軸</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="keyword">this</span>.xTick = <span class="keyword">this</span>.custom</span><br><span class="line">    .append(<span class="string">"g"</span>)</span><br><span class="line">    .attr(<span class="string">"class"</span>, <span class="string">"axis axisX"</span>)</span><br><span class="line">    .call(<span class="keyword">this</span>.xAxis)</span><br><span class="line">    .selectAll(<span class="string">"g.tick"</span>);</span><br><span class="line">  <span class="comment">// 繪製X軸點</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.save();</span><br><span class="line">  <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">  <span class="comment">// 中間內部灰線</span></span><br><span class="line">  <span class="keyword">this</span>.xTick.each(<span class="function">(<span class="params">el, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> node = d3.select(arr[index]);</span><br><span class="line">    <span class="keyword">let</span> xTrans = node.attr(<span class="string">"transform"</span>);</span><br><span class="line">    <span class="keyword">let</span> xPos = <span class="built_in">Number</span>(xTrans.split(<span class="string">","</span>)[<span class="number">0</span>].split(<span class="string">"("</span>)[<span class="number">1</span>]) + <span class="keyword">this</span>.chartLeft;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 跳過 0 的軸點</span></span><br><span class="line">    <span class="keyword">if</span> (index === <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 繪製軸點</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.moveTo(xPos, <span class="keyword">this</span>.chartTop);</span><br><span class="line">    <span class="keyword">this</span>.ctx.lineTo(xPos, <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">this</span>.ctx.setLineDash([<span class="number">4</span>, <span class="number">6</span>]);</span><br><span class="line">  <span class="keyword">this</span>.ctx.lineWidth = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.strokeStyle = <span class="string">"#efefef"</span>; <span class="comment">// 線顏色</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line">  <span class="keyword">this</span>.ctx.restore();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製X軸文字</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.textAlign = <span class="string">"center"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.textBaseline = <span class="string">"top"</span>;</span><br><span class="line">  <span class="keyword">this</span>.xTick.each(<span class="function">(<span class="params">el, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> node = d3.select(arr[index]);</span><br><span class="line">    <span class="keyword">let</span> xTrans = node.attr(<span class="string">"transform"</span>);</span><br><span class="line">    <span class="keyword">let</span> xPos = <span class="built_in">Number</span>(xTrans.split(<span class="string">","</span>)[<span class="number">0</span>].split(<span class="string">"("</span>)[<span class="number">1</span>]) + <span class="keyword">this</span>.chartLeft;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.ctx.fillText(</span><br><span class="line">      node.property(<span class="string">"innerText"</span>),</span><br><span class="line">      xPos,</span><br><span class="line">      <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight</span><br><span class="line">    );</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製X軸標籤</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.save();</span><br><span class="line">  <span class="keyword">this</span>.ctx.textAlign = <span class="string">"center"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.textBaseline = <span class="string">"top"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.font = <span class="string">"16px sans-serif"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.fillText(</span><br><span class="line">    <span class="string">"件數"</span>,</span><br><span class="line">    <span class="keyword">this</span>.conWidth / <span class="number">2</span>,</span><br><span class="line">    <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight + <span class="number">30</span></span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">this</span>.ctx.restore();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    Y軸</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="keyword">this</span>.yTick = <span class="keyword">this</span>.custom</span><br><span class="line">    .append(<span class="string">"g"</span>)</span><br><span class="line">    .attr(<span class="string">"class"</span>, <span class="string">"axis axisY"</span>)</span><br><span class="line">    .call(<span class="keyword">this</span>.yAxis)</span><br><span class="line">    .selectAll(<span class="string">"g.tick"</span>);</span><br><span class="line">  <span class="comment">// 繪製Y軸點</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">  <span class="comment">// 黑色刻點</span></span><br><span class="line">  <span class="keyword">this</span>.yTick.each(<span class="function">(<span class="params">el, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> node = d3.select(arr[index]);</span><br><span class="line">    <span class="keyword">let</span> yTrans = node.attr(<span class="string">"transform"</span>);</span><br><span class="line">    <span class="keyword">let</span> yPos = <span class="built_in">Number</span>(yTrans.split(<span class="string">","</span>)[<span class="number">1</span>].split(<span class="string">")"</span>)[<span class="number">0</span>]) + <span class="keyword">this</span>.chartTop;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 跳過 0 的軸點</span></span><br><span class="line">    <span class="keyword">if</span> (index === <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 繪製軸點</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.moveTo(<span class="keyword">this</span>.chartLeft - tickSize, yPos);</span><br><span class="line">    <span class="keyword">this</span>.ctx.lineTo(<span class="keyword">this</span>.chartLeft, yPos);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line">  <span class="comment">// 最下方的刻點</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">  <span class="keyword">this</span>.ctx.moveTo(</span><br><span class="line">    <span class="keyword">this</span>.chartLeft - tickSize,</span><br><span class="line">    <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">this</span>.ctx.lineTo(<span class="keyword">this</span>.chartLeft, <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight);</span><br><span class="line">  <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製Y軸線</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">  <span class="keyword">this</span>.ctx.moveTo(<span class="keyword">this</span>.chartLeft, <span class="keyword">this</span>.chartTop);</span><br><span class="line">  <span class="keyword">this</span>.ctx.lineTo(<span class="keyword">this</span>.chartLeft, <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight);</span><br><span class="line">  <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製Y軸文字</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.textAlign = <span class="string">"right"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.textBaseline = <span class="string">"middle"</span>;</span><br><span class="line">  <span class="keyword">this</span>.yTick.each(<span class="function">(<span class="params">el, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> node = d3.select(arr[index]);</span><br><span class="line">    <span class="keyword">let</span> yTrans = node.attr(<span class="string">"transform"</span>);</span><br><span class="line">    <span class="keyword">let</span> yPos = <span class="built_in">Number</span>(yTrans.split(<span class="string">","</span>)[<span class="number">1</span>].split(<span class="string">")"</span>)[<span class="number">0</span>]) + <span class="keyword">this</span>.chartTop;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.ctx.fillText(</span><br><span class="line">      node.property(<span class="string">"innerText"</span>),</span><br><span class="line">      <span class="keyword">this</span>.chartLeft - tickSize,</span><br><span class="line">      yPos</span><br><span class="line">    );</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>整個骨架如果熟悉的話，其實就是把動態部分跟靜態部分替換掉想要的圖形就完成囉，線上 demo <a href="https://annilla.github.io/d3-practice-vue-canvas/dist/">在此</a>，也可以在<a href="https://github.com/Annilla/d3-practice-vue-canvas/blob/master/src/components/BarPChart.vue" target="_blank" rel="noopener">Github</a>查看完整程式碼，我們下回見～</p>
 
             
 
@@ -314,7 +308,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">標籤</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Webpack/">Webpack</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/CANVAS/">CANVAS</a> <a class="tag tag--primary tag--small t-link" href="/tags/D3/">D3</a> <a class="tag tag--primary tag--small t-link" href="/tags/Vue/">Vue</a>
 
             </div>
         
@@ -325,7 +319,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/" data-tooltip=".NET Core 2.0 SPA with Vue-Cli - Start New Project" aria-label="上一篇: .NET Core 2.0 SPA with Vue-Cli - Start New Project">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/12/01/Portfolio/" data-tooltip="Anny Chang&#39;s Portfolio - 作品集" aria-label="上一篇: Anny Chang&#39;s Portfolio - 作品集">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -334,7 +328,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/" data-tooltip="Webpack 3 Tutorial - add Babel loader to write js use ES6" aria-label="下一篇: Webpack 3 Tutorial - add Babel loader to write js use ES6">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/" data-tooltip="D3 v4 with Vue - SVG VS CANVAS" aria-label="下一篇: D3 v4 with Vue - SVG VS CANVAS">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -352,7 +346,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/" title="分享到 Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -360,7 +354,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/" title="分享到 Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -368,7 +362,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/" title="分享到 Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -421,7 +415,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/" data-tooltip=".NET Core 2.0 SPA with Vue-Cli - Start New Project" aria-label="上一篇: .NET Core 2.0 SPA with Vue-Cli - Start New Project">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/12/01/Portfolio/" data-tooltip="Anny Chang&#39;s Portfolio - 作品集" aria-label="上一篇: Anny Chang&#39;s Portfolio - 作品集">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -430,7 +424,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/" data-tooltip="Webpack 3 Tutorial - add Babel loader to write js use ES6" aria-label="下一篇: Webpack 3 Tutorial - add Babel loader to write js use ES6">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/" data-tooltip="D3 v4 with Vue - SVG VS CANVAS" aria-label="下一篇: D3 v4 with Vue - SVG VS CANVAS">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -448,7 +442,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/" title="分享到 Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -456,7 +450,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/" title="分享到 Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -464,7 +458,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/" title="分享到 Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -497,7 +491,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i><span>分享到 Facebook</span>
                 </a>
             </li>
@@ -505,7 +499,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/">
                     <i class="fa fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                 </a>
             </li>
@@ -513,7 +507,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/">
                     <i class="fa fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                 </a>
             </li>
@@ -852,9 +846,9 @@
     
         <script>
              var disqus_config = function () {
-                 this.page.url = 'http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/';
+                 this.page.url = 'http://annilla.github.io/2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/';
                  
-                    this.page.identifier = '2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/';
+                    this.page.identifier = '2018/07/07/D3/D3-v4-with-Vue-CANVAS-Horizontal-Bar-Chart/';
                  
              };
             (function() {
