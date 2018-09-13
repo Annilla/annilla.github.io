@@ -61,6 +61,36 @@
   </entry>
   
   <entry>
+    <title>UX/UI Workflow Tool in 2018</title>
+    <link href="http://annilla.github.io/2018/09/13/UXUI/UX-UI-Workflow-Tool-in-2018/"/>
+    <id>http://annilla.github.io/2018/09/13/UXUI/UX-UI-Workflow-Tool-in-2018/</id>
+    <published>2018-09-12T16:00:00.000Z</published>
+    <updated>2018-09-12T16:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>這篇要和大家分享平時設計 UX/UI 的時候我會用到的工具。以及在一堆爆炸的工作量中，要怎麼運用工具存活下來的故事 XD 。那我們就趕快開始吧。</p><a id="more"></a><p>這邊主要先介紹平常會用到的 Tool “粗略簡介”，中間會附註其他類似的工具，最後說明我的設計工作流。比較技術性的使用方式要等後續再慢慢出一些專門的文章。</p><hr><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/full-speed-ahead-img2.png" alt="Abstract" title="Abstract"></p><p><a href="https://www.goabstract.com/" target="_blank" rel="noopener">Abstract</a> 是針對 Sketch 的版本控制工具。</p><blockquote><p>“One place to version, manage, and collaborate on your Sketch files.” </p></blockquote><p>就如同使用 git 一般，所有的修改異動都會以 commit 的方式在雲端。再也不用像以往使用 adobe 系列狂複製做檔案備份的動作，使用 Abstract 就可以隨時查看要的版本，設計師再也不用害怕老闆說：“還是第一個版本好”(ＱＱ～心在淌血)。如果多人修改也可以開不同的分支(branch)，最後將確認的版本 merge 到 Master 即可。這簡直是設計師的救星啊～太多專案真的記不清之前做了什麼事，人也是會老的啊～(誤)</p><blockquote><p>其他類似的工具：<a href="https://plantapp.io/" target="_blank" rel="noopener">Plant</a>, <a href="https://kactus.io/" target="_blank" rel="noopener">Kactus</a>，網路上也有蠻多比較文章，可參考<a href="https://blog.prototypr.io/abstract-vs-kactus-vs-plant-a-guide-of-version-control-solutions-for-sketch-7da0a8ab5105" target="_blank" rel="noopener">這篇</a></p></blockquote><hr><h2 id="Sketch"><a href="#Sketch" class="headerlink" title="Sketch"></a>Sketch</h2><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2018-09-13_1456.png" alt="Sketch" title="Sketch"></p><p><a href="https://www.sketchapp.com/" target="_blank" rel="noopener">Sketch</a> 設計 UI 的工具，我想他的大名鼎鼎幾乎每位介面設計師都聽過吧。其實我第一次接觸他的契機是因為我需要 “加快” 我的產出速度，為什麼這樣說呢？是設計師的話一定用過 Adobe 的 Illustrator, Photoshop，假設要你設計一個簡單的聯絡人清單介面，用 Adobe 系列做是非常手工的一件事情。但透過 Sketch 大量的外部 plugin 支援，只要引用幾個簡單的 plugin ，就可以快速產出假的聯絡人名稱、假照片、固定的間距(padding)。除此之外，還可以透過 plugin 輸出 spec 給工程師參考，再也不用自己拼命測量、打色碼，告訴工程師要怎麼切版了。為了要在團隊裡同時支撐大量專案的設計，如何在同樣高品質下，提升速度才是能讓自己存活的關鍵。</p><blockquote><p>其他類似的工具：<a href="https://www.adobe.com/tw/products/xd.html" target="_blank" rel="noopener">Adobe XD</a></p></blockquote><hr><h2 id="Adobe-XD"><a href="#Adobe-XD" class="headerlink" title="Adobe XD"></a>Adobe XD</h2><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/xd-riverflow1-720x620.jpg" alt="Adobe XD" title="Adobe XD"></p><p>誒～～等等，剛剛不是說你是用 Sketch，<a href="https://www.adobe.com/tw/products/xd.html" target="_blank" rel="noopener">Adobe XD</a> 是相似的工具，那你相似的工具怎麼一次就用了兩款了呢？你以為我這麼愛搞死自己啊～還不是因為兩者的出發利基點不同，各有優缺點，所以只好截長補短囉。用 Sketch 主要還是因為有版控的關係，畢竟是以存活為優先啊。而 XD 的優勢呢主要是在他的 prototype ，可以很直覺的拉一拉，就可以輸出 URL 提供 user 使用測試，不用寫程式也可以先收集反饋，不然等到寫好程式又被打槍設計就會進入輪迴地獄了。但近期 XD 和 Sketch 兩者的功能越來越相像， Sketch 新增了 prototype 功能(但還有些小 bug)，而 XD 也在著手開發 plugin 生態，這兩個目前還是不分軒輊。目前本人還是偏向可搭版控功能的 Sketch 為主，而 XD 為輔的狀態。</p><blockquote><p>其他類似的工具：<a href="https://www.invisionapp.com/" target="_blank" rel="noopener">inVision</a>，inVision 除了可以線上做 prototype 之外，還主打模擬過場互動動畫，這款做動畫的威力可說是相當強大，有可能未來會強勢殺出。但目前主要是追求速度的提升，製作互動動畫的部分就沒多重琢磨，可能往後比較有空閒的時間再多加研究。</p></blockquote><hr><h2 id="設計工作流"><a href="#設計工作流" class="headerlink" title="設計工作流"></a>設計工作流</h2><p>我的設計流程大約是這樣的：</p><ol><li>接到需求</li><li>打開版控軟體 Abstract 創立新專案 (既有舊專案則同步檔案至最新)</li><li>用 Abstract 開 new branch</li><li>從 Abstract branch 打開 Sketch 設計 UI</li><li>設計一段落，建立 commit 上 Abstract</li><li>從 Sketch 檔案輸出靜態圖片</li><li>使用 Adobe XD 建立 prototype</li><li>輸出 prototype 網址給使用者測試</li><li>得到使用者回饋後，再決定 Abstract 是否要 merge 此 branch 到 Master 或是繼續新增 commit。最差的可能是全部被打槍，只好從 Master 再另開 branch 來做。</li></ol><p>上面的步驟依據使用者回饋多寡做多次的循環至 OK 為止。</p><p>以上是我到目前為止採用的 design workflow，提供給大家參考。之後會寫一系列關於 UX, UI 的工具使用技巧或介紹大咖的 design pattern 如何幫助我有效率的產出，敬請期待～</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;這篇要和大家分享平時設計 UX/UI 的時候我會用到的工具。以及在一堆爆炸的工作量中，要怎麼運用工具存活下來的故事 XD 。那我們就趕快開始吧。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
+    
+    
+      <category term="Sketch" scheme="http://annilla.github.io/tags/Sketch/"/>
+    
+      <category term="Abstract" scheme="http://annilla.github.io/tags/Abstract/"/>
+    
+      <category term="Adobe XD" scheme="http://annilla.github.io/tags/Adobe-XD/"/>
+    
+      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
+    
+      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
+    
+  </entry>
+  
+  <entry>
     <title>D3 v4 with Vue - CANVAS Donut Chart</title>
     <link href="http://annilla.github.io/2018/09/11/D3/D3-v4-with-Vue-CANVAS-Donut-Chart/"/>
     <id>http://annilla.github.io/2018/09/11/D3/D3-v4-with-Vue-CANVAS-Donut-Chart/</id>
