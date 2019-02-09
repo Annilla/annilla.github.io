@@ -61,6 +61,34 @@
   </entry>
   
   <entry>
+    <title>Google Material Design - Introduction</title>
+    <link href="http://annilla.github.io/2019/02/09/UXUI/Google-Material-Design-Introduction/"/>
+    <id>http://annilla.github.io/2019/02/09/UXUI/Google-Material-Design-Introduction/</id>
+    <published>2019-02-08T16:00:00.000Z</published>
+    <updated>2019-02-08T16:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>從 2018 年 8 月開始 Material Design 進行大幅度的更新。到目前為止發展出許多豐富的資源、工具和工作流，讓設計師、工程師們合作更順利，也積極舉辦比賽、研討會並分享業界使用示例讓大家有更多互相學習的空間，最近會寫一系列關於 Google Material Design 的文章，雖然已經使用 Material Design 超過一年了，但還是想透過閱讀新文件的機會，來邊學邊分享給大家XD</p><a id="more"></a><h2 id="Introduction-Google-Material-Design"><a href="#Introduction-Google-Material-Design" class="headerlink" title="Introduction - Google Material Design"></a>Introduction - Google Material Design</h2><h3 id="設計目標-Goals"><a href="#設計目標-Goals" class="headerlink" title="設計目標 Goals"></a>設計目標 Goals</h3><ol><li><p>創建(Create)：創建一種視覺語言，將好的設計原則與科技結合。</p></li><li><p>統一(Unify)：跨平台設備下開發單一的底層系統，統一用戶體驗。</p></li><li><p>客製化(Customize)：擴展 Material 的視覺語言，為創新和品牌識別提供可靈活變化的基礎程式。</p></li></ol><h3 id="設計原則-Principles"><a href="#設計原則-Principles" class="headerlink" title="設計原則 Principles"></a>設計原則 Principles</h3><p>Material 是一種譬喻。Material Design 的靈感來自物理世界和其組成，包括它們如何反射光線和投射陰影。把我們所使用的媒介重新想像成紙張和墨水材質的變化。</p><ol><li><p>大膽、圖形導向、有意象的：Material Design 是依印刷設計方法來設計，包含字體設計(typography)、格線系統(grids)、間距(space)、比例(scale)、顏色(color)和意象(imagery)等。Material Design 創造層次感且有意義的體驗，讓使用者沈浸在環境中。</p></li><li><p>互動(Motion)蘊含意義：透過細微的反饋和關聯的漸變，來保持使用者動作的連續性和聚焦的效果。當元素出現在屏幕上時，它們會變化並重新組織環境，並通過互動產生新的變化。</p></li><li><p>靈活的基礎程式：Material Design 系統可以依品牌來擴展其視覺語言。它是由許多客製化的程式基底組成，可以無痛依設計加入組件(components)、插件(plug-ins)和設計元素(design elements)。</p></li><li><p>跨平台：Material Design 在不同平台保持相同的 UI，在 Android、 iOS、Flutter 和 web 上使用相同的共用組件。</p></li></ol><p>Material Design 維持每月更新的速度，對設計和工程師呈現其功能和擴展性，有興趣可以在官方<a href="https://github.com/material-components/material-components/blob/develop/ROADMAP.md/" target="_blank" rel="noopener">github</a>看到最新的釋出內容。下回我們將介紹 Material Design 的 Workflow 工作流，還有許多超好用的工具，我們下回見！</p><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul><li><a href="https://material.io/design/introduction/#" target="_blank" rel="noopener">Material Design Introduction</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;從 2018 年 8 月開始 Material Design 進行大幅度的更新。到目前為止發展出許多豐富的資源、工具和工作流，讓設計師、工程師們合作更順利，也積極舉辦比賽、研討會並分享業界使用示例讓大家有更多互相學習的空間，最近會寫一系列關於 Google Material Design 的文章，雖然已經使用 Material Design 超過一年了，但還是想透過閱讀新文件的機會，來邊學邊分享給大家XD&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
+    
+      <category term="Material Design" scheme="http://annilla.github.io/categories/UXUI/Material-Design/"/>
+    
+    
+      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
+    
+      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
+    
+      <category term="Material Design" scheme="http://annilla.github.io/tags/Material-Design/"/>
+    
+  </entry>
+  
+  <entry>
     <title>.NET Core Upgrade 2.2 with Webpack4 &amp; Vue</title>
     <link href="http://annilla.github.io/2019/01/01/DotnetCore/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"/>
     <id>http://annilla.github.io/2019/01/01/DotnetCore/NET-Core-Upgrade-2-2-with-Webpack4-Vue/</id>
@@ -521,28 +549,6 @@
     <summary type="html">
     
       &lt;p&gt;此篇介紹如何加入並使用 &lt;code&gt;pug-loader&lt;/code&gt;，並使用 &lt;code&gt;PUG&lt;/code&gt; 語法測試撰寫 &lt;code&gt;html&lt;/code&gt;。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Webpack" scheme="http://annilla.github.io/categories/Webpack/"/>
-    
-    
-      <category term="Webpack" scheme="http://annilla.github.io/tags/Webpack/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Webpack 3 Tutorial - add Babel loader to write js use ES6</title>
-    <link href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"/>
-    <id>http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/</id>
-    <published>2017-09-30T16:00:00.000Z</published>
-    <updated>2017-09-30T16:00:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br><a id="more"></a></p><h2 id="安裝-babel-loader"><a href="#安裝-babel-loader" class="headerlink" title="安裝 babel-loader"></a>安裝 <code>babel-loader</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D babel-loader babel-core babel-preset-env</span><br></pre></td></tr></table></figure><h2 id="設定-webpack-config-js"><a href="#設定-webpack-config-js" class="headerlink" title="設定 webpack.config.js"></a>設定 <code>webpack.config.js</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      ......</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        exclude: <span class="regexp">/(node_modules)/</span>, <span class="comment">// 打包時排除 node_modules 資料夾</span></span><br><span class="line">        use: &#123;</span><br><span class="line">          loader: <span class="string">'babel-loader'</span>,</span><br><span class="line">          options: &#123;</span><br><span class="line">            presets: [<span class="string">'env'</span>] <span class="comment">// 使用 babel-preset-env</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><blockquote><p>注意：此範例把 <code>Babel</code> 設定直接寫在 <code>webpack.config.js</code>，若 <code>options</code> 設定較複雜的話，可另外寫在 <code>.babelrc</code> 檔案中，參考<a href="https://babeljs.io/docs/setup/#installation" target="_blank" rel="noopener">Babel官網</a>。</p></blockquote><h2 id="測試-ES6-語法"><a href="#測試-ES6-語法" class="headerlink" title="測試 ES6 語法"></a>測試 <code>ES6</code> 語法</h2><p>新增檔案 <code>./src/js/es6.js</code>，撰寫程式如下：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Point</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(x, y) &#123;</span><br><span class="line">    <span class="keyword">this</span>.x = x;</span><br><span class="line">    <span class="keyword">this</span>.y = y;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> distance(a, b) &#123;</span><br><span class="line">    <span class="keyword">const</span> dx = a.x - b.x;</span><br><span class="line">    <span class="keyword">const</span> dy = a.y - b.y;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.sqrt(dx*dx + dy*dy);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>將剛剛寫的程式 <code>import</code> 到 <code>app.js</code>。</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Point <span class="keyword">from</span> <span class="string">'./js/es6'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Test for ES6</span></span><br><span class="line"><span class="comment">// https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Classes</span></span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> Point(<span class="number">5</span>, <span class="number">5</span>);</span><br><span class="line"><span class="keyword">const</span> p2 = <span class="keyword">new</span> Point(<span class="number">10</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`Test ES6 Distance: <span class="subst">$&#123;Point.distance(p1, p2)&#125;</span>`</span>);</span><br></pre></td></tr></table></figure><p>執行 <code>npm run dev</code>，就可以看到 <code>console</code> 出現計算後的兩點長度囉。</p><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-30_1546.png" alt="執行 npm run dev 後畫面" title="dist/index.html"></p><p>更多 <code>babel-preset-env</code> 的配置選項可參考<a href="http://babeljs.io/docs/plugins/preset-env/#top" target="_blank" rel="noopener">官網</a>，有空也可以來試試 ES7 的 <code>async</code>, <code>await</code> 喔，我們下次見！</p><p>範例 <a href="https://github.com/Annilla/webpack_practice/tree/v1.4.0" target="_blank" rel="noopener">Github</a></p><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul><li><a href="https://webpack.js.org/loaders/babel-loader/" target="_blank" rel="noopener">Babel-loader</a></li><li><a href="https://babeljs.io/" target="_blank" rel="noopener">Babel</a></li><li><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Classes" target="_blank" rel="noopener">ES6 Classes</a></li><li><a href="http://babeljs.io/docs/plugins/preset-env/#top" target="_blank" rel="noopener">babel-preset-env</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;此篇介紹如何加入並使用 &lt;code&gt;babel-loader&lt;/code&gt;，並使用 &lt;code&gt;ES6&lt;/code&gt; 語法測試撰寫 &lt;code&gt;js&lt;/code&gt;。&lt;br&gt;
     
     </summary>
     
