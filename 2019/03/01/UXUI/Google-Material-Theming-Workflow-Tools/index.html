@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
-    <title>Webpack 3 Tutorial - Installation and Config - Anny Chang - F2E &amp; UI Designer</title>
+    <title>Google Material Theming - Workflow Tools - Anny Chang - F2E &amp; UI Designer</title>
     <meta name="author" content="Anny Chang">
     
         <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
@@ -17,18 +17,21 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <meta name="description" content="什麼是 Webpack ?Webpack 是針對所有前端程式的管理整合工具。工程師編寫程式模組（html, css, js, sass, pug, babel, … etc.），使用 webpack 打包輸出靜態資產（assets）,配合Babel, ES6使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。">
-<meta name="keywords" content="Webpack">
+    <meta name="description" content="之前我有寫過一篇我的 Design Workflow，主要使用 Sketch 設計、 XD 做 prototype ，並利用 Abstract 做版控。 Material Design 官方也有一套 Workflow 並有配套的 Tools，今天就帶大家來一探究竟 Material 的 Workflow Tools。">
+<meta name="keywords" content="Sketch,UX,UI,Material Design">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Webpack 3 Tutorial - Installation and Config">
-<meta property="og:url" content="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/index.html">
+<meta property="og:title" content="Google Material Theming - Workflow Tools">
+<meta property="og:url" content="http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
-<meta property="og:description" content="什麼是 Webpack ?Webpack 是針對所有前端程式的管理整合工具。工程師編寫程式模組（html, css, js, sass, pug, babel, … etc.），使用 webpack 打包輸出靜態資產（assets）,配合Babel, ES6使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。">
+<meta property="og:description" content="之前我有寫過一篇我的 Design Workflow，主要使用 Sketch 設計、 XD 做 prototype ，並利用 Abstract 做版控。 Material Design 官方也有一套 Workflow 並有配套的 Tools，今天就帶大家來一探究竟 Material 的 Workflow Tools。">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2017-06-29T16:00:00.000Z">
+<meta property="og:image" content="https://beta-static.photobucket.com/images/ae138/anny09117011/0/d221bb30-b37c-47ff-a365-36f08935f061-original.png?width=1920&height=1080&fit=bounds">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1200/1*IsLM8aDdA9MZCD7T_x8FjA.gif">
+<meta property="og:updated_time" content="2019-02-28T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Webpack 3 Tutorial - Installation and Config">
-<meta name="twitter:description" content="什麼是 Webpack ?Webpack 是針對所有前端程式的管理整合工具。工程師編寫程式模組（html, css, js, sass, pug, babel, … etc.），使用 webpack 打包輸出靜態資產（assets）,配合Babel, ES6使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。">
+<meta name="twitter:title" content="Google Material Theming - Workflow Tools">
+<meta name="twitter:description" content="之前我有寫過一篇我的 Design Workflow，主要使用 Sketch 設計、 XD 做 prototype ，並利用 Abstract 做版控。 Material Design 官方也有一套 Workflow 並有配套的 Tools，今天就帶大家來一探究竟 Material 的 Workflow Tools。">
+<meta name="twitter:image" content="https://beta-static.photobucket.com/images/ae138/anny09117011/0/d221bb30-b37c-47ff-a365-36f08935f061-original.png?width=1920&height=1080&fit=bounds">
     
         <link rel="publisher" href="https://plus.google.com/+張巧倪"/>
     
@@ -39,12 +42,12 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
     
     
-        <meta property="og:image" content="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" />
+        <meta property="og:image" content="https://beta-static.photobucket.com/images/ae138/anny09117011/0/21bddd8b-c51b-4c3a-8101-d7c5a1859060-original.png?width=1920&amp;height=1080&amp;fit=bounds"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://beta-static.photobucket.com/images/ae138/anny09117011/0/21bddd8b-c51b-4c3a-8101-d7c5a1859060-original.png?width=1920&amp;height=1080&amp;fit=bounds" />
     
     
-        <meta property="og:image" content="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png" />
+        <meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1Hfurrx3NHOuac_WreNWxG-2qdKjliIx_%2Fintro-illo-metaphor.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1Hfurrx3NHOuac_WreNWxG-2qdKjliIx_%2Fintro-illo-metaphor.png" />
     
     
     <!--STYLES-->
@@ -248,7 +251,7 @@
         <div class="post-header-cover
                     text-left
                     "
-             style="background-image:url('https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png');"
+             style="background-image:url('https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1Hfurrx3NHOuac_WreNWxG-2qdKjliIx_%2Fintro-illo-metaphor.png');"
              data-behavior="4">
             
         </div>
@@ -264,20 +267,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title" itemprop="headline">
-            Webpack 3 Tutorial - Installation and Config
+            Google Material Theming - Workflow Tools
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2017-06-14T00:00:00+08:00">
+    <time itemprop="datePublished" datetime="2019-03-01T00:00:00+08:00">
 	
-		    6月 14, 2017
+		    3月 01, 2019
     	
     </time>
     
         <span>分類 </span>
         
-    <a class="category-link" href="/categories/Webpack/">Webpack</a>
+    <a class="category-link" href="/categories/UXUI/">UXUI</a>, <a class="category-link" href="/categories/UXUI/Material-Design/">Material Design</a>
 
 
     
@@ -288,74 +291,26 @@
     
     <div class="post-content markdown" itemprop="articleBody">
         <div class="main-content-wrap">
-            <h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br><a id="more"></a></p>
-<h2 id="安裝環境"><a href="#安裝環境" class="headerlink" title="安裝環境"></a>安裝環境</h2><ol>
-<li><p>安裝 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a></p>
-</li>
-<li><p>開一個專案資料夾，建置 <code>npm</code> 專案</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init</span><br></pre></td></tr></table></figure>
-<p>設定 package.json</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"Your Project Name"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"Webpack project."</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"Your Name"</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>安裝開發端套件 Webpack<br>安裝全域(global)</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm -g i webpack</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>只有第一次使用<code>webpack</code>需要安裝全域，裝過一次之後就可以不用再安裝global</p>
-</blockquote>
-<p>專案開發端安裝套件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D webpack</span><br></pre></td></tr></table></figure>
-<h2 id="組織專案架構"><a href="#組織專案架構" class="headerlink" title="組織專案架構"></a>組織專案架構</h2><p>在專案建立 src 和 dist 資料夾。</p>
-<ul>
-<li>src: 工程師寫的程式放這裡。</li>
-<li>dist: <code>webpack</code> 自動打包出來的檔案會放這裡。</li>
-<li>src/app.js: 建立一支 <code>js</code> 檔案，等會要來測試 <code>webpack</code> 自動打包的功能用。</li>
-</ul>
-<p>app.js 內可以隨意寫 console 來測試</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'Hello World!'</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="設定描述檔"><a href="#設定描述檔" class="headerlink" title="設定描述檔"></a>設定描述檔</h2><ol>
-<li>在專案下新增<code>webpack.config.js</code>檔案。</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: <span class="string">'./src/app.js'</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">'./dist/app.bundle.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>entry: 開始執行打包的入口</li>
-<li>output: 輸出結果設定<ul>
-<li>filename: 輸出結果的名稱</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>修改<code>package.json</code>檔案 <code>scripts</code></li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"dev"</span>: <span class="string">"webpack -d --watch"</span>,</span><br><span class="line">    <span class="string">"prod"</span>: <span class="string">"webpack -p"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>-d: 開發模式輸出，不會 minify js</li>
-<li>–watch: 監聽程式碼修改，支援即時輸出</li>
-<li>-p: 產品模式輸出，會 minify js</li>
-</ul>
-<h2 id="執行-webpack-打包測試"><a href="#執行-webpack-打包測試" class="headerlink" title="執行 webpack 打包測試"></a>執行 webpack 打包測試</h2><ol>
-<li>執行<code>package.json</code>內<code>script</code>設定的 dev</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
-<ul>
-<li>結果：會在 <code>dist</code> 資料夾內產<code>app.bundle.js</code>，沒有 minify</li>
-</ul>
-<ol>
-<li>執行<code>package.json</code>內<code>script</code>設定的 prod</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run prod</span><br></pre></td></tr></table></figure>
-<ul>
-<li>結果：會在 <code>dist</code> 資料夾內產<code>app.bundle.js</code>，有 minify</li>
-</ul>
-<p>基本 webpack 練習完成囉～實際操作影片可觀賞 Ihatetomatoes 大大的 YOUTUBE 教學<a href="https://www.youtube.com/watch?v=JdGnYNtuEtE&amp;index=1&amp;list=PLkEZWD8wbltnRp6nRR8kv97RbpcUdNawY" target="_blank" rel="noopener">Webpack 2 Tutorial - Installation and Config</a>，感謝觀看 :)</p>
-<blockquote>
-<p>更新：2017/06/30 Webpack 版本更新到 3 囉 ！所以直接測試 3，發現無痛接軌沒問題，實作在 <a href="https://github.com/Annilla/webpack_practice/tree/v1.0.0" target="_blank" rel="noopener">github</a>，之後就直接都用 3 版實作囉。</p>
-</blockquote>
+            <p>之前我有寫過一篇<a href="/2018/09/13/UXUI/UX-UI-Workflow-Tool-in-2018/">我的 Design Workflow</a>，主要使用 <code>Sketch</code> 設計、 <code>XD</code> 做 prototype ，並利用 <code>Abstract</code> 做版控。 Material Design 官方也有一套 Workflow 並有配套的 Tools，今天就帶大家來一探究竟 Material 的 Workflow Tools。</p>
+<a id="more"></a>
+<h2 id="Material-Theming"><a href="#Material-Theming" class="headerlink" title="Material Theming"></a>Material Theming</h2><p>在介紹 Tool 前我們先來看看 <code>Material Theming</code> 是什麼？ Material Theming 就是將 Material Design 系統性的做客制，能更好地突出品牌識別效果。那如何將客制系統化呢？Tools 就佔了很重要的地位，我們來看看下列幾個系統化的工具吧。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1b7zteqiB7LCxy1R_NQwQZZ3_c8JqLE7T%2Ftheming-overview-applyingtheming.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<h3 id="Material-Theme-Editor"><a href="#Material-Theme-Editor" class="headerlink" title="Material Theme Editor"></a>Material Theme Editor</h3><p><code>Material Theme Editor</code> 我第一次看就嚇到了！怎麼會有這麼好用的共用元件工具。Material Theme Editor 透過在 Sketch 安裝 plugin，自動生成共用 Material Design Library，且透過此 plugin 還可以快速改變整個 Library 的 style ，像是圓角、配色組合、文字樣式等等。突然覺得我自己之前做的共用 Material Design Library 好手工喔ORZ～超喜歡這個很有彈性的 Tool 設計，我考慮下個新專案開始將 Material Theme Editor 生成的 Library 加入使用行列，到時候心有餘力再分享一篇使用心得囉～</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-tools%2Fassets%2F1U9gJolER8kqyFS1QzU7qhCRa7KRgebPb%2Ftheme-editor-sitecrop-hero-final.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<h3 id="Color-Tool"><a href="#Color-Tool" class="headerlink" title="Color Tool"></a>Color Tool</h3><p>配色工具的網站外面比比皆是。但是此 Color Tool 主要是在 Material 的指導原則下自動生成配色，在使用者選擇主色調後，經過演算挑出系統化的配色。我覺得這對設計師來說也節省了更多時間，不用再自己查相近色、互補色等，程式會自動為你配出適合的顏色。我下個新專案等不急要來 try try 看了~ XD</p>
+<p><img src="https://beta-static.photobucket.com/images/ae138/anny09117011/0/d221bb30-b37c-47ff-a365-36f08935f061-original.png?width=1920&amp;height=1080&amp;fit=bounds" alt="Color Tool" title="Color Tool"></p>
+<h3 id="Gallery"><a href="#Gallery" class="headerlink" title="Gallery"></a>Gallery</h3><p>之前有用過 <code>Zeplin</code> 分享設計量測 prototype 給 developer，但因為要付費就不想用了。現在很多設計工具都可以線上分享 prototype ， sketch、XD 都可以。Google 也自己開發了一套 gallery 的功能可以線上分享 prototype ，他除了可以觀察每個設計元件的 spec 和評語外，還可以設定螢幕要鎖定成手機、平板、桌電等尺寸，重點是他免費而且無空間限制，更多 Gallery 用法可參考<a href="https://material.io/tools/gallery/about.html#more-tips-on-using-gallery" target="_blank" rel="noopener">連結</a>。最近剛好有案子前端需要多人協同合作就拿來放在 Gallery，我覺得意外好用，只是就一定要有 google 的帳號才能看 Gallery 有點不合理，希望他以後改成只要有 email 就能加入 share 中。</p>
+<p><img src="https://cdn-images-1.medium.com/max/1200/1*IsLM8aDdA9MZCD7T_x8FjA.gif" alt="Gallery" title="Gallery"></p>
+<p>目前我個人是非常看好這幾個 Material Tools 的，希望新專案能慢慢加入使用，讓 Design &amp; Developer Workflow 更流暢。</p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
-<li><a href="https://llp0574.github.io/2016/11/29/getting-started-with-webpack2/" target="_blank" rel="noopener">Webpack 2 入門教程</a></li>
-<li><a href="https://www.youtube.com/watch?v=JdGnYNtuEtE&amp;index=1&amp;list=PLkEZWD8wbltnRp6nRR8kv97RbpcUdNawY" target="_blank" rel="noopener">Webpack 2 Tutorial - Installation and Config</a></li>
+<li><a href="https://material.io/design/material-theming/#" target="_blank" rel="noopener">Material Theming</a></li>
+<li><a href="https://material.io/tools/theme-editor/" target="_blank" rel="noopener">Material Theme Editor</a></li>
+<li><a href="https://material.io/tools/color/#!/?view.left=0&amp;view.right=0&amp;primary.color=6002ee" target="_blank" rel="noopener">Material Design Color Tool</a></li>
+<li><a href="https://gallery.io" target="_blank" rel="noopener">Google Gallery</a></li>
+<li><a href="https://material.io/tools/gallery/about.html#more-tips-on-using-gallery" target="_blank" rel="noopener">More tips on using Gallery</a></li>
+<li><a href="https://medium.com/sketch-app-sources/first-week-of-using-google-gallery-sketch-c97dd94c8676" target="_blank" rel="noopener">First week of using Google Gallery + Sketch</a></li>
 </ul>
 
             
@@ -367,7 +322,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">標籤</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Webpack/">Webpack</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/Material-Design/">Material Design</a> <a class="tag tag--primary tag--small t-link" href="/tags/Sketch/">Sketch</a> <a class="tag tag--primary tag--small t-link" href="/tags/UI/">UI</a> <a class="tag tag--primary tag--small t-link" href="/tags/UX/">UX</a>
 
             </div>
         
@@ -378,7 +333,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/" data-tooltip="Webpack 3 Tutorial - HTML Webpack Plugin" aria-label="上一篇: Webpack 3 Tutorial - HTML Webpack Plugin">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/12/01/Portfolio/" data-tooltip="Anny Chang&#39;s Portfolio - 作品集" aria-label="上一篇: Anny Chang&#39;s Portfolio - 作品集">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -386,7 +341,8 @@
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--disabled">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/09/UXUI/Google-Material-Design-Introduction/" data-tooltip="Google Material Design - Introduction" aria-label="下一篇: Google Material Design - Introduction">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -404,7 +360,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/" title="分享到 Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -412,7 +368,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/" title="分享到 Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -420,7 +376,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/" title="分享到 Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -473,7 +429,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/" data-tooltip="Webpack 3 Tutorial - HTML Webpack Plugin" aria-label="上一篇: Webpack 3 Tutorial - HTML Webpack Plugin">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/12/01/Portfolio/" data-tooltip="Anny Chang&#39;s Portfolio - 作品集" aria-label="上一篇: Anny Chang&#39;s Portfolio - 作品集">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -481,7 +437,8 @@
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--disabled">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/09/UXUI/Google-Material-Design-Introduction/" data-tooltip="Google Material Design - Introduction" aria-label="下一篇: Google Material Design - Introduction">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -499,7 +456,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/" title="分享到 Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -507,7 +464,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/" title="分享到 Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -515,7 +472,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/" title="分享到 Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -548,7 +505,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i><span>分享到 Facebook</span>
                 </a>
             </li>
@@ -556,7 +513,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/">
                     <i class="fa fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                 </a>
             </li>
@@ -564,7 +521,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/">
                     <i class="fa fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                 </a>
             </li>
@@ -903,9 +860,9 @@
     
         <script>
              var disqus_config = function () {
-                 this.page.url = 'http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/';
+                 this.page.url = 'http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/';
                  
-                    this.page.identifier = '2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/';
+                    this.page.identifier = '2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/';
                  
              };
             (function() {
