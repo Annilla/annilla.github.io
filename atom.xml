@@ -61,6 +61,34 @@
   </entry>
   
   <entry>
+    <title>Google Material Studies - Rally</title>
+    <link href="http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/"/>
+    <id>http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/</id>
+    <published>2019-04-04T16:00:00.000Z</published>
+    <updated>2019-04-04T16:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Material Guildline 應該很多設計師都閱讀過 N 遍了，但要設計時如何在框架下做到客制這件事應該還是很疑惑。官網上提出了幾個業界的實例分享，這點讓我很有興趣，所以接下來我會一一對這些案例做介紹。因為我上班做的案子比較多是系統類的設計，所以我第一個想介紹比較類似的是 Rally 這個案例。下面內容會一邊介紹，一邊穿插自己在職場上的一些心得或想法。</p><a id="more"></a><h1 id="案例背景"><a href="#案例背景" class="headerlink" title="案例背景"></a>案例背景</h1><p>Rally 是一個管理財務的 APP，它會追蹤使用者的花費習慣並產生預測和適當的警示通知。Rally 是設計來呈現大量且密集的資訊，讓使用者可管理和研究資料模式。</p><h3 id="數據性導向之美-Data-driven-aesthetic"><a href="#數據性導向之美-Data-driven-aesthetic" class="headerlink" title="數據性導向之美 (Data-driven aesthetic)"></a>數據性導向之美 (Data-driven aesthetic)</h3><p>UI 採用暗灰色提高質感，並用亮色系凸顯資料。在資料與背景顏色高對比之下，讓使用者更容易閱讀 APP 內的圖表。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F16CNi69TWdOluvYdoeNwd5QK4P5nkE48-%2Fcasestudies-rally-brandattributes.png" alt="Rally UI" title="Rally UI"></p><p>UI 設計專注在查看、研究和了解資料。圖表呈現在儀表板上，讓使用者查看花費摘要和單一交易的細節。此 UI 設計透過排版、顏色和形狀的凸顯，讓畫面是密集且直覺的。</p><blockquote><p>心得：蠻喜歡這樣的暗色背景搭亮色的配色，但因目前公司的一般使用者還是比較習慣白色背景的配色模式，所以暗色背景的搭配在考慮時間和緊急度下，我自己是只敢用在自己小組內部用的專案上，比較沒有時間上的壓力。</p></blockquote><h1 id="產品架構"><a href="#產品架構" class="headerlink" title="產品架構"></a>產品架構</h1><p>Rally 架構是層級式的，讓使用者透過不同分類查看他們的財務。</p><p>內容根據個人財務區分不同的 sections，像是帳戶、預算、帳單。首頁著重在讓使用者前往這些 sections 的導向。</p><h3 id="導覽列"><a href="#導覽列" class="headerlink" title="導覽列"></a>導覽列</h3><p>因為 Rally 專注在呈現和描述不同面向的財務資訊，所以如何讓使用者能輕易的在這些sections 移動是很重要的。Rally 有一個固定位置的導覽列讓使用者能方便的切換 sections。在桌機和平板，Rally 使用的是直列式的導覽列。在手機，則是用橫向標籤的方式。這項的導航模式很理想，雖然它們總是在屏幕上，但佔用的空間非常小。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1PIJeS6GJLIExYX9mWOmb7UzWB0-Nl5VB%2Fcasestudies-family-rally.png" alt="Rally 導覽列" title="Rally 導覽列"></p><p>在直列式的導覽列中，每個目的地會用一個獨特的 icon 呈現。當 section 被點選的時候，icon 就會變亮且標題會出現在 icon 下方。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1-qsgxAELdMrSDPRKV-l-N_2dW5fYeljj%2Fcasestudies-rally-rail.png" alt="直列式的導覽列" title="直列式的導覽列"></p><p>在橫向標籤導覽中，當 section 被點選的時候，icon 就會變亮且標題會出現在 icon 右方，其他 icon 將會適當的移動位置。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1dHfpA4R1RVHn5zRSxInMllujv_C7pxv7%2Fcasestudies-rally-tabs.png" alt="橫向標籤導覽" title="橫向標籤導覽"></p><blockquote><p>心得：這邊如果導覽項目數目很少，這樣設計ok。但要注意往後的擴充性，若是 section 的數目增加是否要增加 sub section，手機上方 tab 的空間是否會不夠呈現，這些都是可能會碰到的問題。</p></blockquote><h1 id="排版"><a href="#排版" class="headerlink" title="排版"></a>排版</h1><p>Rally 使用 12 grid system。</p><video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1lAQUZTvSoen3matP1gpDJqVpKnZpARy6%2Fcasestudies-rally-grid-1a.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video><h3 id="視覺層級"><a href="#視覺層級" class="headerlink" title="視覺層級"></a>視覺層級</h3><p>Rally 使用色彩或紗幕來區分視覺上的層級。</p><p>舉例：當使用者滑動下方資料的時候，為確保統計圖固定在上方，使用不同的色彩來區分視覺層級。</p><video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1dq6I1nDovqvUydVHH5jTeI9VA6ftfz7H%2Frally-flow1-170808-casestudies-rally-elevation-1a.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video><p>舉例：當有 popup 出現時，背景使用紗幕霧化背景。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1eBiwYfz1_8oSLrlWN_9uNjA_TGVqRBS2%2Fcasestudies-rally-elevation-scrim.png" alt="霧化背景" title="霧化背景"></p><blockquote><p>心得：用色彩和霧化效果來做層級區分我覺得還蠻實用且能提升質感。但在霧化背景的方式，需要考量到開發者是否能配合。若還有捨棄不了 IE 瀏覽器的公司，則會因為裝置的限制而必須要有第二方案來替代霧化的方式，比如說改用暗色且透明度低的樣式。</p></blockquote><h1 id="顏色"><a href="#顏色" class="headerlink" title="顏色"></a>顏色</h1><p>有時候需要顯示多個圖表在一個螢幕上，且每個圖表包含多個 sections。為了能足夠表達狀態， Rally 的配色採用 1 個主色調加上 5 個配色。這個設計讓系統呈現可讀性高且獨特的信息圖表。</p><p>當三個圖表出現在同一個螢幕上，每個圖表使用其中的兩個顏色。</p><ol><li>Primary Green and Dark Green.</li><li>Orange and Yellow.</li><li>Purple and Blue.</li></ol><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1TnwFyAe31SQDfL21qM9hZ1dcGQVRyB23%2Fcasestudies-rally-color-75percentzoom.png" alt="配色" title="配色"></p><h3 id="顏色主題"><a href="#顏色主題" class="headerlink" title="顏色主題"></a>顏色主題</h3><p>除了 6 色以外， Rally 還有一個針對這 6 個顏色延伸 10 色版的調色盤。如下圖。</p><ul><li>圓圈形狀代表在此 APP 中有用到的色版</li><li>“P” 代表主色調</li><li>其他沒有文字的圓圈則是配色</li></ul><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F17gZmwIGdzlDr-Hl2jTu2SSgc_ATBGaPt%2Fcasestudies-rally-color-palettes.png" alt="顏色主題" title="顏色主題"></p><blockquote><p>心得：我還沒用過那麼多的配色設計過，因為顏色越多，需要考量的點會更複雜，可能需要找時間嘗試看看。</p></blockquote><h1 id="文字與圖示"><a href="#文字與圖示" class="headerlink" title="文字與圖示"></a>文字與圖示</h1><p>Rally 用兩種字體：Eczar 和 Roboto Condensed。</p><ol><li>Roboto Condensed：介面預設字體，適合密集的佈局。</li><li>Eczar：只用在首要標題和純數字清單，適合呈現數據。</li></ol><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1t7i8LPPdmRkpdLV4u-p0oHvlhRTRbEb3%2Fcasestudies-rally-type.png" alt="字體" title="字體"></p><p>Rally 使用客製化的 icon 來呈現不同的 sections。</p><ol><li>所有圖示使用一樣的格線架構確保一致性。</li><li>所有 Rally 圖示</li></ol><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1zqz0w6AEK_D9Kxb8ntWTb8lXJHkGjakk%2Fcasestudies-rally-icons.png" alt="圖示" title="圖示"></p><blockquote><p>心得：在數據表達的部分使用另一種字體這是一個不錯的點子，可以凸顯出數據的呈現，會想要嘗試看看。圖示的部分，在統一格線架構下設計很合理，但在一般專案時間不足的狀況下，通常我會直接使用 Material Icons ，省去設計圖示這塊。</p></blockquote><h1 id="形狀"><a href="#形狀" class="headerlink" title="形狀"></a>形狀</h1><p>元件根據大小使用不同的形狀類型，將形狀做分類可以讓螢幕一次放多個元件，分類包含：</p><ol><li>小元件 (S)：文字輸入區塊(Filled text fields)。</li><li>中元件 (M)：卡片(Cards)。</li><li>大元件 (L)：數據表格(Data Tables)。</li></ol><p>元件都是 0 圓角。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1RpTrPB3UprQBcFfZh6ZnI4xNtUEyThIQ%2Frally-shape.png" alt="形狀分類" title="形狀分類"></p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1HuOHmVEu0rKr8Bfes708nHM9osOWiHIm%2Frally-shape-b.png" alt="形狀元件" title="形狀元件"></p><h1 id="元件"><a href="#元件" class="headerlink" title="元件"></a>元件</h1><h3 id="卡片和清單"><a href="#卡片和清單" class="headerlink" title="卡片和清單"></a>卡片和清單</h3><p>在 overview 頁面使用卡片去呈現多個財務摘要，像是 Accounts 和 Bills。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1gDGHc1gTW-FsOvmmXjZ6i5UF_U9CS0Ga%2Fcasestudies-rally-cards-1.png" alt="卡片" title="卡片"></p><p>當點選 Accounts，摘要資訊卡片會展開顯示更多細節在清單中。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F128elUbInT1Me7Ra3gJGsndRDRq6JbAcn%2Fcasestudies-rally-list.png" alt="清單" title="清單"></p><h3 id="橫幅、提示bar和對話框"><a href="#橫幅、提示bar和對話框" class="headerlink" title="橫幅、提示bar和對話框"></a>橫幅、提示bar和對話框</h3><ul><li>橫幅(Banners)：比較不那麼重要的訊息選擇用橫幅的方式呈現，通常會搭配圖示。</li><li>提示 bar 和對話框(Snackbars and dialogs)：重要的訊息則是用提示 bar 和對話框呈現，並不會包含圖示。</li></ul><p>在平板上的橫幅呈現在導覽列旁。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1X3ShTSv1KbUgazHtrp7wzXApy36TH1na%2Fcasestudies-rally-alerts-tablet.png" alt="橫幅 - 平板" title="橫幅 - 平板"></p><p>在手機上的橫幅呈現在最上方。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1qcuHjBEJaoYI-_Vel0SlCTr4MXrlO3Ta%2Fcasestudies-rally-alerts-mobile.png" alt="橫幅 - 手機" title="橫幅 - 手機"></p><p>在桌機上的橫幅則是自己一個直欄位專門呈現。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1aEZcxrXD6L__739kup3Zzi5x73UFoIiz%2Fcasestudies-rally-alerts-desktop.png" alt="橫幅 - 桌機" title="橫幅 - 桌機"></p><p>重要訊息出現提示 bar 或對話框。</p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1UGbGapFacfgXBv5ijUiAjwNBKmw2v9yh%2Fcasestudies-rally-dialogs-mobile.png" alt="對話框" title="對話框"></p><p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1ccB2eglPzvAai1YC4QgkxgYlFErDtJFs%2Fcasestudies-rally-snackbar.png" alt="提示 bar" title="提示 bar"></p><blockquote><p>心得：沒有將這三個元件一起混用的經驗，頂多用其中的兩個而已，所以他這樣從訊息的重要性來區分用哪種元件的方式很值得參考。</p></blockquote><h1 id="交互動作"><a href="#交互動作" class="headerlink" title="交互動作"></a>交互動作</h1><p>Rally 在登入頁面顯示動畫 logo 增加 APP 的印象。</p><video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SdTGjLEmVjxVQfQHUxjrbWEO9GEnbHab%2F01-rally-launch.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video><p>當用戶點開一個帳戶時，畫面會使用從內到外漸變展開的子頁面。點選返回後，則會從外到內漸變縮合回上一頁。加強使用者對深度的感知。</p><video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SjV2Eky-4d80UhOL4dm9k-EhG-r8IDm2%2F02-rally-parentchild.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video><p>點選頁籤則是使用左右滑動的漸變動畫。</p><video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SkeVD6imJA_MwjipNR-DbNh1xw4au9yy%2F02-rally-tabs.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video><p>當引入新頁面元素時會使用上方的進度條作為導引。使用時間差的轉圈動畫來凸顯圓餅圖。</p><video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SmqucW2ugbXboWf8SSjVngVtm63_VLxf%2F03-rally-sequencing.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video><p>對話框使用彈跳的方式，以傳達訊息的急迫感。</p><video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SrDQ1yFyIyFYWewhvEIIBZ9Mm0S-6G2z%2F04-rally-overshoot.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video><blockquote><p>心得：對於父子頁面漸變展開的動畫提升深度感知這點很認同，但在實作上還沒有真正的實行過，可以思考或和其他程式開發者討論實際在 web 或 app 撰寫時的執行難度。</p></blockquote><p>總結：讀完這篇研究後，對於 Material Design 在系統設計上的應用來說，我覺得是很實用的，畢竟要做系統通常都是要大量顯示資訊，如何有條理讓使用者理解顯示資訊變得很重要。這篇在配色和交互動作的部分是很值得參考的案例。</p><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul><li><a href="https://material.io/design/material-studies/rally.html" target="_blank" rel="noopener">Material Studies - Rally</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Material Guildline 應該很多設計師都閱讀過 N 遍了，但要設計時如何在框架下做到客制這件事應該還是很疑惑。官網上提出了幾個業界的實例分享，這點讓我很有興趣，所以接下來我會一一對這些案例做介紹。因為我上班做的案子比較多是系統類的設計，所以我第一個想介紹比較類似的是 Rally 這個案例。下面內容會一邊介紹，一邊穿插自己在職場上的一些心得或想法。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
+    
+      <category term="Material Design" scheme="http://annilla.github.io/categories/UXUI/Material-Design/"/>
+    
+    
+      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
+    
+      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
+    
+      <category term="Material Design" scheme="http://annilla.github.io/tags/Material-Design/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Google Material Theming - Workflow Tools</title>
     <link href="http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/"/>
     <id>http://annilla.github.io/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/</id>
@@ -80,13 +108,13 @@
       <category term="Material Design" scheme="http://annilla.github.io/categories/UXUI/Material-Design/"/>
     
     
-      <category term="Sketch" scheme="http://annilla.github.io/tags/Sketch/"/>
-    
       <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
     
       <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
     
       <category term="Material Design" scheme="http://annilla.github.io/tags/Material-Design/"/>
+    
+      <category term="Sketch" scheme="http://annilla.github.io/tags/Sketch/"/>
     
   </entry>
   
@@ -136,11 +164,11 @@
       <category term=".NET Core" scheme="http://annilla.github.io/categories/NET-Core/"/>
     
     
-      <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
-    
       <category term=".NET Core" scheme="http://annilla.github.io/tags/NET-Core/"/>
     
       <category term="dotnet" scheme="http://annilla.github.io/tags/dotnet/"/>
+    
+      <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
     
       <category term="Webpack" scheme="http://annilla.github.io/tags/Webpack/"/>
     
@@ -179,32 +207,6 @@
   </entry>
   
   <entry>
-    <title>2018 My Sketch Useful Plugins</title>
-    <link href="http://annilla.github.io/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/"/>
-    <id>http://annilla.github.io/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/</id>
-    <published>2018-11-03T16:00:00.000Z</published>
-    <updated>2018-11-03T16:00:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>這次整理我平常有用且覺得好用的 <code>Sketch Plugin</code> 有哪些，有了這些 Plugin 讓我又節省了許多寶貴的時間。</p><a id="more"></a><hr><h2 id="Abstract-版本控制"><a href="#Abstract-版本控制" class="headerlink" title="Abstract 版本控制"></a>Abstract 版本控制</h2><p>這個不用多說了，之前有先寫了一篇專門講 <code>Abstract</code> 版本控制的文章，連結參考<a href="../Git-Control-for-Using-Abstract-to-Manage-Sketch-Files">這裡</a>。</p><hr><h2 id="Content-Generator-內容生成器"><a href="#Content-Generator-內容生成器" class="headerlink" title="Content Generator 內容生成器"></a>Content Generator 內容生成器</h2><p>每次設計時作個資、照片等假資料又讓你心力憔悴了嗎？不用怕，<code>Content Generator</code> 讓你事半功倍，再也不用去 google 搜集資料。只要選起來要替換的部分，再設定要替換的內容即可輕輕鬆鬆完成。</p><p>Github: <a href="https://github.com/timuric/Content-generator-sketch-plugin" target="_blank" rel="noopener">https://github.com/timuric/Content-generator-sketch-plugin</a></p><p>Demo:</p><p>Generating pictures<br><img src="https://raw.githubusercontent.com/timuric/Content-generator-for-sketch-app/master/tutorial/userpics.gif" alt="Generating pictures" title="Generating pictures"></p><p>Generating names<br><img src="https://raw.githubusercontent.com/timuric/Content-generator-for-sketch-app/master/tutorial/names.gif" alt="Generating names" title="Generating names"></p><p>其他更多 Demo，去 repo 就看的到囉～</p><hr><h2 id="Paddy-間距設定工具"><a href="#Paddy-間距設定工具" class="headerlink" title="Paddy 間距設定工具"></a>Paddy 間距設定工具</h2><p>這個工具主要是因為 Sketch 如果要做按鈕等中間文字長度不固定的元件時，每次都需要重新拉上下左右的間距。使用此工具可以設定固定的間距減少重工的發生。當修改文字或內容時，會自動變更外面的形狀以符合設定。Sketch 未來會把此功能加進去，所以此工具的開發者目前不再繼續維護，但在 Sketch 將新功能加進去之前，還是可以用此工具來設定間距。</p><p>Github: <a href="https://github.com/DWilliames/paddy-sketch-plugin" target="_blank" rel="noopener">https://github.com/DWilliames/paddy-sketch-plugin</a></p><p>Demo:<br><img src="https://github.com/DWilliames/paddy-sketch-plugin/raw/master/.images/GIFs/main.gif" alt="Paddy" title="Paddy"></p><hr><h2 id="Sketch-Measure-生成-spec-工具"><a href="#Sketch-Measure-生成-spec-工具" class="headerlink" title="Sketch Measure 生成 spec 工具"></a>Sketch Measure 生成 spec 工具</h2><p>設計師和工程師之間要如何溝通 design spec 一直是一個很重要的環節。市面上有很多相關的付費軟體，但 <code>Sketch Measure</code> 的優勢就在於它是免費且可以生成獨立的 <code>HTML</code> 靜態檔（不需上網），只要有瀏覽器即可開啟。我想 Sketch 往後一定會出相關的功能，不過目前用此工具的感覺還不錯，且生成出來的畫面很漂亮。</p><p>Github: <a href="https://github.com/utom/sketch-measure" target="_blank" rel="noopener">https://github.com/utom/sketch-measure</a></p><p>Demo: <a href="http://utom.design/news/" target="_blank" rel="noopener">http://utom.design/news/</a><br><img src="https://camo.githubusercontent.com/87118bae9cca2b18441601d87ca8d6682984afa7/687474703a2f2f75746f6d2e64657369676e2f6578706f72744032782e706e67" alt="Sketch Measure" title="Sketch Measure"></p><hr><h2 id="Sketch-Palettes-調色盤儲存器"><a href="#Sketch-Palettes-調色盤儲存器" class="headerlink" title="Sketch Palettes 調色盤儲存器"></a>Sketch Palettes 調色盤儲存器</h2><p>會使用到 <code>Sketch Palettes</code> 功能的時機是因為我想把某一個專案的調色盤顏色群組，整個拿到另一個專案裡使用。他的用法是先匯出顏色群組，然後再另一個檔案進行匯入，使用上蠻直覺的。</p><p>Github: <a href="https://github.com/andrewfiorillo/sketch-palettes" target="_blank" rel="noopener">https://github.com/andrewfiorillo/sketch-palettes</a></p><p>Demo:<br><img src="https://github.com/andrewfiorillo/sketch-palettes/raw/master/palettes.png" alt="Sketch Palettes" title="Sketch Palettes"></p><hr><h2 id="Symbol-Instance-Locator-尋找符號工具"><a href="#Symbol-Instance-Locator-尋找符號工具" class="headerlink" title="Symbol Instance Locator 尋找符號工具"></a>Symbol Instance Locator 尋找符號工具</h2><p>Symbol 在 Sketch 是一個很好用的功能，可以建立一個元件讓許多頁面共用。但若是想找某個 Symbol 用在哪些地方的話要怎麼辦呢？我之前就遇到只要在某些頁面將 symbol 替換成另一個組件的問題，<code>Symbol Instance Locator</code> 可以列出所有用到此 symbol 的地方，點擊即可跳往所在頁面，非常實用。</p><p>Github: <a href="https://github.com/sonburn/symbol-instance-locator" target="_blank" rel="noopener">https://github.com/sonburn/symbol-instance-locator</a></p><p>Demo:<br><img src="https://raw.githubusercontent.com/sonburn/symbol-instance-locator/master/images/screenshot.png" alt="Symbol Instance Locator" title="Symbol Instance Locator"></p><hr><h2 id="Symbol-Organizer-符號整理器"><a href="#Symbol-Organizer-符號整理器" class="headerlink" title="Symbol Organizer 符號整理器"></a>Symbol Organizer 符號整理器</h2><p>每次建立 Symbol 時， Sketch 都會將元件新增在另一個 Symbol Page 上，久而久之，Symbol Page 就會變得凌亂不堪。<code>Symbol Organizer</code> 就是為了解決此問題才下載的，他可以依據設定值快速幫你排好所有在 Symbol Page 上的 Symbol，不用一個一個調間距啥鬼的，看完超感動！！如果一般頁面也可以用就好了，因為此工具僅適用在 Symbol Page 上，美中不足啊！如果有人有看到類似的工具快跟我說ＸＤ</p><p>Github: <a href="https://github.com/sonburn/symbol-organizer" target="_blank" rel="noopener">https://github.com/sonburn/symbol-organizer</a></p><p>Demo:<br><img src="https://raw.githubusercontent.com/sonburn/symbol-organizer/master/images/screenshot.png" alt="Symbol Organizer" title="Symbol Organizer"></p><hr><h2 id="Unsplash-圖片生成器"><a href="#Unsplash-圖片生成器" class="headerlink" title="Unsplash 圖片生成器"></a>Unsplash 圖片生成器</h2><p>這是 Unsplash 和 Sketch 官方合作的工具。為什麼我已經安裝 <code>Content Generator</code> 內容生成器，卻還要裝 <code>Unsplash</code> 呢？ 原因很簡單，因為 <code>Unsplash</code> 的圖片很漂亮，為了要讓 BOSS 能減少打槍的次數，用美美的圖片 Demo 是非常重要的戰力。我也經常去搜尋他的免費照片做設計，是個超佛心的網站。</p><p>Github: <a href="https://github.com/BohemianCoding/unsplash-sketchplugin" target="_blank" rel="noopener">https://github.com/BohemianCoding/unsplash-sketchplugin</a></p><p>Demo:<br><img src="https://github.com/BohemianCoding/unsplash-sketchplugin/raw/master/docs/unsplash-screenshot-001.png" alt="Unsplash" title="Unsplash"></p><hr><p>很感謝這些開發者做這些 Plugins ，讓設計師們能節省很多寶貴的時間，除了能更順利的闖關之外，還可以去做更多有意義的事情。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;這次整理我平常有用且覺得好用的 &lt;code&gt;Sketch Plugin&lt;/code&gt; 有哪些，有了這些 Plugin 讓我又節省了許多寶貴的時間。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
-    
-    
-      <category term="Sketch" scheme="http://annilla.github.io/tags/Sketch/"/>
-    
-      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
-    
-      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Git Control for Using Abstract to Manage Sketch Files</title>
     <link href="http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"/>
     <id>http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/</id>
@@ -222,13 +224,39 @@
       <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
     
     
+      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
+    
+      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
+    
       <category term="Sketch" scheme="http://annilla.github.io/tags/Sketch/"/>
+    
+      <category term="Abstract" scheme="http://annilla.github.io/tags/Abstract/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2018 My Sketch Useful Plugins</title>
+    <link href="http://annilla.github.io/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/"/>
+    <id>http://annilla.github.io/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/</id>
+    <published>2018-11-03T16:00:00.000Z</published>
+    <updated>2018-11-03T16:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>這次整理我平常有用且覺得好用的 <code>Sketch Plugin</code> 有哪些，有了這些 Plugin 讓我又節省了許多寶貴的時間。</p><a id="more"></a><hr><h2 id="Abstract-版本控制"><a href="#Abstract-版本控制" class="headerlink" title="Abstract 版本控制"></a>Abstract 版本控制</h2><p>這個不用多說了，之前有先寫了一篇專門講 <code>Abstract</code> 版本控制的文章，連結參考<a href="../Git-Control-for-Using-Abstract-to-Manage-Sketch-Files">這裡</a>。</p><hr><h2 id="Content-Generator-內容生成器"><a href="#Content-Generator-內容生成器" class="headerlink" title="Content Generator 內容生成器"></a>Content Generator 內容生成器</h2><p>每次設計時作個資、照片等假資料又讓你心力憔悴了嗎？不用怕，<code>Content Generator</code> 讓你事半功倍，再也不用去 google 搜集資料。只要選起來要替換的部分，再設定要替換的內容即可輕輕鬆鬆完成。</p><p>Github: <a href="https://github.com/timuric/Content-generator-sketch-plugin" target="_blank" rel="noopener">https://github.com/timuric/Content-generator-sketch-plugin</a></p><p>Demo:</p><p>Generating pictures<br><img src="https://raw.githubusercontent.com/timuric/Content-generator-for-sketch-app/master/tutorial/userpics.gif" alt="Generating pictures" title="Generating pictures"></p><p>Generating names<br><img src="https://raw.githubusercontent.com/timuric/Content-generator-for-sketch-app/master/tutorial/names.gif" alt="Generating names" title="Generating names"></p><p>其他更多 Demo，去 repo 就看的到囉～</p><hr><h2 id="Paddy-間距設定工具"><a href="#Paddy-間距設定工具" class="headerlink" title="Paddy 間距設定工具"></a>Paddy 間距設定工具</h2><p>這個工具主要是因為 Sketch 如果要做按鈕等中間文字長度不固定的元件時，每次都需要重新拉上下左右的間距。使用此工具可以設定固定的間距減少重工的發生。當修改文字或內容時，會自動變更外面的形狀以符合設定。Sketch 未來會把此功能加進去，所以此工具的開發者目前不再繼續維護，但在 Sketch 將新功能加進去之前，還是可以用此工具來設定間距。</p><p>Github: <a href="https://github.com/DWilliames/paddy-sketch-plugin" target="_blank" rel="noopener">https://github.com/DWilliames/paddy-sketch-plugin</a></p><p>Demo:<br><img src="https://github.com/DWilliames/paddy-sketch-plugin/raw/master/.images/GIFs/main.gif" alt="Paddy" title="Paddy"></p><hr><h2 id="Sketch-Measure-生成-spec-工具"><a href="#Sketch-Measure-生成-spec-工具" class="headerlink" title="Sketch Measure 生成 spec 工具"></a>Sketch Measure 生成 spec 工具</h2><p>設計師和工程師之間要如何溝通 design spec 一直是一個很重要的環節。市面上有很多相關的付費軟體，但 <code>Sketch Measure</code> 的優勢就在於它是免費且可以生成獨立的 <code>HTML</code> 靜態檔（不需上網），只要有瀏覽器即可開啟。我想 Sketch 往後一定會出相關的功能，不過目前用此工具的感覺還不錯，且生成出來的畫面很漂亮。</p><p>Github: <a href="https://github.com/utom/sketch-measure" target="_blank" rel="noopener">https://github.com/utom/sketch-measure</a></p><p>Demo: <a href="http://utom.design/news/" target="_blank" rel="noopener">http://utom.design/news/</a><br><img src="https://camo.githubusercontent.com/87118bae9cca2b18441601d87ca8d6682984afa7/687474703a2f2f75746f6d2e64657369676e2f6578706f72744032782e706e67" alt="Sketch Measure" title="Sketch Measure"></p><hr><h2 id="Sketch-Palettes-調色盤儲存器"><a href="#Sketch-Palettes-調色盤儲存器" class="headerlink" title="Sketch Palettes 調色盤儲存器"></a>Sketch Palettes 調色盤儲存器</h2><p>會使用到 <code>Sketch Palettes</code> 功能的時機是因為我想把某一個專案的調色盤顏色群組，整個拿到另一個專案裡使用。他的用法是先匯出顏色群組，然後再另一個檔案進行匯入，使用上蠻直覺的。</p><p>Github: <a href="https://github.com/andrewfiorillo/sketch-palettes" target="_blank" rel="noopener">https://github.com/andrewfiorillo/sketch-palettes</a></p><p>Demo:<br><img src="https://github.com/andrewfiorillo/sketch-palettes/raw/master/palettes.png" alt="Sketch Palettes" title="Sketch Palettes"></p><hr><h2 id="Symbol-Instance-Locator-尋找符號工具"><a href="#Symbol-Instance-Locator-尋找符號工具" class="headerlink" title="Symbol Instance Locator 尋找符號工具"></a>Symbol Instance Locator 尋找符號工具</h2><p>Symbol 在 Sketch 是一個很好用的功能，可以建立一個元件讓許多頁面共用。但若是想找某個 Symbol 用在哪些地方的話要怎麼辦呢？我之前就遇到只要在某些頁面將 symbol 替換成另一個組件的問題，<code>Symbol Instance Locator</code> 可以列出所有用到此 symbol 的地方，點擊即可跳往所在頁面，非常實用。</p><p>Github: <a href="https://github.com/sonburn/symbol-instance-locator" target="_blank" rel="noopener">https://github.com/sonburn/symbol-instance-locator</a></p><p>Demo:<br><img src="https://raw.githubusercontent.com/sonburn/symbol-instance-locator/master/images/screenshot.png" alt="Symbol Instance Locator" title="Symbol Instance Locator"></p><hr><h2 id="Symbol-Organizer-符號整理器"><a href="#Symbol-Organizer-符號整理器" class="headerlink" title="Symbol Organizer 符號整理器"></a>Symbol Organizer 符號整理器</h2><p>每次建立 Symbol 時， Sketch 都會將元件新增在另一個 Symbol Page 上，久而久之，Symbol Page 就會變得凌亂不堪。<code>Symbol Organizer</code> 就是為了解決此問題才下載的，他可以依據設定值快速幫你排好所有在 Symbol Page 上的 Symbol，不用一個一個調間距啥鬼的，看完超感動！！如果一般頁面也可以用就好了，因為此工具僅適用在 Symbol Page 上，美中不足啊！如果有人有看到類似的工具快跟我說ＸＤ</p><p>Github: <a href="https://github.com/sonburn/symbol-organizer" target="_blank" rel="noopener">https://github.com/sonburn/symbol-organizer</a></p><p>Demo:<br><img src="https://raw.githubusercontent.com/sonburn/symbol-organizer/master/images/screenshot.png" alt="Symbol Organizer" title="Symbol Organizer"></p><hr><h2 id="Unsplash-圖片生成器"><a href="#Unsplash-圖片生成器" class="headerlink" title="Unsplash 圖片生成器"></a>Unsplash 圖片生成器</h2><p>這是 Unsplash 和 Sketch 官方合作的工具。為什麼我已經安裝 <code>Content Generator</code> 內容生成器，卻還要裝 <code>Unsplash</code> 呢？ 原因很簡單，因為 <code>Unsplash</code> 的圖片很漂亮，為了要讓 BOSS 能減少打槍的次數，用美美的圖片 Demo 是非常重要的戰力。我也經常去搜尋他的免費照片做設計，是個超佛心的網站。</p><p>Github: <a href="https://github.com/BohemianCoding/unsplash-sketchplugin" target="_blank" rel="noopener">https://github.com/BohemianCoding/unsplash-sketchplugin</a></p><p>Demo:<br><img src="https://github.com/BohemianCoding/unsplash-sketchplugin/raw/master/docs/unsplash-screenshot-001.png" alt="Unsplash" title="Unsplash"></p><hr><p>很感謝這些開發者做這些 Plugins ，讓設計師們能節省很多寶貴的時間，除了能更順利的闖關之外，還可以去做更多有意義的事情。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;這次整理我平常有用且覺得好用的 &lt;code&gt;Sketch Plugin&lt;/code&gt; 有哪些，有了這些 Plugin 讓我又節省了許多寶貴的時間。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
+    
     
       <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
     
       <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
     
-      <category term="Abstract" scheme="http://annilla.github.io/tags/Abstract/"/>
+      <category term="Sketch" scheme="http://annilla.github.io/tags/Sketch/"/>
     
   </entry>
   
@@ -250,15 +278,15 @@
       <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
     
     
-      <category term="Sketch" scheme="http://annilla.github.io/tags/Sketch/"/>
-    
       <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
     
       <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
     
-      <category term="Abstract" scheme="http://annilla.github.io/tags/Abstract/"/>
+      <category term="Sketch" scheme="http://annilla.github.io/tags/Sketch/"/>
     
       <category term="Adobe XD" scheme="http://annilla.github.io/tags/Adobe-XD/"/>
+    
+      <category term="Abstract" scheme="http://annilla.github.io/tags/Abstract/"/>
     
   </entry>
   
@@ -280,9 +308,9 @@
       <category term="D3" scheme="http://annilla.github.io/categories/D3/"/>
     
     
-      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
+    
+      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
     
       <category term="CANVAS" scheme="http://annilla.github.io/tags/CANVAS/"/>
     
@@ -307,9 +335,9 @@
       <category term="D3" scheme="http://annilla.github.io/categories/D3/"/>
     
     
-      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
+    
+      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
     
       <category term="CANVAS" scheme="http://annilla.github.io/tags/CANVAS/"/>
     
@@ -333,9 +361,9 @@
       <category term="D3" scheme="http://annilla.github.io/categories/D3/"/>
     
     
-      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
+    
+      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
     
       <category term="CANVAS" scheme="http://annilla.github.io/tags/CANVAS/"/>
     
@@ -359,9 +387,9 @@
       <category term="D3" scheme="http://annilla.github.io/categories/D3/"/>
     
     
-      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
+    
+      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
     
       <category term="CANVAS" scheme="http://annilla.github.io/tags/CANVAS/"/>
     
@@ -387,9 +415,9 @@
       <category term="D3" scheme="http://annilla.github.io/categories/D3/"/>
     
     
-      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
+    
+      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
     
       <category term="CANVAS" scheme="http://annilla.github.io/tags/CANVAS/"/>
     
@@ -413,9 +441,9 @@
       <category term="D3" scheme="http://annilla.github.io/categories/D3/"/>
     
     
-      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
+    
+      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
     
       <category term="SVG" scheme="http://annilla.github.io/tags/SVG/"/>
     
@@ -439,9 +467,9 @@
       <category term="D3" scheme="http://annilla.github.io/categories/D3/"/>
     
     
-      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
+    
+      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
     
       <category term="SVG" scheme="http://annilla.github.io/tags/SVG/"/>
     
@@ -465,9 +493,9 @@
       <category term="D3" scheme="http://annilla.github.io/categories/D3/"/>
     
     
-      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
+    
+      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
     
       <category term="SVG" scheme="http://annilla.github.io/tags/SVG/"/>
     
@@ -491,9 +519,9 @@
       <category term="D3" scheme="http://annilla.github.io/categories/D3/"/>
     
     
-      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
+    
+      <category term="D3" scheme="http://annilla.github.io/tags/D3/"/>
     
       <category term="SVG" scheme="http://annilla.github.io/tags/SVG/"/>
     
@@ -517,45 +545,11 @@
       <category term=".NET Core" scheme="http://annilla.github.io/categories/NET-Core/"/>
     
     
-      <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
-    
       <category term=".NET Core" scheme="http://annilla.github.io/tags/NET-Core/"/>
     
       <category term="dotnet" scheme="http://annilla.github.io/tags/dotnet/"/>
     
-      <category term="Webpack" scheme="http://annilla.github.io/tags/Webpack/"/>
-    
-      <category term="SPA" scheme="http://annilla.github.io/tags/SPA/"/>
-    
-      <category term="MVC" scheme="http://annilla.github.io/tags/MVC/"/>
-    
-      <category term="VScode" scheme="http://annilla.github.io/tags/VScode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>.NET Core 2.0 SPA with Vue-Cli - Start New Project</title>
-    <link href="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"/>
-    <id>http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/</id>
-    <published>2017-12-01T16:00:00.000Z</published>
-    <updated>2017-12-01T16:00:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br><a id="more"></a></p><blockquote><p>首先，這裡先澄清一點，就是 <code>.NET Core</code> 的 <code>template</code> 內建有 <code>ASP.NET Core with Vue.js</code>。因為是套裝，裡面還包含 <code>Bootstrap</code>, <code>Typescript</code> 等等，畢竟不是每個專案都會用到這些，所以本篇專注在如何結合 <code>.NET Core</code> 和 <code>Vue</code> ，那些依專案選用的項目就不會在這裡提到。</p></blockquote><h2 id="起始-NET-Core-2-0-MVC-專案"><a href="#起始-NET-Core-2-0-MVC-專案" class="headerlink" title="起始 .NET Core 2.0 MVC 專案"></a>起始 <code>.NET Core 2.0 MVC</code> 專案</h2><ol><li><p>安裝 <a href="https://github.com/dotnet/cli" target="_blank" rel="noopener">.NET Command Line Interface</a></p></li><li><p>新增一個 Core MVC 專案</p></li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new &apos;ASP.NET Core Web App (Model-View-Controller)&apos;</span><br></pre></td></tr></table></figure><ol><li>刪除不必要的檔案</li></ol><p>因為我們是 <code>SPA</code> 不需要用到 MVC 其他頁面的功能，所以將多餘的頁面和樣式去除。參考如下的資料夾結構。</p><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1006.png" alt="刪除多餘頁面和樣式後的檔案" title="資料夾結構"></p><ul><li><code>HomeController.cs</code> 刪除多餘的 Controller，只保留 <code>Index</code> 和 <code>Error</code></li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Diagnostics;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using dotnet_core_vue_cli.Models;</span><br><span class="line"></span><br><span class="line">namespace dotnet_core_vue_cli.Controllers</span><br><span class="line">&#123;</span><br><span class="line">  public class HomeController : Controller</span><br><span class="line">  &#123;</span><br><span class="line">    public IActionResult Index()</span><br><span class="line">    &#123;</span><br><span class="line">      return View();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public IActionResult Error()</span><br><span class="line">    &#123;</span><br><span class="line">      return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li><code>Index.cshtml</code> 多餘的 HTML 刪除</li></ul><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData["Title"] = "Home Page";</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>TEST<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure><ul><li><code>_Layout.cshtml</code> 修改內容如下</li></ul><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>@ViewData["Title"] - dotnet_core_vue_cli<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">include</span>=<span class="string">"Development"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這邊放 Development 的 CSS --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;link rel="stylesheet" href="~/css/xxx.css" asp-append-version="true"/&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">exclude</span>=<span class="string">"Development"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這邊放 Production 的 CSS --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    @RenderBody()</span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">include</span>=<span class="string">"Development"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這邊放 Development 的 JS --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;script src="~/js/xxx.js" asp-append-version="true"&gt;&lt;/script&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">exclude</span>=<span class="string">"Development"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這邊放 Production 的 JS --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    @RenderSection("Scripts", required: false)</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><p>現在來測試跑看看專案有沒有成功～</p><p>執行</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet run</span><br></pre></td></tr></table></figure><p>用瀏覽器看 <code>http://localhost:5000</code> 就會跑出剛剛在 <code>Index.cshtml</code> 改寫的 TEST 字樣囉～</p><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1011.png" alt="http://localhost:5000" title="首頁"></p><h2 id="安裝-vue-cli-模板"><a href="#安裝-vue-cli-模板" class="headerlink" title="安裝 vue-cli 模板"></a>安裝 <code>vue-cli</code> 模板</h2><ol><li>安裝全域 <code>vue-cli</code></li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g vue-cli</span><br></pre></td></tr></table></figure><ol><li>起始一個簡易的 <code>vue</code> + <code>webpack</code> 專案</li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue init webpack-simple</span><br></pre></td></tr></table></figure><p>按照 <code>vue-cli</code> 的指示回覆操作如下圖。</p><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1018.png" alt="vue-cli" title="vue-cli"></p><p>執行</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure><p>測試 <code>Node</code> 有沒有安裝成功 <code>Vue</code> 專案</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure><p>用瀏覽器看 <code>http://localhost:8080</code> 如果有成功出現如下面畫面就是安裝成功 <code>vue</code> 的專案囉～</p><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1024.png" alt="http://localhost:8080" title="首頁"></p><blockquote><p>誒～你有沒有注意到奇怪的地方啊?!我們跑 <code>vue</code> 的時候是用 <code>node server</code> 執行，但是真正專案要在 <code>.NET server</code> 執行。所以怎麼把這兩者結合呢？主要原理就是：在 <code>Development</code> 時把 <code>node server</code> 當作是前端產生靜態資源 (<code>JS</code>, <code>Css</code>, <code>images</code>…) 的工具; <code>Production</code> 的部分就把產出過後的靜態資源給 <code>.NET server</code> 使用。廢話不多說，我們就來趕緊試試看吧。</p></blockquote><h2 id="結合-NET-Core-和-Vue"><a href="#結合-NET-Core-和-Vue" class="headerlink" title="結合 .NET Core 和 Vue"></a>結合 <code>.NET Core</code> 和 <code>Vue</code></h2><ol><li>修改 <code>webpack.config.js</code>，將靜態檔案產生在 <code>wwwroot</code> 資料夾中</li></ol><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: &#123;</span><br><span class="line">    main: <span class="string">'./src/main.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">'./wwwroot'</span>),</span><br><span class="line">    publicPath: <span class="string">'/wwwroot/'</span>,</span><br><span class="line">    filename: <span class="string">'js/build.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      ......</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.(png|jpg|gif|svg)$/</span>,</span><br><span class="line">        loader: <span class="string">'file-loader'</span>,</span><br><span class="line">        options: &#123;</span><br><span class="line">          publicPath: <span class="string">'/'</span>,</span><br><span class="line">          outputPath: <span class="string">'imgs/'</span>,</span><br><span class="line">          name: <span class="string">'[name].[ext]?[hash]'</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line">......</span><br></pre></td></tr></table></figure><ol><li>修改 <code>cshtml</code> 加入對應的 <code>js</code> 和 <code>html</code></li></ol><ul><li><code>_Layout.cshtml</code> 修改內容如下</li></ul><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>@ViewData["Title"] - dotnet_core_vue_cli<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">include</span>=<span class="string">"Development"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這邊放 Development 的 CSS --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;link rel="stylesheet" href="~/css/xxx.css" asp-append-version="true"/&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">exclude</span>=<span class="string">"Development"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這邊放 Production 的 CSS --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    @RenderBody()</span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">include</span>=<span class="string">"Development"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這邊放 Development 的 JS --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"~/js/build.js"</span> <span class="attr">asp-append-version</span>=<span class="string">"true"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">exclude</span>=<span class="string">"Development"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這邊放 Production 的 JS --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"~/js/build.js"</span> <span class="attr">asp-append-version</span>=<span class="string">"true"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    @RenderSection("Scripts", required: false)</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><ul><li>接著修改 <code>Index.cshtml</code></li></ul><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData["Title"] = "Home Page";</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure><p>測試跑跑看 <code>.NET server</code> 有沒有成功？</p><p>先產生靜態檔案</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure><p>再啟動伺服器</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet run</span><br></pre></td></tr></table></figure><p>成功就會出現之前一樣的畫面囉～</p><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1110.png" alt="http://localhost:5000" title="首頁"></p><h2 id="設定-HMR-和-vue-router-的-fallback"><a href="#設定-HMR-和-vue-router-的-fallback" class="headerlink" title="設定 HMR 和 vue router 的 fallback"></a>設定 <code>HMR</code> 和 <code>vue router</code> 的 fallback</h2><p>接著才是重頭戲～如魔法般的 <code>HMR</code> 功能登場!!!</p><p>如果還不太知道什麼是 <code>HMR</code> 的，就 google 一下囉～</p><ol><li>安裝 <code>aspnet-webpack</code>, <code>webpack-hot-middleware</code></li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D aspnet-webpack</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D webpack-hot-middleware</span><br></pre></td></tr></table></figure><ol><li>新增 <code>ASP.NET Core SPA Services</code></li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet add package Microsoft.AspNetCore.SpaServices --version 2.0.1</span><br></pre></td></tr></table></figure><ol><li>修改 <code>Startup.cs</code></li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.SpaServices.Webpack;</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">  // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span><br><span class="line">  public void Configure(IApplicationBuilder app, IHostingEnvironment env)</span><br><span class="line">  &#123;</span><br><span class="line">    // [HMR] http://www.c-sharpcorner.com/article/using-hot-module-replacement-feature-of-webpack-in-asp-net-core/</span><br><span class="line">    if (env.IsDevelopment())</span><br><span class="line">    &#123;</span><br><span class="line">      app.UseDeveloperExceptionPage();</span><br><span class="line">      app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions</span><br><span class="line">      &#123;</span><br><span class="line">        HotModuleReplacement = true</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    ......</span><br><span class="line">    app.UseMvc(routes =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">      routes.MapRoute(</span><br><span class="line">        name: &quot;default&quot;,</span><br><span class="line">        template: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);</span><br><span class="line"></span><br><span class="line">      // Use Vue Router must add fallback route</span><br><span class="line">      // Help to navigate directly</span><br><span class="line">      // https://stu.ratcliffe.io/2017/07/20/vuejs-serverside-rendering-with-aspnet-core</span><br><span class="line">      routes.MapSpaFallbackRoute(&quot;spa-fallback&quot;, new &#123; controller = &quot;Home&quot;, action = &quot;Index&quot; &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">......</span><br></pre></td></tr></table></figure><ol><li><code>package.json</code> 指令加上 HMR</li></ol><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ......</span><br><span class="line">  "scripts": &#123;</span><br><span class="line">    "hmr": "cross-env ASPNETCORE_ENVIRONMENT=Development NODE_ENV=development dotnet run",</span><br><span class="line">    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",</span><br><span class="line">    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>執行</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run hmr</span><br></pre></td></tr></table></figure><p>成功的話就會從 <code>Chrome</code> 開發者工具看到 <code>HMR</code> 連結成功囉～</p><p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1249.png" alt="http://localhost:5000" title="首頁"></p><p>今天的範例在 <a href="https://github.com/Annilla/dotnet-core-vue-cli/tree/v1.0.0" target="_blank" rel="noopener">github</a>，下回見～</p><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul><li><a href="http://www.dotnetcurry.com/aspnet/1383/modern-web-dev-aspnet-core-webpack-vuejs" target="_blank" rel="noopener">Modern Web Development using ASP.NET Core template, Vue.js and Webpack</a></li><li><a href="http://www.c-sharpcorner.com/article/using-hot-module-replacement-feature-of-webpack-in-asp-net-core/" target="_blank" rel="noopener">Using Hot Module Replacement Feature Of Webpack In ASP.NET Core</a></li><li><a href="https://www.nuget.org/packages/Microsoft.AspNetCore.SpaServices/" target="_blank" rel="noopener">Microsoft.AspNetCore.SpaServices</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;code&gt;.Net Core&lt;/code&gt; 可以不用開啟慢吞吞的 &lt;code&gt;IDE&lt;/code&gt;，即可快速建立專案。本篇全程使用 &lt;code&gt;VScode&lt;/code&gt;，手把手教你如何用 &lt;code&gt;.NET Core 2.0 MVC&lt;/code&gt; + &lt;code&gt;vue-cli&lt;/code&gt; 起始一個 &lt;code&gt;SPA&lt;/code&gt; 專案。當然， &lt;code&gt;HMR&lt;/code&gt; (Hot Module Replacement) 神器也會一併附上啦。&lt;br&gt;
-    
-    </summary>
-    
-      <category term=".NET Core" scheme="http://annilla.github.io/categories/NET-Core/"/>
-    
-    
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
-    
-      <category term=".NET Core" scheme="http://annilla.github.io/tags/NET-Core/"/>
-    
-      <category term="dotnet" scheme="http://annilla.github.io/tags/dotnet/"/>
     
       <category term="Webpack" scheme="http://annilla.github.io/tags/Webpack/"/>
     
