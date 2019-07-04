@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
-    <title>Webpack 3 Tutorial - Installation and Config - Anny Chang - F2E &amp; UI Designer</title>
+    <title>Grab Data to CSV by using NodeJS - Anny Chang - F2E &amp; UI Designer</title>
     <meta name="author" content="Anny Chang">
     
         <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
@@ -17,18 +17,20 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <meta name="description" content="什麼是 Webpack ?Webpack 是針對所有前端程式的管理整合工具。工程師編寫程式模組（html, css, js, sass, pug, babel, … etc.），使用 webpack 打包輸出靜態資產（assets）,配合Babel, ES6使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。">
-<meta name="keywords" content="Webpack">
+    <meta name="description" content="工作中遇到一個情境是，打 API 可以要到當下的資訊，但 User 想要幾分鐘之內的紀錄，如果要做報表的話，就要非常手動的用 postman 打 API N 次，然後再將儲存下來的 json 轉成 csv，最後再將 n 個 csv 合成一份檔案。實際若是每分鐘打一次 API，假設只抓十分鐘，就是存十次 json 檔案，再將十個 json 檔案轉成十個 csv ，最後再手動合成一個 csv 檔案，光">
+<meta name="keywords" content="JS">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Webpack 3 Tutorial - Installation and Config">
-<meta property="og:url" content="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/index.html">
+<meta property="og:title" content="Grab Data to CSV by using NodeJS">
+<meta property="og:url" content="http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
-<meta property="og:description" content="什麼是 Webpack ?Webpack 是針對所有前端程式的管理整合工具。工程師編寫程式模組（html, css, js, sass, pug, babel, … etc.），使用 webpack 打包輸出靜態資產（assets）,配合Babel, ES6使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。">
+<meta property="og:description" content="工作中遇到一個情境是，打 API 可以要到當下的資訊，但 User 想要幾分鐘之內的紀錄，如果要做報表的話，就要非常手動的用 postman 打 API N 次，然後再將儲存下來的 json 轉成 csv，最後再將 n 個 csv 合成一份檔案。實際若是每分鐘打一次 API，假設只抓十分鐘，就是存十次 json 檔案，再將十個 json 檔案轉成十個 csv ，最後再手動合成一個 csv 檔案，光">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2017-06-29T16:00:00.000Z">
+<meta property="og:image" content="https://lh3.googleusercontent.com/j9w9EiGilWwL1E7atc2_7zYqgVhaihr6BfYRaV5yI_7Zqsm35HHQq-PJB16FVphVx-NG13pmNYy6lSX9OCHF_awYWCscNoCuHxWl8S9dVYtbK6cIFPZVlOk2nlHuPWYZ75c4TrgpM3lOYW3SAwF0QGa38s58WuDPHyxBdZDK-JLJgR7IY-ovFu6YZ2I37ciPf93Mvc24Bg9tJJSj7zdYtfwirxPeFXIVL0guofpoTEBAR29_4BsLnEAtsY6pK5KEXNYcjhwjZ7GuUjNfueF2Qe0abLvsorMFWE1JY5ems-ZOVm0Bw-BmXVqkGNknDNd5aIoILBJ5fAyRLmbV7hVCQpzS79jPBdWDicXsTu8c7qQbGqyU1hyB56MJajIEVViQCoEKMDHnuCWuD67a09wBI8zOQoRIYJmkFf1EPZ93bgVt-KPrgOeQIgaEEIerHPmp56OslVqyOsVi_N4iZ5xROgSit4I4wzfQgZYYbdkLkX4H0fV1VX2zpufoKrx0cz6ZMzTxczYtQErozIMQ5nYZDD1I3xAwN9Gxkr79V2gWHZgICAZ_o1N-MHcM-Sdk690fheubq0PwpekkxP_FIxrJCRaLRYYByMybeyt6z6Y1U713nSO05whp-jMXVNkf459UBi-n8I2Zu8LUktni-ZnJ8GacoOoZM6xV=w1173-h812-no">
+<meta property="og:updated_time" content="2019-07-03T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Webpack 3 Tutorial - Installation and Config">
-<meta name="twitter:description" content="什麼是 Webpack ?Webpack 是針對所有前端程式的管理整合工具。工程師編寫程式模組（html, css, js, sass, pug, babel, … etc.），使用 webpack 打包輸出靜態資產（assets）,配合Babel, ES6使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。">
+<meta name="twitter:title" content="Grab Data to CSV by using NodeJS">
+<meta name="twitter:description" content="工作中遇到一個情境是，打 API 可以要到當下的資訊，但 User 想要幾分鐘之內的紀錄，如果要做報表的話，就要非常手動的用 postman 打 API N 次，然後再將儲存下來的 json 轉成 csv，最後再將 n 個 csv 合成一份檔案。實際若是每分鐘打一次 API，假設只抓十分鐘，就是存十次 json 檔案，再將十個 json 檔案轉成十個 csv ，最後再手動合成一個 csv 檔案，光">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/j9w9EiGilWwL1E7atc2_7zYqgVhaihr6BfYRaV5yI_7Zqsm35HHQq-PJB16FVphVx-NG13pmNYy6lSX9OCHF_awYWCscNoCuHxWl8S9dVYtbK6cIFPZVlOk2nlHuPWYZ75c4TrgpM3lOYW3SAwF0QGa38s58WuDPHyxBdZDK-JLJgR7IY-ovFu6YZ2I37ciPf93Mvc24Bg9tJJSj7zdYtfwirxPeFXIVL0guofpoTEBAR29_4BsLnEAtsY6pK5KEXNYcjhwjZ7GuUjNfueF2Qe0abLvsorMFWE1JY5ems-ZOVm0Bw-BmXVqkGNknDNd5aIoILBJ5fAyRLmbV7hVCQpzS79jPBdWDicXsTu8c7qQbGqyU1hyB56MJajIEVViQCoEKMDHnuCWuD67a09wBI8zOQoRIYJmkFf1EPZ93bgVt-KPrgOeQIgaEEIerHPmp56OslVqyOsVi_N4iZ5xROgSit4I4wzfQgZYYbdkLkX4H0fV1VX2zpufoKrx0cz6ZMzTxczYtQErozIMQ5nYZDD1I3xAwN9Gxkr79V2gWHZgICAZ_o1N-MHcM-Sdk690fheubq0PwpekkxP_FIxrJCRaLRYYByMybeyt6z6Y1U713nSO05whp-jMXVNkf459UBi-n8I2Zu8LUktni-ZnJ8GacoOoZM6xV=w1173-h812-no">
     
         <link rel="publisher" href="https://plus.google.com/+張巧倪"/>
     
@@ -39,12 +41,9 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
     
     
-        <meta property="og:image" content="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" />
     
-    
-        <meta property="og:image" content="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png" />
+        <meta property="og:image" content="https://cdn-images-1.medium.com/max/1200/1*H-25KB7EbSHjv70HXrdl6w.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://cdn-images-1.medium.com/max/1200/1*H-25KB7EbSHjv70HXrdl6w.png" />
     
     
     <!--STYLES-->
@@ -248,7 +247,7 @@
         <div class="post-header-cover
                     text-left
                     "
-             style="background-image:url('https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png');"
+             style="background-image:url('https://cdn-images-1.medium.com/max/1200/1*H-25KB7EbSHjv70HXrdl6w.png');"
              data-behavior="4">
             
         </div>
@@ -264,20 +263,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title" itemprop="headline">
-            Webpack 3 Tutorial - Installation and Config
+            Grab Data to CSV by using NodeJS
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2017-06-14T00:00:00+08:00">
+    <time itemprop="datePublished" datetime="2019-07-04T00:00:00+08:00">
 	
-		    6月 14, 2017
+		    7月 04, 2019
     	
     </time>
     
         <span>分類 </span>
         
-    <a class="category-link" href="/categories/Webpack/">Webpack</a>
+    <a class="category-link" href="/categories/JS/">JS</a>
 
 
     
@@ -288,75 +287,23 @@
     
     <div class="post-content markdown" itemprop="articleBody">
         <div class="main-content-wrap">
-            <h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br><a id="more"></a></p>
-<h2 id="安裝環境"><a href="#安裝環境" class="headerlink" title="安裝環境"></a>安裝環境</h2><ol>
-<li><p>安裝 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a></p>
-</li>
-<li><p>開一個專案資料夾，建置 <code>npm</code> 專案</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init</span><br></pre></td></tr></table></figure>
-<p>設定 package.json</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"Your Project Name"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"Webpack project."</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"Your Name"</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>安裝開發端套件 Webpack<br>安裝全域(global)</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm -g i webpack</span><br></pre></td></tr></table></figure>
+            <p>工作中遇到一個情境是，打 API 可以要到當下的資訊，但 User 想要幾分鐘之內的紀錄，如果要做報表的話，就要非常手動的用 postman 打 API N 次，然後再將儲存下來的 json 轉成 csv，最後再將 n 個 csv 合成一份檔案。實際若是每分鐘打一次 API，假設只抓十分鐘，就是存十次 json 檔案，再將十個 json 檔案轉成十個 csv ，最後再手動合成一個 csv 檔案，光是手動的時間絕對超過三十分鐘。為此，我決定要寫一隻程式讓上面的所有動作自動化。</p>
+<a id="more"></a>
+<p>環境使用 NodeJS。</p>
+<h1 id="安裝套件"><a href="#安裝套件" class="headerlink" title="安裝套件"></a>安裝套件</h1><p>共安裝 3 個套件</p>
+<ul>
+<li>axios: 戳 API 用</li>
+<li>moment: 處理時間</li>
+<li>json2csv: 將 data 轉成 csv 格式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add axios moment json2csv</span><br></pre></td></tr></table></figure>
+<h1 id="程式解說"><a href="#程式解說" class="headerlink" title="程式解說"></a>程式解說</h1><p>這裡只需要寫一隻 getData.js 就搞定 。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>);</span><br><span class="line"><span class="keyword">const</span> moment = <span class="built_in">require</span>(<span class="string">'moment'</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; Parser &#125; = <span class="built_in">require</span>(<span class="string">'json2csv'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> head = []; <span class="comment">// 存取 head 資料</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">let</span> timer = <span class="literal">null</span>; <span class="comment">// 定時抓取資料的計時器</span></span><br><span class="line"><span class="keyword">let</span> duration = <span class="number">60000</span>; <span class="comment">// 多久抓一次資料</span></span><br><span class="line"><span class="keyword">let</span> token = <span class="string">''</span>; <span class="comment">// 存取 API token</span></span><br><span class="line"><span class="keyword">let</span> apiURL = <span class="string">'put API URL'</span>;</span><br><span class="line"><span class="keyword">let</span> appID = <span class="string">'put API ID'</span>;</span><br><span class="line"><span class="keyword">let</span> appSecret = <span class="string">'put API Code'</span>;</span><br><span class="line"><span class="keyword">let</span> startTime = moment().format(); <span class="comment">// 紀錄開始時間</span></span><br><span class="line"><span class="keyword">let</span> grabMiniute = <span class="number">3</span>; <span class="comment">// 設定要抓取的分鐘數</span></span><br><span class="line"><span class="keyword">let</span> endTime = moment(startTime).add(grabMiniute, <span class="string">'minutes'</span>); <span class="comment">// 計算結束的時間</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得 API token </span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getToken</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> res = <span class="keyword">await</span> axios(&#123;</span><br><span class="line">    methos: <span class="string">'GET'</span>,</span><br><span class="line">    url: <span class="string">`<span class="subst">$&#123;apiURL&#125;</span>/api/auth?appId=<span class="subst">$&#123;appID&#125;</span>&amp;appSecret=<span class="subst">$&#123;appSecret&#125;</span>`</span></span><br><span class="line">  &#125;);</span><br><span class="line">  token = res.data.data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將戳 API 包裝成一個程式，若 token 過期會重戳 API</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">requestAPI</span>(<span class="params">apiMethod, apiURL, retryFunc</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">await</span> axios(&#123;</span><br><span class="line">      method: apiMethod,</span><br><span class="line">      url: apiURL,</span><br><span class="line">      headers: &#123;</span><br><span class="line">        AccessToken: token,</span><br><span class="line">        System: appID</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125; <span class="keyword">catch</span>(error) &#123;</span><br><span class="line">    <span class="keyword">if</span> (error.message.indexOf(<span class="string">'401'</span>) &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">      <span class="comment">// get token</span></span><br><span class="line">      <span class="keyword">await</span> getToken();</span><br><span class="line">      retryFunc();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 戳 head API 取資料</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getHead</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> res = <span class="keyword">await</span> requestAPI(<span class="string">'GET'</span>, <span class="string">`<span class="subst">$&#123;apiURL&#125;</span>/api/Head`</span>, getHead);</span><br><span class="line">  <span class="keyword">if</span> (res) &#123; head = head.concat(res.data); &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'head'</span>, head.length);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一次取得多種資料</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getAllData</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// get token</span></span><br><span class="line">  <span class="keyword">await</span> getToken();</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`----- <span class="subst">$&#123;grabMiniute&#125;</span> minutes left -----`</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// grab data</span></span><br><span class="line">  getHead();</span><br><span class="line">  getFeeder();</span><br><span class="line">  getNozzle();</span><br><span class="line"></span><br><span class="line">  grabMiniute = grabMiniute - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 寫檔案</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeFile</span>(<span class="params">data, fileName</span>) </span>&#123;</span><br><span class="line">  fs.writeFile(fileName, data, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`An error occured while writing <span class="subst">$&#123;fileName&#125;</span>.`</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">console</span>.log(err);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;fileName&#125;</span> has been saved.`</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 轉格式並儲存檔案</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">saveFile</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 將 json 轉 csv</span></span><br><span class="line">    <span class="keyword">const</span> parser = <span class="keyword">new</span> Parser();</span><br><span class="line">    <span class="keyword">const</span> csvHead = parser.parse(head);</span><br><span class="line">    <span class="keyword">const</span> csvFeeder = parser.parse(feeder);</span><br><span class="line">    <span class="keyword">const</span> csvNozzle = parser.parse(nozzle);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 寫檔案</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`----- SAVE FILES -----`</span>);</span><br><span class="line">    writeFile(csvHead, <span class="string">'Head.csv'</span>);</span><br><span class="line">    writeFile(csvFeeder, <span class="string">'Feeder.csv'</span>);</span><br><span class="line">    writeFile(csvNozzle, <span class="string">'Nozzle.csv'</span>);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="built_in">console</span>.error(<span class="string">'saveFile ERROR: '</span>, err);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* ---------------</span></span><br><span class="line"><span class="comment">  Start from here</span></span><br><span class="line"><span class="comment">  ---------------*/</span></span><br><span class="line"><span class="comment">// 一開始先執行</span></span><br><span class="line">getAllData();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 啟動計時器</span></span><br><span class="line">timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> now = moment().format();</span><br><span class="line">  <span class="keyword">if</span>(moment(now).isBefore(endTime)) &#123;</span><br><span class="line">    <span class="comment">// 如果還沒到結束時間，就繼續取資料</span></span><br><span class="line">    getAllData();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 如果時間到就停止計時器</span></span><br><span class="line">    clearInterval(timer);</span><br><span class="line">    <span class="comment">// 將資料儲存成檔案</span></span><br><span class="line">    saveFile();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, duration);</span><br></pre></td></tr></table></figure>
+<h1 id="跑起來吧～"><a href="#跑起來吧～" class="headerlink" title="跑起來吧～"></a>跑起來吧～</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node getData.js</span><br></pre></td></tr></table></figure>
+<p><img src="https://lh3.googleusercontent.com/j9w9EiGilWwL1E7atc2_7zYqgVhaihr6BfYRaV5yI_7Zqsm35HHQq-PJB16FVphVx-NG13pmNYy6lSX9OCHF_awYWCscNoCuHxWl8S9dVYtbK6cIFPZVlOk2nlHuPWYZ75c4TrgpM3lOYW3SAwF0QGa38s58WuDPHyxBdZDK-JLJgR7IY-ovFu6YZ2I37ciPf93Mvc24Bg9tJJSj7zdYtfwirxPeFXIVL0guofpoTEBAR29_4BsLnEAtsY6pK5KEXNYcjhwjZ7GuUjNfueF2Qe0abLvsorMFWE1JY5ems-ZOVm0Bw-BmXVqkGNknDNd5aIoILBJ5fAyRLmbV7hVCQpzS79jPBdWDicXsTu8c7qQbGqyU1hyB56MJajIEVViQCoEKMDHnuCWuD67a09wBI8zOQoRIYJmkFf1EPZ93bgVt-KPrgOeQIgaEEIerHPmp56OslVqyOsVi_N4iZ5xROgSit4I4wzfQgZYYbdkLkX4H0fV1VX2zpufoKrx0cz6ZMzTxczYtQErozIMQ5nYZDD1I3xAwN9Gxkr79V2gWHZgICAZ_o1N-MHcM-Sdk690fheubq0PwpekkxP_FIxrJCRaLRYYByMybeyt6z6Y1U713nSO05whp-jMXVNkf459UBi-n8I2Zu8LUktni-ZnJ8GacoOoZM6xV=w1173-h812-no" alt="跑起來吧" title="跑起來吧"></p>
 <blockquote>
-<p>只有第一次使用<code>webpack</code>需要安裝全域，裝過一次之後就可以不用再安裝global</p>
+<p>後記：其實 User 一直不停的找我手動抓資料，等我有時間寫好這隻程式的時候，User 已經核對完成了 ＯＲＺ。不過，我覺得這是一個很有趣的項目。</p>
 </blockquote>
-<p>專案開發端安裝套件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D webpack</span><br></pre></td></tr></table></figure>
-<h2 id="組織專案架構"><a href="#組織專案架構" class="headerlink" title="組織專案架構"></a>組織專案架構</h2><p>在專案建立 src 和 dist 資料夾。</p>
-<ul>
-<li>src: 工程師寫的程式放這裡。</li>
-<li>dist: <code>webpack</code> 自動打包出來的檔案會放這裡。</li>
-<li>src/app.js: 建立一支 <code>js</code> 檔案，等會要來測試 <code>webpack</code> 自動打包的功能用。</li>
-</ul>
-<p>app.js 內可以隨意寫 console 來測試</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'Hello World!'</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="設定描述檔"><a href="#設定描述檔" class="headerlink" title="設定描述檔"></a>設定描述檔</h2><ol>
-<li>在專案下新增<code>webpack.config.js</code>檔案。</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: <span class="string">'./src/app.js'</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">'./dist/app.bundle.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>entry: 開始執行打包的入口</li>
-<li>output: 輸出結果設定<ul>
-<li>filename: 輸出結果的名稱</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>修改<code>package.json</code>檔案 <code>scripts</code></li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"dev"</span>: <span class="string">"webpack -d --watch"</span>,</span><br><span class="line">    <span class="string">"prod"</span>: <span class="string">"webpack -p"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>-d: 開發模式輸出，不會 minify js</li>
-<li>–watch: 監聽程式碼修改，支援即時輸出</li>
-<li>-p: 產品模式輸出，會 minify js</li>
-</ul>
-<h2 id="執行-webpack-打包測試"><a href="#執行-webpack-打包測試" class="headerlink" title="執行 webpack 打包測試"></a>執行 webpack 打包測試</h2><ol>
-<li>執行<code>package.json</code>內<code>script</code>設定的 dev</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
-<ul>
-<li>結果：會在 <code>dist</code> 資料夾內產<code>app.bundle.js</code>，沒有 minify</li>
-</ul>
-<ol>
-<li>執行<code>package.json</code>內<code>script</code>設定的 prod</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run prod</span><br></pre></td></tr></table></figure>
-<ul>
-<li>結果：會在 <code>dist</code> 資料夾內產<code>app.bundle.js</code>，有 minify</li>
-</ul>
-<p>基本 webpack 練習完成囉～實際操作影片可觀賞 Ihatetomatoes 大大的 YOUTUBE 教學<a href="https://www.youtube.com/watch?v=JdGnYNtuEtE&amp;index=1&amp;list=PLkEZWD8wbltnRp6nRR8kv97RbpcUdNawY" target="_blank" rel="noopener">Webpack 2 Tutorial - Installation and Config</a>，感謝觀看 :)</p>
-<blockquote>
-<p>更新：2017/06/30 Webpack 版本更新到 3 囉 ！所以直接測試 3，發現無痛接軌沒問題，實作在 <a href="https://github.com/Annilla/webpack_practice/tree/v1.0.0" target="_blank" rel="noopener">github</a>，之後就直接都用 3 版實作囉。</p>
-</blockquote>
-<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
-<li><a href="https://llp0574.github.io/2016/11/29/getting-started-with-webpack2/" target="_blank" rel="noopener">Webpack 2 入門教程</a></li>
-<li><a href="https://www.youtube.com/watch?v=JdGnYNtuEtE&amp;index=1&amp;list=PLkEZWD8wbltnRp6nRR8kv97RbpcUdNawY" target="_blank" rel="noopener">Webpack 2 Tutorial - Installation and Config</a></li>
-</ul>
 
             
 
@@ -367,7 +314,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">標籤</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Webpack/">Webpack</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/JS/">JS</a>
 
             </div>
         
@@ -378,7 +325,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/" data-tooltip="Webpack 3 Tutorial - HTML Webpack Plugin" aria-label="上一篇: Webpack 3 Tutorial - HTML Webpack Plugin">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/12/01/Portfolio/" data-tooltip="Anny Chang&#39;s Portfolio - 作品集" aria-label="上一篇: Anny Chang&#39;s Portfolio - 作品集">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -386,7 +333,8 @@
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--disabled">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/07/03/JS/React-Redux-Practice/" data-tooltip="React Redux Practice" aria-label="下一篇: React Redux Practice">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -404,7 +352,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/" title="分享到 Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -412,7 +360,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/" title="分享到 Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -420,7 +368,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/" title="分享到 Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -473,7 +421,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/" data-tooltip="Webpack 3 Tutorial - HTML Webpack Plugin" aria-label="上一篇: Webpack 3 Tutorial - HTML Webpack Plugin">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/3017/12/01/Portfolio/" data-tooltip="Anny Chang&#39;s Portfolio - 作品集" aria-label="上一篇: Anny Chang&#39;s Portfolio - 作品集">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -481,7 +429,8 @@
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--disabled">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/07/03/JS/React-Redux-Practice/" data-tooltip="React Redux Practice" aria-label="下一篇: React Redux Practice">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -499,7 +448,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/" title="分享到 Facebook">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                 </a>
             </li>
@@ -507,7 +456,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/" title="分享到 Twitter">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -515,7 +464,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/" title="分享到 Google+">
                     <i class="fa fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -548,7 +497,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/">
                     <i class="fa fa-facebook-official" aria-hidden="true"></i><span>分享到 Facebook</span>
                 </a>
             </li>
@@ -556,7 +505,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/">
                     <i class="fa fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                 </a>
             </li>
@@ -564,7 +513,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/">
                     <i class="fa fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                 </a>
             </li>
@@ -903,9 +852,9 @@
     
         <script>
              var disqus_config = function () {
-                 this.page.url = 'http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/';
+                 this.page.url = 'http://annilla.github.io/2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/';
                  
-                    this.page.identifier = '2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/';
+                    this.page.identifier = '2019/07/04/JS/Grab-Data-To-CSV-By-Using-NodeJS/';
                  
              };
             (function() {
