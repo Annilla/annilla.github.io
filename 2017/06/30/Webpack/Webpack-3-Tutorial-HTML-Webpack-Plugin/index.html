@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
 <meta property="og:description" content="此篇介紹使用 HTML Webpack Plugin，他可以自動生成 html 並將 app.bundle.js 自動加在 html 結尾處。">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-06-30_1615.png">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-06-30_1655.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/xNq0I-e-92Umpmt2g-040igJwmjMz2eJVLlR1Jd_XkQxLexKuwZvU_nEblxQqB0p7QYT0h2itGoxPKcceHmgBv5GKuq_nBkMq3l6NKkmT0VqEHOMW4GPQYaiT4zqpcLN087QDlaBPawib0kGZjeBLg27UKsunJXDnQy1eDki7ZnZF9v0di0HjzyDfk7u2WKJxjOqXiSr3VpQ_cdjzvdJKMq6P98zrElSPtLqPXbnHghl7knD7l3iAWF_F_m6By0cry24yO06sMowOQgB-4HsWXs0c8R5DP5jsuBh-iSBpsWRZzrlxOSUhzgfY1ZTXlrP9aU1pnh0suleU4RZBmJSp87i_1VXRmrGoNOsuDDB83HXshrWQ-sWoBdxYRouKh3FjmH0j3ybSAdkBWD5-OYp2d6zqT1f0uXzO2VwnalgNlCe3c_BQAqxSh58SWh2NoMsOIm2o2LMJY5-sNsdxgLW6yWBC04s7uveApgKJHxtY3skp_dkbc2xKCoWcDM4Qfy_s9dvTxMfIL6J7RwJrHePbnV4dxBFKhZzaNf44kQS6-v1piVWw1IrL143BZ_qp5HbhgFXgkkWuie5ufplKW9d-Q0SU6MQDGo_QYvX4DzPEoahbmVgl7rjISCm0OpSlkos6LYURLBUG0evIgmvYfXvFbBBk3NaMNsm=w1024-h698-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/dN0CFoLrFDBJPh0Qo8ODyyrMX1X8jxp13wcSshPdGKN1KWm9B43d1Qd0j89dH9lui0dYlbGb-iXdN4i5X8aF8ZqzQQ5gZ1YH5u8HZjnYh-4vndY0780cXO1iTQ-fa9550Lx3HhZXevd6Bl_ALGJtG3yRG_sRaGN88hYeQp_EIDGvdfX9v5LAtjl-D5FFclMvtkiJUeN48j3wtHuxbjnGIHvfOmQU_jeuHu_pUG6XzhvXuPZfaYqxCs0d3Xm6MQnS2SiraFGIyjAwVSUdWQhSlMQ3UcmukP4jC0ejasLPyy15AudhXv6TPykskMl_UDUsFKJs1sy2PRKrXvjbNWVRy4tt0qHkONgnBpghrQk8K6ydBhmidFUKUD3sGYchmtf01ae97I_x4046FXCHHnZltkl1whLohF1XXoPI2jkfKeaD0PgHDylMrkIdnmWBh_mWwX5lc3NE9aNmDDy3WNqOvcCyfId1QOH4A_gYMdDmG0LaubRcvTVDll5pjpBnULXGzYb7zcZNLzV1TIQq4-ccuk3MMtXNLC3TfvShup2SlHSmuHTrcnQlMzEuD3bo-x1VPwPphD_fm_TrSQzImnyRUIX3u8SXs3zEdAeAJtty8XI1KC-QKlh9p3LopZj_9bByi77FnGtXRTZaU1TSomjhBG_g1e1DOtxd=w1024-h698-no">
 <meta property="og:updated_time" content="2017-06-29T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Webpack 3 Tutorial - HTML Webpack Plugin">
 <meta name="twitter:description" content="此篇介紹使用 HTML Webpack Plugin，他可以自動生成 html 並將 app.bundle.js 自動加在 html 結尾處。">
-<meta name="twitter:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-06-30_1615.png">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/xNq0I-e-92Umpmt2g-040igJwmjMz2eJVLlR1Jd_XkQxLexKuwZvU_nEblxQqB0p7QYT0h2itGoxPKcceHmgBv5GKuq_nBkMq3l6NKkmT0VqEHOMW4GPQYaiT4zqpcLN087QDlaBPawib0kGZjeBLg27UKsunJXDnQy1eDki7ZnZF9v0di0HjzyDfk7u2WKJxjOqXiSr3VpQ_cdjzvdJKMq6P98zrElSPtLqPXbnHghl7knD7l3iAWF_F_m6By0cry24yO06sMowOQgB-4HsWXs0c8R5DP5jsuBh-iSBpsWRZzrlxOSUhzgfY1ZTXlrP9aU1pnh0suleU4RZBmJSp87i_1VXRmrGoNOsuDDB83HXshrWQ-sWoBdxYRouKh3FjmH0j3ybSAdkBWD5-OYp2d6zqT1f0uXzO2VwnalgNlCe3c_BQAqxSh58SWh2NoMsOIm2o2LMJY5-sNsdxgLW6yWBC04s7uveApgKJHxtY3skp_dkbc2xKCoWcDM4Qfy_s9dvTxMfIL6J7RwJrHePbnV4dxBFKhZzaNf44kQS6-v1piVWw1IrL143BZ_qp5HbhgFXgkkWuie5ufplKW9d-Q0SU6MQDGo_QYvX4DzPEoahbmVgl7rjISCm0OpSlkos6LYURLBUG0evIgmvYfXvFbBBk3NaMNsm=w1024-h698-no">
     
         <link rel="publisher" href="https://plus.google.com/+張巧倪"/>
     
@@ -299,7 +299,7 @@
 <p>或</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run prod</span><br></pre></td></tr></table></figure>
 <p>就可以看到 <code>dist</code> 內生成 <code>index.html</code> 囉～</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-06-30_1615.png" alt="dist 內生成 index.html" title="dist/index.html"></p>
+<p><img src="https://lh3.googleusercontent.com/xNq0I-e-92Umpmt2g-040igJwmjMz2eJVLlR1Jd_XkQxLexKuwZvU_nEblxQqB0p7QYT0h2itGoxPKcceHmgBv5GKuq_nBkMq3l6NKkmT0VqEHOMW4GPQYaiT4zqpcLN087QDlaBPawib0kGZjeBLg27UKsunJXDnQy1eDki7ZnZF9v0di0HjzyDfk7u2WKJxjOqXiSr3VpQ_cdjzvdJKMq6P98zrElSPtLqPXbnHghl7knD7l3iAWF_F_m6By0cry24yO06sMowOQgB-4HsWXs0c8R5DP5jsuBh-iSBpsWRZzrlxOSUhzgfY1ZTXlrP9aU1pnh0suleU4RZBmJSp87i_1VXRmrGoNOsuDDB83HXshrWQ-sWoBdxYRouKh3FjmH0j3ybSAdkBWD5-OYp2d6zqT1f0uXzO2VwnalgNlCe3c_BQAqxSh58SWh2NoMsOIm2o2LMJY5-sNsdxgLW6yWBC04s7uveApgKJHxtY3skp_dkbc2xKCoWcDM4Qfy_s9dvTxMfIL6J7RwJrHePbnV4dxBFKhZzaNf44kQS6-v1piVWw1IrL143BZ_qp5HbhgFXgkkWuie5ufplKW9d-Q0SU6MQDGo_QYvX4DzPEoahbmVgl7rjISCm0OpSlkos6LYURLBUG0evIgmvYfXvFbBBk3NaMNsm=w1024-h698-no" alt="dist 內生成 index.html" title="dist/index.html"></p>
 <h2 id="撰寫-html-templates"><a href="#撰寫-html-templates" class="headerlink" title="撰寫 html templates"></a>撰寫 html templates</h2><p>如果想要客製化自己的 <code>html</code> 模板要怎麼辦呢？<br>我個人是喜歡用 <code>pug</code> 來寫，<br>不過 <code>HTML Webpack Plugin</code> 有內建模板使用方式，<br>所以就先示範內建的使用方式囉～</p>
 <ol>
 <li>修改 <code>webpack.config.js</code></li>
@@ -318,7 +318,7 @@
 <p>或</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run prod</span><br></pre></td></tr></table></figure>
 <p>就可以看到 <code>dist</code> 內新生成的 <code>index.html</code> 囉～</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-06-30_1655.png" alt="dist 內新客製化 index.html" title="dist/index.html"></p>
+<p><img src="https://lh3.googleusercontent.com/dN0CFoLrFDBJPh0Qo8ODyyrMX1X8jxp13wcSshPdGKN1KWm9B43d1Qd0j89dH9lui0dYlbGb-iXdN4i5X8aF8ZqzQQ5gZ1YH5u8HZjnYh-4vndY0780cXO1iTQ-fa9550Lx3HhZXevd6Bl_ALGJtG3yRG_sRaGN88hYeQp_EIDGvdfX9v5LAtjl-D5FFclMvtkiJUeN48j3wtHuxbjnGIHvfOmQU_jeuHu_pUG6XzhvXuPZfaYqxCs0d3Xm6MQnS2SiraFGIyjAwVSUdWQhSlMQ3UcmukP4jC0ejasLPyy15AudhXv6TPykskMl_UDUsFKJs1sy2PRKrXvjbNWVRy4tt0qHkONgnBpghrQk8K6ydBhmidFUKUD3sGYchmtf01ae97I_x4046FXCHHnZltkl1whLohF1XXoPI2jkfKeaD0PgHDylMrkIdnmWBh_mWwX5lc3NE9aNmDDy3WNqOvcCyfId1QOH4A_gYMdDmG0LaubRcvTVDll5pjpBnULXGzYb7zcZNLzV1TIQq4-ccuk3MMtXNLC3TfvShup2SlHSmuHTrcnQlMzEuD3bo-x1VPwPphD_fm_TrSQzImnyRUIX3u8SXs3zEdAeAJtty8XI1KC-QKlh9p3LopZj_9bByi77FnGtXRTZaU1TSomjhBG_g1e1DOtxd=w1024-h698-no" alt="dist 內新客製化 index.html" title="dist/index.html"></p>
 <p>今天的實作檔案在<a href="https://github.com/Annilla/webpack_practice/tree/v1.1.0" target="_blank" rel="noopener">github</a> 。等前面幾篇基礎的介紹完，之後會介紹 <code>pug</code> 怎麼跟 <code>HTML Webpack Plugin</code> 做結合，敬請期待。</p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
 <li><a href="https://github.com/jantimon/html-webpack-plugin" target="_blank" rel="noopener">HTML Webpack Plugin</a></li>
@@ -803,7 +803,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/">
-                            <img class="media-image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png" width="90" height="90"/>
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -828,7 +828,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
-                            <img class="media-image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png" width="90" height="90"/>
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
                         </a>
                     </div>
                     

@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
 <meta property="og:description" content="此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0927.png">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0928.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/HnOhEhOGSinuEBswiyrJIX8iZ1Czq0EWpKZTRk-BE3mIM50Jri0t-zxbikMgvR4QBDbdM2fNjOeDhhz_4r4VPKxg2XiWMvgI3SBXgmd-d3N_d614PmJT0sKQ5ceBzkbzIlDNgI7GnWwqyTu-H6ZS_4X1Uuz-waQu8e5P2RC29snSMCqLNX5u8GGBJ2JVfS7kTMTfdkAfDnqa09uGuBocmq3Map-Fw8BdArobD_UBU_2cXFb3jMUzPWh0Ze_WUe3PZTcP_8srjAbxV3qu1S_O6GWH5BXT3-tOD9khFUhfcEUo5POBzep225XQr7_kfPeXGDC0dKftE821ZMkerSh994xOMi8pFkkX9BZBnO1zLZQOyJcVjIavFFSGbIBlFO-PQkYT4dA5pOuj9_PVAmmO3UXsbZEcozoqiNuI95lUdAsJ6zw_uJg7khL8iUUkXOo61jHqsOw7l9McIG5O5Vrwq-945YYTYlwSfGmdSzB7ruOMWC9_geJveziVfxV167JqBiONuAAFPgTF9D-1BF3_efshXRPOs35A9HG4GcllYarb-uRbCBF1GMNlQ8I-xPala9qsomjEqcbk5iLAiQ9ZAVYx57B32XqooBBUUX16EucFLvatq2XoZn-7hxep2ucS6DOsjJBMSa5Ys3wq_ioGy5B0pWxPL9Jt=w1024-h681-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/dd1uIE9abHa17DxC19VyS2ejCk-ZLVe5y3PCnUu2HubhUCPvkwyjcUBPm70yP-eqtpsS6n7vJyeH4MjVviE4mCXJ6lwUVDeUUJ6w4pTKBQEWwtLEqa8Seojv2FPPHs70DJxZsZF9_8g2sURtQdUxFBG7H1zy6yd-fLbPB4LUi6Gw2Un9HZ0yrLx6s-8wgp8539AOi8gtlNJDZaoEpRkeEMbmTX4LWe67rKKCVGHFplKxl_u_zYWIVQU94yS1nwgSGgcNK5ZX2sVFUZ2bXc04D2GcC3JREt9WlmvdjGe4Fgs7-ohZgDyi2MJTw16HEhvEa3Yl-n0osdmvF_2cRv8oDbOPqwNL9TFgEdkmv3o9omQhmMg7rBT4_LkRC9vm0i8L-Cisr9eu7Js69IQUUqCkiMz1ZQWw_YIEVk20NbaIKZQRJZAAOnq1_h0N7vR5vnOMgaTWJ5KaucE1sieklCmkci0lLjIutitLXhtGNWYm0R0BKPlgiu8dAPlbfnNB95ReX4QI7bsMHm6tuPSVLkPpWddqMcChszAV6x_9KSieqz8CGlaOhuoAb2yRgR8ZW3oP9PfNT4rPBSx3eiuNalPFBX4xyBNGvMqfUJjioJRTc7F9pGsI-qBeJocby_CFAjY-OnKze75-NRfprp-iZL7dbE3X6o-FelJX=w1024-h681-no">
 <meta property="og:updated_time" content="2017-09-01T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Webpack 3 Tutorial - Webpack Dev Server">
 <meta name="twitter:description" content="此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。">
-<meta name="twitter:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0927.png">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/HnOhEhOGSinuEBswiyrJIX8iZ1Czq0EWpKZTRk-BE3mIM50Jri0t-zxbikMgvR4QBDbdM2fNjOeDhhz_4r4VPKxg2XiWMvgI3SBXgmd-d3N_d614PmJT0sKQ5ceBzkbzIlDNgI7GnWwqyTu-H6ZS_4X1Uuz-waQu8e5P2RC29snSMCqLNX5u8GGBJ2JVfS7kTMTfdkAfDnqa09uGuBocmq3Map-Fw8BdArobD_UBU_2cXFb3jMUzPWh0Ze_WUe3PZTcP_8srjAbxV3qu1S_O6GWH5BXT3-tOD9khFUhfcEUo5POBzep225XQr7_kfPeXGDC0dKftE821ZMkerSh994xOMi8pFkkX9BZBnO1zLZQOyJcVjIavFFSGbIBlFO-PQkYT4dA5pOuj9_PVAmmO3UXsbZEcozoqiNuI95lUdAsJ6zw_uJg7khL8iUUkXOo61jHqsOw7l9McIG5O5Vrwq-945YYTYlwSfGmdSzB7ruOMWC9_geJveziVfxV167JqBiONuAAFPgTF9D-1BF3_efshXRPOs35A9HG4GcllYarb-uRbCBF1GMNlQ8I-xPala9qsomjEqcbk5iLAiQ9ZAVYx57B32XqooBBUUX16EucFLvatq2XoZn-7hxep2ucS6DOsjJBMSa5Ys3wq_ioGy5B0pWxPL9Jt=w1024-h681-no">
     
         <link rel="publisher" href="https://plus.google.com/+張巧倪"/>
     
@@ -300,7 +300,7 @@
 </ul>
 <p>執行 <code>npm</code> 指令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure></p>
 <p>就會自動開啟瀏覽器看到預覽的畫面囉！</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0927.png" alt="執行 npm run dev" title="dist/index.html"></p>
+<p><img src="https://lh3.googleusercontent.com/HnOhEhOGSinuEBswiyrJIX8iZ1Czq0EWpKZTRk-BE3mIM50Jri0t-zxbikMgvR4QBDbdM2fNjOeDhhz_4r4VPKxg2XiWMvgI3SBXgmd-d3N_d614PmJT0sKQ5ceBzkbzIlDNgI7GnWwqyTu-H6ZS_4X1Uuz-waQu8e5P2RC29snSMCqLNX5u8GGBJ2JVfS7kTMTfdkAfDnqa09uGuBocmq3Map-Fw8BdArobD_UBU_2cXFb3jMUzPWh0Ze_WUe3PZTcP_8srjAbxV3qu1S_O6GWH5BXT3-tOD9khFUhfcEUo5POBzep225XQr7_kfPeXGDC0dKftE821ZMkerSh994xOMi8pFkkX9BZBnO1zLZQOyJcVjIavFFSGbIBlFO-PQkYT4dA5pOuj9_PVAmmO3UXsbZEcozoqiNuI95lUdAsJ6zw_uJg7khL8iUUkXOo61jHqsOw7l9McIG5O5Vrwq-945YYTYlwSfGmdSzB7ruOMWC9_geJveziVfxV167JqBiONuAAFPgTF9D-1BF3_efshXRPOs35A9HG4GcllYarb-uRbCBF1GMNlQ8I-xPala9qsomjEqcbk5iLAiQ9ZAVYx57B32XqooBBUUX16EucFLvatq2XoZn-7hxep2ucS6DOsjJBMSa5Ys3wq_ioGy5B0pWxPL9Jt=w1024-h681-no" alt="執行 npm run dev" title="dist/index.html"></p>
 <p>疑？內容的文字怎麼好像被切掉了。我們趕緊來試試看修改 <code>css</code> 的部分，順便看看  <code>Hot Reload</code> 的威力吧～</p>
 <blockquote>
 <p>關於實時加載（Live Reload）和熱加載（Hot Reload）的區別在於:實時加載應用更新時需要刷新當前頁面，可以看到明顯的全局刷新效果;而熱加載基本上看不出刷新的效果，類似於局部刷新。</p>
@@ -308,7 +308,7 @@
 <h2 id="測試-Hot-Reload"><a href="#測試-Hot-Reload" class="headerlink" title="測試 Hot Reload"></a>測試 <code>Hot Reload</code></h2><p>修改 <code>src/app.scss</code>，把字體變形的樣式註解掉</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">background-color</span>: yellowgreen;</span><br><span class="line">    h1 &#123;</span><br><span class="line">        <span class="selector-tag">color</span>: <span class="selector-tag">green</span>;</span><br><span class="line">        // transform: scale(1.5);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>結果 <code>webpack-dev-server</code> 就幫我們即時打包並刷新瀏覽器頁面，所以我們就可以專心的寫code，畫面就會即時的自動更新囉，是不是超方便的啊？</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-09-02_0928.png" alt="Hot Reload" title="dist/index.html"></p>
+<p><img src="https://lh3.googleusercontent.com/dd1uIE9abHa17DxC19VyS2ejCk-ZLVe5y3PCnUu2HubhUCPvkwyjcUBPm70yP-eqtpsS6n7vJyeH4MjVviE4mCXJ6lwUVDeUUJ6w4pTKBQEWwtLEqa8Seojv2FPPHs70DJxZsZF9_8g2sURtQdUxFBG7H1zy6yd-fLbPB4LUi6Gw2Un9HZ0yrLx6s-8wgp8539AOi8gtlNJDZaoEpRkeEMbmTX4LWe67rKKCVGHFplKxl_u_zYWIVQU94yS1nwgSGgcNK5ZX2sVFUZ2bXc04D2GcC3JREt9WlmvdjGe4Fgs7-ohZgDyi2MJTw16HEhvEa3Yl-n0osdmvF_2cRv8oDbOPqwNL9TFgEdkmv3o9omQhmMg7rBT4_LkRC9vm0i8L-Cisr9eu7Js69IQUUqCkiMz1ZQWw_YIEVk20NbaIKZQRJZAAOnq1_h0N7vR5vnOMgaTWJ5KaucE1sieklCmkci0lLjIutitLXhtGNWYm0R0BKPlgiu8dAPlbfnNB95ReX4QI7bsMHm6tuPSVLkPpWddqMcChszAV6x_9KSieqz8CGlaOhuoAb2yRgR8ZW3oP9PfNT4rPBSx3eiuNalPFBX4xyBNGvMqfUJjioJRTc7F9pGsI-qBeJocby_CFAjY-OnKze75-NRfprp-iZL7dbE3X6o-FelJX=w1024-h681-no" alt="Hot Reload" title="dist/index.html"></p>
 <p>今天的範例程式檔<a href="https://github.com/Annilla/webpack_practice/tree/v1.3.0" target="_blank" rel="noopener">github</a>，感謝收看。</p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
 <li><p><a href="https://webpack.js.org/guides/development/#using-webpack-dev-server" target="_blank" rel="noopener">Use Webpack Dev Server</a></p>
@@ -797,7 +797,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/">
-                            <img class="media-image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png" width="90" height="90"/>
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -822,7 +822,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
-                            <img class="media-image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png" width="90" height="90"/>
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
                         </a>
                     </div>
                     

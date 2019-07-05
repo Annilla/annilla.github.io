@@ -25,17 +25,17 @@
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
 <meta property="og:description" content=".Net Core 可以不用開啟慢吞吞的 IDE，即可快速建立專案。本篇全程使用 VScode，手把手教你如何用 .NET Core 2.0 MVC + vue-cli 起始一個 SPA 專案。當然， HMR (Hot Module Replacement) 神器也會一併附上啦。">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1006.png">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1011.png">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1018.png">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1024.png">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1110.png">
-<meta property="og:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1249.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/SS8p9bPMBScLwOK1WgnN62PV1W2Tzw2B7KHNgVD9hs2BNQdweBgEZ2ryH8b_X24hUSPNbY52hcdlEeblEfWOjKdXFbZW_ZnZ44yftNz9fbfcuhy8BF8BrlMmmF_PBFJhB7AcOXA4o36r24UcqHbMZQcoAnkCxflijNMA7bZhNhWPXTgqXl4N_ePy8CghldoBBFzDgxtrRgPFS5Xm4cjxl69szT3g1yCmQs0goeNWTFOR12nIsnkbUQN1Cru5V6d6Emfbv9zJE8vsMzde_uFU0VyV0OgGd994-sQs-jORDQ1qijU1O3O3Ycb1Ns8ZM6In9ibZmukZ4GBtNV6SW6dj83Ley2Xo4J_4L-jt__9kRBsVvANhIEonZ-R68GcPqE0KhstaAbvu30u4qtWJJBmuRmfbcEA_1w4qdEkDJ4WJlA4PIbqketu_tLSswyN0U5MDSi0DF0PGHjQA8mXsuYhktGhoJzwEZ8HLa0ENNsIkqgKR4enL2EZWJJVcH-Zc5nqus7A-VYiNfIBv90xzV_DXyN9JVtyEuvpY0H85v65J-uRgTnkJv3JE1Oy2c3nwNcbDWVt67WYwmgr_jNheePATkguwF8zRzmp6Y5vbIGcv4O02vqVBobVZmdtycobJ9E_OT_fFwkUxzA9YCJvuwf7zJFibPpyONXOd=w492-h1024-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/jx-O61iOA94K7jY7sjjT1cnBGOG5cuJGlUIqGe96uJOEjZr4gbqFXfb3aD_NWUjP-fsO0pQT8FyHi_WfqN8OvYAijsFrPKfz1eZewo5RDj10Cey0BaWbcPx-fINI8QOSESlq_s-7_NLbC6P5K4n75NztGHc3k1PQybqcZTr7ECKIdjnHvZ7tUgtp0YBOblYyEyUX88rTpLHw40Lhh7LPuSIuQZAXIvUE0q6o0_u7AdfR5wBEfBPMf7TdRVb62uHJzsATQQ9BsAupE4uGj0azfDSiMgassf92umZymj9oLTO7hqZpYT526HkbUSxp8fPkahFvk64wSrClyNFrUltLA0oVXa_YCe1sZ-rS1S5cHxRNNgLDQeUHm8pMWwylXEFTGkszYXe5FVgdxJ-ShYNCOTfj1GU2aAKADKocU_Q2h4jcrX0YyRM8sOiiyI84nEG4ojOS5cAY54IXdT5d_RuAtgZNwh3qnk8MUefgImbnQZQIJnZb45xagVaHqaY3E8L4g7uVBIISo76khvDEW0mgAaCJCmUY-opy5RyFeDFEXJNPbyMfcSgfnMlpzkA_xCJhyhpIqtepveU_QIQqFepAXThCbOGbFX8JP30-seCSQMwFYpFzuTtD6QTwVfHRCDSv9r71dEM-I-EN7MUylDXaRX7MpNKj4UH3=w1024-h670-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/7ZcKoLrotMFeNr2e41u_n_BRCQaMGoBjMQdX5_c1QH0kZycDBNJxLMz0JbnP4SU7Gb70QFSzVcNFWT4EO2qW5ThZCO1lDUhIW_2-4wPR2t02qbBHdlqYaOwAjuJhPioCY_rAFy6y9u9kPZ5rt8hEqfvHYYc76puVmwrv7r-KV9rT6RN5tdQfJzMhwnCCwMZEfysY_g-zWr49MtT2uf3q5jEKpmR3xbQ2P4QajWQ1g5lEjA-hiOQnbJXkfKl9z6tqzBxyNBQTZISlV0C7DIf4pzFTRk0IFLPW9CfnNtDNDIdT3VyTvONjMoxH6tql-qYwb59Qmg4ExG53WKIrw4YlUfVgR0jtNKnpkxQULSzRPG9xeuOdN0KLyDQ8v_Dvy4JsZLrKSPZVhWHmMyge_Kg_BHITk7Rkfu3g4wNWtZXo2keGXtTlX0_0hXdrAfQtX2lWB92lzc7TknYtrT3WwnEs5-2xKyHUh195Re2x-GdrkzbhsctuIFlw4fHHZIIq8NniKT84GZpTRXVPww9n3AqKcy9dOEdkDy_JvmEhOiLuAM3f5HRUp-8qWpo6bue5ItlRI51PgU4LuuralE9R8SgbnynfBHmkI4a_bdFXWTIUj4BJgEEvExRFhjqwpsbDlQT6MK8xd7-D1H7K6fYamrAaVdP8QYzXQwCu=w1024-h579-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/WTK7IxK_nr3qmzCqevVgFhFZQXnkW0t4QPpng4VkfYOWOQSvFL7eHZbDEvfPqDwEjAazw49geCW3opNOVcz45uRoDcIKjPFmnoL8lL8v5Jppc2MrkEF5OvuDb912EfiapEkmNpw-DxzLcb_S3NKzsjnGs3wiuhUaMep1iSiz2Ctt6Nie9pYoV4ucqhvwJ_J4G9IOZ809FBWn7rcr7yit7K-vGQ3__3mJEv4npj123wb6RhkNcXvAswKA4VeCuaRehdCn13U94F5R0WRFFOJam5VNM_klgKWATfZsPcXMgGbQ2-M9KXmXmbZsQRBok5-qDxi9MNtKS5iEBSwgEVZipKafLl-5eqUxe5jiNSyLrHae7KeYsueMDrodFSQdnCjpPaCBjs6rUIrpsncyZGs3G56E3uMYNAfEpIYD9bzpm77m7_SBNcq8WkxbRYhDgpLsiCjiNFLl9FOXMi7ALPM5pWP5QoTi07vUJJFFU6V-pvwRoFUaOjVWb7B9o3j7RXm9hvRWo35lQ1dIQv-q0Wv-KYgrLySLS_WJtVmkdjs6T8iPAxUl0wTuMx1d99q7tgH_W3gFjuFqNL5mpd9b0T8QMMzDimpsEVCjUmzeza_HddnzVLW08caAEISY8IDdSq6CmO0q_msw-qEgUzRMhry4Bs6fzPmxFIVd=w1024-h670-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/WTK7IxK_nr3qmzCqevVgFhFZQXnkW0t4QPpng4VkfYOWOQSvFL7eHZbDEvfPqDwEjAazw49geCW3opNOVcz45uRoDcIKjPFmnoL8lL8v5Jppc2MrkEF5OvuDb912EfiapEkmNpw-DxzLcb_S3NKzsjnGs3wiuhUaMep1iSiz2Ctt6Nie9pYoV4ucqhvwJ_J4G9IOZ809FBWn7rcr7yit7K-vGQ3__3mJEv4npj123wb6RhkNcXvAswKA4VeCuaRehdCn13U94F5R0WRFFOJam5VNM_klgKWATfZsPcXMgGbQ2-M9KXmXmbZsQRBok5-qDxi9MNtKS5iEBSwgEVZipKafLl-5eqUxe5jiNSyLrHae7KeYsueMDrodFSQdnCjpPaCBjs6rUIrpsncyZGs3G56E3uMYNAfEpIYD9bzpm77m7_SBNcq8WkxbRYhDgpLsiCjiNFLl9FOXMi7ALPM5pWP5QoTi07vUJJFFU6V-pvwRoFUaOjVWb7B9o3j7RXm9hvRWo35lQ1dIQv-q0Wv-KYgrLySLS_WJtVmkdjs6T8iPAxUl0wTuMx1d99q7tgH_W3gFjuFqNL5mpd9b0T8QMMzDimpsEVCjUmzeza_HddnzVLW08caAEISY8IDdSq6CmO0q_msw-qEgUzRMhry4Bs6fzPmxFIVd=w1024-h670-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/teS4z4xS0BE6CsIMEuUgrFU5cEQE_naAsDJb_O-6aYc-WeCvmduiHEyRQJPaBzbMQmOImdXcfv1E9VmDRitocPemHDsPCuk-njpIeDdPItuP4kdMfI_cqaJNnrSO9k8NpJC_0NwQj5L8NgHSIH7amFlGYZwNk9JsyxhgMkOCc67_dbYE48P8gTTr0qbqutjyrm14fdsNJjyUJsAPn8xji47-Asj55hOQv8ilN3-3pNNeXAMybVAdNRoCKZk8MnMJea_qTuoiEMzltk_LHP07K6jbamM7--uqYimHhmW2ZtZ89z9GrW5mc9zR4G9X2oosIEByxrB7tlrHPyDm_JDPQ30cVBaqaed0XwYLwYyemd9IDDQb3e5UvfAbih1KB9UK6poAkEuwAaEXvFlkZRC5_rN16EVSzUoHFH5sTQ2_7xVo4YAP0U_gpP4K1gQdVUVM2yFvOBWpf8V0bJQWIv5QV9vxihQ5nZp5Mk58dK8XhAQPMxCQKDc6VdVBQ-5B5VT1_s_OATXA6masol_u--aruB29iWQPemdwa-iGpYdkWmGkAVVXTcyPqqUZ_uZDkoVo5EPhQ-fYZtlrupwtNXy84xiVmbSQSDUr7kFb4ns7e7RQ2oZChZO7bC72UuvqyMTKWH91j1htEDPQJzjHNFJKaKYmd0xg-9R6=w1024-h670-no">
 <meta property="og:updated_time" content="2017-12-01T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content=".NET Core 2.0 SPA with Vue-Cli - Start New Project">
 <meta name="twitter:description" content=".Net Core 可以不用開啟慢吞吞的 IDE，即可快速建立專案。本篇全程使用 VScode，手把手教你如何用 .NET Core 2.0 MVC + vue-cli 起始一個 SPA 專案。當然， HMR (Hot Module Replacement) 神器也會一併附上啦。">
-<meta name="twitter:image" content="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1006.png">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/SS8p9bPMBScLwOK1WgnN62PV1W2Tzw2B7KHNgVD9hs2BNQdweBgEZ2ryH8b_X24hUSPNbY52hcdlEeblEfWOjKdXFbZW_ZnZ44yftNz9fbfcuhy8BF8BrlMmmF_PBFJhB7AcOXA4o36r24UcqHbMZQcoAnkCxflijNMA7bZhNhWPXTgqXl4N_ePy8CghldoBBFzDgxtrRgPFS5Xm4cjxl69szT3g1yCmQs0goeNWTFOR12nIsnkbUQN1Cru5V6d6Emfbv9zJE8vsMzde_uFU0VyV0OgGd994-sQs-jORDQ1qijU1O3O3Ycb1Ns8ZM6In9ibZmukZ4GBtNV6SW6dj83Ley2Xo4J_4L-jt__9kRBsVvANhIEonZ-R68GcPqE0KhstaAbvu30u4qtWJJBmuRmfbcEA_1w4qdEkDJ4WJlA4PIbqketu_tLSswyN0U5MDSi0DF0PGHjQA8mXsuYhktGhoJzwEZ8HLa0ENNsIkqgKR4enL2EZWJJVcH-Zc5nqus7A-VYiNfIBv90xzV_DXyN9JVtyEuvpY0H85v65J-uRgTnkJv3JE1Oy2c3nwNcbDWVt67WYwmgr_jNheePATkguwF8zRzmp6Y5vbIGcv4O02vqVBobVZmdtycobJ9E_OT_fFwkUxzA9YCJvuwf7zJFibPpyONXOd=w492-h1024-no">
     
         <link rel="publisher" href="https://plus.google.com/+張巧倪"/>
     
@@ -310,7 +310,7 @@
 <li>刪除不必要的檔案</li>
 </ol>
 <p>因為我們是 <code>SPA</code> 不需要用到 MVC 其他頁面的功能，所以將多餘的頁面和樣式去除。參考如下的資料夾結構。</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1006.png" alt="刪除多餘頁面和樣式後的檔案" title="資料夾結構"></p>
+<p><img src="https://lh3.googleusercontent.com/SS8p9bPMBScLwOK1WgnN62PV1W2Tzw2B7KHNgVD9hs2BNQdweBgEZ2ryH8b_X24hUSPNbY52hcdlEeblEfWOjKdXFbZW_ZnZ44yftNz9fbfcuhy8BF8BrlMmmF_PBFJhB7AcOXA4o36r24UcqHbMZQcoAnkCxflijNMA7bZhNhWPXTgqXl4N_ePy8CghldoBBFzDgxtrRgPFS5Xm4cjxl69szT3g1yCmQs0goeNWTFOR12nIsnkbUQN1Cru5V6d6Emfbv9zJE8vsMzde_uFU0VyV0OgGd994-sQs-jORDQ1qijU1O3O3Ycb1Ns8ZM6In9ibZmukZ4GBtNV6SW6dj83Ley2Xo4J_4L-jt__9kRBsVvANhIEonZ-R68GcPqE0KhstaAbvu30u4qtWJJBmuRmfbcEA_1w4qdEkDJ4WJlA4PIbqketu_tLSswyN0U5MDSi0DF0PGHjQA8mXsuYhktGhoJzwEZ8HLa0ENNsIkqgKR4enL2EZWJJVcH-Zc5nqus7A-VYiNfIBv90xzV_DXyN9JVtyEuvpY0H85v65J-uRgTnkJv3JE1Oy2c3nwNcbDWVt67WYwmgr_jNheePATkguwF8zRzmp6Y5vbIGcv4O02vqVBobVZmdtycobJ9E_OT_fFwkUxzA9YCJvuwf7zJFibPpyONXOd=w492-h1024-no" alt="刪除多餘頁面和樣式後的檔案" title="資料夾結構"></p>
 <ul>
 <li><code>HomeController.cs</code> 刪除多餘的 Controller，只保留 <code>Index</code> 和 <code>Error</code></li>
 </ul>
@@ -327,7 +327,7 @@
 <p>執行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet run</span><br></pre></td></tr></table></figure>
 <p>用瀏覽器看 <code>http://localhost:5000</code> 就會跑出剛剛在 <code>Index.cshtml</code> 改寫的 TEST 字樣囉～</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1011.png" alt="http://localhost:5000" title="首頁"></p>
+<p><img src="https://lh3.googleusercontent.com/jx-O61iOA94K7jY7sjjT1cnBGOG5cuJGlUIqGe96uJOEjZr4gbqFXfb3aD_NWUjP-fsO0pQT8FyHi_WfqN8OvYAijsFrPKfz1eZewo5RDj10Cey0BaWbcPx-fINI8QOSESlq_s-7_NLbC6P5K4n75NztGHc3k1PQybqcZTr7ECKIdjnHvZ7tUgtp0YBOblYyEyUX88rTpLHw40Lhh7LPuSIuQZAXIvUE0q6o0_u7AdfR5wBEfBPMf7TdRVb62uHJzsATQQ9BsAupE4uGj0azfDSiMgassf92umZymj9oLTO7hqZpYT526HkbUSxp8fPkahFvk64wSrClyNFrUltLA0oVXa_YCe1sZ-rS1S5cHxRNNgLDQeUHm8pMWwylXEFTGkszYXe5FVgdxJ-ShYNCOTfj1GU2aAKADKocU_Q2h4jcrX0YyRM8sOiiyI84nEG4ojOS5cAY54IXdT5d_RuAtgZNwh3qnk8MUefgImbnQZQIJnZb45xagVaHqaY3E8L4g7uVBIISo76khvDEW0mgAaCJCmUY-opy5RyFeDFEXJNPbyMfcSgfnMlpzkA_xCJhyhpIqtepveU_QIQqFepAXThCbOGbFX8JP30-seCSQMwFYpFzuTtD6QTwVfHRCDSv9r71dEM-I-EN7MUylDXaRX7MpNKj4UH3=w1024-h670-no" alt="http://localhost:5000" title="首頁"></p>
 <h2 id="安裝-vue-cli-模板"><a href="#安裝-vue-cli-模板" class="headerlink" title="安裝 vue-cli 模板"></a>安裝 <code>vue-cli</code> 模板</h2><ol>
 <li>安裝全域 <code>vue-cli</code></li>
 </ol>
@@ -337,13 +337,13 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue init webpack-simple</span><br></pre></td></tr></table></figure>
 <p>按照 <code>vue-cli</code> 的指示回覆操作如下圖。</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1018.png" alt="vue-cli" title="vue-cli"></p>
+<p><img src="https://lh3.googleusercontent.com/7ZcKoLrotMFeNr2e41u_n_BRCQaMGoBjMQdX5_c1QH0kZycDBNJxLMz0JbnP4SU7Gb70QFSzVcNFWT4EO2qW5ThZCO1lDUhIW_2-4wPR2t02qbBHdlqYaOwAjuJhPioCY_rAFy6y9u9kPZ5rt8hEqfvHYYc76puVmwrv7r-KV9rT6RN5tdQfJzMhwnCCwMZEfysY_g-zWr49MtT2uf3q5jEKpmR3xbQ2P4QajWQ1g5lEjA-hiOQnbJXkfKl9z6tqzBxyNBQTZISlV0C7DIf4pzFTRk0IFLPW9CfnNtDNDIdT3VyTvONjMoxH6tql-qYwb59Qmg4ExG53WKIrw4YlUfVgR0jtNKnpkxQULSzRPG9xeuOdN0KLyDQ8v_Dvy4JsZLrKSPZVhWHmMyge_Kg_BHITk7Rkfu3g4wNWtZXo2keGXtTlX0_0hXdrAfQtX2lWB92lzc7TknYtrT3WwnEs5-2xKyHUh195Re2x-GdrkzbhsctuIFlw4fHHZIIq8NniKT84GZpTRXVPww9n3AqKcy9dOEdkDy_JvmEhOiLuAM3f5HRUp-8qWpo6bue5ItlRI51PgU4LuuralE9R8SgbnynfBHmkI4a_bdFXWTIUj4BJgEEvExRFhjqwpsbDlQT6MK8xd7-D1H7K6fYamrAaVdP8QYzXQwCu=w1024-h579-no" alt="vue-cli" title="vue-cli"></p>
 <p>執行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
 <p>測試 <code>Node</code> 有沒有安裝成功 <code>Vue</code> 專案</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
 <p>用瀏覽器看 <code>http://localhost:8080</code> 如果有成功出現如下面畫面就是安裝成功 <code>vue</code> 的專案囉～</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1024.png" alt="http://localhost:8080" title="首頁"></p>
+<p><img src="https://lh3.googleusercontent.com/WTK7IxK_nr3qmzCqevVgFhFZQXnkW0t4QPpng4VkfYOWOQSvFL7eHZbDEvfPqDwEjAazw49geCW3opNOVcz45uRoDcIKjPFmnoL8lL8v5Jppc2MrkEF5OvuDb912EfiapEkmNpw-DxzLcb_S3NKzsjnGs3wiuhUaMep1iSiz2Ctt6Nie9pYoV4ucqhvwJ_J4G9IOZ809FBWn7rcr7yit7K-vGQ3__3mJEv4npj123wb6RhkNcXvAswKA4VeCuaRehdCn13U94F5R0WRFFOJam5VNM_klgKWATfZsPcXMgGbQ2-M9KXmXmbZsQRBok5-qDxi9MNtKS5iEBSwgEVZipKafLl-5eqUxe5jiNSyLrHae7KeYsueMDrodFSQdnCjpPaCBjs6rUIrpsncyZGs3G56E3uMYNAfEpIYD9bzpm77m7_SBNcq8WkxbRYhDgpLsiCjiNFLl9FOXMi7ALPM5pWP5QoTi07vUJJFFU6V-pvwRoFUaOjVWb7B9o3j7RXm9hvRWo35lQ1dIQv-q0Wv-KYgrLySLS_WJtVmkdjs6T8iPAxUl0wTuMx1d99q7tgH_W3gFjuFqNL5mpd9b0T8QMMzDimpsEVCjUmzeza_HddnzVLW08caAEISY8IDdSq6CmO0q_msw-qEgUzRMhry4Bs6fzPmxFIVd=w1024-h670-no" alt="http://localhost:8080" title="首頁"></p>
 <blockquote>
 <p>誒～你有沒有注意到奇怪的地方啊?!我們跑 <code>vue</code> 的時候是用 <code>node server</code> 執行，但是真正專案要在 <code>.NET server</code> 執行。所以怎麼把這兩者結合呢？主要原理就是：在 <code>Development</code> 時把 <code>node server</code> 當作是前端產生靜態資源 (<code>JS</code>, <code>Css</code>, <code>images</code>…) 的工具; <code>Production</code> 的部分就把產出過後的靜態資源給 <code>.NET server</code> 使用。廢話不多說，我們就來趕緊試試看吧。</p>
 </blockquote>
@@ -368,7 +368,7 @@
 <p>再啟動伺服器</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet run</span><br></pre></td></tr></table></figure>
 <p>成功就會出現之前一樣的畫面囉～</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1110.png" alt="http://localhost:5000" title="首頁"></p>
+<p><img src="https://lh3.googleusercontent.com/WTK7IxK_nr3qmzCqevVgFhFZQXnkW0t4QPpng4VkfYOWOQSvFL7eHZbDEvfPqDwEjAazw49geCW3opNOVcz45uRoDcIKjPFmnoL8lL8v5Jppc2MrkEF5OvuDb912EfiapEkmNpw-DxzLcb_S3NKzsjnGs3wiuhUaMep1iSiz2Ctt6Nie9pYoV4ucqhvwJ_J4G9IOZ809FBWn7rcr7yit7K-vGQ3__3mJEv4npj123wb6RhkNcXvAswKA4VeCuaRehdCn13U94F5R0WRFFOJam5VNM_klgKWATfZsPcXMgGbQ2-M9KXmXmbZsQRBok5-qDxi9MNtKS5iEBSwgEVZipKafLl-5eqUxe5jiNSyLrHae7KeYsueMDrodFSQdnCjpPaCBjs6rUIrpsncyZGs3G56E3uMYNAfEpIYD9bzpm77m7_SBNcq8WkxbRYhDgpLsiCjiNFLl9FOXMi7ALPM5pWP5QoTi07vUJJFFU6V-pvwRoFUaOjVWb7B9o3j7RXm9hvRWo35lQ1dIQv-q0Wv-KYgrLySLS_WJtVmkdjs6T8iPAxUl0wTuMx1d99q7tgH_W3gFjuFqNL5mpd9b0T8QMMzDimpsEVCjUmzeza_HddnzVLW08caAEISY8IDdSq6CmO0q_msw-qEgUzRMhry4Bs6fzPmxFIVd=w1024-h670-no" alt="http://localhost:5000" title="首頁"></p>
 <h2 id="設定-HMR-和-vue-router-的-fallback"><a href="#設定-HMR-和-vue-router-的-fallback" class="headerlink" title="設定 HMR 和 vue router 的 fallback"></a>設定 <code>HMR</code> 和 <code>vue router</code> 的 fallback</h2><p>接著才是重頭戲～如魔法般的 <code>HMR</code> 功能登場!!!</p>
 <p>如果還不太知道什麼是 <code>HMR</code> 的，就 google 一下囉～</p>
 <ol>
@@ -391,7 +391,7 @@
 <p>執行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run hmr</span><br></pre></td></tr></table></figure>
 <p>成功的話就會從 <code>Chrome</code> 開發者工具看到 <code>HMR</code> 連結成功囉～</p>
-<p><img src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/2017-12-02_1249.png" alt="http://localhost:5000" title="首頁"></p>
+<p><img src="https://lh3.googleusercontent.com/teS4z4xS0BE6CsIMEuUgrFU5cEQE_naAsDJb_O-6aYc-WeCvmduiHEyRQJPaBzbMQmOImdXcfv1E9VmDRitocPemHDsPCuk-njpIeDdPItuP4kdMfI_cqaJNnrSO9k8NpJC_0NwQj5L8NgHSIH7amFlGYZwNk9JsyxhgMkOCc67_dbYE48P8gTTr0qbqutjyrm14fdsNJjyUJsAPn8xji47-Asj55hOQv8ilN3-3pNNeXAMybVAdNRoCKZk8MnMJea_qTuoiEMzltk_LHP07K6jbamM7--uqYimHhmW2ZtZ89z9GrW5mc9zR4G9X2oosIEByxrB7tlrHPyDm_JDPQ30cVBaqaed0XwYLwYyemd9IDDQb3e5UvfAbih1KB9UK6poAkEuwAaEXvFlkZRC5_rN16EVSzUoHFH5sTQ2_7xVo4YAP0U_gpP4K1gQdVUVM2yFvOBWpf8V0bJQWIv5QV9vxihQ5nZp5Mk58dK8XhAQPMxCQKDc6VdVBQ-5B5VT1_s_OATXA6masol_u--aruB29iWQPemdwa-iGpYdkWmGkAVVXTcyPqqUZ_uZDkoVo5EPhQ-fYZtlrupwtNXy84xiVmbSQSDUr7kFb4ns7e7RQ2oZChZO7bC72UuvqyMTKWH91j1htEDPQJzjHNFJKaKYmd0xg-9R6=w1024-h670-no" alt="http://localhost:5000" title="首頁"></p>
 <p>今天的範例在 <a href="https://github.com/Annilla/dotnet-core-vue-cli/tree/v1.0.0" target="_blank" rel="noopener">github</a>，下回見～</p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
 <li><a href="http://www.dotnetcurry.com/aspnet/1383/modern-web-dev-aspnet-core-webpack-vuejs" target="_blank" rel="noopener">Modern Web Development using ASP.NET Core template, Vue.js and Webpack</a></li>
@@ -877,7 +877,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/">
-                            <img class="media-image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png" width="90" height="90"/>
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -902,7 +902,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
-                            <img class="media-image" src="http://i965.photobucket.com/albums/ae138/anny09117011/Blog/d3-vue-banner.png" width="90" height="90"/>
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
                         </a>
                     </div>
                     
