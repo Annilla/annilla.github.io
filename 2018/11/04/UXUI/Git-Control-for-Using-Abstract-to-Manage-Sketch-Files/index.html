@@ -15,8 +15,11 @@
         <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
     
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"這篇要來介紹 Abstract 的主要功能，和我平常會怎麼使用他來做版本控制。\n\n\nProjects 所有專案登入後的首頁就是顯示所有專案的頁面。專案分為 ACTIVE 和 ARCHIVED，這兩個分類主要是讓設計師團隊去區分哪些專案是還在進行的，哪些專案是已經結案的。專案只會越來越多，所以我覺得這個功能很好，可以在團隊合作時能很快的找到要設計的專案。我自己目前是一人設計，但目前管理的專案就有十幾個以上，往後專案數量只會遞增，所以我覺得這個功能對設計師來說是十分貼心。但要注意若要使用專案分類的話，是要自己去手動設定的喔，並不會自動知道你的專案已經結案了，所以這部分是手動設定也蠻合理的。\n\n\n\nTip: 預設專案的排序是照名稱，如果想要專案特別置頂的話，可以按專案卡片上的星星就會強制置頂囉～\n\n要開新專案就按 New Project 新增，詳細操作可以參考官網的說明，這裡就不再贅述。\n\n\nProject Overview 專案概況點擊進入單一專案後，會看到 Overview 頁面，這頁是把專案的概況整理成一張張的小卡，讓設計師能快速回憶過往設計並能儘快進入狀態。比較特別的是其中有一個小卡 About，類似小白板的感覺，主要功能是紀錄專案的描述和相關文件的參照，我覺得這個部分超棒的！！！因為要設計一個專案，絕對是有許許多多的需求，這些需求總有一個管理的地方，而 Abstract 運用了這張卡片讓流程可以順利的參照。但美中不足的是如果可以像 Azure Devops 有個 task board 聯繫 git，並在 merge 的時候有 close task 的功能，將會對設計師團隊有很大的助益。\n\n\nProject Master 專案主分支Master 就是此專案的主要 branch，分為 Overview/Commits/Files 三個小功能。正常來說 Abstract 不會讓設計師去 commit Master branch，所以如果在這裡去點擊 EDIT IN SKETCH 做任何變更是不會讓使用者 commit 上去的。在 Master branch 設計師只會有兩種選擇，要麻獨立開啟檔案不給你做 commit，要麻就是建議你開 branch 做完後再 merge 回來，這一點跟一般的 git 不太一樣，畢竟設計檔案也不會有用到 hotfix 的時候，所以這樣防呆也比較安全。\n\n\n\nProject Branches 專案分支這個功能是 Abstract 的核心。上一段提到正常的版本控制流程如同 git 一般，應該要做 NEW BRANCH 的動作開新分隻，並在新分支做 EDIT IN SKETCH，儲存完後對分支進行 commit 的動作，確定都修改完成最後才會將數個 commit merge 到 Master branch。這樣做除了多人設計師可以合作外，如果像我一樣孤獨的設計師也有好處嗎？答案絕對是YES! 因為設計跟寫程式不一樣，同一個需求，常常需要多種設計方案來比較，但 BOSS 又是那種看不到畫面就感覺不到的人，所以這時候開 branch 就非常好用。不同 branch 代表不同的設計方案，這樣既不會干擾原設計，又可以將最後確定要做的 branch 做 merge，其他不需要的方案也可以留底做紀錄。超愛！！\n\n\nTip: 對每張預覽圖點進去都可以做 COMMENT/COMPARE/INSPECT 的功能。 COMMENT 就是給不同設計師合作時的討論。 COMPARE 就是可以比對設計圖修改前後的不同處。 INSPECT 是新功能尚未開放，但我猜應該是讓設計師可跟工程師溝通的 spec，這部分我目前是先用 Sketch 的 plugin 輸出成互動的 HTML 解決，如果 Abstract 之後有開放此功能的話，將會是一大福音。\n\n\n\n2018 對應 Sketch Library 的功能Sketch 的新功能 Library， Abstract 也有支援，而且使用起來相當順暢。當已經有一組設計元件/框架想要共用多個不同的專案時，我們可以開一個單獨的專案並將其 sketch 檔案 import 為 Library 做管理。在另一個要使用此 Library 的專案在 Files 的子頁面做 Link Library 的動作。這樣只要原本 Library 的元件有做修改，有使用到此共用元件的專案也會一併更新，如此一來就可以做到 Library 和一般專案分開管理，又可以做到互相關聯。這個新功能雖然是 Sketch 研發，但搭配上 Abstract 後更是如虎添翼，打 BOSS 嚇嚇叫！詳細實作可參考官網說明。\n\nTip: Import Sketch file as Library 後檔案的 icon 會變成粉紫色鑽石（預設是橘黃色），這樣就表示有新增 Library 成功喔～\n\n\n","dateCreated":"2018-11-04T00:00:00+08:00","dateModified":"2018-11-04T00:00:00+08:00","datePublished":"2018-11-04T00:00:00+08:00","description":"這篇要來介紹 Abstract 的主要功能，和我平常會怎麼使用他來做版本控制。","headline":"Git Control for Using Abstract to Manage Sketch Files","image":["https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no","https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/","keywords":"Sketch, UX, UI, Abstract","thumbnailUrl":"https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no"}</script>
     <meta name="description" content="這篇要來介紹 Abstract 的主要功能，和我平常會怎麼使用他來做版本控制。">
 <meta name="keywords" content="Sketch,UX,UI,Abstract">
 <meta property="og:type" content="blog">
@@ -40,8 +43,6 @@
 <meta name="twitter:description" content="這篇要來介紹 Abstract 的主要功能，和我平常會怎麼使用他來做版本控制。">
 <meta name="twitter:image" content="https://lh3.googleusercontent.com/-2IXT8A9fh8LNqeFa7pv9eOVku3fBO0fYRQR3T7GdbaMUgaEmddURlFrA2RvBF-PI3HAzqHw3M40mKvpZAwAFo7YYD5Xleugxzc5K88Ty2XkOqwKLBiIghOtch6ycWlYTaJrLtd95nbmUUS60JO9tz_xGIl9M9eYuwH2sik7ddUyvx8bVVAt75p_mIVPHcQ-6Eo2IhZCGq-KG4VkLA7AcbAAC6jcWpuy5H3OgaTTGf2N_lSwtlm-gwLgIHhJlB2E56Q1QZDPaDAebgJ8c8t3PyD5nDw_AML2BgqdQISujtesJBi3P34_PhzG_HD63suwNy_0n72Qb3Y-mnIJKCA7Nnvjh-towFitQn9gex7mEk7Sk0Q_cYnlPH4t7oCRp5bx5x4iSkYXfG5xr_MWAF2N3dAJeCr5JPNjMBEUWjPhJfJPMFIqGtNhBDknNnqBc93OgeP3Y1lGxvbD2M30nb1QGijbr6m_g3ouzva4kUqZ--NlsXdJwueyJJv7v6HSNx3LSfOYAEvsUIaqb7PcY8am89PIdW4rK_BWMIpVRIVISs61xeD3uYoBRQ1enaWUQY18eMRB2BErTh9dGQg3uOzYKUE7L1kg5W6XteSJozWp9XvZBvVMo4T0B5x8263RZw0jwbsiXT8RfOgjx-GqAFRWUWTkoGzy2XkU=w1023-h619-no">
     
-        <link rel="publisher" href="https://plus.google.com/+張巧倪"/>
-    
     
         
     
@@ -50,28 +51,31 @@
     
     
         <meta property="og:image" content="https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no" />
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no"/>
     
     
         <meta property="og:image" content="https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no" />
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no"/>
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-pz4cc6y13wt2trzqa8l3n9v0yykr0sstdaheem7qj628nhjmhp9pfawvqawz.min.css">
+    <link rel="stylesheet" href="/assets/css/style-udgwpfyb1xhp3kjqer71ixyhuib9sfs0kn1fyeaphlj9kz8giqxsojxmrlhv.min.css">
     <!--STYLES END-->
     
-    <script type="text/javascript">
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-        ga('create', 'UA-53403504-1', 'auto');
-        ga('send', 'pageview');
+        gtag('config', 'UA-53403504-1');
     </script>
 
 
+    
+
+    
+        
     
 </head>
 
@@ -87,12 +91,21 @@
 <header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
-        <a class="header-title-link" href="/ ">Anny Chang - F2E &amp; UI Designer</a>
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
     </div>
     
         
-            <a  class="header-right-picture "
-                href="#about">
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
         
         
             <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
@@ -110,7 +123,10 @@
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
-                <a href="/#about">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
                     <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
@@ -125,78 +141,84 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/ "
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
                             
+                            rel="noopener"
                             title="首頁"
                         >
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-home" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">首頁</span>
                     </a>
             </li>
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
                             
+                            rel="noopener"
                             title="分類"
                         >
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-bookmark" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">分類</span>
                     </a>
             </li>
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
                             
+                            rel="noopener"
                             title="標籤"
                         >
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-tags" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">標籤</span>
                     </a>
             </li>
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
                             
+                            rel="noopener"
                             title="所有文章"
                         >
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-archive" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">所有文章</span>
                     </a>
             </li>
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link open-algolia-search"
-                             href="#search"
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
                             
+                            rel="noopener"
                             title="搜尋"
                         >
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-search" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">搜尋</span>
                     </a>
             </li>
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="#about"
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
                             
+                            rel="noopener"
                             title="關於"
                         >
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-question" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">關於</span>
                     </a>
             </li>
@@ -207,28 +229,33 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://github.com/Annilla" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">GitHub</span>
                     </a>
             </li>
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="https://www.facebook.com/profile.php?id=100002453201106" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-facebook" aria-hidden="true"></i>
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://plus.google.com/u/0/+%E5%BC%B5%E5%B7%A7%E5%80%AA" target="_blank" rel="noopener" title="Google Plus">
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google Plus</span>
                     </a>
             </li>
             
@@ -238,13 +265,14 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link "
-                             href="/atom.xml"
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
                             
+                            rel="noopener"
                             title="Atom"
                         >
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Atom</span>
                     </a>
             </li>
@@ -268,18 +296,18 @@
                         hasCoverMetaOut
                         ">
                 
-<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+<article class="post">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title" itemprop="headline">
+        <h1 class="post-title">
             Git Control for Using Abstract to Manage Sketch Files
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2018-11-04T00:00:00+08:00">
+    <time datetime="2018-11-04T00:00:00+08:00">
 	
 		    11月 04, 2018
     	
@@ -295,8 +323,9 @@
 
     
 </div>
+
     
-    <div class="post-content markdown" itemprop="articleBody">
+    <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>這篇要來介紹 <code>Abstract</code> 的主要功能，和我平常會怎麼使用他來做版本控制。</p>
 <a id="more"></a>
@@ -332,6 +361,7 @@
 
             
 
+
         </div>
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
@@ -350,26 +380,40 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/" data-tooltip="2018 My Sketch Useful Plugins" aria-label="上一篇: 2018 My Sketch Useful Plugins">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
-                </a>
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/"
+                    data-tooltip="2018 My Sketch Useful Plugins"
+                    aria-label="上一篇: 2018 My Sketch Useful Plugins"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
             </li>
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/09/13/UXUI/UX-UI-Workflow-Tool-in-2018/" data-tooltip="UX/UI Workflow Tool in 2018" aria-label="下一篇: UX/UI Workflow Tool in 2018">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/09/13/UXUI/UX-UI-Workflow-Tool-in-2018/"
+                    data-tooltip="UX/UI Workflow Tool in 2018"
+                    aria-label="下一篇: UX/UI Workflow Tool in 2018"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
             </li>
         </ul>
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -377,39 +421,45 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/" title="分享到 Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/" title="分享到 Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/" title="分享到 Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
         
             
                 <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -446,26 +496,40 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/" data-tooltip="2018 My Sketch Useful Plugins" aria-label="上一篇: 2018 My Sketch Useful Plugins">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
-                </a>
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/"
+                    data-tooltip="2018 My Sketch Useful Plugins"
+                    aria-label="上一篇: 2018 My Sketch Useful Plugins"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
             </li>
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/09/13/UXUI/UX-UI-Workflow-Tool-in-2018/" data-tooltip="UX/UI Workflow Tool in 2018" aria-label="下一篇: UX/UI Workflow Tool in 2018">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/09/13/UXUI/UX-UI-Workflow-Tool-in-2018/"
+                    data-tooltip="UX/UI Workflow Tool in 2018"
+                    aria-label="下一篇: UX/UI Workflow Tool in 2018"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
             </li>
         </ul>
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -473,39 +537,45 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/" title="分享到 Facebook">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
         
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/" title="分享到 Twitter">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/" title="分享到 Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
         
         
             
                 <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment-o"></i>
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
             
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -515,36 +585,40 @@
 
 
                 </div>
-                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-    <i id="btn-close-shareoptions" class="fa fa-close"></i>
-    <ul class="share-options">
-        
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
             
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
             
-            <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/">
-                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>分享到 Facebook</span>
-                </a>
-            </li>
-        
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
             
-            
-            <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/">
-                    <i class="fa fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
-                </a>
-            </li>
-        
-            
-            
-            <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
-                </a>
-            </li>
-        
-    </ul>
-</div>
+        </ul>
+    </div>
+
 
             
         </div>
@@ -556,7 +630,7 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
             <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
@@ -576,7 +650,7 @@
         
         
             <div id="about-card-location">
-                <i class="fa fa-map-marker"></i>
+                <i class="fa fa-map-marker-alt"></i>
                 <br/>
                 Taiwan
             </div>
@@ -588,10 +662,10 @@
             <div id="algolia-search-modal" class="modal-container">
     <div class="modal">
         <div class="modal-header">
-            <span class="close-button"><i class="fa fa-close"></i></span>
+            <span class="close-button"><i class="fa fa-times"></i></span>
             <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
                 <span class="searchby-algolia-text text-color-light text-small">by</span>
-                <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
             </a>
             <i class="search-icon fa fa-search"></i>
             <form id="algolia-search-form">
@@ -607,13 +681,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
                             <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
                             <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
                         </a>
                         <span class="media-meta">
@@ -632,13 +714,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
                             <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
                             <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
                         </a>
                         <span class="media-meta">
@@ -657,13 +747,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
                             <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
                             <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
                         </a>
                         <span class="media-meta">
@@ -682,13 +780,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
                             <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
                             <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
                         </a>
                         <span class="media-meta">
@@ -707,13 +813,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
                             <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
                             <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
                         </a>
                         <span class="media-meta">
@@ -732,13 +846,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
                             <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
                             <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
                         </a>
                         <span class="media-meta">
@@ -757,13 +879,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
                             <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
                             <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
                         </a>
                         <span class="media-meta">
@@ -782,13 +912,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
                             <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
                             <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
                         </a>
                         <span class="media-meta">
@@ -807,13 +945,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
                             <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
                             <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
                         </a>
                         <span class="media-meta">
@@ -832,13 +978,21 @@
                 <div class="media">
                     
                     <div class="media-left">
-                        <a class="link-unstyled" href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
                             <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
                             <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
                         </a>
                         <span class="media-meta">
@@ -861,7 +1015,7 @@
                 data-message-zero="沒有找到文章"
                 data-message-one="找到 1 篇文章"
                 data-message-other="找到 {n} 篇文章">
-                找到 39 篇文章
+                找到 40 篇文章
             </p>
         </div>
     </div>
@@ -871,34 +1025,36 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-peofhqjkzcghmndknakluequy1y6owxdwpaqyju9ntl9zxnk7rdolb3rjjoj.min.js"></script>
+<script src="/assets/js/script-riawfmfa6xxko7sm65an7dfull1rs07rgpykjmegmg7ztgr4cgeoyuvcf35u.min.js"></script>
 <!--SCRIPTS END-->
+
 
     
         <script>
-             var disqus_config = function () {
-                 this.page.url = 'http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/';
-                 
-                    this.page.identifier = '2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/';
-                 
-             };
-            (function() {
-                var d = document, s = d.createElement('script');
-                var disqus_shortname = 'anny-chang';
-                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/';
+              
+            this.page.identifier = '2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
 
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
         </script>
     
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
-    <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+
+    <script src="/assets/js/moment-with-locales.js"></script>
+    <script src="/assets/js/algoliasearch.js"></script>
     <script>
-        var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
-        var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
     </script>
 
 
