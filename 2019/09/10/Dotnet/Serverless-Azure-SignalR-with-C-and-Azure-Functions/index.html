@@ -19,12 +19,12 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～\n\n因為我習慣用 Vscode 開發，所以下面說明都是以 Vscode 為主。\n安裝環境\n安裝 Azure Functions Core Tools (v2)\n\n安裝 .NET Core SDK\n\n\n查看 Azure Functions Core Tools 版本\n1func --Version\n查看 dotnet core 版本\n1dotnet --Version\n登入 Azure 建立 Azuer SignalR\nAzure 入口網站\n\n新增 SignalR service 如下圖設定。\n\n\n注意：這篇介紹的是無伺服器的方式，所以 Service Mode 要選擇 Serverless。一個 Azure SignalR 只能選擇一個 Service Mode，所以傳統的 Classic 方式和 Serverless 只能擇一，兩者不能共用同一個 Service。\n\n設定 Azure Function1) 開啟建立好的服務，複製主要連接字串。\n\n2) 複製官網 sample\n3) 進入 src/chat/csharp。 將 local.settings.sample.json 重新命名為 local.settings.json。 將連接字串貼到 AzureSignalRConnectionString 並設定如下。\n123456789101112&#123;  \"IsEncrypted\": false,  \"Values\": &#123;    \"FUNCTIONS_WORKER_RUNTIME\": \"dotnet\",    \"AzureSignalRConnectionString\": \"Your connection string here\"  &#125;,  \"Host\": &#123;    \"LocalHttpPort\": 7071,    \"CORS\": \"http://127.0.0.1:8080,http://localhost:8080,https://azure-samples.github.io\",    \"CORSCredentials\": true  &#125;&#125;\n\n注意：Host 的部分是在 local 測試時，為了避免 CORS 的限制所設定。請務必將 local 要測試的網域加到 CORS 的值裡面。\n\n4) 開啟 Functions.cs。 官方解釋如下：此函數應用程式中有兩個 HTTP 觸發的函式\n\nGetSignalRInfo - 使用 SignalRConnectionInfo 輸入繫結來產生並傳回有效的連線資訊。\n\nSendMessage - 在要求主體中接收聊天訊息，並使用 SignalR 輸出繫結來將訊息廣播給所有已連線的用戶端應用程式。\n\n\n5) 啟動 local function 測試。\n1func start\n\nLocal Web 測試1) 因為瀏覽器若打開 html 頁面會預設使用 https 處理。所以為了避免 CORS 限制。請安裝啟動本機的 http 伺服器。 Live Server\n\n2) 用 Live Server 開啟 sample html 範本 /docs/demo/chat-v2/index.html。\n\n3) \b自動開啟後，務必輸入 apiBaseUrl local 測試為 http://localhost:7071， Name 也是必填，請輸入聊天室的使用者名稱即可。\n4) 成功之後就可以輸入訊息測試。並能多開數個分頁，測試訊息的接收是否正常。\n\n發布 Azure Function\n安裝 Azure Functions 擴充功能。\n\n\n安裝完後請務必重開 VScode。接下來我們開始發布 Azure Function。\n1) 請務必確定 VScode 只開啟 src/chat/csharp 中的 csharp 資料夾。\n\n2) 從擴充功能登入 Azure 帳號。\n\n3) 選擇要發布的地方上傳。\n\n測試連線上 Azure Functions1) 拷貝 Azure Function url，將 html 中 apiBaseUrl 改為線上的 url。\n\n\n2) 因為不同網域去打 API 會有 CORS 的限制，所以需要將測試的網址加到 Azure Function CORS 清單。\n\n\n3) 一樣使用 Live Server 開啟範本，就會成功連上囉~\n把 web 放到線上 server 測試\n注意：剛剛上面都是使用 local web 測試。若要把 web 放在線上測試的話，需要在 Azure Function 設定連線變數。官網沒寫這段，害我鬼打牆了好一陣子呀～怎麼設定變數如下圖。\n\n\n\n\n記得如果是線上 web 都要把網域再加到 CORS 清單喔～\n\n以上是無伺服器的雲端 Azure SignalR 基本安裝與設定，如果要玩地端的話可以參考官方這篇，那我們下次見～\n參考資料\n快速入門：使用 C# 搭配 Azure Functions 與 SignalR 服務來建立聊天室\n快速入門：使用 JavaScript 搭配 Azure Functions 與 SignalR 服務來建立聊天室\n使用 Visual Studio Code 開發 Azure Functions\n教學課程：開始使用 ASP.NET Core SignalR\n將訊息傳送至用戶端\nSignalR Tutorial 16 - Coding Our JavaScript (Client Side) - Part 1\n\n","dateCreated":"2019-09-10T00:00:00+08:00","dateModified":"2019-09-10T00:00:00+08:00","datePublished":"2019-09-10T00:00:00+08:00","description":"第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～","headline":"Serverless Azure SignalR with C# and Azure Functions","image":["data:image/png;base64,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","https://i.ytimg.com/vi/Dvv2hkXyHcg/maxresdefault.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/","keywords":".NET Core, dotnet, VScode, SignalR, Serverless, Azure Functions, C#","thumbnailUrl":"data:image/png;base64,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"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～\n\n因為我習慣用 Vscode 開發，所以下面說明都是以 Vscode 為主。\n安裝環境\n安裝 Azure Functions Core Tools (v2)\n\n安裝 .NET Core SDK\n\n\n查看 Azure Functions Core Tools 版本\n1func --Version\n查看 dotnet core 版本\n1dotnet --Version\n登入 Azure 建立 Azuer SignalR\nAzure 入口網站\n\n新增 SignalR service 如下圖設定。\n\n\n注意：這篇介紹的是無伺服器的方式，所以 Service Mode 要選擇 Serverless。一個 Azure SignalR 只能選擇一個 Service Mode，所以傳統的 Classic 方式和 Serverless 只能擇一，兩者不能共用同一個 Service。\n\n設定 Azure Function1) 開啟建立好的服務，複製主要連接字串。\n\n2) 複製官網 sample\n3) 進入 src/chat/csharp。 將 local.settings.sample.json 重新命名為 local.settings.json。 將連接字串貼到 AzureSignalRConnectionString 並設定如下。\n123456789101112&#123;  \"IsEncrypted\": false,  \"Values\": &#123;    \"FUNCTIONS_WORKER_RUNTIME\": \"dotnet\",    \"AzureSignalRConnectionString\": \"Your connection string here\"  &#125;,  \"Host\": &#123;    \"LocalHttpPort\": 7071,    \"CORS\": \"http://127.0.0.1:8080,http://localhost:8080,https://azure-samples.github.io\",    \"CORSCredentials\": true  &#125;&#125;\n\n注意：Host 的部分是在 local 測試時，為了避免 CORS 的限制所設定。請務必將 local 要測試的網域加到 CORS 的值裡面。\n\n4) 開啟 Functions.cs。 官方解釋如下：此函數應用程式中有兩個 HTTP 觸發的函式\n\nGetSignalRInfo - 使用 SignalRConnectionInfo 輸入繫結來產生並傳回有效的連線資訊。\n\nSendMessage - 在要求主體中接收聊天訊息，並使用 SignalR 輸出繫結來將訊息廣播給所有已連線的用戶端應用程式。\n\n\n5) 啟動 local function 測試。\n1func start\n\nLocal Web 測試1) 因為瀏覽器若打開 html 頁面會預設使用 https 處理。所以為了避免 CORS 限制。請安裝啟動本機的 http 伺服器。 Live Server\n\n2) 用 Live Server 開啟 sample html 範本 /docs/demo/chat-v2/index.html。\n\n3) \b自動開啟後，務必輸入 apiBaseUrl local 測試為 http://localhost:7071， Name 也是必填，請輸入聊天室的使用者名稱即可。\n4) 成功之後就可以輸入訊息測試。並能多開數個分頁，測試訊息的接收是否正常。\n\n發布 Azure Function\n安裝 Azure Functions 擴充功能。\n\n\n安裝完後請務必重開 VScode。接下來我們開始發布 Azure Function。\n1) 請務必確定 VScode 只開啟 src/chat/csharp 中的 csharp 資料夾。\n\n2) 從擴充功能登入 Azure 帳號。\n\n3) 選擇要發布的地方上傳。\n\n測試連線上 Azure Functions1) 拷貝 Azure Function url，將 html 中 apiBaseUrl 改為線上的 url。\n\n\n2) 因為不同網域去打 API 會有 CORS 的限制，所以需要將測試的網址加到 Azure Function CORS 清單。\n\n\n3) 一樣使用 Live Server 開啟範本，就會成功連上囉~\n把 web 放到線上 server 測試\n注意：剛剛上面都是使用 local web 測試。若要把 web 放在線上測試的話，需要在 Azure Function 設定連線變數。官網沒寫這段，害我鬼打牆了好一陣子呀～怎麼設定變數如下圖。\n\n\n\n\n記得如果是線上 web 都要把網域再加到 CORS 清單喔～\n\n以上是無伺服器的雲端 Azure SignalR 基本安裝與設定，如果要玩地端的話可以參考官方這篇，那我們下次見～\n參考資料\n快速入門：使用 C# 搭配 Azure Functions 與 SignalR 服務來建立聊天室\n快速入門：使用 JavaScript 搭配 Azure Functions 與 SignalR 服務來建立聊天室\n使用 Visual Studio Code 開發 Azure Functions\n教學課程：開始使用 ASP.NET Core SignalR\n將訊息傳送至用戶端\nSignalR Tutorial 16 - Coding Our JavaScript (Client Side) - Part 1\n\n","dateCreated":"2019-09-10T00:00:00+08:00","dateModified":"2019-09-10T00:00:00+08:00","datePublished":"2019-09-10T00:00:00+08:00","description":"第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～","headline":"Serverless Azure SignalR with C# and Azure Functions","image":["data:image/png;base64,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","https://i.ytimg.com/vi/Dvv2hkXyHcg/maxresdefault.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/","keywords":".NET Core, dotnet, VScode, SignalR, Serverless, Azure Functions, C#","thumbnailUrl":"data:image/png;base64,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"}</script>
     <meta name="description" content="第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～">
 <meta name="keywords" content=".NET Core,dotnet,VScode,SignalR,Serverless,Azure Functions,C#">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Serverless Azure SignalR with C# and Azure Functions">
-<meta property="og:url" content="http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/index.html">
+<meta property="og:url" content="http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
 <meta property="og:description" content="第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～">
 <meta property="og:locale" content="zh-tw">
@@ -439,7 +439,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/10/DotnetCore/NET-Core-3-SPA-with-Vue-Cli-3/"
+                    href="/2019/10/10/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3/"
                     data-tooltip=".NET Core 3.0 SPA with Vue-Cli 3 - Start New Project"
                     aria-label="上一篇: .NET Core 3.0 SPA with Vue-Cli 3 - Start New Project"
                 >
@@ -480,7 +480,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
                     title="分享到 Facebook"
                     aria-label="分享到 Facebook"
                 >
@@ -493,7 +493,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
                     title="分享到 Twitter"
                     aria-label="分享到 Twitter"
                 >
@@ -555,7 +555,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/10/DotnetCore/NET-Core-3-SPA-with-Vue-Cli-3/"
+                    href="/2019/10/10/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3/"
                     data-tooltip=".NET Core 3.0 SPA with Vue-Cli 3 - Start New Project"
                     aria-label="上一篇: .NET Core 3.0 SPA with Vue-Cli 3 - Start New Project"
                 >
@@ -596,7 +596,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
                     title="分享到 Facebook"
                     aria-label="分享到 Facebook"
                 >
@@ -609,7 +609,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
                     title="分享到 Twitter"
                     aria-label="分享到 Twitter"
                 >
@@ -653,7 +653,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
                         aria-label="分享到 Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
@@ -666,7 +666,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
                         aria-label="分享到 Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
@@ -938,7 +938,7 @@
                     <div class="media-left">
                         <a
                             class="link-unstyled"
-                            href="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                             aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
                         >
                             <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
@@ -948,7 +948,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                             aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
                         >
                             <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
@@ -971,7 +971,7 @@
                     <div class="media-left">
                         <a
                             class="link-unstyled"
-                            href="http://annilla.github.io/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
                             aria-label=": .NET Core 2.0 Debug with VScode"
                         >
                             <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
@@ -981,7 +981,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="http://annilla.github.io/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
                             aria-label=": .NET Core 2.0 Debug with VScode"
                         >
                             <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
@@ -1072,7 +1072,7 @@
                 data-message-zero="沒有找到文章"
                 data-message-one="找到 1 篇文章"
                 data-message-other="找到 {n} 篇文章">
-                找到 53 篇文章
+                找到 54 篇文章
             </p>
         </div>
     </div>
@@ -1089,9 +1089,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'http://annilla.github.io/2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/';
+            this.page.url = 'http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/';
               
-            this.page.identifier = '2019/09/10/DotnetCore/Serverless-Azure-SignalR-with-C-and-Azure-Functions/';
+            this.page.identifier = '2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/';
               
           };
           (function() {

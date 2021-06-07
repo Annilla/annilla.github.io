@@ -19,12 +19,12 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":".Net Core 可以不用開啟慢吞吞的 IDE，即可快速建立專案。本篇全程使用 VScode，手把手教你如何用 .NET Core 2.0 MVC + vue-cli 起始一個 SPA 專案。當然， HMR (Hot Module Replacement) 神器也會一併附上啦。\n\n首先，這裡先澄清一點，就是 .NET Core 的 template 內建有 ASP.NET Core with Vue.js。因為是套裝，裡面還包含 Bootstrap, Typescript 等等，畢竟不是每個專案都會用到這些，所以本篇專注在如何結合 .NET Core 和 Vue ，那些依專案選用的項目就不會在這裡提到。\n\n起始 .NET Core 2.0 MVC 專案\n安裝 .NET Command Line Interface\n\n新增一個 Core MVC 專案\n\n\n1dotnet new &apos;ASP.NET Core Web App (Model-View-Controller)&apos;\n\n刪除不必要的檔案\n\n因為我們是 SPA 不需要用到 MVC 其他頁面的功能，所以將多餘的頁面和樣式去除。參考如下的資料夾結構。\n\n\nHomeController.cs 刪除多餘的 Controller，只保留 Index 和 Error\n\n1234567891011121314151617181920212223using System;using System.Collections.Generic;using System.Diagnostics;using System.Linq;using System.Threading.Tasks;using Microsoft.AspNetCore.Mvc;using dotnet_core_vue_cli.Models;namespace dotnet_core_vue_cli.Controllers&#123;  public class HomeController : Controller  &#123;    public IActionResult Index()    &#123;      return View();    &#125;    public IActionResult Error()    &#123;      return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);    &#125;  &#125;&#125;\n\nIndex.cshtml 多餘的 HTML 刪除\n\n1234@&#123;    ViewData[\"Title\"] = \"Home Page\";&#125;&lt;h1&gt;TEST&lt;/h1&gt;\n\n_Layout.cshtml 修改內容如下\n\n1234567891011121314151617181920212223242526272829&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;    &lt;meta charset=\"utf-8\" /&gt;    &lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /&gt;    &lt;title&gt;@ViewData[\"Title\"] - dotnet_core_vue_cli&lt;/title&gt;    &lt;environment include=\"Development\"&gt;        &lt;!-- 這邊放 Development 的 CSS --&gt;        &lt;!-- &lt;link rel=\"stylesheet\" href=\"~/css/xxx.css\" asp-append-version=\"true\"/&gt; --&gt;    &lt;/environment&gt;    &lt;environment exclude=\"Development\"&gt;        &lt;!-- 這邊放 Production 的 CSS --&gt;    &lt;/environment&gt;&lt;/head&gt;&lt;body&gt;    @RenderBody()    &lt;environment include=\"Development\"&gt;        &lt;!-- 這邊放 Development 的 JS --&gt;        &lt;!-- &lt;script src=\"~/js/xxx.js\" asp-append-version=\"true\"&gt;&lt;/script&gt; --&gt;    &lt;/environment&gt;    &lt;environment exclude=\"Development\"&gt;        &lt;!-- 這邊放 Production 的 JS --&gt;    &lt;/environment&gt;    @RenderSection(\"Scripts\", required: false)&lt;/body&gt;&lt;/html&gt;\n\b現在來測試跑看看專案有沒有成功～\n執行\n1dotnet run\n用瀏覽器看 http://localhost:5000 就會跑出剛剛在 Index.cshtml 改寫的 TEST 字樣囉～\n\n安裝 vue-cli 模板\n安裝全域 vue-cli\n\n1npm install -g vue-cli\n\n起始一個簡易的 vue + webpack 專案\n\n1vue init webpack-simple\n按照 vue-cli 的指示回覆操作如下圖。\n\n執行\n1npm install\n測試 Node 有沒有安裝成功 Vue 專案\n1npm run dev\n用瀏覽器看 http://localhost:8080 如果有成功出現如下面畫面就是安裝成功 vue 的專案囉～\n\n\n誒～你有沒有注意到奇怪的地方啊?!我們跑 vue 的時候是用 node server 執行，但是真正專案要在 .NET server 執行。所以怎麼把這兩者結合呢？主要原理就是：在 Development 時把 node server 當作是前端產生靜態資源 (JS, Css, images…) 的工具; Production 的部分就把產出過後的靜態資源給 .NET server 使用。廢話不多說，我們就來趕緊試試看吧。\n\n結合 .NET Core 和 Vue\n修改 webpack.config.js，將靜態檔案產生在 wwwroot 資料夾中\n\n123456789101112131415161718192021222324252627......module.exports = &#123;  entry: &#123;    main: './src/main.js'  &#125;,  output: &#123;    path: path.resolve(__dirname, './wwwroot'),    publicPath: '/wwwroot/',    filename: 'js/build.js'  &#125;,  module: &#123;    rules: [      ......      &#123;        test: /\\.(png|jpg|gif|svg)$/,        loader: 'file-loader',        options: &#123;          publicPath: '/',          outputPath: 'imgs/',          name: '[name].[ext]?[hash]'        &#125;      &#125;    ]  &#125;,  ......&#125;......\n\n修改 cshtml 加入對應的 js 和 html\n\n\n_Layout.cshtml 修改內容如下\n\n123456789101112131415161718192021222324252627282930&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;    &lt;meta charset=\"utf-8\" /&gt;    &lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /&gt;    &lt;title&gt;@ViewData[\"Title\"] - dotnet_core_vue_cli&lt;/title&gt;    &lt;environment include=\"Development\"&gt;        &lt;!-- 這邊放 Development 的 CSS --&gt;        &lt;!-- &lt;link rel=\"stylesheet\" href=\"~/css/xxx.css\" asp-append-version=\"true\"/&gt; --&gt;    &lt;/environment&gt;    &lt;environment exclude=\"Development\"&gt;        &lt;!-- 這邊放 Production 的 CSS --&gt;    &lt;/environment&gt;&lt;/head&gt;&lt;body&gt;    @RenderBody()    &lt;environment include=\"Development\"&gt;        &lt;!-- 這邊放 Development 的 JS --&gt;        &lt;script src=\"~/js/build.js\" asp-append-version=\"true\"&gt;&lt;/script&gt;    &lt;/environment&gt;    &lt;environment exclude=\"Development\"&gt;        &lt;!-- 這邊放 Production 的 JS --&gt;        &lt;script src=\"~/js/build.js\" asp-append-version=\"true\"&gt;&lt;/script&gt;    &lt;/environment&gt;    @RenderSection(\"Scripts\", required: false)&lt;/body&gt;&lt;/html&gt;\n\n接著修改 Index.cshtml\n\n1234@&#123;    ViewData[\"Title\"] = \"Home Page\";&#125;&lt;div id=\"app\"&gt;&lt;/div&gt;\n測試跑跑看 .NET server 有沒有成功？\n先產生靜態檔案\n1npm run build\n再啟動伺服器\n1dotnet run\n成功就會出現之前一樣的畫面囉～\n\n設定 HMR 和 vue router 的 fallback接著才是重頭戲～如魔法般的 HMR 功能登場!!!\n如果還不太知道什麼是 HMR 的，就 google 一下囉～\n\n安裝 aspnet-webpack, webpack-hot-middleware\n\n1npm i -D aspnet-webpack\n1npm i -D webpack-hot-middleware\n\n新增 ASP.NET Core SPA Services\n\n1dotnet add package Microsoft.AspNetCore.SpaServices --version 2.0.1\n\n修改 Startup.cs\n\n1234567891011121314151617181920212223242526272829using Microsoft.AspNetCore.SpaServices.Webpack;......  // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.  public void Configure(IApplicationBuilder app, IHostingEnvironment env)  &#123;    // [HMR] http://www.c-sharpcorner.com/article/using-hot-module-replacement-feature-of-webpack-in-asp-net-core/    if (env.IsDevelopment())    &#123;      app.UseDeveloperExceptionPage();      app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions      &#123;        HotModuleReplacement = true      &#125;);    &#125;    ......    app.UseMvc(routes =&gt;    &#123;      routes.MapRoute(        name: &quot;default&quot;,        template: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);      // Use Vue Router must add fallback route      // Help to navigate directly      // https://stu.ratcliffe.io/2017/07/20/vuejs-serverside-rendering-with-aspnet-core      routes.MapSpaFallbackRoute(&quot;spa-fallback&quot;, new &#123; controller = &quot;Home&quot;, action = &quot;Index&quot; &#125;);    &#125;);  &#125;......\n\npackage.json 指令加上 HMR\n\n123456789&#123;  ......  \"scripts\": &#123;    \"hmr\": \"cross-env ASPNETCORE_ENVIRONMENT=Development NODE_ENV=development dotnet run\",    \"dev\": \"cross-env NODE_ENV=development webpack-dev-server --open --hot\",    \"build\": \"cross-env NODE_ENV=production webpack --progress --hide-modules\"  &#125;,  ......&#125;\n執行\n1npm run hmr\n成功的話就會從 Chrome 開發者工具看到 HMR 連結成功囉～\n\n今天的範例在 github，下回見～\n參考資料\nModern Web Development using ASP.NET Core template, Vue.js and Webpack\nUsing Hot Module Replacement Feature Of Webpack In ASP.NET Core\nMicrosoft.AspNetCore.SpaServices\n\n","dateCreated":"2017-12-02T00:00:00+08:00","dateModified":"2017-12-02T00:00:00+08:00","datePublished":"2017-12-02T00:00:00+08:00","description":".Net Core 可以不用開啟慢吞吞的 IDE，即可快速建立專案。本篇全程使用 VScode，手把手教你如何用 .NET Core 2.0 MVC + vue-cli 起始一個 SPA 專案。當然， HMR (Hot Module Replacement) 神器也會一併附上啦。","headline":".NET Core 2.0 SPA with Vue-Cli - Start New Project","image":["http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png","http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/","keywords":"Vue, .NET Core, dotnet, Webpack, SPA, MVC, VScode","thumbnailUrl":"http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":".Net Core 可以不用開啟慢吞吞的 IDE，即可快速建立專案。本篇全程使用 VScode，手把手教你如何用 .NET Core 2.0 MVC + vue-cli 起始一個 SPA 專案。當然， HMR (Hot Module Replacement) 神器也會一併附上啦。\n\n首先，這裡先澄清一點，就是 .NET Core 的 template 內建有 ASP.NET Core with Vue.js。因為是套裝，裡面還包含 Bootstrap, Typescript 等等，畢竟不是每個專案都會用到這些，所以本篇專注在如何結合 .NET Core 和 Vue ，那些依專案選用的項目就不會在這裡提到。\n\n起始 .NET Core 2.0 MVC 專案\n安裝 .NET Command Line Interface\n\n新增一個 Core MVC 專案\n\n\n1dotnet new &apos;ASP.NET Core Web App (Model-View-Controller)&apos;\n\n刪除不必要的檔案\n\n因為我們是 SPA 不需要用到 MVC 其他頁面的功能，所以將多餘的頁面和樣式去除。參考如下的資料夾結構。\n\n\nHomeController.cs 刪除多餘的 Controller，只保留 Index 和 Error\n\n1234567891011121314151617181920212223using System;using System.Collections.Generic;using System.Diagnostics;using System.Linq;using System.Threading.Tasks;using Microsoft.AspNetCore.Mvc;using dotnet_core_vue_cli.Models;namespace dotnet_core_vue_cli.Controllers&#123;  public class HomeController : Controller  &#123;    public IActionResult Index()    &#123;      return View();    &#125;    public IActionResult Error()    &#123;      return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);    &#125;  &#125;&#125;\n\nIndex.cshtml 多餘的 HTML 刪除\n\n1234@&#123;    ViewData[\"Title\"] = \"Home Page\";&#125;&lt;h1&gt;TEST&lt;/h1&gt;\n\n_Layout.cshtml 修改內容如下\n\n1234567891011121314151617181920212223242526272829&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;    &lt;meta charset=\"utf-8\" /&gt;    &lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /&gt;    &lt;title&gt;@ViewData[\"Title\"] - dotnet_core_vue_cli&lt;/title&gt;    &lt;environment include=\"Development\"&gt;        &lt;!-- 這邊放 Development 的 CSS --&gt;        &lt;!-- &lt;link rel=\"stylesheet\" href=\"~/css/xxx.css\" asp-append-version=\"true\"/&gt; --&gt;    &lt;/environment&gt;    &lt;environment exclude=\"Development\"&gt;        &lt;!-- 這邊放 Production 的 CSS --&gt;    &lt;/environment&gt;&lt;/head&gt;&lt;body&gt;    @RenderBody()    &lt;environment include=\"Development\"&gt;        &lt;!-- 這邊放 Development 的 JS --&gt;        &lt;!-- &lt;script src=\"~/js/xxx.js\" asp-append-version=\"true\"&gt;&lt;/script&gt; --&gt;    &lt;/environment&gt;    &lt;environment exclude=\"Development\"&gt;        &lt;!-- 這邊放 Production 的 JS --&gt;    &lt;/environment&gt;    @RenderSection(\"Scripts\", required: false)&lt;/body&gt;&lt;/html&gt;\n\b現在來測試跑看看專案有沒有成功～\n執行\n1dotnet run\n用瀏覽器看 http://localhost:5000 就會跑出剛剛在 Index.cshtml 改寫的 TEST 字樣囉～\n\n安裝 vue-cli 模板\n安裝全域 vue-cli\n\n1npm install -g vue-cli\n\n起始一個簡易的 vue + webpack 專案\n\n1vue init webpack-simple\n按照 vue-cli 的指示回覆操作如下圖。\n\n執行\n1npm install\n測試 Node 有沒有安裝成功 Vue 專案\n1npm run dev\n用瀏覽器看 http://localhost:8080 如果有成功出現如下面畫面就是安裝成功 vue 的專案囉～\n\n\n誒～你有沒有注意到奇怪的地方啊?!我們跑 vue 的時候是用 node server 執行，但是真正專案要在 .NET server 執行。所以怎麼把這兩者結合呢？主要原理就是：在 Development 時把 node server 當作是前端產生靜態資源 (JS, Css, images…) 的工具; Production 的部分就把產出過後的靜態資源給 .NET server 使用。廢話不多說，我們就來趕緊試試看吧。\n\n結合 .NET Core 和 Vue\n修改 webpack.config.js，將靜態檔案產生在 wwwroot 資料夾中\n\n123456789101112131415161718192021222324252627......module.exports = &#123;  entry: &#123;    main: './src/main.js'  &#125;,  output: &#123;    path: path.resolve(__dirname, './wwwroot'),    publicPath: '/wwwroot/',    filename: 'js/build.js'  &#125;,  module: &#123;    rules: [      ......      &#123;        test: /\\.(png|jpg|gif|svg)$/,        loader: 'file-loader',        options: &#123;          publicPath: '/',          outputPath: 'imgs/',          name: '[name].[ext]?[hash]'        &#125;      &#125;    ]  &#125;,  ......&#125;......\n\n修改 cshtml 加入對應的 js 和 html\n\n\n_Layout.cshtml 修改內容如下\n\n123456789101112131415161718192021222324252627282930&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;    &lt;meta charset=\"utf-8\" /&gt;    &lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /&gt;    &lt;title&gt;@ViewData[\"Title\"] - dotnet_core_vue_cli&lt;/title&gt;    &lt;environment include=\"Development\"&gt;        &lt;!-- 這邊放 Development 的 CSS --&gt;        &lt;!-- &lt;link rel=\"stylesheet\" href=\"~/css/xxx.css\" asp-append-version=\"true\"/&gt; --&gt;    &lt;/environment&gt;    &lt;environment exclude=\"Development\"&gt;        &lt;!-- 這邊放 Production 的 CSS --&gt;    &lt;/environment&gt;&lt;/head&gt;&lt;body&gt;    @RenderBody()    &lt;environment include=\"Development\"&gt;        &lt;!-- 這邊放 Development 的 JS --&gt;        &lt;script src=\"~/js/build.js\" asp-append-version=\"true\"&gt;&lt;/script&gt;    &lt;/environment&gt;    &lt;environment exclude=\"Development\"&gt;        &lt;!-- 這邊放 Production 的 JS --&gt;        &lt;script src=\"~/js/build.js\" asp-append-version=\"true\"&gt;&lt;/script&gt;    &lt;/environment&gt;    @RenderSection(\"Scripts\", required: false)&lt;/body&gt;&lt;/html&gt;\n\n接著修改 Index.cshtml\n\n1234@&#123;    ViewData[\"Title\"] = \"Home Page\";&#125;&lt;div id=\"app\"&gt;&lt;/div&gt;\n測試跑跑看 .NET server 有沒有成功？\n先產生靜態檔案\n1npm run build\n再啟動伺服器\n1dotnet run\n成功就會出現之前一樣的畫面囉～\n\n設定 HMR 和 vue router 的 fallback接著才是重頭戲～如魔法般的 HMR 功能登場!!!\n如果還不太知道什麼是 HMR 的，就 google 一下囉～\n\n安裝 aspnet-webpack, webpack-hot-middleware\n\n1npm i -D aspnet-webpack\n1npm i -D webpack-hot-middleware\n\n新增 ASP.NET Core SPA Services\n\n1dotnet add package Microsoft.AspNetCore.SpaServices --version 2.0.1\n\n修改 Startup.cs\n\n1234567891011121314151617181920212223242526272829using Microsoft.AspNetCore.SpaServices.Webpack;......  // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.  public void Configure(IApplicationBuilder app, IHostingEnvironment env)  &#123;    // [HMR] http://www.c-sharpcorner.com/article/using-hot-module-replacement-feature-of-webpack-in-asp-net-core/    if (env.IsDevelopment())    &#123;      app.UseDeveloperExceptionPage();      app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions      &#123;        HotModuleReplacement = true      &#125;);    &#125;    ......    app.UseMvc(routes =&gt;    &#123;      routes.MapRoute(        name: &quot;default&quot;,        template: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);      // Use Vue Router must add fallback route      // Help to navigate directly      // https://stu.ratcliffe.io/2017/07/20/vuejs-serverside-rendering-with-aspnet-core      routes.MapSpaFallbackRoute(&quot;spa-fallback&quot;, new &#123; controller = &quot;Home&quot;, action = &quot;Index&quot; &#125;);    &#125;);  &#125;......\n\npackage.json 指令加上 HMR\n\n123456789&#123;  ......  \"scripts\": &#123;    \"hmr\": \"cross-env ASPNETCORE_ENVIRONMENT=Development NODE_ENV=development dotnet run\",    \"dev\": \"cross-env NODE_ENV=development webpack-dev-server --open --hot\",    \"build\": \"cross-env NODE_ENV=production webpack --progress --hide-modules\"  &#125;,  ......&#125;\n執行\n1npm run hmr\n成功的話就會從 Chrome 開發者工具看到 HMR 連結成功囉～\n\n今天的範例在 github，下回見～\n參考資料\nModern Web Development using ASP.NET Core template, Vue.js and Webpack\nUsing Hot Module Replacement Feature Of Webpack In ASP.NET Core\nMicrosoft.AspNetCore.SpaServices\n\n","dateCreated":"2017-12-02T00:00:00+08:00","dateModified":"2017-12-02T00:00:00+08:00","datePublished":"2017-12-02T00:00:00+08:00","description":".Net Core 可以不用開啟慢吞吞的 IDE，即可快速建立專案。本篇全程使用 VScode，手把手教你如何用 .NET Core 2.0 MVC + vue-cli 起始一個 SPA 專案。當然， HMR (Hot Module Replacement) 神器也會一併附上啦。","headline":".NET Core 2.0 SPA with Vue-Cli - Start New Project","image":["http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png","http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/","keywords":"Vue, .NET Core, dotnet, Webpack, SPA, MVC, VScode","thumbnailUrl":"http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"}</script>
     <meta name="description" content=".Net Core 可以不用開啟慢吞吞的 IDE，即可快速建立專案。本篇全程使用 VScode，手把手教你如何用 .NET Core 2.0 MVC + vue-cli 起始一個 SPA 專案。當然， HMR (Hot Module Replacement) 神器也會一併附上啦。">
 <meta name="keywords" content="Vue,.NET Core,dotnet,Webpack,SPA,MVC,VScode">
 <meta property="og:type" content="blog">
 <meta property="og:title" content=".NET Core 2.0 SPA with Vue-Cli - Start New Project">
-<meta property="og:url" content="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/index.html">
+<meta property="og:url" content="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
 <meta property="og:description" content=".Net Core 可以不用開啟慢吞吞的 IDE，即可快速建立專案。本篇全程使用 VScode，手把手教你如何用 .NET Core 2.0 MVC + vue-cli 起始一個 SPA 專案。當然， HMR (Hot Module Replacement) 神器也會一併附上啦。">
 <meta property="og:locale" content="zh-tw">
@@ -451,7 +451,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/"
+                    href="/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
                     data-tooltip=".NET Core 2.0 Debug with VScode"
                     aria-label="上一篇: .NET Core 2.0 Debug with VScode"
                 >
@@ -492,7 +492,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                     title="分享到 Facebook"
                     aria-label="分享到 Facebook"
                 >
@@ -505,7 +505,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                     title="分享到 Twitter"
                     aria-label="分享到 Twitter"
                 >
@@ -567,7 +567,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/"
+                    href="/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
                     data-tooltip=".NET Core 2.0 Debug with VScode"
                     aria-label="上一篇: .NET Core 2.0 Debug with VScode"
                 >
@@ -608,7 +608,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                     title="分享到 Facebook"
                     aria-label="分享到 Facebook"
                 >
@@ -621,7 +621,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                     title="分享到 Twitter"
                     aria-label="分享到 Twitter"
                 >
@@ -665,7 +665,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                         aria-label="分享到 Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
@@ -678,7 +678,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                         aria-label="分享到 Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
@@ -950,7 +950,7 @@
                     <div class="media-left">
                         <a
                             class="link-unstyled"
-                            href="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                             aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
                         >
                             <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
@@ -960,7 +960,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
                             aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
                         >
                             <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
@@ -983,7 +983,7 @@
                     <div class="media-left">
                         <a
                             class="link-unstyled"
-                            href="http://annilla.github.io/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
                             aria-label=": .NET Core 2.0 Debug with VScode"
                         >
                             <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
@@ -993,7 +993,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="http://annilla.github.io/2017/12/25/DotnetCore/NET-Core-2-0-Debug-with-VScode/"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
                             aria-label=": .NET Core 2.0 Debug with VScode"
                         >
                             <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
@@ -1084,7 +1084,7 @@
                 data-message-zero="沒有找到文章"
                 data-message-one="找到 1 篇文章"
                 data-message-other="找到 {n} 篇文章">
-                找到 53 篇文章
+                找到 54 篇文章
             </p>
         </div>
     </div>
@@ -1101,9 +1101,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'http://annilla.github.io/2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/';
+            this.page.url = 'http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/';
               
-            this.page.identifier = '2017/12/02/DotnetCore/NET-Core-2-0-SPA-with-Vue-Cli/';
+            this.page.identifier = '2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/';
               
           };
           (function() {
