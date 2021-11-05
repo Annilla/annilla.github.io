@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。\n\n第一次轉移總是會痛的，需要每個 artboard 去檢查是否有跟原來設計的畫面一樣，還要重新拉 prototype 動態線，通常至少需要花一整天才能完成轉移一個專案設計檔，且這是在還沒有將 Design System Library component 替換掉的時間。若要替換 Library component 需要在付費制下才可以使用，所以本篇先以免費版所要注意的地方著墨，System Library 等之後再另外寫一篇整理。\n同一組 Prototype 路線要在同個 Page之前 Sketch 我會依據功能將 artboard 分類在不同 Page，但在 Figma 若要做 Prototype 動態連線的話，只能全部在同一個 Page。不同 Page 在 Figma 只會當作是另一組 Prototype 路線。所以要怎麼把全部 artboard 整理在同一個 Page，我的做法是將同一區塊的 artboard 放在一起並用超級大的字體寫那一塊原本的 Page（功能）名稱，這樣遠遠的看也知道那一區是在做什麼的。\n\n群組物件被強制修剪當 Sketch 設計檔轉到 Figma 後，群組的物件會被自動轉換成 Figma 屬性的 group 或 Frame，且會有多一個勾選框顯示在右邊屬性欄，讓設計者勾選是否要修剪影像的 checked box。通常發生在有陰影和文字物件上，導致陰影或文字被強制切掉。這個時候只要取消勾選 “Clip Content”，就能如原本設計一樣了，只是這需要耐心檢查還蠻花時間的。\n\nCircle Progress Bar 畫法不同若你的設計元素有 Circle Progress Bar 要注意在 Figma 的設計方式會不同，以往在 Sketch 通常是調整線框 line dash 的筆畫樣式，但在 Figma 可以直接用實體 fill 的圓形去修改樣式，所以 Sketch 舊方式的 Circle Progress Bar 匯入就會壞掉，需要再重新做設計上的修正。\n\n出現重複 Symbol 的 bug有時候 Sketch 檔案匯入 Figma 後，會出現兩個一樣的 Symbol 的 bug? 目前不確定為什麼會這樣，可能跟檔案版本有關？ 我解決的辦法是用 Figma Plugin - Locator 先去確定哪個 Symbol 是有確實用到的，如果兩個 Symbol 用到的地方都一模一樣，就勇敢的把其中一個刪除吧！另外，也可以用 Figma Plugin - Component Replacer 把不是 symbol 的 component 補上，就是順便檢查一下，讓設計更完整。\n\n\nDesign SystemFigma 有個很不錯的功能是可以將 Design System 共享給各專案使用，但免費版僅限於分享 Color Style 的部分， component 則不給發布，所以這部分要注意的事項，待之後升級到訂閱版，我在把要注意的細節另外寫一篇～\n\nReference\nFigma Plugin - Locator\nFigma Plugin - Component Replacer\n\n","dateCreated":"2021-01-01T00:00:00+08:00","dateModified":"2021-01-01T00:00:00+08:00","datePublished":"2021-01-01T00:00:00+08:00","description":"還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。","headline":"Notes on transferring from Sketch to Figma","image":["https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi","https://www.lohaslife.cc/wp-content/uploads/2020/10/figma.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/","keywords":"Sketch, UX, UI, Figma","thumbnailUrl":"https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。\n\n第一次轉移總是會痛的，需要每個 artboard 去檢查是否有跟原來設計的畫面一樣，還要重新拉 prototype 動態線，通常至少需要花一整天才能完成轉移一個專案設計檔，且這是在還沒有將 Design System Library component 替換掉的時間。若要替換 Library component 需要在付費制下才可以使用，所以本篇先以免費版所要注意的地方著墨，System Library 等之後再另外寫一篇整理。\n同一組 Prototype 路線要在同個 Page之前 Sketch 我會依據功能將 artboard 分類在不同 Page，但在 Figma 若要做 Prototype 動態連線的話，只能全部在同一個 Page。不同 Page 在 Figma 只會當作是另一組 Prototype 路線。所以要怎麼把全部 artboard 整理在同一個 Page，我的做法是將同一區塊的 artboard 放在一起並用超級大的字體寫那一塊原本的 Page（功能）名稱，這樣遠遠的看也知道那一區是在做什麼的。\n\n群組物件被強制修剪當 Sketch 設計檔轉到 Figma 後，群組的物件會被自動轉換成 Figma 屬性的 group 或 Frame，且會有多一個勾選框顯示在右邊屬性欄，讓設計者勾選是否要修剪影像的 checked box。通常發生在有陰影和文字物件上，導致陰影或文字被強制切掉。這個時候只要取消勾選 “Clip Content”，就能如原本設計一樣了，只是這需要耐心檢查還蠻花時間的。\n\nCircle Progress Bar 畫法不同若你的設計元素有 Circle Progress Bar 要注意在 Figma 的設計方式會不同，以往在 Sketch 通常是調整線框 line dash 的筆畫樣式，但在 Figma 可以直接用實體 fill 的圓形去修改樣式，所以 Sketch 舊方式的 Circle Progress Bar 匯入就會壞掉，需要再重新做設計上的修正。\n\n出現重複 Symbol 的 bug有時候 Sketch 檔案匯入 Figma 後，會出現兩個一樣的 Symbol 的 bug? 目前不確定為什麼會這樣，可能跟檔案版本有關？ 我解決的辦法是用 Figma Plugin - Locator 先去確定哪個 Symbol 是有確實用到的，如果兩個 Symbol 用到的地方都一模一樣，就勇敢的把其中一個刪除吧！另外，也可以用 Figma Plugin - Component Replacer 把不是 symbol 的 component 補上，就是順便檢查一下，讓設計更完整。\n\n\nDesign SystemFigma 有個很不錯的功能是可以將 Design System 共享給各專案使用，但免費版僅限於分享 Color Style 的部分， component 則不給發布，所以這部分要注意的事項，待之後升級到訂閱版，我在把要注意的細節另外寫一篇～\n\nReference\nFigma Plugin - Locator\nFigma Plugin - Component Replacer\n\n","dateCreated":"2021-01-01T00:00:00+08:00","dateModified":"2021-01-01T00:00:00+08:00","datePublished":"2021-01-01T00:00:00+08:00","description":"還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。","headline":"Notes on transferring from Sketch to Figma","image":["https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi","https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/","keywords":"Sketch, UX, UI, Figma","thumbnailUrl":"https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi"}</script>
     <meta name="description" content="還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移">
 <meta name="keywords" content="Sketch,UX,UI,Figma">
 <meta property="og:type" content="blog">
@@ -51,8 +51,8 @@
         <meta class="swiftype" name="image" data-type="enum" content="https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi"/>
     
     
-        <meta property="og:image" content="https://www.lohaslife.cc/wp-content/uploads/2020/10/figma.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://www.lohaslife.cc/wp-content/uploads/2020/10/figma.png"/>
+        <meta property="og:image" content="https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png"/>
     
     
     <!--STYLES-->
@@ -283,7 +283,7 @@
         <div class="post-header-cover
                     text-left
                     "
-             style="background-image:url('https://www.lohaslife.cc/wp-content/uploads/2020/10/figma.png');"
+             style="background-image:url('https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png');"
              data-behavior="4">
             
         </div>
@@ -396,7 +396,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -434,7 +434,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -443,7 +443,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -512,7 +512,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -550,7 +550,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -559,7 +559,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -999,7 +999,7 @@
                 data-message-zero="沒有找到文章"
                 data-message-one="找到 1 篇文章"
                 data-message-other="找到 {n} 篇文章">
-                找到 58 篇文章
+                找到 59 篇文章
             </p>
         </div>
     </div>
