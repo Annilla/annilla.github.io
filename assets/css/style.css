@@ -10287,7 +10287,7 @@ a.fancybox {
   .postShorten.postShorten--thumbnailimg-bottom .postShorten-wrap {
     display: block;
     width: 100%; }
-  .postShorten.postShorten--thumbnailimg-bottom .postShorten-excerpt > p {
+  .postShorten.postShorten--thumbnailimg-bottom .postShorten-excerpt > p:last-of-type {
     margin-bottom: 0; }
   .postShorten.postShorten--thumbnailimg-bottom .postShorten-thumbnailimg {
     display: block;

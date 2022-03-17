@@ -19,15 +19,14 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。\n\n\nSVG &amp; CANVAS 繪製原理SVG\n用 D3 把算好的陣列，呈現在 SVG 的 DOM 上，讓 Vue 來做 rendor 的動作，最後使用 CSS transition 做動畫。\n\n\nCANVAS\n Canvas 則是用 “命令” 的方式作圖，JS 就如同一隻虛擬的筆，下指令一筆一畫把圖畫出來。所以，畫出來的東西沒有實體 DOM。動畫也是靠 JS 命令，每段時間清除畫布，不斷地做重新繪製。\n\n\n\nCAN I USE?SVG\nCANVAS\n\n程式碼長度SVG\n\nSVG 399 行 (Whoa! Excellent ~)\n\nCANVAS\n\nCANVAS 603 行 (Oh-no!! So Terrible ~)\n\n\n執行效能SVG\n\nSVG 364 ms\n\nCANVAS\n\nCANVAS 177 ms\n\n\n整體分析\n\n整體來說，像工業 4.0 這種大數據的資料\b使用 CANVAS 來繪製會是最恰當的（速度才不會卡卡）\b\b\b。相反的，如果是簡單的數據圖，使用 SVG\b\b 會比較容易開發和維護。\n\n\b本篇就分析到此，下一篇會繼續解說 CANVAS 如何繪製其他種類（ex: 長條圖、圓餅圖…）的數據圖。\n","dateCreated":"2018-06-17T00:00:00+08:00","dateModified":"2018-06-17T00:00:00+08:00","datePublished":"2018-06-17T00:00:00+08:00","description":"本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。","headline":"D3 v4 with Vue - SVG VS CANVAS","image":["https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no","https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/","keywords":"D3, Vue, CANVAS, SVG","thumbnailUrl":"https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。\n\n\n\nSVG &amp; CANVAS 繪製原理SVG\n用 D3 把算好的陣列，呈現在 SVG 的 DOM 上，讓 Vue 來做 rendor 的動作，最後使用 CSS transition 做動畫。\n\n\nCANVAS\n Canvas 則是用 “命令” 的方式作圖，JS 就如同一隻虛擬的筆，下指令一筆一畫把圖畫出來。所以，畫出來的東西沒有實體 DOM。動畫也是靠 JS 命令，每段時間清除畫布，不斷地做重新繪製。\n\n\n\nCAN I USE?SVG\nCANVAS\n\n程式碼長度SVG\n\nSVG 399 行 (Whoa! Excellent ~)\n\nCANVAS\n\nCANVAS 603 行 (Oh-no!! So Terrible ~)\n\n\n執行效能SVG\n\nSVG 364 ms\n\nCANVAS\n\nCANVAS 177 ms\n\n\n整體分析\n\n整體來說，像工業 4.0 這種大數據的資料\b使用 CANVAS 來繪製會是最恰當的（速度才不會卡卡）\b\b\b。相反的，如果是簡單的數據圖，使用 SVG\b\b 會比較容易開發和維護。\n\n\b本篇就分析到此，下一篇會繼續解說 CANVAS 如何繪製其他種類（ex: 長條圖、圓餅圖…）的數據圖。\n","dateCreated":"2018-06-17T00:00:00+08:00","dateModified":"2018-06-17T00:00:00+08:00","datePublished":"2018-06-17T00:00:00+08:00","description":"本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。","headline":"D3 v4 with Vue - SVG VS CANVAS","image":["https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no","https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/","keywords":"D3, Vue, CANVAS, SVG","thumbnailUrl":"https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"}</script>
     <meta name="description" content="本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。">
-<meta name="keywords" content="D3,Vue,CANVAS,SVG">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="D3 v4 with Vue - SVG VS CANVAS">
 <meta property="og:url" content="http://annilla.github.io/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
 <meta property="og:description" content="本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。">
-<meta property="og:locale" content="zh-tw">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://lh3.googleusercontent.com/ZAzSTKoRMQE98bOg3uj9YplXa5AFTgiUR_HxMxa5mFBiEdFs6KNZwU3tgQxrj9R_xxCp2kpb-gLAhDfv1B3el8dULEnnW-YbpGNrZMeVFXiQZjb2xDDe8L2wmgBW36te5_hXcbN3aRdSi3W9TkVkVg7o7V_l6cbtOtm3N_D-kukmkfvQtvPItjI4K8i0jL1XMXbtlqjyDekrjwtrV8BGfJOB2UdWjmmQW79QadmcV3i9T0l7t7OAmZZk4LOwDz02PaZ4xZGglt40m4PVKeBb1181lnPhGp1qcTTLDzoaFyLsGwBfz2Dy_rSpehWT6Y3eUdIMFsUeqmyXCA4A5Q0iAfb8LuJ-36nP8p8DmKjicVfESglz7UY1mjZhV3n1F1VPOWOcVCQSzfEZMi0aYXLqdNMKiW_cjv4W17rPLBpSkUFWJKlXPFDxNOFi7U9u7pKcBIgVN6xaFx1amUnMaWA-boDEzjTeg-8QPl4Gsvp8-nQSkidiih4VEBVfXxnOToWRFYcNjPFswqq9MBdEnyg81b9IkBLGLtf3vqAbsc7tB17EGODRoprk4-kjzZrl2pygkb8DIRzIKhkE0d8gdPr7Yp0hntBjr7oUYVPq2hRqQEya7NE0NIWV6X2VEGOJQTc8BvZXs0wvYWaIUroEr8Ema9dAo1P_tsqs=w1024-h581-no">
 <meta property="og:image" content="https://lh3.googleusercontent.com/4IZuljnySSEW7hG-zDIvL-Z8lNLYyLKrxOyiLdmAx_tRjgS_7M2_skX8MMzcm4YfhmMINLCzJDZsYrtojmRH8BySK7TdLOfdheBt9Rta_4S7EI1GTaVyR-_f83E1KHGNMFFzwezeDolTdEq1ULmEIKGxKTldAQ1wUsOjYqhz3Vhj7s27EoYOnIiAdBYiW46dAq4veUAV8wNsQ6zA5OvOJLAJh_PBZrDaV--jneUAsoOWBw2OhWZh7nKAvd0gcKedQ1FZJMj9Cbr51YQ1Hfg0QHhgLgucW1lTS8EwVmmIoycBjADwhaU7BOCH5LRbAu8EYAQJA4hQQ8UQLmmpCeAUAhIsd06ugBU6dFDuXZMCNSfb9sjQDPORauW_SoMK0gkMsS6I5fqJDBFTIXZNXJnLsZ-PedIYbAOIvxJY-jgRHUD4UpzlwM5rp2br8hEUBR7EIVDlRb2Ke56qqJHcYLd-tXOH1KT-7qdFm-rsMYRxpY_Fr_wbMlF5e7ZTMSFguMqwCCsqPLGgnjS1MmrPtNy6jy4JKzko9udGwYPykXmjV08ogFEC9gMpIBpJA3iVYK90V3Gce0XLFWAi_0t1G11llFAoGscFxL9VKVfLg7W-RzDCwapq7wcv7XakRhA-E0Q4yDWR8UNybMOkFb1EDI3WdD51iGa0fAEe=w1024-h615-no">
 <meta property="og:image" content="https://lh3.googleusercontent.com/CDfwxp147t0DvInz8711mtyMUaMRmdTjjk8CoIHKylKWYmMdMBGNlUHPgKkT_ucfVuUrGlX6VHZMSC3ojSq187lSIw8XRln_tDXPMCFoEOr9hf4E4bBpwJKpZRPieJCCZf8GBoAYU4ri4-0HCE7wA0IcJ90RWrlZupjt06y49PaMEDUKjgIISHcaJUiKqRqgzwja1Ko8D-mdjYcGlF6RyUy9-juWjscLnAH9uCJHOtqI1kJGTJ0ZjZXVJReUJdObYGP151lLu8vewoSKOrwzBRYhkyv86aysGASJCYpcJGQpf7LNFZ8O09m6sdNCLf26um8zzs0FD-SIXrB47PgdCclmrUTH-LD3M0mtZauA32vrsuiSTjJZS0FPvs6mvVLX99xQZXVAiAr_6B6atSe5L23oGj5ORwleyh04vQncaVtBOciusq0evUPERCq0-v39ySLRYAeowROsu2MEBuFA_-AVJwyouNe99erpG7P7eHFq2em-JkAzOHAb7elRv0Ogmx9moM3sqHRbJ9pc4qg1cwaiMUtQ9aUZFxEsdJ2ZFBq1xAw4CNN788ZQ1a04749h65-syAzsaZsnF_RhirutLugQz2X3K43VwBOWDMcAbsuo6jcZQE6ym0pL8dbD5b9Ev1I5pgnpmfd1iGvyi6JYb6fS5VHFCnVk=w960-h720-no">
@@ -37,10 +36,14 @@
 <meta property="og:image" content="https://lh3.googleusercontent.com/I9kGOm_f_okaPyeuNUQmRG5YQUtXwDBEyqhKVnlid_pZzXgT9k5c0mn5nqLFHC3DRblnLGR7GIKg-P_lpAtlXMeUnQMT0ehH_eytcbHA-0Lw6RGfizOvGpLSkqENJT6wiElTEOJzmbttEH-coE_TiIfMZ2ySwFkJJKbJHAl1yUrY3u4NvPjIe531rvGL0V5jt828afr6XI4c1no70wsKXlIIJIZA5zfTodlNsyZ82e1125mhD1J6WUcAJqHV_wO-do3Y-3cS2xIZlSKqvII8ufnS_curc4nvKpXq28w5PBG81BfVDiWiHzMHEaxMKJFBthdglowvIa3ZNgv_M0rnBnfmoTQtb0TDq-QPCb5P_Ox6PSeeipBcGQxuufBBKt7H_yOOEjvVvfpD7CIpLcIapVGmNhYSoQcnw9luB86QM5X-F72P3arl_x9YpISU3lkkFXceQMa67NuoTsKG_HffQ1ZVNMhLSubKF6vapLMZ0MlKfuoXm4GtwUCUGbNgRLIwD19Gcbl4CuK0_HjFgA0Z_vypGieC5Vl_qR1p-A6eX14l0CB1i5jCfs24PaIdJICV__0tJnKcJ1G5I6DwDgzfGC9sJiXLazgzpeuI-Yl6R9mmPJnGVME2k_jHCBpkPiiFsPPlhKPF5TKDZuTkz_1qRiqXND_3dIc0=w960-h720-no">
 <meta property="og:image" content="https://lh3.googleusercontent.com/H4jEF4F2vXB7rk767aivRFvdOcEF3CfR1xRc-urjzTV_xJBfxe3ARAa-Xv8PKcIa6ykm37iMIsTf__g_PKY8psG5r_cyNbPW1IhAs4kUZ4yF8tMzLymudPt-p4X4PVav3QWkANhWIl25_q1VwXm-NnoU9ncn4JEiHiREKoMAJiGDnPMV_qgFCrW_CLa78QYUA2jSOVFJ-e6v7A5fALJV_2uvmZNPO5f3Iuc0l1pbJP1zjp4IfdBKA8FadFek2ztoUiAfydWjruU0VT8mAZCJs9Z4PPPBfCxEcAHF8pB44IaYppDO47De1kUAhW2V_vAvKegvjZnUtuX2aSDpDIozyhYFd2an4bE4w00g-pjvTfTGDRtksOr7LYUJqsmCJzCQ1RUBx_2xve07c_Fvb5wjcXkQWu_HVZ3CrciipJ8BnGar6NIKnXnYws-qvcA8uh_8zVafoG57F1f-yMyNzrrJnbMx5cCTfiXFNOQ5--8fPsmcfWLoZ9ASXnv-kbACKwUGNGSsDpP3VvYUVN1pQ0lmq-dXtGcECDtLf6s7yYC5D77noLAXd9GSwH3V5OWdNgw2pIYTKLmlX76eIukbc5CcbgWr1UbUfOLKAZz97b-d122mkf6V9j6eDmCQVWRfZW0T1OeIKffA9yDn5UrZ_R_s6HBweS1SB4O0=w960-h720-no">
 <meta property="og:image" content="https://lh3.googleusercontent.com/TQ1cY8cfzysPs5_lYNwNaJ0dLSSWl0AuWDw6FY6gR43sjv7rTt3E0HPyMj2nJxON75srHT-LziWsBeaOq6wASwN67opUfA5H1rTCziwLryhY7gYpZcgxpj-bjYxRuq4h4iLD2ggN36fOhg36HOMMMdrFkKrtpVGgWhEJdt6HkaKWBHcRuza_tss33mzktR9F1H5IDKbwwVomkz7OFsTErvI_lnWy1Jk7ylrjkbcEOa16WYV6B1YRHFo2h_hU7KCOZF3FU3LY16Mdo8chcVi6KcjfZcxoDj3NleQbpePAi9eGpqy-yCh8jrPAhi5_kQEBGlaJBmLDnC414DNzT9JKIPa-nLEsrDPHWiKG1Pqu24R03o6f0GLfNWy55Vg0ndzR-7OSGl2e347cN1bz0GG7yfl_dMZU23EygFK97e32VFJgktzF9zzuMlsK5s5qJS87knYJnNPIObrgbzET95l3ybsivoI7jIgwXy2TH74UpA6P3H1g5Yk-NPoBoFyGPaXwCvLK-_geMy1JdEIYtwwmJPxMl8AN-1qUSglW5A3keHkXd6kErk2b8nU5tFahYD9PzUf0RMs2DBCaaYcMc5aPLE6hZDuMETmThioOdqVQt7KF0brVzd-OhazWei-Pg2Z9fAjj5d9VDfArg7EIroxOxgX4_UWrRNnk=w960-h720-no">
-<meta property="og:updated_time" content="2018-06-16T16:00:00.000Z">
+<meta property="article:published_time" content="2018-06-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2018-06-16T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="D3">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="CANVAS">
+<meta property="article:tag" content="SVG">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="D3 v4 with Vue - SVG VS CANVAS">
-<meta name="twitter:description" content="本篇主要是針對 SVG 和 CANVAS 兩種繪圖方式作比較，並整理各自的優勢。">
 <meta name="twitter:image" content="https://lh3.googleusercontent.com/ZAzSTKoRMQE98bOg3uj9YplXa5AFTgiUR_HxMxa5mFBiEdFs6KNZwU3tgQxrj9R_xxCp2kpb-gLAhDfv1B3el8dULEnnW-YbpGNrZMeVFXiQZjb2xDDe8L2wmgBW36te5_hXcbN3aRdSi3W9TkVkVg7o7V_l6cbtOtm3N_D-kukmkfvQtvPItjI4K8i0jL1XMXbtlqjyDekrjwtrV8BGfJOB2UdWjmmQW79QadmcV3i9T0l7t7OAmZZk4LOwDz02PaZ4xZGglt40m4PVKeBb1181lnPhGp1qcTTLDzoaFyLsGwBfz2Dy_rSpehWT6Y3eUdIMFsUeqmyXCA4A5Q0iAfb8LuJ-36nP8p8DmKjicVfESglz7UY1mjZhV3n1F1VPOWOcVCQSzfEZMi0aYXLqdNMKiW_cjv4W17rPLBpSkUFWJKlXPFDxNOFi7U9u7pKcBIgVN6xaFx1amUnMaWA-boDEzjTeg-8QPl4Gsvp8-nQSkidiih4VEBVfXxnOToWRFYcNjPFswqq9MBdEnyg81b9IkBLGLtf3vqAbsc7tB17EGODRoprk4-kjzZrl2pygkb8DIRzIKhkE0d8gdPr7Yp0hntBjr7oUYVPq2hRqQEya7NE0NIWV6X2VEGOJQTc8BvZXs0wvYWaIUroEr8Ema9dAo1P_tsqs=w1024-h581-no">
     
     
@@ -59,7 +62,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-drgmjphqdwdzt7jfdtnbayezs1jvkxw24newlqncyzutvnvwsnxsdy0wl8k2.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
@@ -93,7 +98,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/"
             aria-label=""
         >
             Anny Chang - F2E &amp; UI Designer
@@ -328,7 +333,8 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>本篇主要是針對 <code>SVG</code> 和 <code>CANVAS</code> 兩種繪圖方式作比較，並整理各自的優勢。</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <hr>
 <h2 id="SVG-amp-CANVAS-繪製原理"><a href="#SVG-amp-CANVAS-繪製原理" class="headerlink" title="SVG &amp; CANVAS 繪製原理"></a>SVG &amp; CANVAS 繪製原理</h2><h3 id="SVG"><a href="#SVG" class="headerlink" title="SVG"></a>SVG</h3><blockquote>
 <p>用 D3 把算好的陣列，呈現在 SVG 的 DOM 上，讓 Vue 來做 rendor 的動作，最後使用 CSS transition 做動畫。</p>
@@ -376,7 +382,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">標籤</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/CANVAS/">CANVAS</a> <a class="tag tag--primary tag--small t-link" href="/tags/D3/">D3</a> <a class="tag tag--primary tag--small t-link" href="/tags/SVG/">SVG</a> <a class="tag tag--primary tag--small t-link" href="/tags/Vue/">Vue</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/CANVAS/" rel="tag">CANVAS</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/D3/" rel="tag">D3</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/SVG/" rel="tag">SVG</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Vue/" rel="tag">Vue</a>
 
             </div>
         
@@ -419,7 +425,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -457,7 +463,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -466,7 +472,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -479,7 +485,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -535,7 +541,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -573,7 +579,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -582,7 +588,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -712,7 +718,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -745,7 +751,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -778,7 +784,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -811,7 +817,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -844,7 +850,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -877,7 +883,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -910,7 +916,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -943,7 +949,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1032,7 +1038,9 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-0daadeqjm7mxhg3nwwmnja37uxc6u7oer7sun9zcf0rz5ua7aou7q0yd8ief.min.js"></script>
+
+<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
@@ -1057,8 +1065,12 @@
 
 
 
-    <script src="/assets/js/moment-with-locales.js"></script>
-    <script src="/assets/js/algoliasearch.js"></script>
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
     <script>
       var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
       var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
