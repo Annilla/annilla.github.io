@@ -61,6 +61,34 @@
   </entry>
   
   <entry>
+    <title>Figma Useful Plugins for Refactoring</title>
+    <link href="http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/"/>
+    <id>http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/</id>
+    <published>2022-04-14T16:00:00.000Z</published>
+    <updated>2022-04-14T16:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近 Figma 功能換到團隊的訂閱制，終於可以使用 Library 的功能了！但之前還沒換過去之前，檔案內的 Components 都是在 Local 原檔案中，現在該是 Refactor 整理的時候了，把共用的 Components 改用 Library 的，並重新整理檔案。此篇紀錄其中碰到的問題並寫出使用了哪些 Plugin 來改善 Refactor 的效率。</p><span id="more"></span><h1 id="找出哪裡用了-Local-Components"><a href="#找出哪裡用了-Local-Components" class="headerlink" title="找出哪裡用了 Local Components"></a>找出哪裡用了 Local Components</h1><p>之前文章有介紹過 Locator 這個 Plugin，但若有大量 Components ，每個點右鍵等他跑的時間會拉很長，很沒有效率。後來找到一個更好的套件叫 <a href="https://www.figma.com/community/plugin/741895659787979282/Instance-Finder">Instance Finder</a>，他只要跑一次之後，就會把整個檔案的內容記住，所以只要開著視窗，選取要找的 component ，點擊 find 按鈕就可以很快地列出來，而且他有上一個下一個的按鈕，可以快速的瀏覽各 component 位置，非常方便。</p><p><img src="https://s3-alpha-sig.figma.com/plugins/741895659787979282/534/8ebee8c4-63f1-4b5b-9935-97ebb35df46c-cover?Expires=1650844800&Signature=LzzmLj0XhilqL7RPnqceLi75Hk4hJtfI7jH9sOSbPS1KPTIhqGt1RPArsOhFX45GrH5UcKd9sHXxAuuNga3Wc-H2~WTjaHB8jhCXxWuLEBTI6McuC4MJMFzUTR88KyWvrwkcwobmweNslTRMg5cbUfdytqzBCymD7I07bYMRpmpy-MRYSwOd4sWF7eHSvf9UOl5l9~30UIvauqH7p7sND4FOpPlNaTE2vdtlmvejSOmiTWUdSeRmqA-MBENtMbudomQz6wSXLqlFLlu1p02ylE0Ot4iATgIDs7v1VQ6T0~nAcT3t~NoZiHtQx8E5GhAY8icfAwdV6mOCs40Xvjxx0A__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="Instance Finder"></p><h1 id="替換成-Library-的-Components"><a href="#替換成-Library-的-Components" class="headerlink" title="替換成 Library 的 Components"></a>替換成 Library 的 Components</h1><p>替換 Components 有兩種情境，一種是他本身就是 component 只要換成 Library 的，另一種是他還不是 component，只是普通的 Group 要怎麼做替換？以下分這兩種情境解釋替換方法。</p><h2 id="Local-Components-替換-Library-Components"><a href="#Local-Components-替換-Library-Components" class="headerlink" title="Local Components 替換 Library Components"></a>Local Components 替換 Library Components</h2><p>因為本身已經是 Components，所以用上述的 Plugin - Instance Finder 找出後，點找出來的母項目即可全選相同的 instance ，並用 Figma 右側 Design 視窗替換 Library Components 即可。</p><p><img src="https://help.figma.com/hc/article_attachments/360091725133/Instance_swap_30fps.gif" alt="Figma 右側 Design 視窗替換 Library Components"></p><h2 id="Group-替換-Library-Components"><a href="#Group-替換-Library-Components" class="headerlink" title="Group 替換 Library Components"></a>Group 替換 Library Components</h2><p>另一種比較棘手的情況是要替換的標的物不是 component，只是一般的 Group。這個時候 Figma 右側 Design 視窗也不會跳出來給你選，那該怎麼辦呢？我找到了另一個超好用的 Plugin - <a href="https://www.figma.com/community/plugin/813970431341620710/Team-Library-Component-Browser">Team Library Component Browser</a>，只要將此套件先去 Library 的檔案按 <code>Save or update this library data</code>，然後去你要執行的檔案把視窗叫出來，就可以選取要替換的 Library Component 直接按 Swap 做替換，其中裡面還有一些小設定可以調整，看是要保持原始大小之類的，就留給各位玩玩看囉～</p><p><img src="https://s3-alpha-sig.figma.com/plugins/813970431341620710/26936/896b8404-d633-477e-b791-17d5e451c7d6-cover?Expires=1650844800&Signature=gItyd~3boSUPCQ0KwD0CQNu08vM2tiDrCZsFqlRrjVNLl7FMirV9lgCNVTcYiRSbMXeDenD~3cBpGT2dkBwe8W0OkHlBTOBLa2bHDFDRLV9Be9AERLzELw6ajVtok2~morNFEtJSSIli0VKuqhsSN-bAZZbP-Klp-FgDGD9aMXZ7IzWP6Cz7GV933pdawj~~lUnH-mlmfuwXRrhL6ZRtBebrOto~jWVLL1qB3SGKb2xBj8cUtRmowSZoPIvt00MbdfcQsYvV1cmfHxZdZh56ynrnQ0gS0lSi9m4p-1uokitV00TC6sNVbSYvj~KQ0as6aF~TGBXrCHZ~zAjd3rXT5w__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="Team Library Component Browser"></p><h1 id="快速編排大量的-Artboards"><a href="#快速編排大量的-Artboards" class="headerlink" title="快速編排大量的 Artboards"></a>快速編排大量的 Artboards</h1><p>當專案長的越來越大後，大量的 Artboards 會變得不易維護，這時候就需要 Plugin 來快速一鍵編排了。Plugin - <a href="https://www.figma.com/community/plugin/786286754606650597/Organize-Layers">Organize Layers</a> 使用上就非常便利。但使用前提是每個 Artboards 的名稱要依照層次的方式命名，ex: 類別&#x2F;01&#x2F;1-xxxx，第一層通常放分類，第二層依照頁面取流水號，第三層開頭放的是頁面第幾步驟，xxxx 放描述，如此命名有個好處是，當要做 prototype 的時候，list 會直接依照前面的命名方式排序，能快速選到要 navigate to 的頁面。名稱的命名好之後，開 Plugin 的視窗就能選擇要使用第幾階層來編排 Artboards，也可以設定 x, y 的間距，最後點選按鈕一鍵編排，之後只要新增的頁面也按照一樣的方式命名，按鈕一鍵就能幫你排的舒舒服服，好開心～</p><p><img src="https://s3-alpha-sig.figma.com/plugins/786286754606650597/5647/352fce3d-b02d-47f5-960d-68458702ee42-cover?Expires=1650844800&Signature=OiDG34Lcmk4sNLqZ71LN0CmeUgbUBD6OCzGp1ZglRvtSqJu5V1zcPZV9OiDsnbEwqLI2633wvk8BoncCSUjdVnjiteqpRX4JWHlWTg0cLEpL3dZCDdMWZhudNCgcd69uA9roElA4LStn9gkLJgDdSgHGj0BMh8flp27qGOMd--jEOub4GFJfQIElGFsoNggSbwQodErSONS~7kYox1cWIEvZ-z9rTKHYIQhCbHJYGxoDzP1Ir7e4piMMAKJjGyLQFm5lmD7jooq66KVoGvXveu6poX5C96drB-LSLU1s7dFiLk1ey-Wi1EgK2qfyWQCkrNQP~SrZy7u0OS06CnkpRA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="Organize Layers"></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><a href="https://www.figma.com/community/plugin/741895659787979282/Instance-Finder">Figma Plugin - Instance Finder</a></li><li><a href="https://www.figma.com/community/plugin/813970431341620710/Team-Library-Component-Browser">Figma Plugin - Team Library Component Browser</a></li><li><a href="https://www.figma.com/community/plugin/786286754606650597/Organize-Layers">Figma Plugin - Organize Layers</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近 Figma 功能換到團隊的訂閱制，終於可以使用 Library 的功能了！但之前還沒換過去之前，檔案內的 Components 都是在 Local 原檔案中，現在該是 Refactor 整理的時候了，把共用的 Components 改用 Library 的，並重新整理檔案。此篇紀錄其中碰到的問題並寫出使用了哪些 Plugin 來改善 Refactor 的效率。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
+    
+      <category term="Figma" scheme="http://annilla.github.io/categories/UXUI/Figma/"/>
+    
+    
+      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
+    
+      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
+    
+      <category term="Figma" scheme="http://annilla.github.io/tags/Figma/"/>
+    
+  </entry>
+  
+  <entry>
     <title>.NET 6 SPA with Vue-Cli Webpack Base - Start New Project</title>
     <link href="http://annilla.github.io/2022/03/04/Dotnet/NET-6-SPA-with-Vue-Cli-Webpack-Base/"/>
     <id>http://annilla.github.io/2022/03/04/Dotnet/NET-6-SPA-with-Vue-Cli-Webpack-Base/</id>
@@ -485,34 +513,6 @@
     
     
       <category term="Scrum" scheme="http://annilla.github.io/tags/Scrum/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Google Material Design - Sliders</title>
-    <link href="http://annilla.github.io/2020/11/07/UXUI/Google-Material-Design-Sliders/"/>
-    <id>http://annilla.github.io/2020/11/07/UXUI/Google-Material-Design-Sliders/</id>
-    <published>2020-11-06T16:00:00.000Z</published>
-    <updated>2020-11-06T16:00:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>近期收到 Material Design 對 component 的更新訊息，趁此機會重新審視組件的使用方式。這次主要來看 Sliders。</p><span id="more"></span><h1 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h1><p>Sliders 組件讓使用者在範圍內的值做選取。可用在調整音量,亮度或調整圖片濾鏡等場景。 Sliders 可以在兩端點使用 icon 來表示數值或相對的關係。使用者可以透過和 icon 互動改變 Slider 的值，像是調整音量。</p><h2 id="即時效果"><a href="#即時效果" class="headerlink" title="即時效果"></a>即時效果</h2><p>使用 Sliders 改變值是立即性的，讓使用者調整 slider 達到選取值的目的。Sliders 不應該在使用者回饋上有任何的延遲。</p><h2 id="當前狀態"><a href="#當前狀態" class="headerlink" title="當前狀態"></a>當前狀態</h2><p>Sliders 會直接反應當前值的狀態。</p><p>如下圖，上方是連續的 slider。下方式離散的 slider。<br><img src="https://lh3.googleusercontent.com/HyBNA4jg-7mZ_wvptdv2BFs2COwO21hYtonNR3SzbfeO6pFyvfiqxHXKpbuBq6tkI2TKeqWgtE4_Cps3P1PVDcX7HAQJXze6KDEHlA=w1064-v0" alt="上方是連續的 slider。下方式分散的 slider。"></p><h1 id="Sliders-值"><a href="#Sliders-值" class="headerlink" title="Sliders 值"></a>Sliders 值</h1><h2 id="可編輯的數值"><a href="#可編輯的數值" class="headerlink" title="可編輯的數值"></a>可編輯的數值</h2><p><img src="https://lh3.googleusercontent.com/CqyD0Td-8cE2mN0BnVZHhbz3NjLULgvGEQkc2i2cnc2wQ0aLyAiClOW8EcekqcgAO-PB2sBg3X4yxwg-3SY37N3LVLKgyceEDHdaDw=w1064-v0" alt="可編輯的數值"></p><p>可調整的 Slider 值讓使用者能精確的選取需要的數字。</p><p>透過選取點選 Slider 按鈕拖曳改變值，或是使用輸入框直接輸入需要的值。使用者輸入後， Slider 按鈕要立即改變位置與使用者輸入的值相同。請注意輸入框不包含在 Slider 組件內，而是開發者需要自行開發的功能。研究發現輸入框有助於使用者選取需要的值。</p><h2 id="值的順序"><a href="#值的順序" class="headerlink" title="值的順序"></a>值的順序</h2><p>對於從左到右顯示的語言（例如英語），範圍的最小值顯示在左側，最大值顯示在右側。<br>對於從右到左的語言（例如阿拉伯語），應該顛倒值的位置，將最大值放在左邊，將最小值放在右邊。</p><h1 id="Sliders-種類"><a href="#Sliders-種類" class="headerlink" title="Sliders 種類"></a>Sliders 種類</h1><h2 id="連續-Sliders"><a href="#連續-Sliders" class="headerlink" title="連續 Sliders"></a>連續 Sliders</h2><p>連續 Sliders 讓使用者在主觀範圍內選擇。不需要將值標示出來。</p><p><img src="https://lh3.googleusercontent.com/EHxl03Dqn-evX03HVg5lEDFagSPySmmkiCyGqFawQSVlPByfvLUwJVl5YMSF5MszxMtofLEainftW77JtMafBPqyVa8X3cmtPXS2=w1064-v0" alt="連續 Sliders"></p><h2 id="離散-Sliders"><a href="#離散-Sliders" class="headerlink" title="離散 Sliders"></a>離散 Sliders</h2><p>離散 Sliders 可通過按鈕來調整為特定值。可以用刻度的方式讓按鈕吸附對應的值。</p><p><img src="https://lh3.googleusercontent.com/BxmR3b_1Oa-yyXsyb_wDaX_SkLxv1W1wtRmw9IyvS8T1WYTC_gtECiYIX64p0YS6CFv55qyA57zzjxDbZjt0vo8aCS79CFN-_b7-lw=w1064-v0" alt="離散 Sliders"></p><h1 id="主題客製化"><a href="#主題客製化" class="headerlink" title="主題客製化"></a>主題客製化</h1><p>可依據主題客製化所需的 Slider 如下圖。</p><p><img src="https://lh3.googleusercontent.com/cT5ehcw23NHD15r64eCvvUWYFCYQn5m04BK9ITt6sCZZE4bsHC2xNXgsxoxyqwNL1emATR9eTNM3QUGUCyZOhVLFTQBONiYweBMce1Q=w1064-v0" alt="Sliders 客製化"></p><p>目前專案中還沒有適合使用 Slider 的時機點，若往後有機會可以嘗試加入此組件。</p><h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><ul><li><a href="https://material.io/components/sliders">Material Design - Sliders</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;近期收到 Material Design 對 component 的更新訊息，趁此機會重新審視組件的使用方式。這次主要來看 Sliders。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
-    
-      <category term="Material Design" scheme="http://annilla.github.io/categories/UXUI/Material-Design/"/>
-    
-    
-      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
-    
-      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
-    
-      <category term="Material Design" scheme="http://annilla.github.io/tags/Material-Design/"/>
     
   </entry>
   
