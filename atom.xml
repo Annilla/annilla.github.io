@@ -61,6 +61,34 @@
   </entry>
   
   <entry>
+    <title>Naver Study Case - Naver App for Apple Watch</title>
+    <link href="http://annilla.github.io/2022/06/08/UXUI/Naver-Study-Case-Naver-App-for-Apple-Watch/"/>
+    <id>http://annilla.github.io/2022/06/08/UXUI/Naver-Study-Case-Naver-App-for-Apple-Watch/</id>
+    <published>2022-06-07T16:00:00.000Z</published>
+    <updated>2022-06-07T16:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>很久沒來觀摩 Naver 的設計，剛好最近看到一篇關於穿戴式裝置 Apple Watch 的應用設計，所以想來學習學習。</p><span id="more"></span><h1 id="Naver-App-for-Apple-Watch"><a href="#Naver-App-for-Apple-Watch" class="headerlink" title="Naver App for Apple Watch"></a>Naver App for Apple Watch</h1><p>這是一款結合天氣預報和 QR Code 實名制的小應用，因為疫情的關係，韓國有一陣子進入店家是需要掃 QR Code 實名制。他有幾點設計是讓我覺得不錯的：</p><ol><li>卡片使用圓角，跟手錶的圓弧設計搭得很融洽。</li><li>因為手錶的可視範圍很小，所以利用多種不同的方式來表現卡片的內容，除了視覺效果外，還讓 user 知道能選取卡片觀看細節。不同的表現方式例如：卡片疊合、卡片間的小空隙、露出一小部分下張卡片等等。</li><li>他的互動體驗也非常流暢，包括天氣的動畫、展開卡片的方式等等。</li></ol><p>下面依序 APP 的畫面，說明覺得設計不錯的地方。</p><h1 id="首頁"><a href="#首頁" class="headerlink" title="首頁"></a>首頁</h1><p>首頁利用卡面疊合的方式，漂亮展示了兩張主要卡片： QR Code 和 天氣預報。天氣動畫的部分利用淡入＋向左滑入+微放大，營造目前天氣的氣氛很順暢。</p><p><img src="https://postfiles.pstatic.net/MjAyMTA0MTlfMTYz/MDAxNjE4ODI2MzU4NTU0.g9CsGRXV0KAc6CY6uJaFGwTc5zFaIQwXDNQu5Lmo0WYg.m-naKw7tE7RYoSgN1w5XWX_TWNDCi3mLR8C-TttzS8Eg.GIF.nvr_design/0413_1%ED%99%88_900.gif?type=w966" alt="Naver App for Apple Watch"></p><h1 id="QR-Code"><a href="#QR-Code" class="headerlink" title="QR Code"></a>QR Code</h1><p>點選 QR Code 卡片會有微縮小＋向上展開卡片的互動，看起來非常清楚明瞭。</p><p><img src="https://postfiles.pstatic.net/MjAyMTA0MTlfNSAg/MDAxNjE4ODI2MzgxNTcx.sRyuQRylSYyWUopKK5fMteJyTNYKFfl0WjrJbcLcR5Mg.zcBQ00boBSh4l_rX-D4P-gWU7CXOIFBPMCUN1bsKUZog.GIF.nvr_design/0413_2QR_900.gif?type=w966" alt="QR Code"></p><h1 id="天氣預報"><a href="#天氣預報" class="headerlink" title="天氣預報"></a>天氣預報</h1><p>進入天氣預報可以看到大張主卡片，下面會顯示一小塊綠色卡片的一點點，提示使用者可以向下滑取得更多資訊，我覺得這點設計很不錯，除了提示外還帶有設計感。下面三塊小卡片，分別利用小空隙展示天氣細塵紫外線等資訊。繼續滑會有未來 24H 的天氣預報，滑到最後還會自動回到一開始的大張主卡片，我覺得這是最貼心的一點！！因為手錶若要展示很長的內容，滑到最底後，勢必還是要有回最上方的方式，他直接做了卡片迴圈這點，讓我感覺很驚艷～(可能是我還沒看過太多手錶的 APP 吧 XD)</p><p><img src="https://postfiles.pstatic.net/MjAyMTA0MTlfMjcy/MDAxNjE4ODI3NjMyMzcx.7akSzzx8K2K7Rmf7kvD_wERWrC_StxyWLzcwqaDggDEg.d1rP1wI2ON2rkAB6G3gwOB32bIBGFTSqX0kiN_YLew8g.GIF.nvr_design/0407_3%EB%82%A0%EC%94%A8_cc_1000.gif?type=w966" alt="天氣預報"></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><a href="https://blog.naver.com/nvr_design/222315744463">適用於 Apple Watch 的新 Naver 應用程序</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;很久沒來觀摩 Naver 的設計，剛好最近看到一篇關於穿戴式裝置 Apple Watch 的應用設計，所以想來學習學習。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
+    
+      <category term="Naver" scheme="http://annilla.github.io/categories/UXUI/Naver/"/>
+    
+    
+      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
+    
+      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
+    
+      <category term="Naver" scheme="http://annilla.github.io/tags/Naver/"/>
+    
+  </entry>
+  
+  <entry>
     <title>VScode Extension - Azure Static Web Apps</title>
     <link href="http://annilla.github.io/2022/05/18/VScode/VScode-Extension-Azure-Static-Web-Apps/"/>
     <id>http://annilla.github.io/2022/05/18/VScode/VScode-Extension-Azure-Static-Web-Apps/</id>
@@ -487,36 +515,6 @@
     
     
       <category term="PowerBI" scheme="http://annilla.github.io/tags/PowerBI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes on transferring from Sketch to Figma</title>
-    <link href="http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/"/>
-    <id>http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/</id>
-    <published>2020-12-31T16:00:00.000Z</published>
-    <updated>2020-12-31T16:00:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。</p><span id="more"></span><p>第一次轉移總是會痛的，需要每個 artboard 去檢查是否有跟原來設計的畫面一樣，還要重新拉 prototype 動態線，通常至少需要花一整天才能完成轉移一個專案設計檔，且這是在還沒有將 Design System Library component 替換掉的時間。若要替換 Library component 需要在付費制下才可以使用，所以本篇先以免費版所要注意的地方著墨，System Library 等之後再另外寫一篇整理。</p><h1 id="同一組-Prototype-路線要在同個-Page"><a href="#同一組-Prototype-路線要在同個-Page" class="headerlink" title="同一組 Prototype 路線要在同個 Page"></a>同一組 Prototype 路線要在同個 Page</h1><p>之前 Sketch 我會依據功能將 artboard 分類在不同 Page，但在 Figma 若要做 Prototype 動態連線的話，只能全部在同一個 Page。不同 Page 在 Figma 只會當作是另一組 Prototype 路線。所以要怎麼把全部 artboard 整理在同一個 Page，我的做法是將同一區塊的 artboard 放在一起並用超級大的字體寫那一塊原本的 Page（功能）名稱，這樣遠遠的看也知道那一區是在做什麼的。</p><p><img src="https://lh3.googleusercontent.com/pw/ACtC-3fXQJ_l_y5auAA3Xe1NuMYvlHthoPQvW1Ijk1G4xTgGRZT1me4XXGavIcNA5VSY5mhDW8c7_3ndvi3Ptu0-Ahjfl9NlJ4W0h3HxvYSRKotT9C2R8XxsGJBKziedeHto-GmtY2BCsnBYBUeamXSGmMGRGg=w2542-h1378-no?authuser=0" alt="Prototype 要在同一個 Page"></p><h1 id="群組物件被強制修剪"><a href="#群組物件被強制修剪" class="headerlink" title="群組物件被強制修剪"></a>群組物件被強制修剪</h1><p>當 Sketch 設計檔轉到 Figma 後，群組的物件會被自動轉換成 Figma 屬性的 group 或 Frame，且會有多一個勾選框顯示在右邊屬性欄，讓設計者勾選是否要修剪影像的 checked box。通常發生在有陰影和文字物件上，導致陰影或文字被強制切掉。這個時候只要取消勾選 “Clip Content”，就能如原本設計一樣了，只是這需要耐心檢查還蠻花時間的。</p><p><img src="https://lh3.googleusercontent.com/pw/ACtC-3els8K-mYfiBwswCJfPY9fMfUhwrqTTRcq9HZLqFeRvm0Gd_I13EfCpuTHZB_epIsCL8brFtA4a1-SXN_P2nYeHOVc8P593WKvyiGtDsaKJoqBQiwUt-whxhmv7_P0DLq_GhzDdENu8ykJlxD4yN1Xtxw=w490-h622-no?authuser=0" alt="Clip Content"></p><h1 id="Circle-Progress-Bar-畫法不同"><a href="#Circle-Progress-Bar-畫法不同" class="headerlink" title="Circle Progress Bar 畫法不同"></a>Circle Progress Bar 畫法不同</h1><p>若你的設計元素有 Circle Progress Bar 要注意在 Figma 的設計方式會不同，以往在 Sketch 通常是調整線框 line dash 的筆畫樣式，但在 Figma 可以直接用實體 fill 的圓形去修改樣式，所以 Sketch 舊方式的 Circle Progress Bar 匯入就會壞掉，需要再重新做設計上的修正。</p><p><img src="https://downloads.intercomcdn.com/i/o/82641775/21030eb185c81c44338bc2ee/Arc+Closed+Ring.gif" alt="Circle Progress Bar"></p><h1 id="出現重複-Symbol-的-bug"><a href="#出現重複-Symbol-的-bug" class="headerlink" title="出現重複 Symbol 的 bug"></a>出現重複 Symbol 的 bug</h1><p>有時候 Sketch 檔案匯入 Figma 後，會出現兩個一樣的 Symbol 的 bug? 目前不確定為什麼會這樣，可能跟檔案版本有關？ 我解決的辦法是用 <a href="https://www.figma.com/community/plugin/741935812012883481/Locator">Figma Plugin - Locator</a> 先去確定哪個 Symbol 是有確實用到的，如果兩個 Symbol 用到的地方都一模一樣，就勇敢的把其中一個刪除吧！另外，也可以用 <a href="https://www.figma.com/community/plugin/748545064462894895/Component-Replacer">Figma Plugin - Component Replacer</a> 把不是 symbol 的 component 補上，就是順便檢查一下，讓設計更完整。</p><p><img src="https://www.figma.com/community/plugin/741935812012883481/thumbnail" alt="Figma Plugin - Locator"></p><p><img src="https://www.figma.com/community/plugin/748545064462894895/thumbnail" alt="Figma Plugin - Component Replace"></p><h1 id="Design-System"><a href="#Design-System" class="headerlink" title="Design System"></a>Design System</h1><p>Figma 有個很不錯的功能是可以將 Design System 共享給各專案使用，但免費版僅限於分享 Color Style 的部分， component 則不給發布，所以這部分要注意的事項，待之後升級到訂閱版，我在把要注意的細節另外寫一篇～</p><p><img src="https://images.ctfassets.net/1khq4uysbvty/4XYc5Z5siLdaAgidhT2ym/0f916d11a615efaa0776f5fc33b2446f/DS_03.gif?&w=785" alt="Design System"></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><a href="https://www.figma.com/community/plugin/741935812012883481/Locator">Figma Plugin - Locator</a></li><li><a href="https://www.figma.com/community/plugin/748545064462894895/Component-Replacer">Figma Plugin - Component Replacer</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
-    
-      <category term="Figma" scheme="http://annilla.github.io/categories/UXUI/Figma/"/>
-    
-    
-      <category term="Sketch" scheme="http://annilla.github.io/tags/Sketch/"/>
-    
-      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
-    
-      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
-    
-      <category term="Figma" scheme="http://annilla.github.io/tags/Figma/"/>
     
   </entry>
   
