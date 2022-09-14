@@ -61,6 +61,30 @@
   </entry>
   
   <entry>
+    <title>Midjourney - AI Art</title>
+    <link href="http://annilla.github.io/2022/09/14/UXUI/Midjourney-AI-Art/"/>
+    <id>http://annilla.github.io/2022/09/14/UXUI/Midjourney-AI-Art/</id>
+    <published>2022-09-13T16:00:00.000Z</published>
+    <updated>2022-09-13T16:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近有藝術作品利用 AI 繪圖技術 Midjourney 製成參加比賽獲獎，有很多篇新聞報導，讓大眾開始反思 AI 繪圖的可能性。<a href="https://www.cup.com.hk/2022/09/06/midjourney-ai-artwork/">(AI 作品奪藝術獎：究竟甚麼是藝術？)</a> 基於好奇，所以我也去試玩看看。</p><span id="more"></span><h1 id="在私有-Discord-Server-加入-Midjourney-Bot"><a href="#在私有-Discord-Server-加入-Midjourney-Bot" class="headerlink" title="在私有 Discord Server 加入 Midjourney Bot"></a>在私有 Discord Server 加入 Midjourney Bot</h1><p>因為本身已經有 Discord 帳號，所以就嘗試將 Midjourney Bot 加入私有 Server，這樣就可以不被其他討論串干擾，可以專心的使用。這邊簡單說明怎麼加入 Midjourney Bot。</p><ol><li>從使用者清單搜尋並選取 Midjourney Bot，然後點擊 “Add to Server”</li></ol><p><img src="https://366511654-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F6Bl9seaj2HHrtdPiMKPI%2Fuploads%2FxcZv42rRdX0h1jAdozx9%2FMJ_BotInvite.png?alt=media&token=5457b2d2-6c4e-446a-b8d1-37cf195b8653" alt="Add to Server"></p><ol start="2"><li>選擇你要加入的私有 server， 跟著步驟指示加入 Midjourney Bot.</li></ol><p><img src="https://366511654-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F6Bl9seaj2HHrtdPiMKPI%2Fuploads%2FAUtdCvJ2CTV8HJb596Xk%2FMJ_AuthorizeBot.png?alt=media&token=18ec7508-4d43-4aab-b25c-c0f8558d473a" alt="Authorize"></p><h1 id="創建藝術"><a href="#創建藝術" class="headerlink" title="創建藝術"></a>創建藝術</h1><ol><li>選擇 Server 上隨便一個頻道，使用 <code>/imagine</code> 指令開始作畫。</li></ol><p><img src="https://366511654-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F6Bl9seaj2HHrtdPiMKPI%2Fuploads%2FIujTWOvV8MHvoMuAdhQI%2Fimagine_command_popup_click.gif?alt=media&token=3a15d252-3068-4713-9a47-2deb32c3bcdd" alt="/imagine 指令"></p><ol start="2"><li>等待 Bot 作畫需要一點時間，完成後會出現選項，讓使用者可以更近一步的加上細節，或另外延伸。如下圖，他會出現 <code>U1, U2, U3, U4</code> 的選項，代表對 1-4 的某張圖加上細節， <code>V1, V2, V3, V4</code> 的選項，則是代表對 1-4 的某張圖選擇一張再做一次延展變形。</li></ol><p><img src="https://366511654-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F6Bl9seaj2HHrtdPiMKPI%2Fuploads%2FDMyymwMpj3lURSrF91RF%2F167755032-fe6935a9-b6a2-4b80-8f73-13916c170ceb.png?alt=media&token=718f14b7-8d9b-41de-899d-63dd705ef14a" alt="加上細節或另外延伸"></p><ol start="3"><li>一直重複上述步驟直到有滿意的圖為止。PS. 一個帳號只能用 25 次免費的AI 演算，包含點 U1-4, V1-4 按鈕。可以用 <code>/info</code> 指令查看剩下幾次。</li></ol><h1 id="試試看"><a href="#試試看" class="headerlink" title="試試看"></a>試試看</h1><p>我一開始嘗試的關鍵字: cats vector logo，中間按了幾次 V 出來的。</p><p><img src="https://lh3.googleusercontent.com/pw/AL9nZEVoFt88KToDiW1JAVlQPcRPZMjBHQBo0T2k1xierdhuzSYTdpCTHoClCD2kNh4uYwHnrcwDmJ7An75Y6MILK81wDVDbNR1VTYOGauDn82pZ0dXglGwUbhDaAGPdhVB-0NEqTxO2okQvuaY3RL93A0igjg=w850-h1442-no?authuser=0" alt="cats vector logo"></p><p>嘗試另一組關鍵字： smart factory illustration。出現幾張不太一樣的變化，我選了第一張去做 U 的細節。</p><p><img src="https://lh3.googleusercontent.com/pw/AL9nZEUamIWByBx2AC56tbMJsSHBOLbjOigAZ1SDVwNFRoCltt_L0xmiUoCZQBXy6cyRZHxIDuROyRo3hgT65Wt1XbiqYF4sEcJdblxHxdZXQrNQM4l2RDl2t1-WSvvwil7KclS0ud8sR0bywH1KKO0tcgrLwg=w978-h1442-no?authuser=0" alt="smart factory illustration"></p><p>最後 AI 幫我做出的 Upscaled 感覺還不賴。</p><p><img src="https://lh3.googleusercontent.com/pw/AL9nZEXEI51PW6upxKI-eGWRdeilwOYZVYVExCesea9tgXq6VjM6LXf6uyqB5ITzrS0G9E5s6uhvxO0BpPs_FULbLGeBkBtSr7xGB-CpwLsgKoVREpIddwIoecAuLbRLUnrDfgfNjbXa5hmwoOhq2yMtPhvJxA=w914-h1442-no?authuser=0" alt="smart factory illustration"></p><p>出圖速度我覺得都蠻快的，不會太久，拿來當作靈感或是大背景底圖都不錯用。不過重點還是要下好關鍵字，才能跑出想要的效果呦～</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><a href="https://midjourney.gitbook.io/docs/">Midjourney Documentation</a></li><li><a href="https://midjourney.gitbook.io/docs/use-midjourney-on-your-own-discord-server">Use Midjourney on your own Discord Server</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近有藝術作品利用 AI 繪圖技術 Midjourney 製成參加比賽獲獎，有很多篇新聞報導，讓大眾開始反思 AI 繪圖的可能性。&lt;a href=&quot;https://www.cup.com.hk/2022/09/06/midjourney-ai-artwork/&quot;&gt;(AI 作品奪藝術獎：究竟甚麼是藝術？)&lt;/a&gt; 基於好奇，所以我也去試玩看看。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
+    
+    
+      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
+    
+      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Figma Text Replace by Free Google Fonts</title>
     <link href="http://annilla.github.io/2022/08/19/UXUI/Figma-Text-Replace-by-Free-Google-Fonts/"/>
     <id>http://annilla.github.io/2022/08/19/UXUI/Figma-Text-Replace-by-Free-Google-Fonts/</id>
@@ -495,34 +519,6 @@
       <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
     
       <category term="Figma" scheme="http://annilla.github.io/tags/Figma/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spline - Easily Create and Publish 3D Web Experiences</title>
-    <link href="http://annilla.github.io/2021/03/07/UXUI/Spline-Easily-Create-and-Publish-3D-Web-Experiences/"/>
-    <id>http://annilla.github.io/2021/03/07/UXUI/Spline-Easily-Create-and-Publish-3D-Web-Experiences/</id>
-    <published>2021-03-06T16:00:00.000Z</published>
-    <updated>2021-03-06T16:00:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>Spline Design 是一款可以繪製並匯出 3D 設計至網頁的工具。我第一次是在臉書看到有人分享，今天下載過後，覺得功能強大且有趣，後續會試著玩玩看再分享心得，今天先來簡略介紹一下 Spline。</p><span id="more"></span><p>先看一下我從 Library 下載下來的檔案輸出成 Public URL 用 iframe 嵌入的效果。</p><iframe src='https://my.spline.design/sketchbookecommerce-2ea1fcee956cc616fa71642cb685f3cd/' frameborder='0' width='100%' height='600px'></iframe><p>Spline 可以做到：</p><ul><li>旋轉、移動、縮放 3D 畫布</li><li>使用滑鼠和物件互動</li><li>互動的即時反應很順暢</li><li>可輸出多種格式檔案 (URL, Canvas js, 圖片, 影片)</li></ul><p>但目前測試出美中不足的地方：</p><ul><li>輸出、儲存等動作需要等候時間 (類似做影片輸出和儲存也需要等程式做編譯)</li><li>網頁成品一開始讀入需要等一段時間，但讀完的操作算很順暢</li><li>免費版成品會壓 Spline 的浮水印</li></ul><h1 id="Spline-UI"><a href="#Spline-UI" class="headerlink" title="Spline UI"></a>Spline UI</h1><p><img src="https://docs.spline.design/_next/image?url=https://api.super.so/asset/docs.spline.design/8885f6c1-2f99-4bf5-ba9c-2ccec391ff06.png&w=3840&q=100" alt="Spline UI"></p><br>* Tap bar: 檔案頁籤，可開多個檔案作切換* Toolbar: 繪圖工具* Left Sidebar: 圖層面板，可以整理各圖層* Right Sidebar: 屬性面板，可以控制顏色、環境設定、輸出等參數* Viewport: 製圖區，3D 圖呈現的地方<h1 id="Presentation-Mode"><a href="#Presentation-Mode" class="headerlink" title="Presentation Mode"></a>Presentation Mode</h1><p><img src="https://docs.spline.design/_next/image?url=https://api.super.so/asset/docs.spline.design/49a353f0-78a9-4229-a150-7e1471886080.gif&w=3840&q=100" alt="Presentation Mode"></p><p>Presentation Mode 是可以讓使用者預覽作圖出來的互動效果。因為這個步驟還沒涉及到輸出，所以不用花太多時間等待就能看到製作的預期結果。</p><h1 id="Exporting"><a href="#Exporting" class="headerlink" title="Exporting"></a>Exporting</h1><p>他的輸出類型可以是: Public URL, Web Content, Image, Video.</p><p>因為這次是簡介，所以就先展示若輸出成 URL 會有 spline 給的網址如下。</p><p><img src="https://docs.spline.design/_next/image?url=https://api.super.so/asset/docs.spline.design/4afdea43-69f2-4e52-91b5-d5308dcd6616.png&w=3840&q=100" alt="Exporting URL"></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><a href="https://spline.design/">Spline</a></li><li><a href="https://docs.spline.design/">Spline Docs</a></li><li><a href="https://medium.com/as-a-product-designer/spline-tool-intro-b8058bad852a">Spline：輕鬆建出能在網頁互動的 3D 模型</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Spline Design 是一款可以繪製並匯出 3D 設計至網頁的工具。我第一次是在臉書看到有人分享，今天下載過後，覺得功能強大且有趣，後續會試著玩玩看再分享心得，今天先來簡略介紹一下 Spline。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
-    
-      <category term="Spline" scheme="http://annilla.github.io/categories/UXUI/Spline/"/>
-    
-    
-      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
-    
-      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
-    
-      <category term="Spline" scheme="http://annilla.github.io/tags/Spline/"/>
     
   </entry>
   
