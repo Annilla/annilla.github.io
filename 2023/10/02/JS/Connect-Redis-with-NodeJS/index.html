@@ -19,13 +19,13 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定心理 OS 只有一個字爽!!!\n\n\n安裝 node-redis 並連線安裝\n1npm install redis\n\n啟用連線\n123456789101112131415import &#123; createClient &#125; from &#x27;redis&#x27;;const client = createClient(&#123;    url: &#x27;redis[s]://[[username][:password]@][host][:port][/db-number]&#x27; // 這邊替換成需要的 Redis Server&#125;);client.on(&#x27;error&#x27;, (err) =&gt; console.log(&#x27;Redis Client Error&#x27;, err));async function connectRedis() &#123;    cosole.log(client.isReady); // false 尚未連線    await client.connect(); // 啟用連線    cosole.log(client.isReady); // true 連線成功&#125;connectRedis();\n\n抓資料並存取12345678910import fs from &#x27;fs&#x27;;...async function connectRedis() &#123;    await client.connect(); // 啟用連線    const Data = await client.GET(`key`); // 取得資料, 這邊要換成實際資料用的 key 才抓的到    fs.writeFileSync(`Data.json`, Data); // 儲存 json 資料到本機&#125;connectRedis();\n\n\n這邊小加碼一下~如果想要把檔案儲存到指定的資料夾名稱, 可以用下列指令新增資料夾, 再把檔案儲存到指定的資料夾名稱.\n\n123456789101112131415161718...async function connectRedis() &#123;    await client.connect(); // 啟用連線    const destination = &#x27;C:\\\\XXX&#x27;; // 儲存檔案的目的地    const folderName = &#x27;folderName&#x27;; // 儲存檔案的資料夾名稱    // Add Folder    if (!fs.existsSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;`)) &#123;        fs.mkdirSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;`);    &#125;    const Data = await client.GET(`key`); // 取得資料, 這邊要換成實際資料用的 key 才抓的到    fs.writeFileSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;\\\\Data.json`, Data); // 儲存 json 資料到本機&#125;connectRedis();\n\nReference\nnode-redis\n\n","dateCreated":"2023-10-02T00:00:00+08:00","dateModified":"2023-10-02T00:00:00+08:00","datePublished":"2023-10-02T00:00:00+08:00","description":"最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定心理 OS 只有一個字爽!!!","headline":"Connect Redis with NodeJS","image":["https://microstream.one/blog/wp-content/uploads/2023/06/redis_logo-1.png","https://ps.w.org/redis-cache/assets/banner-1544x500.png?rev=2315420"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2023/10/02/JS/Connect-Redis-with-NodeJS/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2023/10/02/JS/Connect-Redis-with-NodeJS/","keywords":"JS, Redis","thumbnailUrl":"https://microstream.one/blog/wp-content/uploads/2023/06/redis_logo-1.png"}</script>
-    <meta name="description" content="最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定心理 OS 只有一個字爽!">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,爽!!!\n\n\n安裝 node-redis 並連線安裝\n1npm install redis\n\n啟用連線\n123456789101112131415import &#123; createClient &#125; from &#x27;redis&#x27;;const client = createClient(&#123;    url: &#x27;redis[s]://[[username][:password]@][host][:port][/db-number]&#x27; // 這邊替換成需要的 Redis Server&#125;);client.on(&#x27;error&#x27;, (err) =&gt; console.log(&#x27;Redis Client Error&#x27;, err));async function connectRedis() &#123;    cosole.log(client.isReady); // false 尚未連線    await client.connect(); // 啟用連線    cosole.log(client.isReady); // true 連線成功&#125;connectRedis();\n\n抓資料並存取12345678910import fs from &#x27;fs&#x27;;...async function connectRedis() &#123;    await client.connect(); // 啟用連線    const Data = await client.GET(`key`); // 取得資料, 這邊要換成實際資料用的 key 才抓的到    fs.writeFileSync(`Data.json`, Data); // 儲存 json 資料到本機&#125;connectRedis();\n\n\n這邊小加碼一下~如果想要把檔案儲存到指定的資料夾名稱, 可以用下列指令新增資料夾, 再把檔案儲存到指定的資料夾名稱.\n\n123456789101112131415161718...async function connectRedis() &#123;    await client.connect(); // 啟用連線    const destination = &#x27;C:\\\\XXX&#x27;; // 儲存檔案的目的地    const folderName = &#x27;folderName&#x27;; // 儲存檔案的資料夾名稱    // Add Folder    if (!fs.existsSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;`)) &#123;        fs.mkdirSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;`);    &#125;    const Data = await client.GET(`key`); // 取得資料, 這邊要換成實際資料用的 key 才抓的到    fs.writeFileSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;\\\\Data.json`, Data); // 儲存 json 資料到本機&#125;connectRedis();\n\nReference\nnode-redis\n\n","dateCreated":"2023-10-02T00:00:00+08:00","dateModified":"2023-10-02T00:00:00+08:00","datePublished":"2023-10-02T00:00:00+08:00","description":"最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,爽!!!","headline":"Connect Redis with NodeJS","image":["https://microstream.one/blog/wp-content/uploads/2023/06/redis_logo-1.png","https://ps.w.org/redis-cache/assets/banner-1544x500.png?rev=2315420"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2023/10/02/JS/Connect-Redis-with-NodeJS/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2023/10/02/JS/Connect-Redis-with-NodeJS/","keywords":"JS, Redis","thumbnailUrl":"https://microstream.one/blog/wp-content/uploads/2023/06/redis_logo-1.png"}</script>
+    <meta name="description" content="最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Connect Redis with NodeJS">
 <meta property="og:url" content="http://annilla.github.io/2023/10/02/JS/Connect-Redis-with-NodeJS/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
-<meta property="og:description" content="最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定心理 OS 只有一個字爽!">
+<meta property="og:description" content="最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2023-10-01T16:00:00.000Z">
 <meta property="article:modified_time" content="2023-10-01T16:00:00.000Z">
@@ -320,7 +320,7 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定<del>心理 OS 只有一個字</del>爽!!!</p>
+            <p>最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,爽!!!</p>
 <span id="more"></span>
 
 <h1 id="安裝-node-redis-並連線"><a href="#安裝-node-redis-並連線" class="headerlink" title="安裝 node-redis 並連線"></a>安裝 node-redis 並連線</h1><p>安裝</p>
@@ -393,7 +393,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="이 포스트 공유하기"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -431,7 +431,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Kommentieren"
+                        aria-label="댓글을 남겨주세요"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -440,7 +440,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="맨 위로">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -509,7 +509,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="이 포스트 공유하기"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -547,7 +547,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Kommentieren"
+                        aria-label="댓글을 남겨주세요"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -556,7 +556,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="맨 위로">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
