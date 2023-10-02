@@ -61,6 +61,30 @@
   </entry>
   
   <entry>
+    <title>Connect Redis with NodeJS</title>
+    <link href="http://annilla.github.io/2023/10/02/JS/Connect-Redis-with-NodeJS/"/>
+    <id>http://annilla.github.io/2023/10/02/JS/Connect-Redis-with-NodeJS/</id>
+    <published>2023-10-01T16:00:00.000Z</published>
+    <updated>2023-10-01T16:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定<del>心理 OS 只有一個字</del>爽!!!</p><span id="more"></span><h1 id="安裝-node-redis-並連線"><a href="#安裝-node-redis-並連線" class="headerlink" title="安裝 node-redis 並連線"></a>安裝 node-redis 並連線</h1><p>安裝</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install redis</span><br></pre></td></tr></table></figure><p>啟用連線</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createClient &#125; <span class="keyword">from</span> <span class="string">&#x27;redis&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> client = <span class="title function_">createClient</span>(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&#x27;redis[s]://[[username][:password]@][host][:port][/db-number]&#x27;</span> <span class="comment">// 這邊替換成需要的 Redis Server</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">client.<span class="title function_">on</span>(<span class="string">&#x27;error&#x27;</span>, <span class="function">(<span class="params">err</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Redis Client Error&#x27;</span>, err));</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectRedis</span>(<span class="params"></span>) &#123;</span><br><span class="line">    cosole.<span class="title function_">log</span>(client.<span class="property">isReady</span>); <span class="comment">// false 尚未連線</span></span><br><span class="line">    <span class="keyword">await</span> client.<span class="title function_">connect</span>(); <span class="comment">// 啟用連線</span></span><br><span class="line">    cosole.<span class="title function_">log</span>(client.<span class="property">isReady</span>); <span class="comment">// true 連線成功</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">connectRedis</span>();</span><br></pre></td></tr></table></figure><h1 id="抓資料並存取"><a href="#抓資料並存取" class="headerlink" title="抓資料並存取"></a>抓資料並存取</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">&#x27;fs&#x27;</span>;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectRedis</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">await</span> client.<span class="title function_">connect</span>(); <span class="comment">// 啟用連線</span></span><br><span class="line">    <span class="keyword">const</span> <span class="title class_">Data</span> = <span class="keyword">await</span> client.<span class="title function_">GET</span>(<span class="string">`key`</span>); <span class="comment">// 取得資料, 這邊要換成實際資料用的 key 才抓的到</span></span><br><span class="line">    fs.<span class="title function_">writeFileSync</span>(<span class="string">`Data.json`</span>, <span class="title class_">Data</span>); <span class="comment">// 儲存 json 資料到本機</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">connectRedis</span>();</span><br></pre></td></tr></table></figure><blockquote><p><strong>這邊小加碼一下~如果想要把檔案儲存到指定的資料夾名稱, 可以用下列指令新增資料夾, 再把檔案儲存到指定的資料夾名稱.</strong></p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectRedis</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">await</span> client.<span class="title function_">connect</span>(); <span class="comment">// 啟用連線</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> destination = <span class="string">&#x27;C:\\XXX&#x27;</span>; <span class="comment">// 儲存檔案的目的地</span></span><br><span class="line">    <span class="keyword">const</span> folderName = <span class="string">&#x27;folderName&#x27;</span>; <span class="comment">// 儲存檔案的資料夾名稱</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Add Folder</span></span><br><span class="line">    <span class="keyword">if</span> (!fs.<span class="title function_">existsSync</span>(<span class="string">`<span class="subst">$&#123;destination&#125;</span>\\<span class="subst">$&#123;folderName&#125;</span>`</span>)) &#123;</span><br><span class="line">        fs.<span class="title function_">mkdirSync</span>(<span class="string">`<span class="subst">$&#123;destination&#125;</span>\\<span class="subst">$&#123;folderName&#125;</span>`</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title class_">Data</span> = <span class="keyword">await</span> client.<span class="title function_">GET</span>(<span class="string">`key`</span>); <span class="comment">// 取得資料, 這邊要換成實際資料用的 key 才抓的到</span></span><br><span class="line">    fs.<span class="title function_">writeFileSync</span>(<span class="string">`<span class="subst">$&#123;destination&#125;</span>\\<span class="subst">$&#123;folderName&#125;</span>\\Data.json`</span>, <span class="title class_">Data</span>); <span class="comment">// 儲存 json 資料到本機</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">connectRedis</span>();</span><br></pre></td></tr></table></figure><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><a href="https://github.com/redis/node-redis">node-redis</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&amp;gt; 複製 -&amp;gt; 貼到 VSCode -&amp;gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定&lt;del&gt;心理 OS 只有一個字&lt;/del&gt;爽!!!&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="JS" scheme="http://annilla.github.io/categories/JS/"/>
+    
+    
+      <category term="JS" scheme="http://annilla.github.io/tags/JS/"/>
+    
+      <category term="Redis" scheme="http://annilla.github.io/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
     <title>RPA for VSTO UI Testing</title>
     <link href="http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/"/>
     <id>http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/</id>
@@ -505,32 +529,6 @@
       <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
     
       <category term="Figma" scheme="http://annilla.github.io/tags/Figma/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Manually Install Cypress</title>
-    <link href="http://annilla.github.io/2021/10/04/Testing/Manually-Install-Cypress/"/>
-    <id>http://annilla.github.io/2021/10/04/Testing/Manually-Install-Cypress/</id>
-    <published>2021-10-03T16:00:00.000Z</published>
-    <updated>2021-10-03T16:00:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近發現公司內網不明原因會擋住 npm install cypress，但安裝其他的套件就不會發生，所以只好搜尋看要怎麼手動安裝 cypress。</p><span id="more"></span><h1 id="手動安裝-cypress"><a href="#手動安裝-cypress" class="headerlink" title="手動安裝 cypress"></a>手動安裝 cypress</h1><h2 id="1-下載-zip-檔案"><a href="#1-下載-zip-檔案" class="headerlink" title="1. 下載 zip 檔案"></a>1. 下載 zip 檔案</h2><p>ex: <a href="https://download.cypress.io/desktop/6.8.0%EF%BC%8C%E4%B8%8D%E5%90%8C">https://download.cypress.io/desktop/6.8.0，不同</a> version 的話就替換最後面數字版本。</p><h2 id="2-找到電腦的-cypress-cache-資料夾"><a href="#2-找到電腦的-cypress-cache-資料夾" class="headerlink" title="2. 找到電腦的 cypress cache 資料夾"></a>2. 找到電腦的 cypress cache 資料夾</h2><p><a href="https://docs.cypress.io/guides/getting-started/installing-cypress#Binary-cache">官方文件</a>有說明預設的 windows 路徑為 <code>/AppData/Local/Cypress/Cache</code>，以我公司電腦為例，Path 是 <code>C:\Users\annychang\AppData\Local\Cypress\Cache</code></p><h2 id="3-將下載的-zip-檔案解壓縮到-cache-資料夾，完成"><a href="#3-將下載的-zip-檔案解壓縮到-cache-資料夾，完成" class="headerlink" title="3. 將下載的 zip 檔案解壓縮到 cache 資料夾，完成!"></a>3. 將下載的 zip 檔案解壓縮到 cache 資料夾，完成!</h2><p>將解壓縮的檔案放在對應的版本資料夾中，如此一來執行 npm install 的時候會優先從 global 這邊找到，就不會再進行安裝，可以直接執行。</p><p><img src="https://lh3.googleusercontent.com/pw/AM-JKLUO36gFVv7dYTCNWwJWUbg6Nw_R4c15EFJxMAf2dVKFftH2Clx2QAiPjj59AsKDosLpUtryGTmDysYKMpTTR0e8svqPiaBH7J25ikCtxDEkHKrk10KrftiQECg9bAaN5lvDgJMdvawPza_Cbn1-qPc2tA=w734-h418-no?authuser=0" alt="將解壓縮的檔案放在對應的版本資料夾"></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><a href="https://docs.cypress.io/guides/getting-started/installing-cypress#Direct-download">Cypress Direct-download</a></li><li><a href="https://docs.cypress.io/guides/getting-started/installing-cypress#Binary-cache">Cypress Cache</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近發現公司內網不明原因會擋住 npm install cypress，但安裝其他的套件就不會發生，所以只好搜尋看要怎麼手動安裝 cypress。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Testing" scheme="http://annilla.github.io/categories/Testing/"/>
-    
-    
-      <category term="JS" scheme="http://annilla.github.io/tags/JS/"/>
-    
-      <category term="Cypress" scheme="http://annilla.github.io/tags/Cypress/"/>
-    
-      <category term="Testing" scheme="http://annilla.github.io/tags/Testing/"/>
     
   </entry>
   
