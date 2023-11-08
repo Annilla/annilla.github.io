@@ -61,6 +61,32 @@
   </entry>
   
   <entry>
+    <title>Excel to Json by ChatGPT using Python</title>
+    <link href="http://annilla.github.io/2023/11/07/Python/Excel-to-Json-by-ChatGPT-using-Python/"/>
+    <id>http://annilla.github.io/2023/11/07/Python/Excel-to-Json-by-ChatGPT-using-Python/</id>
+    <published>2023-11-06T16:00:00.000Z</published>
+    <updated>2023-11-06T16:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>工作上有時會需要用到 Excel 轉 Json 的時候, 但線上工具還要先轉成 csv 非常麻煩, 想說能不能問問看 ChatGPT, 結果測試結果不錯, 他直接幫我用 Python 語言寫了程式碼, 稍微細問微調一下就能用了! 下面來說一下我是怎麼問的。</p><span id="more"></span><h1 id="詢問-ChatGPT"><a href="#詢問-ChatGPT" class="headerlink" title="詢問 ChatGPT"></a>詢問 ChatGPT</h1><p>問 ChatGPT: “我有一份 excel 表格, 想要輸出成 json, 要怎麼做?”</p><p>結果會吐出用 Python 的程式碼如下圖。</p><p><img src="https://media.discordapp.net/attachments/1135775611948900472/1171267006415261806/image.png?ex=655c0e67&is=65499967&hm=78d61f197714bc1c66156146c6152095d48087bec9442ab412933e38802075a5&=&width=540&height=597" alt="我有一份 excel 表格, 想要輸出成 json, 要怎麼做?"></p><p>但我想要把檔案改成電腦中的路徑, 所以我又繼續問 ChatGPT: “將檔案換成路徑位置 C:\Users\annychang\Desktop\test.xlsx”, 結果他很聰明地幫我改好了程式碼如下圖。</p><p><img src="https://media.discordapp.net/attachments/1135775611948900472/1171268001727778867/image.png?ex=655c0f54&is=65499a54&hm=ef647a84a1e84df6c6ad1fbf667c3c09246cb72a9f78b5b532ca7058f9b92ebd&=&width=579&height=597" alt="將檔案換成路徑位置 C:\Users\annychang\Desktop\test.xlsx"></p><h1 id="下載-Anaconda-貼-Python-程式碼"><a href="#下載-Anaconda-貼-Python-程式碼" class="headerlink" title="下載 Anaconda 貼 Python 程式碼"></a>下載 Anaconda 貼 Python 程式碼</h1><p>有了程式碼之後就來試試看下載 Python 來執行。這邊建議下載 <a href="https://www.anaconda.com/download">Anaconda</a> 框架, 因為好處是不用自己搞電腦環境, 因為公司電腦有眾多安全性防護, 所以可能套件下載就會被卡關了XD Anaconda 下載執行後會起一個虛擬環境, 裡面會裝好 Python 和大家常用的相關套件, 版本還能自由切換, 真是棒極了!! 不然在公司內網搞環境常常搞到吐血的說XDD</p><p>下載完成後點開 Anaconda.Navigator, 他會把大家常用的編輯器都列出來, 我有用過 Jupyter Notebook 和 VSCode. 感覺還是 VSCode 用起來比較熟悉. 所以我這邊就用 VSCode 展示. 注意!! Anaconda 因為是虛擬環境, 所以 VSCode 點開會是專門 Anaconda 另外安裝的設定值. 並不會執行自己電腦裡灌的 VSCode.</p><p><img src="https://media.discordapp.net/attachments/1135775611948900472/1171270736002957372/image.png?ex=655c11e0&is=65499ce0&hm=4501d4e41e832ad8be26bcd3e358294a5e33a615cc7e4e4bf8ca63b37a00f999&=&width=1102&height=597" alt="Anaconda.Navigator"></p><h1 id="執行測試"><a href="#執行測試" class="headerlink" title="執行測試"></a>執行測試</h1><p>接下來我們把 ChatGPT 給的程式碼貼上去並執行看看, 結果就成功囉~好開心 :)</p><p><img src="https://media.discordapp.net/attachments/1135775611948900472/1171272951685984296/image.png?ex=655c13f0&is=65499ef0&hm=bec51ad41196cfea587e85f50d2862daf255a77670411c02b54d25db198ed894&=&width=1102&height=597" alt="執行測試"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;工作上有時會需要用到 Excel 轉 Json 的時候, 但線上工具還要先轉成 csv 非常麻煩, 想說能不能問問看 ChatGPT, 結果測試結果不錯, 他直接幫我用 Python 語言寫了程式碼, 稍微細問微調一下就能用了! 下面來說一下我是怎麼問的。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="http://annilla.github.io/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://annilla.github.io/tags/Python/"/>
+    
+      <category term="ChatGPT" scheme="http://annilla.github.io/tags/ChatGPT/"/>
+    
+      <category term="Anaconda" scheme="http://annilla.github.io/tags/Anaconda/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Connect Redis with NodeJS</title>
     <link href="http://annilla.github.io/2023/10/02/JS/Connect-Redis-with-NodeJS/"/>
     <id>http://annilla.github.io/2023/10/02/JS/Connect-Redis-with-NodeJS/</id>
@@ -501,34 +527,6 @@
     
     
       <category term="Vue" scheme="http://annilla.github.io/tags/Vue/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Figma Interative Components</title>
-    <link href="http://annilla.github.io/2021/11/05/UXUI/Figma-Interative-Components/"/>
-    <id>http://annilla.github.io/2021/11/05/UXUI/Figma-Interative-Components/</id>
-    <published>2021-11-04T16:00:00.000Z</published>
-    <updated>2021-11-04T16:00:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近 10 月份 Figma 團隊出的 Interative Components Youtube 教學影片，讓我對這個新功能感到很興奮。簡單來說，就是 Checkbox, Radio, Switch… 等元件，可以製作獨立的動畫，讓 user 透過互動看到切換狀態的過程。話不多說，立刻就來試試看。</p><span id="more"></span><h1 id="Checkbox-amp-Switch"><a href="#Checkbox-amp-Switch" class="headerlink" title="Checkbox &amp; Switch"></a>Checkbox &amp; Switch</h1><ol><li><p>先把要做動畫的元件一起選取起來，會發現右邊 Design 面板出現 <code>Variants</code> 的按鈕，點擊 <code>Combine as variants</code><br><img src="https://lh3.googleusercontent.com/pw/AM-JKLUYkzoSOnLFpn6ATIlBoqS-_u3ym2Guf-jv4yG6ZIrCdgzR5DyviN79bdDsDvOjsnd3AQ9veceIzZGLUYgBI8VFxvC0w9voimHvR-8z1PMHYHe4xLaNBKbY0OvSOwlEl8kU9VPTZd13DWKgV722lu4zAg=w1920-h937-no?authuser=0" alt="Checkbox"></p></li><li><p>接著在 Prototype 面板設定動畫如下圖所示(Onclick&#x2F;Change to&#x2F;Instant)，即可完成<br><img src="https://lh3.googleusercontent.com/pw/AM-JKLVKR9z6Vn4KyeGFzBGwrYkimvKGMKcuexDz7QnNpiL54lqcS8XLpF65YmO2-f1rqo8M6WpueD7qXy95ZgBYG-RI5cIncMQtjuJ4qiq4qLZw3r3nQJZGCGIQSK7Awbbs_TDQByeotTiWiv5a_jcH-n0MnQ=w1920-h935-no?authuser=0" alt="Checkbox"></p></li></ol><p>Switch 的做法差不多，只是 Animation 選擇 Smart animate (Onclick&#x2F;Change to&#x2F;Smart animate)<br><img src="https://lh3.googleusercontent.com/pw/AM-JKLVGQdknSE70a2Zjfr6J091KiFjWDWxXXFDQbi5cntP6rzQ9u1gFTPxikC85qHJdaBJ4ce7lCJHBOASzPthPMKHluWtLWnE9V-zoa-xvuqk6V-SjGgNhBByczLxlegxLCzoD5d3YRpBDmi9barNT_CrLHw=w1920-h937-no?authuser=0" alt="Switch"></p><p>完成後，就可以執行 prototype，對元件做點選的動作，可以看到互動的效果優~<br><a href="https://capture.dropbox.com/oMIXKTN9A4opyRqs">互動效果影片連結在此</a></p><h1 id="Progress-Bar-amp-Progress-Circle"><a href="#Progress-Bar-amp-Progress-Circle" class="headerlink" title="Progress Bar &amp; Progress Circle"></a>Progress Bar &amp; Progress Circle</h1><p>另外，進度條或進度圈圈也可以做自動的動畫。</p><p>可以參考下圖做進度條。<br><img src="https://lh3.googleusercontent.com/pw/AM-JKLX3LsnOhXLrfoPvbk2q2e5ZiTuvr6MBIEbdSwNaypcDUnv12FLOi-0ZM-e7UDBoTVazbUjAZonW3DPuC0EsTs0q9qlCN64jZwiteeCsYwEoJ_OeS2l_OIjxVvm4V7ANt_G1mgfv8P-jWncBAg2poIw7uQ=w1920-h934-no?authuser=0" alt="Progress Bar"><br><img src="https://lh3.googleusercontent.com/pw/AM-JKLVRb9PCdHqbjiNhSVioW5m0_R2gkwjUaWh-PyXwj22KQuzyFCDKnZghyswKo6b5csrOWDzqP52p9ne_maWVYolKe7kvCTG5_64jQMBUEHGujdu87VzwuSoY5IwZArIchIz5WrEmP9uaYKhZ2PyhPZ7_1g=w1918-h937-no?authuser=0" alt="Progress Bar"></p><p>進度圈圈的部分比較複雜，我是參考 Figma Community 的人分享作法 <a href="https://www.figma.com/community/file/826647128105027386">Progress Bar Animations</a>。</p><p>最後附上 progress 完成的樣子，動畫看起來很順暢呢~<br><a href="https://capture.dropbox.com/58G1NI28rLLtZ3Vw">progress 完成影片連結在此</a></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><a href="https://www.youtube.com/watch?v=ReNbXhaL3Xk">Figma tutorial: Interactive components</a></li><li><a href="https://help.figma.com/hc/en-us/articles/360061175334-Create-interactive-components-with-variants">Create interactive components with variants</a></li><li><a href="https://www.figma.com/community/file/826647128105027386">Progress Bar Animations</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近 10 月份 Figma 團隊出的 Interative Components Youtube 教學影片，讓我對這個新功能感到很興奮。簡單來說，就是 Checkbox, Radio, Switch… 等元件，可以製作獨立的動畫，讓 user 透過互動看到切換狀態的過程。話不多說，立刻就來試試看。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="UXUI" scheme="http://annilla.github.io/categories/UXUI/"/>
-    
-      <category term="Figma" scheme="http://annilla.github.io/categories/UXUI/Figma/"/>
-    
-    
-      <category term="UX" scheme="http://annilla.github.io/tags/UX/"/>
-    
-      <category term="UI" scheme="http://annilla.github.io/tags/UI/"/>
-    
-      <category term="Figma" scheme="http://annilla.github.io/tags/Figma/"/>
     
   </entry>
   
