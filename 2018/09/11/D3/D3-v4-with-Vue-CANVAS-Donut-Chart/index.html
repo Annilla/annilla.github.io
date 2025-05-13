@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"此篇練習使用 CANVAS 來做甜甜圈圖。這篇是這個系列的最後一篇了，我們趕緊來看吧。\n\n\n\n甜甜圈圖動畫12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455animationLine(elapsed) &#123;  let duration = 700;  let t = Math.min(1, elapsed / duration); // compute how far through the animation we are (0 to 1)  // Clear Canvas  this.ctx.clearRect(0, 0, this.conWidth, this.conHeight);  /*-------------------------    甜甜圈  -------------------------*/  this.ctx.save();  this.pie.forEach((e, i) =&gt; &#123;    // 開始繪製    this.ctx.beginPath();    this.ctx.arc(      this.conWidth / 2,      this.conHeight / 2,      this.radius,      e.startAngle,      e.startAngle + (e.endAngle - e.startAngle) * t    );    // 邊框色    this.ctx.lineWidth = this.chartOuterRadius - this.chartInnerRadius;    this.ctx.strokeStyle = e.color;    this.ctx.globalAlpha = t;    this.ctx.stroke();  &#125;);  /*-------------------------    甜甜圈文字  -------------------------*/  this.pie.forEach((e, i) =&gt; &#123;    let theta = e.startAngle + (e.endAngle - e.startAngle) / 2;    let x = this.radius * Math.cos(theta);    let y = this.radius * Math.sin(theta);    // 開始繪製    this.ctx.textAlign = &quot;center&quot;;    this.ctx.textBaseline = &quot;middle&quot;;    this.ctx.font = &quot;16px sans-serif&quot;;    this.ctx.fillStyle = &quot;#fff&quot;;    this.ctx.fillText(      e.percentage,      this.conWidth / 2 + x,      this.conHeight / 2 + y    );  &#125;);  this.ctx.restore();  // if this animation is over  if (t === 1) &#123;    // stop this timer since we are done animating.    this.timer.stop();  &#125;&#125;,\n\n因為甜甜圈不需要 x 軸、 y 軸等靜態元素，標籤的部分用 HTML render 就好，所以只要把甜甜圈動畫長好就完成囉!線上 demo 在此，也可以在Github查看完整程式碼，此主題到這裡告一段亂～之後會有全新的篇章，謝謝收看 ：）\n","dateCreated":"2018-09-11T00:00:00+08:00","dateModified":"2018-09-11T00:00:00+08:00","datePublished":"2018-09-11T00:00:00+08:00","description":"此篇練習使用 CANVAS 來做甜甜圈圖。這篇是這個系列的最後一篇了，我們趕緊來看吧。","headline":"D3 v4 with Vue - CANVAS Donut Chart","image":["https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no","https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/09/11/D3/D3-v4-with-Vue-CANVAS-Donut-Chart/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/09/11/D3/D3-v4-with-Vue-CANVAS-Donut-Chart/","keywords":"D3, Vue, CANVAS","thumbnailUrl":"https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"此篇練習使用 CANVAS 來做甜甜圈圖。這篇是這個系列的最後一篇了，我們趕緊來看吧。\n\n\n甜甜圈圖動畫12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455animationLine(elapsed) &#123;  let duration = 700;  let t = Math.min(1, elapsed / duration); // compute how far through the animation we are (0 to 1)  // Clear Canvas  this.ctx.clearRect(0, 0, this.conWidth, this.conHeight);  /*-------------------------    甜甜圈  -------------------------*/  this.ctx.save();  this.pie.forEach((e, i) =&gt; &#123;    // 開始繪製    this.ctx.beginPath();    this.ctx.arc(      this.conWidth / 2,      this.conHeight / 2,      this.radius,      e.startAngle,      e.startAngle + (e.endAngle - e.startAngle) * t    );    // 邊框色    this.ctx.lineWidth = this.chartOuterRadius - this.chartInnerRadius;    this.ctx.strokeStyle = e.color;    this.ctx.globalAlpha = t;    this.ctx.stroke();  &#125;);  /*-------------------------    甜甜圈文字  -------------------------*/  this.pie.forEach((e, i) =&gt; &#123;    let theta = e.startAngle + (e.endAngle - e.startAngle) / 2;    let x = this.radius * Math.cos(theta);    let y = this.radius * Math.sin(theta);    // 開始繪製    this.ctx.textAlign = \"center\";    this.ctx.textBaseline = \"middle\";    this.ctx.font = \"16px sans-serif\";    this.ctx.fillStyle = \"#fff\";    this.ctx.fillText(      e.percentage,      this.conWidth / 2 + x,      this.conHeight / 2 + y    );  &#125;);  this.ctx.restore();  // if this animation is over  if (t === 1) &#123;    // stop this timer since we are done animating.    this.timer.stop();  &#125;&#125;,\n因為甜甜圈不需要 x 軸、 y 軸等靜態元素，標籤的部分用 HTML render 就好，所以只要把甜甜圈動畫長好就完成囉!線上 demo 在此，也可以在Github查看完整程式碼，此主題到這裡告一段亂～之後會有全新的篇章，謝謝收看 ：）\n","dateCreated":"2018-09-11T00:00:00+08:00","dateModified":"2018-09-11T00:00:00+08:00","datePublished":"2018-09-11T00:00:00+08:00","description":"此篇練習使用 CANVAS 來做甜甜圈圖。這篇是這個系列的最後一篇了，我們趕緊來看吧。","headline":"D3 v4 with Vue - CANVAS Donut Chart","image":["https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no","https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/09/11/D3/D3-v4-with-Vue-CANVAS-Donut-Chart/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/09/11/D3/D3-v4-with-Vue-CANVAS-Donut-Chart/","keywords":"D3, Vue, CANVAS","thumbnailUrl":"https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"}</script>
     <meta name="description" content="此篇練習使用 CANVAS 來做甜甜圈圖。這篇是這個系列的最後一篇了，我們趕緊來看吧。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="D3 v4 with Vue - CANVAS Donut Chart">
@@ -52,7 +52,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -125,7 +125,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -303,7 +303,7 @@
         <div class="post-meta">
     <time datetime="2018-09-11T00:00:00+08:00">
 	
-		    9月 11, 2018
+		    2018 年 9 月 11 日
     	
     </time>
     
@@ -322,12 +322,10 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>此篇練習使用 <code>CANVAS</code> 來做甜甜圈圖。這篇是這個系列的最後一篇了，我們趕緊來看吧。</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <hr>
-<h2 id="甜甜圈圖動畫"><a href="#甜甜圈圖動畫" class="headerlink" title="甜甜圈圖動畫"></a>甜甜圈圖動畫</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">animationLine</span>(<span class="params">elapsed</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> duration = <span class="number">700</span>;</span><br><span class="line">  <span class="keyword">let</span> t = <span class="title class_">Math</span>.<span class="title function_">min</span>(<span class="number">1</span>, elapsed / duration); <span class="comment">// compute how far through the animation we are (0 to 1)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Clear Canvas</span></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="title function_">clearRect</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="variable language_">this</span>.<span class="property">conWidth</span>, <span class="variable language_">this</span>.<span class="property">conHeight</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    甜甜圈</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="title function_">save</span>();</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">pie</span>.<span class="title function_">forEach</span>(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 開始繪製</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="title function_">beginPath</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="title function_">arc</span>(</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">conWidth</span> / <span class="number">2</span>,</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">conHeight</span> / <span class="number">2</span>,</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">radius</span>,</span><br><span class="line">      e.<span class="property">startAngle</span>,</span><br><span class="line">      e.<span class="property">startAngle</span> + (e.<span class="property">endAngle</span> - e.<span class="property">startAngle</span>) * t</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// 邊框色</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="property">lineWidth</span> = <span class="variable language_">this</span>.<span class="property">chartOuterRadius</span> - <span class="variable language_">this</span>.<span class="property">chartInnerRadius</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="property">strokeStyle</span> = e.<span class="property">color</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="property">globalAlpha</span> = t;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="title function_">stroke</span>();</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    甜甜圈文字</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">pie</span>.<span class="title function_">forEach</span>(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> theta = e.<span class="property">startAngle</span> + (e.<span class="property">endAngle</span> - e.<span class="property">startAngle</span>) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">let</span> x = <span class="variable language_">this</span>.<span class="property">radius</span> * <span class="title class_">Math</span>.<span class="title function_">cos</span>(theta);</span><br><span class="line">    <span class="keyword">let</span> y = <span class="variable language_">this</span>.<span class="property">radius</span> * <span class="title class_">Math</span>.<span class="title function_">sin</span>(theta);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 開始繪製</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="property">textAlign</span> = <span class="string">&quot;center&quot;</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="property">textBaseline</span> = <span class="string">&quot;middle&quot;</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="property">font</span> = <span class="string">&quot;16px sans-serif&quot;</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="property">fillStyle</span> = <span class="string">&quot;#fff&quot;</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="title function_">fillText</span>(</span><br><span class="line">      e.<span class="property">percentage</span>,</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">conWidth</span> / <span class="number">2</span> + x,</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">conHeight</span> / <span class="number">2</span> + y</span><br><span class="line">    );</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">ctx</span>.<span class="title function_">restore</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// if this animation is over</span></span><br><span class="line">  <span class="keyword">if</span> (t === <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="comment">// stop this timer since we are done animating.</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">timer</span>.<span class="title function_">stop</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-
-<p>因為甜甜圈不需要 x 軸、 y 軸等靜態元素，標籤的部分用 HTML render 就好，所以只要把甜甜圈動畫長好就完成囉!線上 demo <a href="https://annilla.github.io/d3-practice-vue-canvas/dist/">在此</a>，也可以在<a target="_blank" rel="noopener" href="https://github.com/Annilla/d3-practice-vue-canvas/blob/master/src/components/DonutChart.vue">Github</a>查看完整程式碼，此主題到這裡告一段亂～之後會有全新的篇章，謝謝收看 ：）</p>
+<h2 id="甜甜圈圖動畫"><a href="#甜甜圈圖動畫" class="headerlink" title="甜甜圈圖動畫"></a>甜甜圈圖動畫</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">animationLine(elapsed) &#123;</span><br><span class="line">  <span class="keyword">let</span> duration = <span class="number">700</span>;</span><br><span class="line">  <span class="keyword">let</span> t = <span class="built_in">Math</span>.min(<span class="number">1</span>, elapsed / duration); <span class="comment">// compute how far through the animation we are (0 to 1)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Clear Canvas</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.clearRect(<span class="number">0</span>, <span class="number">0</span>, <span class="keyword">this</span>.conWidth, <span class="keyword">this</span>.conHeight);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    甜甜圈</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.save();</span><br><span class="line">  <span class="keyword">this</span>.pie.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 開始繪製</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">    <span class="keyword">this</span>.ctx.arc(</span><br><span class="line">      <span class="keyword">this</span>.conWidth / <span class="number">2</span>,</span><br><span class="line">      <span class="keyword">this</span>.conHeight / <span class="number">2</span>,</span><br><span class="line">      <span class="keyword">this</span>.radius,</span><br><span class="line">      e.startAngle,</span><br><span class="line">      e.startAngle + (e.endAngle - e.startAngle) * t</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// 邊框色</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.lineWidth = <span class="keyword">this</span>.chartOuterRadius - <span class="keyword">this</span>.chartInnerRadius;</span><br><span class="line">    <span class="keyword">this</span>.ctx.strokeStyle = e.color;</span><br><span class="line">    <span class="keyword">this</span>.ctx.globalAlpha = t;</span><br><span class="line">    <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    甜甜圈文字</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="keyword">this</span>.pie.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> theta = e.startAngle + (e.endAngle - e.startAngle) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">let</span> x = <span class="keyword">this</span>.radius * <span class="built_in">Math</span>.cos(theta);</span><br><span class="line">    <span class="keyword">let</span> y = <span class="keyword">this</span>.radius * <span class="built_in">Math</span>.sin(theta);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 開始繪製</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.textAlign = <span class="string">"center"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.textBaseline = <span class="string">"middle"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.font = <span class="string">"16px sans-serif"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fillStyle = <span class="string">"#fff"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fillText(</span><br><span class="line">      e.percentage,</span><br><span class="line">      <span class="keyword">this</span>.conWidth / <span class="number">2</span> + x,</span><br><span class="line">      <span class="keyword">this</span>.conHeight / <span class="number">2</span> + y</span><br><span class="line">    );</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">this</span>.ctx.restore();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// if this animation is over</span></span><br><span class="line">  <span class="keyword">if</span> (t === <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="comment">// stop this timer since we are done animating.</span></span><br><span class="line">    <span class="keyword">this</span>.timer.stop();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>因為甜甜圈不需要 x 軸、 y 軸等靜態元素，標籤的部分用 HTML render 就好，所以只要把甜甜圈動畫長好就完成囉!線上 demo <a href="https://annilla.github.io/d3-practice-vue-canvas/dist/">在此</a>，也可以在<a href="https://github.com/Annilla/d3-practice-vue-canvas/blob/master/src/components/DonutChart.vue" target="_blank" rel="noopener">Github</a>查看完整程式碼，此主題到這裡告一段亂～之後會有全新的篇章，謝謝收看 ：）</p>
 
             
 
@@ -382,7 +380,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -420,7 +418,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -429,7 +427,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -498,7 +496,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -536,7 +534,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -545,7 +543,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -607,14 +605,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -675,7 +673,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -708,7 +706,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -741,7 +739,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -774,7 +772,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -807,7 +805,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -840,7 +838,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -873,7 +871,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -906,7 +904,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -996,7 +994,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

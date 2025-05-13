@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"model API 分為 Sequential （循序型） 和 Functional（多功能型）。\n\nSequential API: 用於單輸入單輸出，簡單的 model 由簡單的 layers 串接組成。\nFunctional API: 用於多輸入多輸出，layers 可有分支並可共用而組成複雜模型。\n\n簡單的keras 的工作流程如下:\n\n創建 model\n創建和添加 layer 到 model\ncompile (編譯) model\nTrain model\n訓練完成後可用於 prediction (預測) 或 evaluation (評估)\n\n本篇只是測試安裝環境是否成功，所以只會練習到工作流程第 4 點。\n\n\n基本概念DL (Deep Learning) 是擁有多個且多層神經元之 NN (Neural Network 神經網路)，而所謂的多層通常是指隱藏層（Hidden Layer）。DL 要用幾層、每層要有幾個節點（神經元）、每個節點間要如何相連、要採用什麼激勵函數等（統稱網路架構），都是由我們決定，因此可以說是 NN 的天賦；而權重與誤差則是透過大量資料自動學習而得，可以視為是 NN 後天的努力結果。\n\n此篇要練習的完整程式碼這次要練習的完整程式碼如下：\n123456789101112131415161718192021222324252627# 引入要用的函數from keras.models import Sequentialfrom keras.layers import Dense, Activationfrom keras.utils import np_utilsimport numpy as np# 準備測試資料data = np.random.random((1000,784))# 準備要逼近的目標資料labels = np.random.randint(10, size=(1000,1))labels = np_utils.to_categorical(labels,10)# 創建 modelmodel = Sequential()# 創建和添加 layer 到 modelmodel.add(Dense(64, activation=&#x27;relu&#x27;, input_dim=784))model.add(Dense(64, activation=&#x27;relu&#x27;))model.add(Dense(10, activation=&#x27;softmax&#x27;))# compile (編譯) modelmodel.compile(optimizer=&#x27;rmsprop&#x27;,              loss=&#x27;categorical_crossentropy&#x27;,              metrics=[&quot;accuracy&quot;])# Train modelmodel.fit(data, labels)\n\n以下我們分段解說程式碼。\n引入要用的函數1234from keras.models import Sequentialfrom keras.layers import Dense, Activationfrom keras.utils import np_utilsimport numpy as np\n\n\nkeras.models: 從 Keras 引入 models（模型），Sequential 是 linear stack of layers（多個網絡層的線性堆疊），單輸入單輸出。\nkeras.layers: 從 Keras 引入 layers（層）的 Dense 類型。Dense 類型的層（layers）為具有64個神經元。\nkeras.utils: 從 Keras 引入 utils（工具）的 np_utils 函數。\nnp 即 numpy，而 NumPy 是 Python 語言的一個擴充程式庫。\n\n準備測試資料1data = np.random.random((1000,784))\n\n建立一組測試資料，使用 np.random.random 在 [0, 1) 中產生隨機數，DATA 為 1000 行 784 列（1000x784）的陣列。\n準備要逼近的目標資料12labels = np.random.randint(10, size=(1000,1))labels = np_utils.to_categorical(labels,10)\n\n\nnumpy.random.randint是矩陣變數，其語法為 numpy.random.randint(low, high&#x3D;None, size&#x3D;None)。labels 結果 為 1 維隨機整數組（1000x1）ex: array([0],[8],[6],…[9])，因沒有 high 的值， 數值隨機介於[0,10)。\nto_categorical 將類別向量轉換为二進制（只有0和1）的矩陣類型，原來 labels 為 1 維隨機整數組（1000x1），to_categorical 按照 10 個類別將這 1 維隨機整數組的每個值都轉換為矩陣裡的一個行向量。\n\n舉例來說，array([0],[8],[6],…[9])的1維整數組，to_categorical 按照 10 個類別將 array 轉換為array[[1. 0. 0. 0. 0. 0. 0. 0. 0. 0.] [0. 0. 0. 0. 0. 0. 0. 1. 0. 0.]  [0. 0. 0. 0. 0. 0. 1. 0. 0. 0.]… [0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]]\n創建和添加 layer 到 model1234model = Sequential()model.add(Dense(64, activation=&#x27;relu&#x27;, input_dim=784))model.add(Dense(64, activation=&#x27;relu&#x27;))model.add(Dense(10, activation=&#x27;softmax&#x27;))\n\n\n定義Sequential模型，並model.add添加層。\n此範例第一步添加 Dense 類型的層（layers）為具有64個神經元。由於模型需要知道它所期望的輸入尺寸，順序模型中的第一層需要接收關於其輸入尺寸的參數信息（Dense支持通過參數 input_dim 指定輸入參數信息，而某些 3D 時序層支持 input_dim 和 input_length 參數。\nReLU為激勵函數（Activation Function）之一，詳見此。\nSoftmax為激勵函數（Activation Function）之一，詳見此。\n\ncompile (編譯) model123model.compile(optimizer=&#x27;rmsprop&#x27;,              loss=&#x27;categorical_crossentropy&#x27;,              metrics=[&quot;accuracy&quot;])\n\n\n模型在使用前必須編譯模型（model.compile）\nOptimizer (優化器)為 RMSprop：優化器目的是建立優化模型，優化目標函數並訓練出最好的模型，其功能是通過改善訓練方式，來最小化 (或最大化) 損失函數。RMSprop，詳見此\nloss (損失函數)為 categorical_crossentropy：損失函數基本上可以分成兩個面向(分類和回歸)，但都是希望最小化損失。loss(損失)就是實際和預測的殘差，損失愈小愈好。categorical_crossentropy，詳見此\nmetric (度量函數) 來評估模型性能，’accuracy’為評估指標。詳見此\n\nTrain model1model.fit(data, labels)\n\n最後設定參數輸入 data 與目標 labels，來 model.fit，也就是訓練模型。執行結果，如圖表示以 TensorFlow 作為引擎使用，損失率為 2.3494，準確度為 0.0920。\n\nReference\nKeras 簡介\n\n速記AI課程－深度學習入門（一）\n\n\n","dateCreated":"2020-03-22T00:00:00+08:00","dateModified":"2020-03-22T00:00:00+08:00","datePublished":"2020-03-22T00:00:00+08:00","description":"model API 分為 Sequential （循序型） 和 Functional（多功能型）。\n\nSequential API: 用於單輸入單輸出，簡單的 model 由簡單的 layers 串接組成。\nFunctional API: 用於多輸入多輸出，layers 可有分支並可共用而組成複雜模型。\n\n簡單的keras 的工作流程如下:\n\n創建 model\n創建和添加 layer 到 model\ncompile (編譯) model\nTrain model\n訓練完成後可用於 prediction (預測) 或 evaluation (評估)\n\n本篇只是測試安裝環境是否成功，所以只會練習到工作流程第 4 點。","headline":"Deep Learning by Python - Use Keras-Sequential Model Example","image":["https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/768px-Python-logo-notext.svg.png","https://logonoid.com/images/python-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2020/03/22/Python/Deep-Learning-by-Python-Use-Keras-Sequential-Model-Example/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2020/03/22/Python/Deep-Learning-by-Python-Use-Keras-Sequential-Model-Example/","keywords":"Python, Deep Learning, Keras, TensorFlow","thumbnailUrl":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/768px-Python-logo-notext.svg.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"model API 分為 Sequential （循序型） 和 Functional（多功能型）。\n\nSequential API: 用於單輸入單輸出，簡單的 model 由簡單的 layers 串接組成。\nFunctional API: 用於多輸入多輸出，layers 可有分支並可共用而組成複雜模型。\n\n簡單的keras 的工作流程如下:\n\n創建 model\n創建和添加 layer 到 model\ncompile (編譯) model\nTrain model\n訓練完成後可用於 prediction (預測) 或 evaluation (評估)\n\n本篇只是測試安裝環境是否成功，所以只會練習到工作流程第 4 點。\n\n基本概念DL (Deep Learning) 是擁有多個且多層神經元之 NN (Neural Network 神經網路)，而所謂的多層通常是指隱藏層（Hidden Layer）。DL 要用幾層、每層要有幾個節點（神經元）、每個節點間要如何相連、要採用什麼激勵函數等（統稱網路架構），都是由我們決定，因此可以說是 NN 的天賦；而權重與誤差則是透過大量資料自動學習而得，可以視為是 NN 後天的努力結果。\n\n此篇要練習的完整程式碼這次要練習的完整程式碼如下：\n123456789101112131415161718192021222324252627# 引入要用的函數from keras.models import Sequentialfrom keras.layers import Dense, Activationfrom keras.utils import np_utilsimport numpy as np# 準備測試資料data = np.random.random((1000,784))# 準備要逼近的目標資料labels = np.random.randint(10, size=(1000,1))labels = np_utils.to_categorical(labels,10)# 創建 modelmodel = Sequential()# 創建和添加 layer 到 modelmodel.add(Dense(64, activation='relu', input_dim=784))model.add(Dense(64, activation='relu'))model.add(Dense(10, activation='softmax'))# compile (編譯) modelmodel.compile(optimizer='rmsprop',              loss='categorical_crossentropy',              metrics=[\"accuracy\"])# Train modelmodel.fit(data, labels)\n以下我們分段解說程式碼。\n引入要用的函數1234from keras.models import Sequentialfrom keras.layers import Dense, Activationfrom keras.utils import np_utilsimport numpy as np\n\nkeras.models: 從 Keras 引入 models（模型），Sequential 是 linear stack of layers（多個網絡層的線性堆疊），單輸入單輸出。\nkeras.layers: 從 Keras 引入 layers（層）的 Dense 類型。Dense 類型的層（layers）為具有64個神經元。\nkeras.utils: 從 Keras 引入 utils（工具）的 np_utils 函數。\nnp 即 numpy，而 NumPy 是 Python 語言的一個擴充程式庫。\n\n準備測試資料1data = np.random.random((1000,784))\n建立一組測試資料，使用 np.random.random 在 [0, 1) 中產生隨機數，DATA 為 1000 行 784 列（1000x784）的陣列。\n準備要逼近的目標資料12labels = np.random.randint(10, size=(1000,1))labels = np_utils.to_categorical(labels,10)\n\nnumpy.random.randint是矩陣變數，其語法為 numpy.random.randint(low, high=None, size=None)。labels 結果 為 1 維隨機整數組（1000x1）ex: array([0],[8],[6],…[9])，因沒有 high 的值， 數值隨機介於[0,10)。\nto_categorical 將類別向量轉換为二進制（只有0和1）的矩陣類型，原來 labels 為 1 維隨機整數組（1000x1），to_categorical 按照 10 個類別將這 1 維隨機整數組的每個值都轉換為矩陣裡的一個行向量。\n\n舉例來說，array([0],[8],[6],…[9])的1維整數組，to_categorical 按照 10 個類別將 array 轉換為array[[1. 0. 0. 0. 0. 0. 0. 0. 0. 0.] [0. 0. 0. 0. 0. 0. 0. 1. 0. 0.] [0. 0. 0. 0. 0. 0. 1. 0. 0. 0.]… [0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]]\n創建和添加 layer 到 model1234model = Sequential()model.add(Dense(64, activation='relu', input_dim=784))model.add(Dense(64, activation='relu'))model.add(Dense(10, activation='softmax'))\n\n定義Sequential模型，並model.add添加層。\n此範例第一步添加 Dense 類型的層（layers）為具有64個神經元。由於模型需要知道它所期望的輸入尺寸，順序模型中的第一層需要接收關於其輸入尺寸的參數信息（Dense支持通過參數 input_dim 指定輸入參數信息，而某些 3D 時序層支持 input_dim 和 input_length 參數。\nReLU為激勵函數（Activation Function）之一，詳見此。\nSoftmax為激勵函數（Activation Function）之一，詳見此。\n\ncompile (編譯) model123model.compile(optimizer='rmsprop',              loss='categorical_crossentropy',              metrics=[\"accuracy\"])\n\n模型在使用前必須編譯模型（model.compile）\nOptimizer (優化器)為 RMSprop：優化器目的是建立優化模型，優化目標函數並訓練出最好的模型，其功能是通過改善訓練方式，來最小化 (或最大化) 損失函數。RMSprop，詳見此\nloss (損失函數)為 categorical_crossentropy：損失函數基本上可以分成兩個面向(分類和回歸)，但都是希望最小化損失。loss(損失)就是實際和預測的殘差，損失愈小愈好。categorical_crossentropy，詳見此\nmetric (度量函數) 來評估模型性能，’accuracy’為評估指標。詳見此\n\nTrain model1model.fit(data, labels)\n最後設定參數輸入 data 與目標 labels，來 model.fit，也就是訓練模型。執行結果，如圖表示以 TensorFlow 作為引擎使用，損失率為 2.3494，準確度為 0.0920。\n\nReference\nKeras 簡介\n\n速記AI課程－深度學習入門（一）\n\n\n","dateCreated":"2020-03-22T00:00:00+08:00","dateModified":"2020-03-22T00:00:00+08:00","datePublished":"2020-03-22T00:00:00+08:00","description":"model API 分為 Sequential （循序型） 和 Functional（多功能型）。\n\nSequential API: 用於單輸入單輸出，簡單的 model 由簡單的 layers 串接組成。\nFunctional API: 用於多輸入多輸出，layers 可有分支並可共用而組成複雜模型。\n\n簡單的keras 的工作流程如下:\n\n創建 model\n創建和添加 layer 到 model\ncompile (編譯) model\nTrain model\n訓練完成後可用於 prediction (預測) 或 evaluation (評估)\n\n本篇只是測試安裝環境是否成功，所以只會練習到工作流程第 4 點。","headline":"Deep Learning by Python - Use Keras-Sequential Model Example","image":["https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/768px-Python-logo-notext.svg.png","https://logonoid.com/images/python-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2020/03/22/Python/Deep-Learning-by-Python-Use-Keras-Sequential-Model-Example/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2020/03/22/Python/Deep-Learning-by-Python-Use-Keras-Sequential-Model-Example/","keywords":"Python, Deep Learning, Keras, TensorFlow","thumbnailUrl":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/768px-Python-logo-notext.svg.png"}</script>
     <meta name="description" content="model API 分為 Sequential （循序型） 和 Functional（多功能型）。  Sequential API: 用於單輸入單輸出，簡單的 model 由簡單的 layers 串接組成。 Functional API: 用於多輸入多輸出，layers 可有分支並可共用而組成複雜模型。  簡單的keras 的工作流程如下:  創建 model 創建和添加 layer 到 mode">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Deep Learning by Python - Use Keras-Sequential Model Example">
@@ -56,7 +56,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -129,7 +129,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -307,7 +307,7 @@
         <div class="post-meta">
     <time datetime="2020-03-22T00:00:00+08:00">
 	
-		    3月 22, 2020
+		    2020 年 3 月 22 日
     	
     </time>
     
@@ -339,16 +339,13 @@
 <li>訓練完成後可用於 prediction (預測) 或 evaluation (評估)</li>
 </ol>
 <p>本篇只是測試安裝環境是否成功，所以只會練習到工作流程第 4 點。</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>DL (Deep Learning) 是擁有多個且多層神經元之 NN (Neural Network 神經網路)，而所謂的多層通常是指隱藏層（Hidden Layer）。DL 要用幾層、每層要有幾個節點（神經元）、每個節點間要如何相連、要採用什麼激勵函數等（統稱網路架構），都是由我們決定，因此可以說是 NN 的天賦；而權重與誤差則是透過大量資料自動學習而得，可以視為是 NN 後天的努力結果。</p>
 <p><img src="https://miro.medium.com/proxy/1*5egrX--WuyrLA7gBEXdg5A.png" alt="Deep Learning"></p>
 <h1 id="此篇要練習的完整程式碼"><a href="#此篇要練習的完整程式碼" class="headerlink" title="此篇要練習的完整程式碼"></a>此篇要練習的完整程式碼</h1><p>這次要練習的完整程式碼如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 引入要用的函數</span></span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Activation</span><br><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> np_utils</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 準備測試資料</span></span><br><span class="line">data = np.random.random((<span class="number">1000</span>,<span class="number">784</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 準備要逼近的目標資料</span></span><br><span class="line">labels = np.random.randint(<span class="number">10</span>, size=(<span class="number">1000</span>,<span class="number">1</span>))</span><br><span class="line">labels = np_utils.to_categorical(labels,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 創建 model</span></span><br><span class="line">model = Sequential()</span><br><span class="line"><span class="comment"># 創建和添加 layer 到 model</span></span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">&#x27;relu&#x27;</span>, input_dim=<span class="number">784</span>))</span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">&#x27;softmax&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># compile (編譯) model</span></span><br><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&#x27;rmsprop&#x27;</span>,</span><br><span class="line">              loss=<span class="string">&#x27;categorical_crossentropy&#x27;</span>,</span><br><span class="line">              metrics=[<span class="string">&quot;accuracy&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train model</span></span><br><span class="line">model.fit(data, labels)</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 引入要用的函數</span></span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Activation</span><br><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> np_utils</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 準備測試資料</span></span><br><span class="line">data = np.random.random((<span class="number">1000</span>,<span class="number">784</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 準備要逼近的目標資料</span></span><br><span class="line">labels = np.random.randint(<span class="number">10</span>, size=(<span class="number">1000</span>,<span class="number">1</span>))</span><br><span class="line">labels = np_utils.to_categorical(labels,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 創建 model</span></span><br><span class="line">model = Sequential()</span><br><span class="line"><span class="comment"># 創建和添加 layer 到 model</span></span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>, input_dim=<span class="number">784</span>))</span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># compile (編譯) model</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>,</span><br><span class="line">              loss=<span class="string">'categorical_crossentropy'</span>,</span><br><span class="line">              metrics=[<span class="string">"accuracy"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train model</span></span><br><span class="line">model.fit(data, labels)</span><br></pre></td></tr></table></figure>
 <p>以下我們分段解說程式碼。</p>
 <h1 id="引入要用的函數"><a href="#引入要用的函數" class="headerlink" title="引入要用的函數"></a>引入要用的函數</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Activation</span><br><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> np_utils</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>keras.models: 從 Keras 引入 models（模型），Sequential 是 linear stack of layers（多個網絡層的線性堆疊），單輸入單輸出。</li>
 <li>keras.layers: 從 Keras 引入 layers（層）的 Dense 類型。Dense 類型的層（layers）為具有64個神經元。</li>
@@ -356,39 +353,34 @@
 <li>np 即 numpy，而 NumPy 是 Python 語言的一個擴充程式庫。</li>
 </ul>
 <h1 id="準備測試資料"><a href="#準備測試資料" class="headerlink" title="準備測試資料"></a>準備測試資料</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = np.random.random((<span class="number">1000</span>,<span class="number">784</span>))</span><br></pre></td></tr></table></figure>
-
 <p>建立一組測試資料，使用 np.random.random 在 [0, 1) 中產生隨機數，DATA 為 1000 行 784 列（1000x784）的陣列。</p>
 <h1 id="準備要逼近的目標資料"><a href="#準備要逼近的目標資料" class="headerlink" title="準備要逼近的目標資料"></a>準備要逼近的目標資料</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">labels = np.random.randint(<span class="number">10</span>, size=(<span class="number">1000</span>,<span class="number">1</span>))</span><br><span class="line">labels = np_utils.to_categorical(labels,<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1541532849.html">numpy.random.randint</a>是矩陣變數，其語法為 numpy.random.randint(low, high&#x3D;None, size&#x3D;None)。labels 結果 為 1 維隨機整數組（1000x1）ex: <code>array([0],[8],[6],…[9])</code>，因沒有 high 的值， 數值隨機介於[0,10)。</li>
-<li><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1549602019.html">to_categorical</a> 將類別向量轉換为二進制（只有0和1）的矩陣類型，原來 labels 為 1 維隨機整數組（1000x1），to_categorical 按照 10 個類別將這 1 維隨機整數組的每個值都轉換為矩陣裡的一個行向量。</li>
+<li><a href="https://www.itread01.com/content/1541532849.html" target="_blank" rel="noopener">numpy.random.randint</a>是矩陣變數，其語法為 numpy.random.randint(low, high=None, size=None)。labels 結果 為 1 維隨機整數組（1000x1）ex: <code>array([0],[8],[6],…[9])</code>，因沒有 high 的值， 數值隨機介於[0,10)。</li>
+<li><a href="https://www.itread01.com/content/1549602019.html" target="_blank" rel="noopener">to_categorical</a> 將類別向量轉換为二進制（只有0和1）的矩陣類型，原來 labels 為 1 維隨機整數組（1000x1），to_categorical 按照 10 個類別將這 1 維隨機整數組的每個值都轉換為矩陣裡的一個行向量。</li>
 </ul>
-<p>舉例來說，<code>array([0],[8],[6],…[9])</code>的1維整數組，to_categorical 按照 10 個類別將 array 轉換為<br>array<br>[[1. 0. 0. 0. 0. 0. 0. 0. 0. 0.]<br> [0. 0. 0. 0. 0. 0. 0. 1. 0. 0.] <br> [0. 0. 0. 0. 0. 0. 1. 0. 0. 0.]…<br> [0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]]</p>
-<h1 id="創建和添加-layer-到-model"><a href="#創建和添加-layer-到-model" class="headerlink" title="創建和添加 layer 到 model"></a>創建和添加 layer 到 model</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model = Sequential()</span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">&#x27;relu&#x27;</span>, input_dim=<span class="number">784</span>))</span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">&#x27;softmax&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
+<p>舉例來說，<code>array([0],[8],[6],…[9])</code>的1維整數組，to_categorical 按照 10 個類別將 array 轉換為<br>array<br>[[1. 0. 0. 0. 0. 0. 0. 0. 0. 0.]<br> [0. 0. 0. 0. 0. 0. 0. 1. 0. 0.]<br> [0. 0. 0. 0. 0. 0. 1. 0. 0. 0.]…<br> [0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]]</p>
+<h1 id="創建和添加-layer-到-model"><a href="#創建和添加-layer-到-model" class="headerlink" title="創建和添加 layer 到 model"></a>創建和添加 layer 到 model</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model = Sequential()</span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>, input_dim=<span class="number">784</span>))</span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>))</span><br></pre></td></tr></table></figure>
 <ul>
 <li>定義Sequential模型，並model.add添加層。</li>
 <li>此範例第一步添加 Dense 類型的層（layers）為具有64個神經元。由於模型需要知道它所期望的輸入尺寸，順序模型中的第一層需要接收關於其輸入尺寸的參數信息（Dense支持通過參數 input_dim 指定輸入參數信息，而某些 3D 時序層支持 input_dim 和 input_length 參數。</li>
-<li>ReLU為激勵函數（Activation Function）之一，<a target="_blank" rel="noopener" href="https://mropengate.blogspot.com/2017/02/deep-learning-role-of-activation.html">詳見此</a>。</li>
-<li>Softmax為激勵函數（Activation Function）之一，<a target="_blank" rel="noopener" href="https://blog.csdn.net/bitcarmanlee/article/details/82320853">詳見此</a>。</li>
+<li>ReLU為激勵函數（Activation Function）之一，<a href="https://mropengate.blogspot.com/2017/02/deep-learning-role-of-activation.html" target="_blank" rel="noopener">詳見此</a>。</li>
+<li>Softmax為激勵函數（Activation Function）之一，<a href="https://blog.csdn.net/bitcarmanlee/article/details/82320853" target="_blank" rel="noopener">詳見此</a>。</li>
 </ul>
-<h1 id="compile-編譯-model"><a href="#compile-編譯-model" class="headerlink" title="compile (編譯) model"></a>compile (編譯) model</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&#x27;rmsprop&#x27;</span>,</span><br><span class="line">              loss=<span class="string">&#x27;categorical_crossentropy&#x27;</span>,</span><br><span class="line">              metrics=[<span class="string">&quot;accuracy&quot;</span>])</span><br></pre></td></tr></table></figure>
-
+<h1 id="compile-編譯-model"><a href="#compile-編譯-model" class="headerlink" title="compile (編譯) model"></a>compile (編譯) model</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>,</span><br><span class="line">              loss=<span class="string">'categorical_crossentropy'</span>,</span><br><span class="line">              metrics=[<span class="string">"accuracy"</span>])</span><br></pre></td></tr></table></figure>
 <ul>
 <li>模型在使用前必須編譯模型（model.compile）</li>
-<li>Optimizer (優化器)為 RMSprop：優化器目的是建立優化模型，優化目標函數並訓練出最好的模型，其功能是通過改善訓練方式，來最小化 (或最大化) 損失函數。RMSprop，<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34230849">詳見此</a></li>
-<li>loss (損失函數)為 categorical_crossentropy：損失函數基本上可以分成兩個面向(分類和回歸)，但都是希望最小化損失。loss(損失)就是實際和預測的殘差，損失愈小愈好。categorical_crossentropy，<a target="_blank" rel="noopener" href="https://blog.csdn.net/legalhighhigh/article/details/81409551">詳見此</a></li>
-<li>metric (度量函數) 來評估模型性能，’accuracy’為評估指標。<a target="_blank" rel="noopener" href="https://www.cnblogs.com/weiyinfu/p/9783776.html">詳見此</a></li>
+<li>Optimizer (優化器)為 RMSprop：優化器目的是建立優化模型，優化目標函數並訓練出最好的模型，其功能是通過改善訓練方式，來最小化 (或最大化) 損失函數。RMSprop，<a href="https://zhuanlan.zhihu.com/p/34230849" target="_blank" rel="noopener">詳見此</a></li>
+<li>loss (損失函數)為 categorical_crossentropy：損失函數基本上可以分成兩個面向(分類和回歸)，但都是希望最小化損失。loss(損失)就是實際和預測的殘差，損失愈小愈好。categorical_crossentropy，<a href="https://blog.csdn.net/legalhighhigh/article/details/81409551" target="_blank" rel="noopener">詳見此</a></li>
+<li>metric (度量函數) 來評估模型性能，’accuracy’為評估指標。<a href="https://www.cnblogs.com/weiyinfu/p/9783776.html" target="_blank" rel="noopener">詳見此</a></li>
 </ul>
 <h1 id="Train-model"><a href="#Train-model" class="headerlink" title="Train model"></a>Train model</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.fit(data, labels)</span><br></pre></td></tr></table></figure>
-
 <p>最後設定參數輸入 data 與目標 labels，來 model.fit，也就是訓練模型。<br>執行結果，如圖表示以 TensorFlow 作為引擎使用，損失率為 2.3494，準確度為 0.0920。</p>
 <p><img src="https://cdn-images-1.medium.com/max/1600/1*dIwMENM7YtaYqdFOOYnQvw.png" alt="執行結果"></p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><p><a target="_blank" rel="noopener" href="https://laoweizz.blogspot.com/2018/12/keras.html">Keras 簡介</a></p>
+<li><p><a href="https://laoweizz.blogspot.com/2018/12/keras.html" target="_blank" rel="noopener">Keras 簡介</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://medium.com/@baubibi/%E9%80%9F%E8%A8%98ai%E8%AA%B2%E7%A8%8B-%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92%E5%85%A5%E9%96%80-%E4%B8%80-68e27912ce30">速記AI課程－深度學習入門（一）</a></p>
+<li><p><a href="https://medium.com/@baubibi/%E9%80%9F%E8%A8%98ai%E8%AA%B2%E7%A8%8B-%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92%E5%85%A5%E9%96%80-%E4%B8%80-68e27912ce30" target="_blank" rel="noopener">速記AI課程－深度學習入門（一）</a></p>
 </li>
 </ul>
 
@@ -445,7 +437,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -483,7 +475,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -492,7 +484,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -561,7 +553,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -599,7 +591,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -608,7 +600,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -670,14 +662,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -738,7 +730,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -771,7 +763,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -804,7 +796,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -837,7 +829,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -870,7 +862,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -903,7 +895,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -936,7 +928,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -969,7 +961,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1059,7 +1051,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

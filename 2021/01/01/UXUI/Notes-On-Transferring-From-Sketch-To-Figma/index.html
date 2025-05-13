@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。\n\n\n第一次轉移總是會痛的，需要每個 artboard 去檢查是否有跟原來設計的畫面一樣，還要重新拉 prototype 動態線，通常至少需要花一整天才能完成轉移一個專案設計檔，且這是在還沒有將 Design System Library component 替換掉的時間。若要替換 Library component 需要在付費制下才可以使用，所以本篇先以免費版所要注意的地方著墨，System Library 等之後再另外寫一篇整理。\n同一組 Prototype 路線要在同個 Page之前 Sketch 我會依據功能將 artboard 分類在不同 Page，但在 Figma 若要做 Prototype 動態連線的話，只能全部在同一個 Page。不同 Page 在 Figma 只會當作是另一組 Prototype 路線。所以要怎麼把全部 artboard 整理在同一個 Page，我的做法是將同一區塊的 artboard 放在一起並用超級大的字體寫那一塊原本的 Page（功能）名稱，這樣遠遠的看也知道那一區是在做什麼的。\n\n群組物件被強制修剪當 Sketch 設計檔轉到 Figma 後，群組的物件會被自動轉換成 Figma 屬性的 group 或 Frame，且會有多一個勾選框顯示在右邊屬性欄，讓設計者勾選是否要修剪影像的 checked box。通常發生在有陰影和文字物件上，導致陰影或文字被強制切掉。這個時候只要取消勾選 “Clip Content”，就能如原本設計一樣了，只是這需要耐心檢查還蠻花時間的。\n\nCircle Progress Bar 畫法不同若你的設計元素有 Circle Progress Bar 要注意在 Figma 的設計方式會不同，以往在 Sketch 通常是調整線框 line dash 的筆畫樣式，但在 Figma 可以直接用實體 fill 的圓形去修改樣式，所以 Sketch 舊方式的 Circle Progress Bar 匯入就會壞掉，需要再重新做設計上的修正。\n\n出現重複 Symbol 的 bug有時候 Sketch 檔案匯入 Figma 後，會出現兩個一樣的 Symbol 的 bug? 目前不確定為什麼會這樣，可能跟檔案版本有關？ 我解決的辦法是用 Figma Plugin - Locator 先去確定哪個 Symbol 是有確實用到的，如果兩個 Symbol 用到的地方都一模一樣，就勇敢的把其中一個刪除吧！另外，也可以用 Figma Plugin - Component Replacer 把不是 symbol 的 component 補上，就是順便檢查一下，讓設計更完整。\n\n\nDesign SystemFigma 有個很不錯的功能是可以將 Design System 共享給各專案使用，但免費版僅限於分享 Color Style 的部分， component 則不給發布，所以這部分要注意的事項，待之後升級到訂閱版，我在把要注意的細節另外寫一篇～\n\nReference\nFigma Plugin - Locator\nFigma Plugin - Component Replacer\n\n","dateCreated":"2021-01-01T00:00:00+08:00","dateModified":"2021-01-01T00:00:00+08:00","datePublished":"2021-01-01T00:00:00+08:00","description":"還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。","headline":"Notes on transferring from Sketch to Figma","image":["https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi","https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/","keywords":"Sketch, UX, UI, Figma","thumbnailUrl":"https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。\n\n第一次轉移總是會痛的，需要每個 artboard 去檢查是否有跟原來設計的畫面一樣，還要重新拉 prototype 動態線，通常至少需要花一整天才能完成轉移一個專案設計檔，且這是在還沒有將 Design System Library component 替換掉的時間。若要替換 Library component 需要在付費制下才可以使用，所以本篇先以免費版所要注意的地方著墨，System Library 等之後再另外寫一篇整理。\n同一組 Prototype 路線要在同個 Page之前 Sketch 我會依據功能將 artboard 分類在不同 Page，但在 Figma 若要做 Prototype 動態連線的話，只能全部在同一個 Page。不同 Page 在 Figma 只會當作是另一組 Prototype 路線。所以要怎麼把全部 artboard 整理在同一個 Page，我的做法是將同一區塊的 artboard 放在一起並用超級大的字體寫那一塊原本的 Page（功能）名稱，這樣遠遠的看也知道那一區是在做什麼的。\n\n群組物件被強制修剪當 Sketch 設計檔轉到 Figma 後，群組的物件會被自動轉換成 Figma 屬性的 group 或 Frame，且會有多一個勾選框顯示在右邊屬性欄，讓設計者勾選是否要修剪影像的 checked box。通常發生在有陰影和文字物件上，導致陰影或文字被強制切掉。這個時候只要取消勾選 “Clip Content”，就能如原本設計一樣了，只是這需要耐心檢查還蠻花時間的。\n\nCircle Progress Bar 畫法不同若你的設計元素有 Circle Progress Bar 要注意在 Figma 的設計方式會不同，以往在 Sketch 通常是調整線框 line dash 的筆畫樣式，但在 Figma 可以直接用實體 fill 的圓形去修改樣式，所以 Sketch 舊方式的 Circle Progress Bar 匯入就會壞掉，需要再重新做設計上的修正。\n\n出現重複 Symbol 的 bug有時候 Sketch 檔案匯入 Figma 後，會出現兩個一樣的 Symbol 的 bug? 目前不確定為什麼會這樣，可能跟檔案版本有關？ 我解決的辦法是用 Figma Plugin - Locator 先去確定哪個 Symbol 是有確實用到的，如果兩個 Symbol 用到的地方都一模一樣，就勇敢的把其中一個刪除吧！另外，也可以用 Figma Plugin - Component Replacer 把不是 symbol 的 component 補上，就是順便檢查一下，讓設計更完整。\n\n\nDesign SystemFigma 有個很不錯的功能是可以將 Design System 共享給各專案使用，但免費版僅限於分享 Color Style 的部分， component 則不給發布，所以這部分要注意的事項，待之後升級到訂閱版，我在把要注意的細節另外寫一篇～\n\nReference\nFigma Plugin - Locator\nFigma Plugin - Component Replacer\n\n","dateCreated":"2021-01-01T00:00:00+08:00","dateModified":"2021-01-01T00:00:00+08:00","datePublished":"2021-01-01T00:00:00+08:00","description":"還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。","headline":"Notes on transferring from Sketch to Figma","image":["https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi","https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2021/01/01/UXUI/Notes-On-Transferring-From-Sketch-To-Figma/","keywords":"Sketch, UX, UI, Figma","thumbnailUrl":"https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi"}</script>
     <meta name="description" content="還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Notes on transferring from Sketch to Figma">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://downloads.intercomcdn.com/i/o/82641775/21030eb185c81c44338bc2ee/Arc+Closed+Ring.gif">
 <meta property="og:image" content="https://www.figma.com/community/plugin/741935812012883481/thumbnail">
 <meta property="og:image" content="https://www.figma.com/community/plugin/748545064462894895/thumbnail">
-<meta property="og:image" content="https://images.ctfassets.net/1khq4uysbvty/4XYc5Z5siLdaAgidhT2ym/0f916d11a615efaa0776f5fc33b2446f/DS_03.gif?&w=785">
+<meta property="og:image" content="https://images.ctfassets.net/1khq4uysbvty/4XYc5Z5siLdaAgidhT2ym/0f916d11a615efaa0776f5fc33b2446f/DS_03.gif?&amp;w=785">
 <meta property="article:published_time" content="2020-12-31T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-12-31T16:00:00.000Z">
 <meta property="article:author" content="Anny Chang">
@@ -60,7 +60,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -133,7 +133,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -311,7 +311,7 @@
         <div class="post-meta">
     <time datetime="2021-01-01T00:00:00+08:00">
 	
-		    1月 01, 2021
+		    2021 年 1 月 1 日
     	
     </time>
     
@@ -330,8 +330,7 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>還沒接觸到 Figma 前，我的工作流是用 Sketch (設計) + Abstract (版控) + AdobeXD (原型)，三者各取所長提供使用者最適合的設計方案。但其實很多時間會花在操作三種不同軟體的工上，但 Figma 解決了我長期的困擾，一個軟體就可以做到原本的事情，且還不用下載任何軟體，只要有瀏覽器就可以線上設計，還支援線上多人協作，優點多多。此篇紀錄將設計檔案從 Sketch 轉移到 Figma 需要注意的小細節。</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <p>第一次轉移總是會痛的，需要每個 artboard 去檢查是否有跟原來設計的畫面一樣，還要重新拉 prototype 動態線，通常至少需要花一整天才能完成轉移一個專案設計檔，且這是在還沒有將 Design System Library component 替換掉的時間。若要替換 Library component 需要在付費制下才可以使用，所以本篇先以免費版所要注意的地方著墨，System Library 等之後再另外寫一篇整理。</p>
 <h1 id="同一組-Prototype-路線要在同個-Page"><a href="#同一組-Prototype-路線要在同個-Page" class="headerlink" title="同一組 Prototype 路線要在同個 Page"></a>同一組 Prototype 路線要在同個 Page</h1><p>之前 Sketch 我會依據功能將 artboard 分類在不同 Page，但在 Figma 若要做 Prototype 動態連線的話，只能全部在同一個 Page。不同 Page 在 Figma 只會當作是另一組 Prototype 路線。所以要怎麼把全部 artboard 整理在同一個 Page，我的做法是將同一區塊的 artboard 放在一起並用超級大的字體寫那一塊原本的 Page（功能）名稱，這樣遠遠的看也知道那一區是在做什麼的。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/ACtC-3fXQJ_l_y5auAA3Xe1NuMYvlHthoPQvW1Ijk1G4xTgGRZT1me4XXGavIcNA5VSY5mhDW8c7_3ndvi3Ptu0-Ahjfl9NlJ4W0h3HxvYSRKotT9C2R8XxsGJBKziedeHto-GmtY2BCsnBYBUeamXSGmMGRGg=w2542-h1378-no?authuser=0" alt="Prototype 要在同一個 Page"></p>
@@ -339,14 +338,14 @@
 <p><img src="https://lh3.googleusercontent.com/pw/ACtC-3els8K-mYfiBwswCJfPY9fMfUhwrqTTRcq9HZLqFeRvm0Gd_I13EfCpuTHZB_epIsCL8brFtA4a1-SXN_P2nYeHOVc8P593WKvyiGtDsaKJoqBQiwUt-whxhmv7_P0DLq_GhzDdENu8ykJlxD4yN1Xtxw=w490-h622-no?authuser=0" alt="Clip Content"></p>
 <h1 id="Circle-Progress-Bar-畫法不同"><a href="#Circle-Progress-Bar-畫法不同" class="headerlink" title="Circle Progress Bar 畫法不同"></a>Circle Progress Bar 畫法不同</h1><p>若你的設計元素有 Circle Progress Bar 要注意在 Figma 的設計方式會不同，以往在 Sketch 通常是調整線框 line dash 的筆畫樣式，但在 Figma 可以直接用實體 fill 的圓形去修改樣式，所以 Sketch 舊方式的 Circle Progress Bar 匯入就會壞掉，需要再重新做設計上的修正。</p>
 <p><img src="https://downloads.intercomcdn.com/i/o/82641775/21030eb185c81c44338bc2ee/Arc+Closed+Ring.gif" alt="Circle Progress Bar"></p>
-<h1 id="出現重複-Symbol-的-bug"><a href="#出現重複-Symbol-的-bug" class="headerlink" title="出現重複 Symbol 的 bug"></a>出現重複 Symbol 的 bug</h1><p>有時候 Sketch 檔案匯入 Figma 後，會出現兩個一樣的 Symbol 的 bug? 目前不確定為什麼會這樣，可能跟檔案版本有關？ 我解決的辦法是用 <a target="_blank" rel="noopener" href="https://www.figma.com/community/plugin/741935812012883481/Locator">Figma Plugin - Locator</a> 先去確定哪個 Symbol 是有確實用到的，如果兩個 Symbol 用到的地方都一模一樣，就勇敢的把其中一個刪除吧！另外，也可以用 <a target="_blank" rel="noopener" href="https://www.figma.com/community/plugin/748545064462894895/Component-Replacer">Figma Plugin - Component Replacer</a> 把不是 symbol 的 component 補上，就是順便檢查一下，讓設計更完整。</p>
+<h1 id="出現重複-Symbol-的-bug"><a href="#出現重複-Symbol-的-bug" class="headerlink" title="出現重複 Symbol 的 bug"></a>出現重複 Symbol 的 bug</h1><p>有時候 Sketch 檔案匯入 Figma 後，會出現兩個一樣的 Symbol 的 bug? 目前不確定為什麼會這樣，可能跟檔案版本有關？ 我解決的辦法是用 <a href="https://www.figma.com/community/plugin/741935812012883481/Locator" target="_blank" rel="noopener">Figma Plugin - Locator</a> 先去確定哪個 Symbol 是有確實用到的，如果兩個 Symbol 用到的地方都一模一樣，就勇敢的把其中一個刪除吧！另外，也可以用 <a href="https://www.figma.com/community/plugin/748545064462894895/Component-Replacer" target="_blank" rel="noopener">Figma Plugin - Component Replacer</a> 把不是 symbol 的 component 補上，就是順便檢查一下，讓設計更完整。</p>
 <p><img src="https://www.figma.com/community/plugin/741935812012883481/thumbnail" alt="Figma Plugin - Locator"></p>
 <p><img src="https://www.figma.com/community/plugin/748545064462894895/thumbnail" alt="Figma Plugin - Component Replace"></p>
 <h1 id="Design-System"><a href="#Design-System" class="headerlink" title="Design System"></a>Design System</h1><p>Figma 有個很不錯的功能是可以將 Design System 共享給各專案使用，但免費版僅限於分享 Color Style 的部分， component 則不給發布，所以這部分要注意的事項，待之後升級到訂閱版，我在把要注意的細節另外寫一篇～</p>
-<p><img src="https://images.ctfassets.net/1khq4uysbvty/4XYc5Z5siLdaAgidhT2ym/0f916d11a615efaa0776f5fc33b2446f/DS_03.gif?&w=785" alt="Design System"></p>
+<p><img src="https://images.ctfassets.net/1khq4uysbvty/4XYc5Z5siLdaAgidhT2ym/0f916d11a615efaa0776f5fc33b2446f/DS_03.gif?&amp;w=785" alt="Design System"></p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://www.figma.com/community/plugin/741935812012883481/Locator">Figma Plugin - Locator</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.figma.com/community/plugin/748545064462894895/Component-Replacer">Figma Plugin - Component Replacer</a></li>
+<li><a href="https://www.figma.com/community/plugin/741935812012883481/Locator" target="_blank" rel="noopener">Figma Plugin - Locator</a></li>
+<li><a href="https://www.figma.com/community/plugin/748545064462894895/Component-Replacer" target="_blank" rel="noopener">Figma Plugin - Component Replacer</a></li>
 </ul>
 
             
@@ -402,7 +401,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -440,7 +439,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -449,7 +448,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -518,7 +517,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -556,7 +555,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -565,7 +564,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -627,14 +626,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -695,7 +694,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -728,7 +727,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -761,7 +760,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -794,7 +793,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -827,7 +826,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -860,7 +859,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -893,7 +892,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -926,7 +925,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1016,7 +1015,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

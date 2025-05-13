@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"上一篇寫過 .NET core 3 + Vue-cli 3 的起手式，這次我們要把做好的專案寫成 dotnet new 的範本，這樣以後就不用做這麼多繁瑣的步驟啦！\n\n\n製作範本Step1. 將內容放到 Content 資料夾新增 Content 資料夾，把原本專案的檔案放到 Content 底下。\n\nStep2. 設定 template.json, .nuspec\b* 在 Content 資料夾內新增 .template.config 資料夾，新增 template.json\nContent&#x2F;.template.config&#x2F;template.json\n1234567891011121314&#123;  &quot;$schema&quot;: &quot;http://json.schemastore.org/template&quot;,  &quot;author&quot;: &quot;Anny Chang&quot;,  &quot;classifications&quot;: [ &quot;Web&quot;, &quot;MVC&quot;, &quot;SPA&quot; ],  &quot;identity&quot;: &quot;Anny.DotnetCore.VueCli&quot;,  &quot;name&quot;: &quot;Anny Dotnet Core 3 With Vue Cli 3&quot;,  &quot;shortName&quot;: &quot;annydotnetvuecli&quot;,   &quot;tags&quot;: &#123;    &quot;language&quot;: &quot;C#&quot;,    &quot;type&quot;: &quot;item&quot;  &#125;,  &quot;sourceName&quot;: &quot;dotnet_core_with_vue_cli3&quot;,  &quot;preferNameDirectory&quot;: true&#125;\n\n\n\n\n屬性\n說明\n\n\n\n$schema\n使用 template schema\n\n\nauthor\n作者名\n\n\nclassifications\ndotnet new 列表顯示的分類\n\n\nidentity\n辨識此 Template 的唯一 ID\n\n\nname\nTemplate 顯示名稱\n\n\nshortName\ndotnet new 使用此 Template 的簡寫\n\n\ntags\ndotnet new 列表顯示的語言\n\n\nsourceName\n這個是到時候使用 template 時，可以將專案名稱替代成要的\n\n\npreferNameDirectory\ndotnet new 沒有指定專案名稱時，他會自動命專案名為所在資料夾的名稱\n\n\n\n在最外層新增 .nuspec 檔案。\n\nAnny.DotnetCore.Template.nuspec\n123456789101112131415161718192021222324&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;package&gt;  &lt;metadata&gt;    &lt;id&gt;Anny.DotnetCore.Template&lt;/id&gt;    &lt;version&gt;1.0.3&lt;/version&gt;    &lt;title&gt;Anny DotnetCore Template Example&lt;/title&gt;    &lt;description&gt;      Anny&#x27;s DotnetCore Template for example.    &lt;/description&gt;    &lt;authors&gt;Anny Chang&lt;/authors&gt;    &lt;summary&gt;      ASP.NET Core Teamplate for Vue Cli.    &lt;/summary&gt;    &lt;packageTypes&gt;      &lt;packageType name=&quot;Template&quot; /&gt;    &lt;/packageTypes&gt;  &lt;/metadata&gt;  &lt;files&gt;    &lt;file      src=&quot;Content/**/*&quot;      exclude=&quot;**/node_modules/**;**/package-lock.json;**/bin/**;**/obj/**;**/.vs/**;**/.vscode/**;**/wwwroot/**&quot;      target=&quot;Content&quot; /&gt;  &lt;/files&gt;&lt;/package&gt;\n\n\n\n\nmetadata 屬性\n說明\n\n\n\nid\ndotnet new 安裝 nuget template 識別唯一ID\n\n\nversion\nnuget package version\n\n\ntitle\nnuget 官網上對於 package 的標題\n\n\ndescription\nnuget 官網上對於 package 的描述\n\n\nauthors\nnuget 官網上對於 package 的作者名\n\n\nsummary\nnuget 官網上對於 package 的摘要\n\n\npackageType\n告知 nuget package 類行為 Template\n\n\n\n\n\nfiles 屬性\n說明\n\n\n\nsrc\n指定來源資料夾位置\n\n\nexclude\n排除特定檔案\n\n\ntarget\n指定生成資料夾位置\n\n\nStep3. 上傳 nuget package執行 nuget cli 指令，若還沒有安裝請連這裡。\n執行下列 nuget 指令打包 package。\n1nuget pack\n\n將產生出來的 .nupkg 檔案上傳至官網。等待官網審核成功後就可以使用 Template 囉～\n\n使用範本執行下列指令安裝範本。\n1dotnet new --install Anny.DotnetCore.Template::1.0.3\n\n成功會看到列表出現安裝的範本名稱。\n\n請去一個新資料夾來測試範本。不指定名稱執行的話，專案名稱會自動取名為當前位置的資料夾名稱，如下指令。\n1dotnet new annydotnetvuecli\n\n若要在當下位置建立自己命名的專案名稱，可傳入參數如下指令。 (XXX 請替換成你要的專案名稱)\n1dotnet new annydotnetvuecli -n XXX\n\n若要安裝新版本的範本，記得解除舊的版本，解安裝請執行下列指令。\n1dotnet new -u Anny.DotnetCore.Template\n\n這樣就完成我們的模板測試囉～今天的 code 放在 github。\n參考資料\nHow to create your own templates for dotnet new\n安裝 NuGet 用戶端工具\n\n","dateCreated":"2019-12-07T00:00:00+08:00","dateModified":"2019-12-07T00:00:00+08:00","datePublished":"2019-12-07T00:00:00+08:00","description":"上一篇寫過 .NET core 3 + Vue-cli 3 的起手式，這次我們要把做好的專案寫成 dotnet new 的範本，這樣以後就不用做這麼多繁瑣的步驟啦！","headline":".NET Core 3.0 SPA with Vue-Cli 3 - Make Nuget Template","image":["http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png","http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/12/07/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3-make-nuget-template/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/12/07/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3-make-nuget-template/","keywords":"Vue, .NET Core, dotnet, Webpack, SPA, MVC, VScode, Nuget, Template","thumbnailUrl":"http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"上一篇寫過 .NET core 3 + Vue-cli 3 的起手式，這次我們要把做好的專案寫成 dotnet new 的範本，這樣以後就不用做這麼多繁瑣的步驟啦！\n\n製作範本Step1. 將內容放到 Content 資料夾新增 Content 資料夾，把原本專案的檔案放到 Content 底下。\n\nStep2. 設定 template.json, .nuspec\b* 在 Content 資料夾內新增 .template.config 資料夾，新增 template.json\nContent/.template.config/template.json\n1234567891011121314&#123;  \"$schema\": \"http://json.schemastore.org/template\",  \"author\": \"Anny Chang\",  \"classifications\": [ \"Web\", \"MVC\", \"SPA\" ],  \"identity\": \"Anny.DotnetCore.VueCli\",  \"name\": \"Anny Dotnet Core 3 With Vue Cli 3\",  \"shortName\": \"annydotnetvuecli\",   \"tags\": &#123;    \"language\": \"C#\",    \"type\": \"item\"  &#125;,  \"sourceName\": \"dotnet_core_with_vue_cli3\",  \"preferNameDirectory\": true&#125;\n\n\n\n屬性\n說明\n\n\n\n\n$schema\n使用 template schema\n\n\nauthor\n作者名\n\n\nclassifications\ndotnet new 列表顯示的分類\n\n\nidentity\n辨識此 Template 的唯一 ID\n\n\nname\nTemplate 顯示名稱\n\n\nshortName\ndotnet new 使用此 Template 的簡寫\n\n\ntags\ndotnet new 列表顯示的語言\n\n\nsourceName\n這個是到時候使用 template 時，可以將專案名稱替代成要的\n\n\npreferNameDirectory\ndotnet new 沒有指定專案名稱時，他會自動命專案名為所在資料夾的名稱\n\n\n\n\n在最外層新增 .nuspec 檔案。\n\nAnny.DotnetCore.Template.nuspec\n123456789101112131415161718192021222324&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;package&gt;  &lt;metadata&gt;    &lt;id&gt;Anny.DotnetCore.Template&lt;/id&gt;    &lt;version&gt;1.0.3&lt;/version&gt;    &lt;title&gt;Anny DotnetCore Template Example&lt;/title&gt;    &lt;description&gt;      Anny's DotnetCore Template for example.    &lt;/description&gt;    &lt;authors&gt;Anny Chang&lt;/authors&gt;    &lt;summary&gt;      ASP.NET Core Teamplate for Vue Cli.    &lt;/summary&gt;    &lt;packageTypes&gt;      &lt;packageType name=\"Template\" /&gt;    &lt;/packageTypes&gt;  &lt;/metadata&gt;  &lt;files&gt;    &lt;file      src=\"Content/**/*\"      exclude=\"**/node_modules/**;**/package-lock.json;**/bin/**;**/obj/**;**/.vs/**;**/.vscode/**;**/wwwroot/**\"      target=\"Content\" /&gt;  &lt;/files&gt;&lt;/package&gt;\n\n\n\nmetadata 屬性\n說明\n\n\n\n\nid\ndotnet new 安裝 nuget template 識別唯一ID\n\n\nversion\nnuget package version\n\n\ntitle\nnuget 官網上對於 package 的標題\n\n\ndescription\nnuget 官網上對於 package 的描述\n\n\nauthors\nnuget 官網上對於 package 的作者名\n\n\nsummary\nnuget 官網上對於 package 的摘要\n\n\npackageType\n告知 nuget package 類行為 Template\n\n\n\n\n\n\nfiles 屬性\n說明\n\n\n\n\nsrc\n指定來源資料夾位置\n\n\nexclude\n排除特定檔案\n\n\ntarget\n指定生成資料夾位置\n\n\n\nStep3. 上傳 nuget package執行 nuget cli 指令，若還沒有安裝請連這裡。\n執行下列 nuget 指令打包 package。\n1nuget pack\n將產生出來的 .nupkg 檔案上傳至官網。等待官網審核成功後就可以使用 Template 囉～\n\n使用範本執行下列指令安裝範本。\n1dotnet new --install Anny.DotnetCore.Template::1.0.3\n成功會看到列表出現安裝的範本名稱。\n\n請去一個新資料夾來測試範本。不指定名稱執行的話，專案名稱會自動取名為當前位置的資料夾名稱，如下指令。\n1dotnet new annydotnetvuecli\n若要在當下位置建立自己命名的專案名稱，可傳入參數如下指令。 (XXX 請替換成你要的專案名稱)\n1dotnet new annydotnetvuecli -n XXX\n若要安裝新版本的範本，記得解除舊的版本，解安裝請執行下列指令。\n1dotnet new -u Anny.DotnetCore.Template\n這樣就完成我們的模板測試囉～今天的 code 放在 github。\n參考資料\nHow to create your own templates for dotnet new\n安裝 NuGet 用戶端工具\n\n","dateCreated":"2019-12-07T00:00:00+08:00","dateModified":"2019-12-07T00:00:00+08:00","datePublished":"2019-12-07T00:00:00+08:00","description":"上一篇寫過 .NET core 3 + Vue-cli 3 的起手式，這次我們要把做好的專案寫成 dotnet new 的範本，這樣以後就不用做這麼多繁瑣的步驟啦！","headline":".NET Core 3.0 SPA with Vue-Cli 3 - Make Nuget Template","image":["http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png","http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/12/07/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3-make-nuget-template/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/12/07/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3-make-nuget-template/","keywords":"Vue, .NET Core, dotnet, Webpack, SPA, MVC, VScode, Nuget, Template","thumbnailUrl":"http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"}</script>
     <meta name="description" content="上一篇寫過 .NET core 3 + Vue-cli 3 的起手式，這次我們要把做好的專案寫成 dotnet new 的範本，這樣以後就不用做這麼多繁瑣的步驟啦！">
 <meta property="og:type" content="blog">
 <meta property="og:title" content=".NET Core 3.0 SPA with Vue-Cli 3 - Make Nuget Template">
@@ -62,7 +62,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -135,7 +135,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -313,7 +313,7 @@
         <div class="post-meta">
     <time datetime="2019-12-07T00:00:00+08:00">
 	
-		    12月 07, 2019
+		    2019 年 12 月 7 日
     	
     </time>
     
@@ -332,14 +332,12 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>上一篇寫過 <a href="../../../../../2019/12/07/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3-make-nuget-template/">.NET core 3 + Vue-cli 3 的起手式</a>，這次我們要把做好的專案寫成 dotnet new 的範本，這樣以後就不用做這麼多繁瑣的步驟啦！</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <h1 id="製作範本"><a href="#製作範本" class="headerlink" title="製作範本"></a>製作範本</h1><h2 id="Step1-將內容放到-Content-資料夾"><a href="#Step1-將內容放到-Content-資料夾" class="headerlink" title="Step1. 將內容放到 Content 資料夾"></a>Step1. 將內容放到 Content 資料夾</h2><p>新增 <code>Content</code> 資料夾，把原本專案的檔案放到 Content 底下。</p>
 <p><img src="https://lh3.googleusercontent.com/DM0FGhjan-_q6Kldvpdse7NxiCwGNlimwMYeakJ-kS-P5jyKz01UeewDUCCNVj-P81V9dssVgwmszQlwwBi40pZuFMI-EFnoREY6RmVcToZZTAx6zi29PEbH7d2eKEQcFSIM7CharolWbPK_UC1HngzN6u1PVKfYu4qhIETIUPccN9zRjGUfBwCOexzAMB_JWzoCy1nhR09B8n3x8zVdcQ8KHQL8UkjlJT7EECU7JE4hvWjNKbalwzROwjGlJHR8Rm_8Arje9iN3v3d4hvewzRtCWx8zpzjxMyPgWYYX-jofabaeM6rcAOhCId0BqCTjQ_ObVpRUK_lE1Vf1O2jqFRjOvas1Ll9Z5dXjuis_KXDsMyvcogE-Q6HzzzmcI5qyDK9FrB93N-JBCJD33fsfIeYbwIvevNOejtO-UNUvRces2Xxmj4RzjKVxBPiYBayAILx4PEqEY9VwKlBuDFVJZXAO1rF9RVPzVlmARhNG7_ezALQSlDXVIG1nAEA3uwXV4Ry3vxsb4N662yy2OufzZ-6W8z_C69WvDmPHCZb_J2eaQX6zQ_3KNlO1AwjrTlGNEGRw3eUudGQAwND2PkC0Lj-HeCZWNkPZwY8ToMQ2dKDrrow3px3qjqB6hbU8nCkkdO6j2C8qqFZnR0ETIH-7V7OyJE0jLu1c-exfR0bUmm1e__deylIbqI8yFG3uP3c-bXoXec0pMyU7TqUMshAaQAhslIAZ4m1hquCsOkls1hKIKnzQyQ=w636-h1324-no" alt="將內容放到 Content 資料夾" title="將內容放到 Content 資料夾"></p>
 <h2 id="Step2-設定-template-json-nuspec"><a href="#Step2-設定-template-json-nuspec" class="headerlink" title="Step2. 設定 template.json, .nuspec"></a>Step2. 設定 template.json, .nuspec</h2><p>* 在 Content 資料夾內新增 <code>.template.config</code> 資料夾，新增 <code>template.json</code></p>
-<p>Content&#x2F;.template.config&#x2F;template.json</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;$schema&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://json.schemastore.org/template&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;author&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Anny Chang&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;classifications&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="string">&quot;Web&quot;</span><span class="punctuation">,</span> <span class="string">&quot;MVC&quot;</span><span class="punctuation">,</span> <span class="string">&quot;SPA&quot;</span> <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;identity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Anny.DotnetCore.VueCli&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Anny Dotnet Core 3 With Vue Cli 3&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;shortName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;annydotnetvuecli&quot;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;tags&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;language&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C#&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;item&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;sourceName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;dotnet_core_with_vue_cli3&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;preferNameDirectory&quot;</span><span class="punctuation">:</span> <span class="keyword">true</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
+<p>Content/.template.config/template.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"$schema"</span>: <span class="string">"http://json.schemastore.org/template"</span>,</span><br><span class="line">  <span class="attr">"author"</span>: <span class="string">"Anny Chang"</span>,</span><br><span class="line">  <span class="attr">"classifications"</span>: [ <span class="string">"Web"</span>, <span class="string">"MVC"</span>, <span class="string">"SPA"</span> ],</span><br><span class="line">  <span class="attr">"identity"</span>: <span class="string">"Anny.DotnetCore.VueCli"</span>,</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"Anny Dotnet Core 3 With Vue Cli 3"</span>,</span><br><span class="line">  <span class="attr">"shortName"</span>: <span class="string">"annydotnetvuecli"</span>, </span><br><span class="line">  <span class="attr">"tags"</span>: &#123;</span><br><span class="line">    <span class="attr">"language"</span>: <span class="string">"C#"</span>,</span><br><span class="line">    <span class="attr">"type"</span>: <span class="string">"item"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"sourceName"</span>: <span class="string">"dotnet_core_with_vue_cli3"</span>,</span><br><span class="line">  <span class="attr">"preferNameDirectory"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -347,7 +345,8 @@
 <th>說明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>$schema</td>
 <td>使用 template schema</td>
 </tr>
@@ -383,13 +382,13 @@
 <td>preferNameDirectory</td>
 <td>dotnet new 沒有指定專案名稱時，他會自動命專案名為所在資料夾的名稱</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
 <li>在最外層新增 .nuspec 檔案。</li>
 </ul>
 <p>Anny.DotnetCore.Template.nuspec</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">package</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">metadata</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>Anny.DotnetCore.Template<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Anny DotnetCore Template Example<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span></span><br><span class="line">      Anny&#x27;s DotnetCore Template for example.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">authors</span>&gt;</span>Anny Chang<span class="tag">&lt;/<span class="name">authors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">summary</span>&gt;</span></span><br><span class="line">      ASP.NET Core Teamplate for Vue Cli.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packageTypes</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">packageType</span> <span class="attr">name</span>=<span class="string">&quot;Template&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">packageTypes</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">metadata</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">files</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;Content/**/*&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">exclude</span>=<span class="string">&quot;**/node_modules/**;**/package-lock.json;**/bin/**;**/obj/**;**/.vs/**;**/.vscode/**;**/wwwroot/**&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">target</span>=<span class="string">&quot;Content&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">files</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">package</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">package</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">metadata</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>Anny.DotnetCore.Template<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Anny DotnetCore Template Example<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span></span><br><span class="line">      Anny's DotnetCore Template for example.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">authors</span>&gt;</span>Anny Chang<span class="tag">&lt;/<span class="name">authors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">summary</span>&gt;</span></span><br><span class="line">      ASP.NET Core Teamplate for Vue Cli.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packageTypes</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">packageType</span> <span class="attr">name</span>=<span class="string">"Template"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">packageTypes</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">metadata</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">files</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">"Content/**/*"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">exclude</span>=<span class="string">"**/node_modules/**;**/package-lock.json;**/bin/**;**/obj/**;**/.vs/**;**/.vscode/**;**/wwwroot/**"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">target</span>=<span class="string">"Content"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">files</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">package</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -397,7 +396,8 @@
 <th>說明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>id</td>
 <td>dotnet new 安裝 nuget template 識別唯一ID</td>
 </tr>
@@ -425,7 +425,8 @@
 <td>packageType</td>
 <td>告知 nuget package 類行為 Template</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <table>
 <thead>
 <tr>
@@ -433,7 +434,8 @@
 <th>說明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>src</td>
 <td>指定來源資料夾位置</td>
 </tr>
@@ -445,31 +447,27 @@
 <td>target</td>
 <td>指定生成資料夾位置</td>
 </tr>
-</tbody></table>
-<h2 id="Step3-上傳-nuget-package"><a href="#Step3-上傳-nuget-package" class="headerlink" title="Step3. 上傳 nuget package"></a>Step3. 上傳 nuget package</h2><p>執行 nuget cli 指令，若還沒有安裝請連<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/nuget/install-nuget-client-tools#nugetexe-cli">這裡</a>。</p>
+</tbody>
+</table>
+<h2 id="Step3-上傳-nuget-package"><a href="#Step3-上傳-nuget-package" class="headerlink" title="Step3. 上傳 nuget package"></a>Step3. 上傳 nuget package</h2><p>執行 nuget cli 指令，若還沒有安裝請連<a href="https://docs.microsoft.com/zh-tw/nuget/install-nuget-client-tools#nugetexe-cli" target="_blank" rel="noopener">這裡</a>。</p>
 <p>執行下列 nuget 指令打包 package。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nuget pack</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nuget pack</span><br></pre></td></tr></table></figure>
 <p>將產生出來的 .nupkg 檔案上傳至官網。等待官網審核成功後就可以使用 Template 囉～</p>
 <p><img src="https://lh3.googleusercontent.com/yLk0gObRHknv2ngdI8O11NeDcMkR29sCTV7ppUmQ-IEKBunro_4vpsh-TcIlpQYXj1ujWf_cZ6_lp-vl6oBui1KJYT59C4BT2GNvkv8qg0CMC93NWgio63OTuHf_344IVhUuX_CAgdMrE153QPu4soqcBaUlF0Ax3dYF0x6sHyyyGP8x8YjslbFdMVrMxTus7AfcC0h0b3Mzz19iUmzCu5OvB_5iVjNYnMNrMCHwURSvQP0J1w9PVBiJykWluB73IMh-EGcTIxH_6eyvArkdz_-pz-_Am3ZNdWiUXQml86aAJb7Tm6OJqcRlxNuO_nQpFW6JtUQVRWlkA85Xb32_uG9JymE_zrG47g6p982LlXTUv3kJC5RfjebKnbwlVDxoO7J501XO1abfjTKWzbSx6ERhyVjJE0CzJg2qiEKtOmXsJbAew0tJiSjH2H_ri-adgAudtsPS-Rair5WVtpB0AHaRjLcmZG4L1beOmWOcK1_0RejtWgE_Lwx19ngM1D8fuXsNd3uX_EGua57gR-0DlUpDwfknu14k9YuG9Wdz_TMmacAdfPFcR38vjLuGCzcHZ3RtSv-vmy-42x4KN5mKARKYKbmYptqVijJYN2yuI_W7LlVA9ruHKkLaBXKW8tHRyiWTx4nOvGvuLlNw6Qv9PaVp3ch7Ml8_lOnmChtNaCoknd4wE_txHXjegvpypmHrxE-RDGEw9LCGjn-Ny8R5p0yLSI8OoSho5ZcfdSkYyP-fNllqew=w2560-h1376-no" alt="nuget package 審核成功" title="nuget package 審核成功"></p>
 <h1 id="使用範本"><a href="#使用範本" class="headerlink" title="使用範本"></a>使用範本</h1><p>執行下列指令安裝範本。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new --install Anny.DotnetCore.Template::1.0.3</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new --install Anny.DotnetCore.Template::1.0.3</span><br></pre></td></tr></table></figure>
 <p>成功會看到列表出現安裝的範本名稱。</p>
 <p><img src="https://lh3.googleusercontent.com/bEIRs1iYDfjJPgiOMe5tbywr7VZZh_RY9rw8mRHrA4BiWNwSzDO98dQrZ4CNe6QONzhdr1DQOrLJRw_OjjGie1lbOkCwlyTMqYb-5bV-3kL0McGF2mzzsbCJBuKRBxG2J4_7D3StYlRJoNbwb9GkOxDiB_uV0E2jY10ZNc5Uh0W7aaAx56zcLz7J7aWZCpLJfSBPBHXtXEDn6N3vnYwj2W81s_UHv95Zy78tJrRPrpWfk-FvLQM4LLnfKmTL0Ta0bv3eTBGYyzBXZKRuWIpkXeIjgmHh6eWXECGrM1LQ47tCYFTQ5vxJ4_eG0J75qOOYuZNmEl2fWHXYjlDjrr2e03lIPC5SFcgcymDvRViA9ZKtWooNCpirpA4xmWwHuMCr2-krpuudLCnOD0JmgYG2vfJ5yYjUvOc7IPuvrpHHMGZHNmOlVt6KRgd-B4n1D3C1QrFQ_l-hi_GyBXQNiHOj8roiW4vAh0WWmh2TjevORVh43ZOQ6WNWU8kLta63wAkWRCpBRcOP3_4f69fy3Wpkjex9T025guk11itdMNRkdDLNR8DUuz7-fLJmy1fI_6_urs9-lodG7NtKAxAtaxh5RKf2ZuW0ZA7MITnXFX28BMazKheqQEnn5F3fuaWoJVipRkawc8xTwN9AHh5o7NYRqcp_Rto3KP9NPAwy_sPPY2-SaDexOvRsZHpM9ib7LebSDb7iA7YLcAjOYOhJOZnFWls8Q56Wtl7VxrZC_1gPSF9aRGcPEw=w2310-h1354-no" alt="安裝範本成功" title="安裝範本成功"></p>
 <p>請去一個新資料夾來測試範本。<br>不指定名稱執行的話，專案名稱會自動取名為當前位置的資料夾名稱，如下指令。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new annydotnetvuecli</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new annydotnetvuecli</span><br></pre></td></tr></table></figure>
 <p>若要在當下位置建立自己命名的專案名稱，可傳入參數如下指令。 (XXX 請替換成你要的專案名稱)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new annydotnetvuecli -n XXX</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new annydotnetvuecli -n XXX</span><br></pre></td></tr></table></figure>
 <p>若要安裝新版本的範本，記得解除舊的版本，解安裝請執行下列指令。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new -u Anny.DotnetCore.Template</span><br></pre></td></tr></table></figure>
-
-<p>這樣就完成我們的模板測試囉～今天的 code 放在 <a target="_blank" rel="noopener" href="https://github.com/Annilla/dotnet-core-with-vue-cli3/tree/v2.0">github</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new -u Anny.DotnetCore.Template</span><br></pre></td></tr></table></figure>
+<p>這樣就完成我們的模板測試囉～今天的 code 放在 <a href="https://github.com/Annilla/dotnet-core-with-vue-cli3/tree/v2.0" target="_blank" rel="noopener">github</a>。</p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/how-to-create-your-own-templates-for-dotnet-new/">How to create your own templates for dotnet new</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/nuget/install-nuget-client-tools#nugetexe-cli">安裝 NuGet 用戶端工具</a></li>
+<li><a href="https://devblogs.microsoft.com/dotnet/how-to-create-your-own-templates-for-dotnet-new/" target="_blank" rel="noopener">How to create your own templates for dotnet new</a></li>
+<li><a href="https://docs.microsoft.com/zh-tw/nuget/install-nuget-client-tools#nugetexe-cli" target="_blank" rel="noopener">安裝 NuGet 用戶端工具</a></li>
 </ul>
 
             
@@ -525,7 +523,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -563,7 +561,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -572,7 +570,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -641,7 +639,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -679,7 +677,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -688,7 +686,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -750,14 +748,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -818,7 +816,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -851,7 +849,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -884,7 +882,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -917,7 +915,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -950,7 +948,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -983,7 +981,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1016,7 +1014,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1049,7 +1047,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1139,7 +1137,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

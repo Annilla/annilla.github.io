@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。\n\n\n安裝 webpack-dev-server1npm i -D webpack-dev-server\n\n設定 webpack.config.js12345678module.exports = &#123;  ......  devServer: &#123;    contentBase: path.join(__dirname, &quot;dist&quot;), // 從哪裡提供內容    port: 9000 // http://localhost:9000  &#125;,  ......&#125;;\n\n設定 package.json12345678&#123;  ......  &quot;scripts&quot;: &#123;    &quot;dev&quot;: &quot;webpack-dev-server --open&quot;,    ......  &#125;,  ......&#125;\n\n\n–open: 自動開啟預設瀏覽器\n\n執行 npm 指令\n1npm run dev\n\n就會自動開啟瀏覽器看到預覽的畫面囉！\n\n疑？內容的文字怎麼好像被切掉了。我們趕緊來試試看修改 css 的部分，順便看看  Hot Reload 的威力吧～\n\n關於實時加載（Live Reload）和熱加載（Hot Reload）的區別在於:實時加載應用更新時需要刷新當前頁面，可以看到明顯的全局刷新效果;而熱加載基本上看不出刷新的效果，類似於局部刷新。\n\n測試 Hot Reload修改 src/app.scss，把字體變形的樣式註解掉\n1234567body &#123;    background-color: yellowgreen;    h1 &#123;        color: green;        // transform: scale(1.5);    &#125;&#125;\n\n結果 webpack-dev-server 就幫我們即時打包並刷新瀏覽器頁面，所以我們就可以專心的寫code，畫面就會即時的自動更新囉，是不是超方便的啊？\n\n今天的範例程式檔github，感謝收看。\n參考資料\nUse Webpack Dev Server\n\nWebpack Dev Server Configuration\n\nReact Native 热加载（Hot Reload）原理简介\n\n\n","dateCreated":"2017-09-02T00:00:00+08:00","dateModified":"2017-09-02T00:00:00+08:00","datePublished":"2017-09-02T00:00:00+08:00","description":"此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。","headline":"Webpack 3 Tutorial - Webpack Dev Server","image":["https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667","https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/","keywords":"Webpack","thumbnailUrl":"https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。\n安裝 webpack-dev-server1npm i -D webpack-dev-server\n設定 webpack.config.js12345678module.exports = &#123;  ......  devServer: &#123;    contentBase: path.join(__dirname, \"dist\"), // 從哪裡提供內容    port: 9000 // http://localhost:9000  &#125;,  ......&#125;;\n設定 package.json12345678&#123;  ......  \"scripts\": &#123;    \"dev\": \"webpack-dev-server --open\",    ......  &#125;,  ......&#125;\n\n–open: 自動開啟預設瀏覽器\n\n執行 npm 指令1npm run dev\n就會自動開啟瀏覽器看到預覽的畫面囉！\n\n疑？內容的文字怎麼好像被切掉了。我們趕緊來試試看修改 css 的部分，順便看看  Hot Reload 的威力吧～\n\n關於實時加載（Live Reload）和熱加載（Hot Reload）的區別在於:實時加載應用更新時需要刷新當前頁面，可以看到明顯的全局刷新效果;而熱加載基本上看不出刷新的效果，類似於局部刷新。\n\n測試 Hot Reload修改 src/app.scss，把字體變形的樣式註解掉\n1234567body &#123;    background-color: yellowgreen;    h1 &#123;        color: green;        // transform: scale(1.5);    &#125;&#125;\n結果 webpack-dev-server 就幫我們即時打包並刷新瀏覽器頁面，所以我們就可以專心的寫code，畫面就會即時的自動更新囉，是不是超方便的啊？\n\n今天的範例程式檔github，感謝收看。\n參考資料\nUse Webpack Dev Server\n\nWebpack Dev Server Configuration\n\nReact Native 热加载（Hot Reload）原理简介\n\n\n","dateCreated":"2017-09-02T00:00:00+08:00","dateModified":"2017-09-02T00:00:00+08:00","datePublished":"2017-09-02T00:00:00+08:00","description":"此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。","headline":"Webpack 3 Tutorial - Webpack Dev Server","image":["https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667","https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/","keywords":"Webpack","thumbnailUrl":"https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667"}</script>
     <meta name="description" content="此篇介紹如何加入並使用 webpack-dev-server，並展示 Hot Reload 功能。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Webpack 3 Tutorial - Webpack Dev Server">
@@ -53,7 +53,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -126,7 +126,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -304,7 +304,7 @@
         <div class="post-meta">
     <time datetime="2017-09-02T00:00:00+08:00">
 	
-		    9月 02, 2017
+		    2017 年 9 月 2 日
     	
     </time>
     
@@ -322,21 +322,14 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p>
-<span id="more"></span>
-
-<h2 id="安裝-webpack-dev-server"><a href="#安裝-webpack-dev-server" class="headerlink" title="安裝 webpack-dev-server"></a>安裝 <code>webpack-dev-server</code></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D webpack-dev-server</span><br></pre></td></tr></table></figure>
-
-<h2 id="設定-webpack-config-js"><a href="#設定-webpack-config-js" class="headerlink" title="設定 webpack.config.js"></a>設定 <code>webpack.config.js</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="attr">devServer</span>: &#123;</span><br><span class="line">    <span class="attr">contentBase</span>: path.<span class="title function_">join</span>(__dirname, <span class="string">&quot;dist&quot;</span>), <span class="comment">// 從哪裡提供內容</span></span><br><span class="line">    <span class="attr">port</span>: <span class="number">9000</span> <span class="comment">// http://localhost:9000</span></span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="設定-package-json"><a href="#設定-package-json" class="headerlink" title="設定 package.json"></a>設定 <code>package.json</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;dev&quot;</span>: <span class="string">&quot;webpack-dev-server --open&quot;</span>,</span><br><span class="line">    ......</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+            <p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br><a id="more"></a></p>
+<h2 id="安裝-webpack-dev-server"><a href="#安裝-webpack-dev-server" class="headerlink" title="安裝 webpack-dev-server"></a>安裝 <code>webpack-dev-server</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D webpack-dev-server</span><br></pre></td></tr></table></figure>
+<h2 id="設定-webpack-config-js"><a href="#設定-webpack-config-js" class="headerlink" title="設定 webpack.config.js"></a>設定 <code>webpack.config.js</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ......</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    contentBase: path.join(__dirname, <span class="string">"dist"</span>), <span class="comment">// 從哪裡提供內容</span></span><br><span class="line">    port: <span class="number">9000</span> <span class="comment">// http://localhost:9000</span></span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="設定-package-json"><a href="#設定-package-json" class="headerlink" title="設定 package.json"></a>設定 <code>package.json</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"dev"</span>: <span class="string">"webpack-dev-server --open"</span>,</span><br><span class="line">    ......</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>–open: 自動開啟預設瀏覽器</li>
 </ul>
-<p>執行 <code>npm</code> 指令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
-
+<p>執行 <code>npm</code> 指令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure></p>
 <p>就會自動開啟瀏覽器看到預覽的畫面囉！</p>
 <p><img src="https://lh3.googleusercontent.com/HnOhEhOGSinuEBswiyrJIX8iZ1Czq0EWpKZTRk-BE3mIM50Jri0t-zxbikMgvR4QBDbdM2fNjOeDhhz_4r4VPKxg2XiWMvgI3SBXgmd-d3N_d614PmJT0sKQ5ceBzkbzIlDNgI7GnWwqyTu-H6ZS_4X1Uuz-waQu8e5P2RC29snSMCqLNX5u8GGBJ2JVfS7kTMTfdkAfDnqa09uGuBocmq3Map-Fw8BdArobD_UBU_2cXFb3jMUzPWh0Ze_WUe3PZTcP_8srjAbxV3qu1S_O6GWH5BXT3-tOD9khFUhfcEUo5POBzep225XQr7_kfPeXGDC0dKftE821ZMkerSh994xOMi8pFkkX9BZBnO1zLZQOyJcVjIavFFSGbIBlFO-PQkYT4dA5pOuj9_PVAmmO3UXsbZEcozoqiNuI95lUdAsJ6zw_uJg7khL8iUUkXOo61jHqsOw7l9McIG5O5Vrwq-945YYTYlwSfGmdSzB7ruOMWC9_geJveziVfxV167JqBiONuAAFPgTF9D-1BF3_efshXRPOs35A9HG4GcllYarb-uRbCBF1GMNlQ8I-xPala9qsomjEqcbk5iLAiQ9ZAVYx57B32XqooBBUUX16EucFLvatq2XoZn-7hxep2ucS6DOsjJBMSa5Ys3wq_ioGy5B0pWxPL9Jt=w1024-h681-no" alt="執行 npm run dev" title="dist/index.html"></p>
 <p>疑？內容的文字怎麼好像被切掉了。我們趕緊來試試看修改 <code>css</code> 的部分，順便看看  <code>Hot Reload</code> 的威力吧～</p>
@@ -344,17 +337,16 @@
 <p>關於實時加載（Live Reload）和熱加載（Hot Reload）的區別在於:實時加載應用更新時需要刷新當前頁面，可以看到明顯的全局刷新效果;而熱加載基本上看不出刷新的效果，類似於局部刷新。</p>
 </blockquote>
 <h2 id="測試-Hot-Reload"><a href="#測試-Hot-Reload" class="headerlink" title="測試 Hot Reload"></a>測試 <code>Hot Reload</code></h2><p>修改 <code>src/app.scss</code>，把字體變形的樣式註解掉</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">background-color</span>: yellowgreen;</span><br><span class="line">    <span class="selector-tag">h1</span> &#123;</span><br><span class="line">        <span class="attribute">color</span>: green;</span><br><span class="line">        // <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1.5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">background-color</span>: yellowgreen;</span><br><span class="line">    h1 &#123;</span><br><span class="line">        <span class="selector-tag">color</span>: <span class="selector-tag">green</span>;</span><br><span class="line">        // transform: scale(1.5);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>結果 <code>webpack-dev-server</code> 就幫我們即時打包並刷新瀏覽器頁面，所以我們就可以專心的寫code，畫面就會即時的自動更新囉，是不是超方便的啊？</p>
 <p><img src="https://lh3.googleusercontent.com/dd1uIE9abHa17DxC19VyS2ejCk-ZLVe5y3PCnUu2HubhUCPvkwyjcUBPm70yP-eqtpsS6n7vJyeH4MjVviE4mCXJ6lwUVDeUUJ6w4pTKBQEWwtLEqa8Seojv2FPPHs70DJxZsZF9_8g2sURtQdUxFBG7H1zy6yd-fLbPB4LUi6Gw2Un9HZ0yrLx6s-8wgp8539AOi8gtlNJDZaoEpRkeEMbmTX4LWe67rKKCVGHFplKxl_u_zYWIVQU94yS1nwgSGgcNK5ZX2sVFUZ2bXc04D2GcC3JREt9WlmvdjGe4Fgs7-ohZgDyi2MJTw16HEhvEa3Yl-n0osdmvF_2cRv8oDbOPqwNL9TFgEdkmv3o9omQhmMg7rBT4_LkRC9vm0i8L-Cisr9eu7Js69IQUUqCkiMz1ZQWw_YIEVk20NbaIKZQRJZAAOnq1_h0N7vR5vnOMgaTWJ5KaucE1sieklCmkci0lLjIutitLXhtGNWYm0R0BKPlgiu8dAPlbfnNB95ReX4QI7bsMHm6tuPSVLkPpWddqMcChszAV6x_9KSieqz8CGlaOhuoAb2yRgR8ZW3oP9PfNT4rPBSx3eiuNalPFBX4xyBNGvMqfUJjioJRTc7F9pGsI-qBeJocby_CFAjY-OnKze75-NRfprp-iZL7dbE3X6o-FelJX=w1024-h681-no" alt="Hot Reload" title="dist/index.html"></p>
-<p>今天的範例程式檔<a target="_blank" rel="noopener" href="https://github.com/Annilla/webpack_practice/tree/v1.3.0">github</a>，感謝收看。</p>
+<p>今天的範例程式檔<a href="https://github.com/Annilla/webpack_practice/tree/v1.3.0" target="_blank" rel="noopener">github</a>，感謝收看。</p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
-<li><p><a target="_blank" rel="noopener" href="https://webpack.js.org/guides/development/#using-webpack-dev-server">Use Webpack Dev Server</a></p>
+<li><p><a href="https://webpack.js.org/guides/development/#using-webpack-dev-server" target="_blank" rel="noopener">Use Webpack Dev Server</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://webpack.js.org/configuration/dev-server/">Webpack Dev Server Configuration</a></p>
+<li><p><a href="https://webpack.js.org/configuration/dev-server/" target="_blank" rel="noopener">Webpack Dev Server Configuration</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/1fa6e9c0799f">React Native 热加载（Hot Reload）原理简介</a></p>
+<li><p><a href="http://www.jianshu.com/p/1fa6e9c0799f" target="_blank" rel="noopener">React Native 热加载（Hot Reload）原理简介</a></p>
 </li>
 </ul>
 
@@ -411,7 +403,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -449,7 +441,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -458,7 +450,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -527,7 +519,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -565,7 +557,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -574,7 +566,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -636,14 +628,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -704,7 +696,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -737,7 +729,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -770,7 +762,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -803,7 +795,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -836,7 +828,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -869,7 +861,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -902,7 +894,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -935,7 +927,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1025,7 +1017,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

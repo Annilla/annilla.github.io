@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":".NET 出到 6 之後，原本官方的 SPA 套件被棄用，新版改成使用 Vue-CLI + SPA Proxy。我們就從零開始建立新的 .NET6 + Vue-CLI (Webpack base) + Vuetify 專案吧～\n\n\n安裝 .NET 6 &amp; Node.js要先安裝 .NET 6 &amp; Node.js，並確認版本是否正確。\n1dotnet --version\n\n此篇 dotnet 使用 6.0.200\n1node --version\n\n此篇 node 使用 v16.4.0\n起始 dotnet template這次我們先起始一個 react 官方的模板，再從裡面修改檔案。\n1dotnet new react\n\n會看到起始專案長這樣。\n\n主要 SPA 放置的地方就在 ClientApp 裡面，所以我們只要用 Vue-CLI 建立新的 Vue 專案，把對應的資料夾和設定值替換掉即可。\nVue-CLI 建立專案先安裝 Vue-CLI，並確認版本。\n1npm install -g @vue/cli\n\n1vue --version\n\n此篇 Vue-CLI 使用 v5.0.1\n接著用 Vue-CLI 建立新專案，但因為 Vue-CLI 不允許使用字母大寫，所以我們把資料夾取名 client-app。\n1vue create client-app\n\n接著選擇要的 preset，因為 Vuetify 還沒有用到 Vue 3 ，所以這邊就選擇 Vue 2 的選項。也可以依自己的喜好選 Manual 的方式組合。\n接著進入 client-app 裡面，安裝 Vuetify。\n1cd client-app\n\n1vue add vuetify\n\nVuetify 的模板就先選擇 recommended 即可。\nVue 模板都安裝完後，可以先試跑看有沒有成功。\n1npm run serve\n\n可以看到在 8080 port 有跑出建置好的 Vue + Vuetify 專案。\n\n確認安裝成功，就可以把舊的 ClientApp 刪掉。\n設定 config接著我們把一些 proxy config 設定上去，讓 dotnet 可以和 Vue-CLI 銜接起來。\n打開 csproj 檔案。把 SpaRoot 的部分改成新建的資料夾 client-app\\，並注意這裡的 SpaProxyServerUrl port 是 44405 且 SpaProxyLaunchCommand 是 npm start。所以我們要把 Vue-CLI 的設定改成對應的 port 和npm 指令。\n\n注意！若 SpaProxyServerUrl 若是 https 要改成 http。\n\n\nPS. 每次 dotnet 模板起始的 port 都不一樣，請以當次建立的 port 為準。\n\n1234567891011...  &lt;PropertyGroup&gt;    ...    &lt;SpaRoot&gt;client-app\\&lt;/SpaRoot&gt;    ...    &lt;SpaProxyServerUrl&gt;http://localhost:44405&lt;/SpaProxyServerUrl&gt;    &lt;SpaProxyLaunchCommand&gt;npm start&lt;/SpaProxyLaunchCommand&gt;    &lt;RootNamespace&gt;dotnet_core_vue_cli&lt;/RootNamespace&gt;    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;  &lt;/PropertyGroup&gt;  ...\n\n打開 package.json，把 “serve” 改成 “start” 。\n12345&quot;scripts&quot;: &#123;  &quot;start&quot;: &quot;vue-cli-service serve&quot;,  &quot;build&quot;: &quot;vue-cli-service build&quot;,  &quot;lint&quot;: &quot;vue-cli-service lint&quot;&#125;,\n\n打開 vue.config.js，將 devServer port 換成 44405。\n123456789const &#123; defineConfig &#125; = require(&#x27;@vue/cli-service&#x27;)module.exports = defineConfig(&#123;  devServer: &#123;    port: 44405,  &#125;,  transpileDependencies: [    &#x27;vuetify&#x27;  ]&#125;)\n\nRun~開啟 csproj 檔案，vscode 會問你是否要建立 debug file，選擇 Yes，vscode 就會建立一個 .vscode 的資料夾。\n\n接著去 Debug 按 Run 的按鈕，我們就大功告成囉～\n\n\n今天的範例在 github，下回見～\n","dateCreated":"2022-03-04T00:00:00+08:00","dateModified":"2022-03-04T00:00:00+08:00","datePublished":"2022-03-04T00:00:00+08:00","description":".NET 出到 6 之後，原本官方的 SPA 套件被棄用，新版改成使用 Vue-CLI + SPA Proxy。我們就從零開始建立新的 .NET6 + Vue-CLI (Webpack base) + Vuetify 專案吧～","headline":".NET 6 SPA with Vue-Cli Webpack Base - Start New Project","image":["http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png","http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/03/04/Dotnet/NET-6-SPA-with-Vue-Cli-Webpack-Base/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/03/04/Dotnet/NET-6-SPA-with-Vue-Cli-Webpack-Base/","keywords":"Vue, dotnet, Webpack, SPA, VScode, .NET","thumbnailUrl":"http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":".NET 出到 6 之後，原本官方的 SPA 套件被棄用，新版改成使用 Vue-CLI + SPA Proxy。我們就從零開始建立新的 .NET6 + Vue-CLI (Webpack base) + Vuetify 專案吧～\n\n安裝 .NET 6 &amp; Node.js要先安裝 .NET 6 &amp; Node.js，並確認版本是否正確。\n1dotnet --version\n此篇 dotnet 使用 6.0.200\n1node --version\n此篇 node 使用 v16.4.0\n起始 dotnet template這次我們先起始一個 react 官方的模板，再從裡面修改檔案。\n1dotnet new react\n會看到起始專案長這樣。\n\n主要 SPA 放置的地方就在 ClientApp 裡面，所以我們只要用 Vue-CLI 建立新的 Vue 專案，把對應的資料夾和設定值替換掉即可。\nVue-CLI 建立專案先安裝 Vue-CLI，並確認版本。\n1npm install -g @vue/cli\n1vue --version\n此篇 Vue-CLI 使用 v5.0.1\n接著用 Vue-CLI 建立新專案，但因為 Vue-CLI 不允許使用字母大寫，所以我們把資料夾取名 client-app。\n1vue create client-app\n接著選擇要的 preset，因為 Vuetify 還沒有用到 Vue 3 ，所以這邊就選擇 Vue 2 的選項。也可以依自己的喜好選 Manual 的方式組合。\n接著進入 client-app 裡面，安裝 Vuetify。\n1cd client-app\n1vue add vuetify\nVuetify 的模板就先選擇 recommended 即可。\nVue 模板都安裝完後，可以先試跑看有沒有成功。\n1npm run serve\n可以看到在 8080 port 有跑出建置好的 Vue + Vuetify 專案。\n\n確認安裝成功，就可以把舊的 ClientApp 刪掉。\n設定 config接著我們把一些 proxy config 設定上去，讓 dotnet 可以和 Vue-CLI 銜接起來。\n打開 csproj 檔案。把 SpaRoot 的部分改成新建的資料夾 client-app\\，並注意這裡的 SpaProxyServerUrl port 是 44405 且 SpaProxyLaunchCommand 是 npm start。所以我們要把 Vue-CLI 的設定改成對應的 port 和npm 指令。\n\n注意！若 SpaProxyServerUrl 若是 https 要改成 http。\nPS. 每次 dotnet 模板起始的 port 都不一樣，請以當次建立的 port 為準。\n\n1234567891011...  &lt;PropertyGroup&gt;    ...    &lt;SpaRoot&gt;client-app\\&lt;/SpaRoot&gt;    ...    &lt;SpaProxyServerUrl&gt;http://localhost:44405&lt;/SpaProxyServerUrl&gt;    &lt;SpaProxyLaunchCommand&gt;npm start&lt;/SpaProxyLaunchCommand&gt;    &lt;RootNamespace&gt;dotnet_core_vue_cli&lt;/RootNamespace&gt;    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;  &lt;/PropertyGroup&gt;  ...\n打開 package.json，把 “serve” 改成 “start” 。\n12345\"scripts\": &#123;  \"start\": \"vue-cli-service serve\",  \"build\": \"vue-cli-service build\",  \"lint\": \"vue-cli-service lint\"&#125;,\n打開 vue.config.js，將 devServer port 換成 44405。\n123456789const &#123; defineConfig &#125; = require('@vue/cli-service')module.exports = defineConfig(&#123;  devServer: &#123;    port: 44405,  &#125;,  transpileDependencies: [    'vuetify'  ]&#125;)\nRun~開啟 csproj 檔案，vscode 會問你是否要建立 debug file，選擇 Yes，vscode 就會建立一個 .vscode 的資料夾。\n\n接著去 Debug 按 Run 的按鈕，我們就大功告成囉～\n\n\n今天的範例在 github，下回見～\n","dateCreated":"2022-03-04T00:00:00+08:00","dateModified":"2022-03-04T00:00:00+08:00","datePublished":"2022-03-04T00:00:00+08:00","description":".NET 出到 6 之後，原本官方的 SPA 套件被棄用，新版改成使用 Vue-CLI + SPA Proxy。我們就從零開始建立新的 .NET6 + Vue-CLI (Webpack base) + Vuetify 專案吧～","headline":".NET 6 SPA with Vue-Cli Webpack Base - Start New Project","image":["http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png","http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/03/04/Dotnet/NET-6-SPA-with-Vue-Cli-Webpack-Base/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/03/04/Dotnet/NET-6-SPA-with-Vue-Cli-Webpack-Base/","keywords":"Vue, dotnet, Webpack, SPA, VScode, .NET","thumbnailUrl":"http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"}</script>
     <meta name="description" content=".NET 出到 6 之後，原本官方的 SPA 套件被棄用，新版改成使用 Vue-CLI + SPA Proxy。我們就從零開始建立新的 .NET6 + Vue-CLI (Webpack base) + Vuetify 專案吧～">
 <meta property="og:type" content="blog">
 <meta property="og:title" content=".NET 6 SPA with Vue-Cli Webpack Base - Start New Project">
@@ -61,7 +61,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -134,7 +134,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -312,7 +312,7 @@
         <div class="post-meta">
     <time datetime="2022-03-04T00:00:00+08:00">
 	
-		    3月 04, 2022
+		    2022 年 3 月 4 日
     	
     </time>
     
@@ -330,41 +330,31 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>.NET 出到 6 之後，原本官方的 SPA <a target="_blank" rel="noopener" href="https://github.com/dotnet/aspnetcore/issues/12890">套件被棄用</a>，新版改成使用 Vue-CLI + SPA Proxy。我們就從零開始建立新的 .NET6 + Vue-CLI (Webpack base) + Vuetify 專案吧～</p>
-<span id="more"></span>
-
-<h1 id="安裝-NET-6-amp-Node-js"><a href="#安裝-NET-6-amp-Node-js" class="headerlink" title="安裝 .NET 6 &amp; Node.js"></a>安裝 .NET 6 &amp; Node.js</h1><p>要先安裝 <a target="_blank" rel="noopener" href="https://dotnet.microsoft.com/en-us/download">.NET 6</a> &amp; <a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js</a>，並確認版本是否正確。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet --version</span><br></pre></td></tr></table></figure>
-
+            <p>.NET 出到 6 之後，原本官方的 SPA <a href="https://github.com/dotnet/aspnetcore/issues/12890" target="_blank" rel="noopener">套件被棄用</a>，新版改成使用 Vue-CLI + SPA Proxy。我們就從零開始建立新的 .NET6 + Vue-CLI (Webpack base) + Vuetify 專案吧～</p>
+<a id="more"></a>
+<h1 id="安裝-NET-6-amp-Node-js"><a href="#安裝-NET-6-amp-Node-js" class="headerlink" title="安裝 .NET 6 &amp; Node.js"></a>安裝 .NET 6 &amp; Node.js</h1><p>要先安裝 <a href="https://dotnet.microsoft.com/en-us/download" target="_blank" rel="noopener">.NET 6</a> &amp; <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>，並確認版本是否正確。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet --version</span><br></pre></td></tr></table></figure>
 <p>此篇 dotnet 使用 6.0.200</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node --version</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node --version</span><br></pre></td></tr></table></figure>
 <p>此篇 node 使用 v16.4.0</p>
 <h1 id="起始-dotnet-template"><a href="#起始-dotnet-template" class="headerlink" title="起始 dotnet template"></a>起始 dotnet template</h1><p>這次我們先起始一個 react 官方的模板，再從裡面修改檔案。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new react</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new react</span><br></pre></td></tr></table></figure>
 <p>會看到起始專案長這樣。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLX2z5Nz_ErmoEcxAEgHX_rn68Ifr-8J1v_8NidUaMWUF3pUZviECReYXYcSG248yXZX4zB4STTJKtCSLZovNcX4hnBEqHazkJUI3fv8BOBlu_9U_mI-GYhO4xnVX7ZAqvpVQBV-PNjZsIFZT8Hcrt7c1g=w828-h868-no?authuser=0" alt="dotnet new react"></p>
 <p>主要 SPA 放置的地方就在 ClientApp 裡面，所以我們只要用 Vue-CLI 建立新的 Vue 專案，把對應的資料夾和設定值替換掉即可。</p>
 <h1 id="Vue-CLI-建立專案"><a href="#Vue-CLI-建立專案" class="headerlink" title="Vue-CLI 建立專案"></a>Vue-CLI 建立專案</h1><p>先安裝 Vue-CLI，並確認版本。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @vue/cli</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue --version</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @vue/cli</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue --version</span><br></pre></td></tr></table></figure>
 <p>此篇 Vue-CLI 使用 v5.0.1</p>
 <p>接著用 Vue-CLI 建立新專案，但因為 Vue-CLI 不允許使用字母大寫，所以我們把資料夾取名 <code>client-app</code>。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create client-app</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create client-app</span><br></pre></td></tr></table></figure>
 <p>接著選擇要的 preset，因為 Vuetify 還沒有用到 Vue 3 ，所以這邊就選擇 Vue 2 的選項。也可以依自己的喜好選 Manual 的方式組合。</p>
 <p>接著進入 client-app 裡面，安裝 Vuetify。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd client-app</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue add vuetify</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd client-app</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue add vuetify</span><br></pre></td></tr></table></figure>
 <p>Vuetify 的模板就先選擇 recommended 即可。</p>
 <p>Vue 模板都安裝完後，可以先試跑看有沒有成功。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run serve</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run serve</span><br></pre></td></tr></table></figure>
 <p>可以看到在 8080 port 有跑出建置好的 Vue + Vuetify 專案。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLXx7Ju-EayPyEeh39b-fJieuM1K7S4ZAA20t5msauhI9baNCBCUXcgkuDXYOwVNIq-lCteGP4Coul2nMF2HEz14wIkrCxiszBHyPjexr8ovkpU6oq-JRjml797zAQu0n-vQxcS0PaRFNbNxIvWxg0W9zQ=w2206-h1378-no?authuser=0" alt="Vue + Vuetify 專案"></p>
 <p>確認安裝成功，就可以把舊的 ClientApp 刪掉。</p>
@@ -372,24 +362,19 @@
 <p>打開 csproj 檔案。把 <code>SpaRoot</code> 的部分改成新建的資料夾 <code>client-app\</code>，並注意這裡的 <code>SpaProxyServerUrl</code> port 是 <code>44405</code> 且 <code>SpaProxyLaunchCommand</code> 是 <code>npm start</code>。所以我們要把 Vue-CLI 的設定改成對應的 port 和npm 指令。</p>
 <blockquote>
 <p>注意！若 SpaProxyServerUrl 若是 https 要改成 http。</p>
-</blockquote>
-<blockquote>
 <p>PS. 每次 dotnet 模板起始的 port 都不一樣，請以當次建立的 port 為準。</p>
 </blockquote>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">SpaRoot</span>&gt;</span>client-app\<span class="tag">&lt;/<span class="name">SpaRoot</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">SpaProxyServerUrl</span>&gt;</span>http://localhost:44405<span class="tag">&lt;/<span class="name">SpaProxyServerUrl</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">SpaProxyLaunchCommand</span>&gt;</span>npm start<span class="tag">&lt;/<span class="name">SpaProxyLaunchCommand</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">RootNamespace</span>&gt;</span>dotnet_core_vue_cli<span class="tag">&lt;/<span class="name">RootNamespace</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ImplicitUsings</span>&gt;</span>enable<span class="tag">&lt;/<span class="name">ImplicitUsings</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
-
 <p>打開 package.json，把 “serve” 改成 “start” 。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;start&quot;</span>: <span class="string">&quot;vue-cli-service serve&quot;</span>,</span><br><span class="line">  <span class="string">&quot;build&quot;</span>: <span class="string">&quot;vue-cli-service build&quot;</span>,</span><br><span class="line">  <span class="string">&quot;lint&quot;</span>: <span class="string">&quot;vue-cli-service lint&quot;</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">  <span class="string">"start"</span>: <span class="string">"vue-cli-service serve"</span>,</span><br><span class="line">  <span class="string">"build"</span>: <span class="string">"vue-cli-service build"</span>,</span><br><span class="line">  <span class="string">"lint"</span>: <span class="string">"vue-cli-service lint"</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
 <p>打開 vue.config.js，將 devServer port 換成 44405。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; defineConfig &#125; = <span class="built_in">require</span>(<span class="string">&#x27;@vue/cli-service&#x27;</span>)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">devServer</span>: &#123;</span><br><span class="line">    <span class="attr">port</span>: <span class="number">44405</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">transpileDependencies</span>: [</span><br><span class="line">    <span class="string">&#x27;vuetify&#x27;</span></span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; defineConfig &#125; = <span class="built_in">require</span>(<span class="string">'@vue/cli-service'</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = defineConfig(&#123;</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    port: <span class="number">44405</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  transpileDependencies: [</span><br><span class="line">    <span class="string">'vuetify'</span></span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <h1 id="Run"><a href="#Run" class="headerlink" title="Run~"></a>Run~</h1><p>開啟 csproj 檔案，vscode 會問你是否要建立 debug file，選擇 Yes，vscode 就會建立一個 .vscode 的資料夾。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLW5gDiNQt5ournrdZGTd0Agbja7hRSJkN5lxzUZvyYdB0NHov4H36TB9-9hPGlvLuGdoDNhtpop1FKXeOEeb9PCMar2hpW23SFqnnWMnngsmvYaU5_c5H1SdhjoM4uxbsUQbnaS1aIuzTmobaYxfpCeqg=w2206-h1378-no?authuser=0" alt="vscode debug files"></p>
 <p>接著去 Debug 按 Run 的按鈕，我們就大功告成囉～</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLVicP5nFFOEVCRg9q5YgzfD5ouyqWZhs191vd8zayFgn-fHTkqcRurbx8nd8LduRBA88Z5ndDsrGbkfEYGVyYOXYAmA-zCyrfXM6YxOHK2pw8ITPnN28Ko7Rza5pSxUWwh9TBWIFc0SFlIVzu6XKbsgGA=w2206-h1378-no?authuser=0" alt="Run"></p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLXNAiYrBco8XyOW95fbUADTtz7GyAt0MwSky7U0Oncxo5MqCwNTxJLG9RnIZCgqieqMV_Ieuppnn3m89u1pQeEdrOJfPtZrL9PtoMUOfIPVsB0UHqJUMx5rbCLXEutn4rJwtZ3Z5jIjDZ0W2uy5KjJrSA=w2206-h1378-no?authuser=0" alt="Done"></p>
-<p>今天的範例在 <a target="_blank" rel="noopener" href="https://github.com/Annilla/dotnet-core-vue-cli/tree/v6.0.2">github</a>，下回見～</p>
+<p>今天的範例在 <a href="https://github.com/Annilla/dotnet-core-vue-cli/tree/v6.0.2" target="_blank" rel="noopener">github</a>，下回見～</p>
 
             
 
@@ -444,7 +429,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -482,7 +467,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -491,7 +476,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -560,7 +545,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -598,7 +583,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -607,7 +592,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -669,14 +654,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -737,7 +722,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -770,7 +755,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -803,7 +788,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -836,7 +821,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -869,7 +854,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -902,7 +887,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -935,7 +920,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -968,7 +953,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1058,7 +1043,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

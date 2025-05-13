@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"工作上，參考一位前輩寫的 Retry function 的原理記錄，實做經過 N 秒後重複做一件事情的小程式。\n\n\n這裡從取得 AD 帳號來舉例。費話不多說，先上 code。\n123456789101112131415161718192021222324252627282930313233343536async getADRetry()&#123;    /*--------------------------        AD account Retry 機制        1. 成功取得 AD 回傳值        2. 無法取得 AD 開始 Retry        3. Retry 延遲秒數從 nextDelay 開始，每多一次就加 1 秒        4. Retry 次數最多 retryNumber 次        5. Retry 成功則回傳值，全部失敗則回傳 &#x27;&#x27;(空字串)    --------------------------*/    let NtAccount = &#x27;&#x27;;    let nextDelay = 0;    let retryNumber = 5;    for(let i = 0; i &lt; retryNumber; i++) &#123;        // 延遲 nextDelay 秒後        await delayTime(nextDelay);        // 取得 user        NtAccount = getUserName();        if (NtAccount === &#x27;&#x27;) &#123;            // 無法取得 AD            // nextDelay 下一次加 1 秒            nextDelay = nextDelay + 1000;            // Continue Retry            console.log(`No AD. Retry [$&#123;i + 1&#125;]: for $&#123;nextDelay&#125;ms...`);        &#125; else &#123;            // 成功取得 AD 跳出迴圈            console.log(`Get AD.`);            break;        &#125;    &#125;    return NtAccount;&#125;,\n\n其中 delayTime 函數用 promise 即可實做，只要傳入毫秒 ms 就能得到延遲的動作。\n123456// Delay 延遲秒數export function delayTime (interval) &#123;    return new Promise((resolve) =&gt; &#123;        setTimeout(resolve, interval);    &#125;);&#125;;","dateCreated":"2019-05-01T00:00:00+08:00","dateModified":"2019-05-01T00:00:00+08:00","datePublished":"2019-05-01T00:00:00+08:00","description":"工作上，參考一位前輩寫的 Retry function 的原理記錄，實做經過 N 秒後重複做一件事情的小程式。","headline":"JS Retry Function","image":["https://cdn-images-1.medium.com/max/1600/1*HP8l7LMMt7Sh5UoO1T-yLQ.png","https://cdn-images-1.medium.com/max/1200/1*H-25KB7EbSHjv70HXrdl6w.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/05/01/Frontend/JS-Retry-Function/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/05/01/Frontend/JS-Retry-Function/","keywords":"JS","thumbnailUrl":"https://cdn-images-1.medium.com/max/1600/1*HP8l7LMMt7Sh5UoO1T-yLQ.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"工作上，參考一位前輩寫的 Retry function 的原理記錄，實做經過 N 秒後重複做一件事情的小程式。\n\n這裡從取得 AD 帳號來舉例。費話不多說，先上 code。\n123456789101112131415161718192021222324252627282930313233343536async getADRetry()&#123;    /*--------------------------        AD account Retry 機制        1. 成功取得 AD 回傳值        2. 無法取得 AD 開始 Retry        3. Retry 延遲秒數從 nextDelay 開始，每多一次就加 1 秒        4. Retry 次數最多 retryNumber 次        5. Retry 成功則回傳值，全部失敗則回傳 &apos;&apos;(空字串)    --------------------------*/    let NtAccount = &apos;&apos;;    let nextDelay = 0;    let retryNumber = 5;    for(let i = 0; i &lt; retryNumber; i++) &#123;        // 延遲 nextDelay 秒後        await delayTime(nextDelay);        // 取得 user        NtAccount = getUserName();        if (NtAccount === &apos;&apos;) &#123;            // 無法取得 AD            // nextDelay 下一次加 1 秒            nextDelay = nextDelay + 1000;            // Continue Retry            console.log(`No AD. Retry [$&#123;i + 1&#125;]: for $&#123;nextDelay&#125;ms...`);        &#125; else &#123;            // 成功取得 AD 跳出迴圈            console.log(`Get AD.`);            break;        &#125;    &#125;    return NtAccount;&#125;,\n其中 delayTime 函數用 promise 即可實做，只要傳入毫秒 ms 就能得到延遲的動作。\n123456// Delay 延遲秒數export function delayTime (interval) &#123;    return new Promise((resolve) =&gt; &#123;        setTimeout(resolve, interval);    &#125;);&#125;;","dateCreated":"2019-05-01T00:00:00+08:00","dateModified":"2019-05-01T00:00:00+08:00","datePublished":"2019-05-01T00:00:00+08:00","description":"工作上，參考一位前輩寫的 Retry function 的原理記錄，實做經過 N 秒後重複做一件事情的小程式。","headline":"JS Retry Function","image":["https://cdn-images-1.medium.com/max/1600/1*HP8l7LMMt7Sh5UoO1T-yLQ.png","https://cdn-images-1.medium.com/max/1200/1*H-25KB7EbSHjv70HXrdl6w.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/05/01/Frontend/JS-Retry-Function/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/05/01/Frontend/JS-Retry-Function/","keywords":"JS","thumbnailUrl":"https://cdn-images-1.medium.com/max/1600/1*HP8l7LMMt7Sh5UoO1T-yLQ.png"}</script>
     <meta name="description" content="工作上，參考一位前輩寫的 Retry function 的原理記錄，實做經過 N 秒後重複做一件事情的小程式。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="JS Retry Function">
@@ -50,7 +50,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -123,7 +123,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -301,7 +301,7 @@
         <div class="post-meta">
     <time datetime="2019-05-01T00:00:00+08:00">
 	
-		    5月 01, 2019
+		    2019 年 5 月 1 日
     	
     </time>
     
@@ -320,13 +320,11 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>工作上，參考一位前輩寫的 Retry function 的原理記錄，實做經過 N 秒後重複做一件事情的小程式。</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <p>這裡從取得 AD 帳號來舉例。費話不多說，先上 code。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">async getADRetry()&#123;</span><br><span class="line">    /*--------------------------</span><br><span class="line">        AD account Retry 機制</span><br><span class="line">        1. 成功取得 AD 回傳值</span><br><span class="line">        2. 無法取得 AD 開始 Retry</span><br><span class="line">        3. Retry 延遲秒數從 nextDelay 開始，每多一次就加 1 秒</span><br><span class="line">        4. Retry 次數最多 retryNumber 次</span><br><span class="line">        5. Retry 成功則回傳值，全部失敗則回傳 &#x27;&#x27;(空字串)</span><br><span class="line">    --------------------------*/</span><br><span class="line">    let NtAccount = &#x27;&#x27;;</span><br><span class="line">    let nextDelay = 0;</span><br><span class="line">    let retryNumber = 5;</span><br><span class="line"></span><br><span class="line">    for(let i = 0; i &lt; retryNumber; i++) &#123;</span><br><span class="line"></span><br><span class="line">        // 延遲 nextDelay 秒後</span><br><span class="line">        await delayTime(nextDelay);</span><br><span class="line">        // 取得 user</span><br><span class="line">        NtAccount = getUserName();</span><br><span class="line"></span><br><span class="line">        if (NtAccount === &#x27;&#x27;) &#123;</span><br><span class="line">            // 無法取得 AD</span><br><span class="line">            // nextDelay 下一次加 1 秒</span><br><span class="line">            nextDelay = nextDelay + 1000;</span><br><span class="line">            // Continue Retry</span><br><span class="line">            console.log(`No AD. Retry [$&#123;i + 1&#125;]: for $&#123;nextDelay&#125;ms...`);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 成功取得 AD 跳出迴圈</span><br><span class="line">            console.log(`Get AD.`);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return NtAccount;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">async getADRetry()&#123;</span><br><span class="line">    /*--------------------------</span><br><span class="line">        AD account Retry 機制</span><br><span class="line">        1. 成功取得 AD 回傳值</span><br><span class="line">        2. 無法取得 AD 開始 Retry</span><br><span class="line">        3. Retry 延遲秒數從 nextDelay 開始，每多一次就加 1 秒</span><br><span class="line">        4. Retry 次數最多 retryNumber 次</span><br><span class="line">        5. Retry 成功則回傳值，全部失敗則回傳 &apos;&apos;(空字串)</span><br><span class="line">    --------------------------*/</span><br><span class="line">    let NtAccount = &apos;&apos;;</span><br><span class="line">    let nextDelay = 0;</span><br><span class="line">    let retryNumber = 5;</span><br><span class="line"></span><br><span class="line">    for(let i = 0; i &lt; retryNumber; i++) &#123;</span><br><span class="line"></span><br><span class="line">        // 延遲 nextDelay 秒後</span><br><span class="line">        await delayTime(nextDelay);</span><br><span class="line">        // 取得 user</span><br><span class="line">        NtAccount = getUserName();</span><br><span class="line"></span><br><span class="line">        if (NtAccount === &apos;&apos;) &#123;</span><br><span class="line">            // 無法取得 AD</span><br><span class="line">            // nextDelay 下一次加 1 秒</span><br><span class="line">            nextDelay = nextDelay + 1000;</span><br><span class="line">            // Continue Retry</span><br><span class="line">            console.log(`No AD. Retry [$&#123;i + 1&#125;]: for $&#123;nextDelay&#125;ms...`);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 成功取得 AD 跳出迴圈</span><br><span class="line">            console.log(`Get AD.`);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return NtAccount;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
 <p>其中 delayTime 函數用 promise 即可實做，只要傳入毫秒 ms 就能得到延遲的動作。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// Delay 延遲秒數</span><br><span class="line">export function delayTime (interval) &#123;</span><br><span class="line">    return new Promise((resolve) =&gt; &#123;</span><br><span class="line">        setTimeout(resolve, interval);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// Delay 延遲秒數</span><br><span class="line">export function delayTime (interval) &#123;</span><br><span class="line">    return new Promise((resolve) =&gt; &#123;</span><br><span class="line">        setTimeout(resolve, interval);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
             
 
 
@@ -380,7 +378,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -418,7 +416,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -427,7 +425,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -496,7 +494,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -534,7 +532,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -543,7 +541,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -605,14 +603,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -673,7 +671,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -706,7 +704,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -739,7 +737,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -772,7 +770,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -805,7 +803,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -838,7 +836,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -871,7 +869,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -904,7 +902,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -994,7 +992,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

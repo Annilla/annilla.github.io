@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"此篇介紹如何加入並使用 babel-loader，並使用 ES6 語法測試撰寫 js。\n\n\n安裝 babel-loader1npm i -D babel-loader babel-core babel-preset-env\n\n設定 webpack.config.js123456789101112131415161718192021......module.exports = &#123;  ......  module: &#123;    rules: [      ......      &#123;        test: /\\.js$/,        exclude: /(node_modules)/, // 打包時排除 node_modules 資料夾        use: &#123;          loader: &#x27;babel-loader&#x27;,          options: &#123;            presets: [&#x27;env&#x27;] // 使用 babel-preset-env          &#125;        &#125;      &#125;    ]  &#125;,  ......&#125;\n\n\n注意：此範例把 Babel 設定直接寫在 webpack.config.js，若 options 設定較複雜的話，可另外寫在 .babelrc 檔案中，參考Babel官網。\n\n測試 ES6 語法新增檔案 ./src/js/es6.js，撰寫程式如下：\n12345678910111213export default class Point &#123;  constructor(x, y) &#123;    this.x = x;    this.y = y;  &#125;  static distance(a, b) &#123;    const dx = a.x - b.x;    const dy = a.y - b.y;    return Math.sqrt(dx*dx + dy*dy);  &#125;&#125;\n\n將剛剛寫的程式 import 到 app.js。\n12345678910......import Point from &#x27;./js/es6&#x27;// Test for ES6// https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Classesconst p1 = new Point(5, 5);const p2 = new Point(10, 10);console.log(`Test ES6 Distance: $&#123;Point.distance(p1, p2)&#125;`);\n\n執行 npm run dev，就可以看到 console 出現計算後的兩點長度囉。\n\n更多 babel-preset-env 的配置選項可參考官網，有空也可以來試試 ES7 的 async, await 喔，我們下次見！\n範例 Github\n參考資料\nBabel-loader\nBabel\nES6 Classes\nbabel-preset-env\n\n","dateCreated":"2017-10-01T00:00:00+08:00","dateModified":"2017-10-01T00:00:00+08:00","datePublished":"2017-10-01T00:00:00+08:00","description":"此篇介紹如何加入並使用 babel-loader，並使用 ES6 語法測試撰寫 js。","headline":"Webpack 3 Tutorial - add Babel loader to write js use ES6","image":["https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667","https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/","keywords":"Webpack","thumbnailUrl":"https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"此篇介紹如何加入並使用 babel-loader，並使用 ES6 語法測試撰寫 js。\n安裝 babel-loader1npm i -D babel-loader babel-core babel-preset-env\n設定 webpack.config.js123456789101112131415161718192021......module.exports = &#123;  ......  module: &#123;    rules: [      ......      &#123;        test: /\\.js$/,        exclude: /(node_modules)/, // 打包時排除 node_modules 資料夾        use: &#123;          loader: 'babel-loader',          options: &#123;            presets: ['env'] // 使用 babel-preset-env          &#125;        &#125;      &#125;    ]  &#125;,  ......&#125;\n\n注意：此範例把 Babel 設定直接寫在 webpack.config.js，若 options 設定較複雜的話，可另外寫在 .babelrc 檔案中，參考Babel官網。\n\n測試 ES6 語法新增檔案 ./src/js/es6.js，撰寫程式如下：\n12345678910111213export default class Point &#123;  constructor(x, y) &#123;    this.x = x;    this.y = y;  &#125;  static distance(a, b) &#123;    const dx = a.x - b.x;    const dy = a.y - b.y;    return Math.sqrt(dx*dx + dy*dy);  &#125;&#125;\n將剛剛寫的程式 import 到 app.js。\n12345678910......import Point from './js/es6'// Test for ES6// https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Classesconst p1 = new Point(5, 5);const p2 = new Point(10, 10);console.log(`Test ES6 Distance: $&#123;Point.distance(p1, p2)&#125;`);\n執行 npm run dev，就可以看到 console 出現計算後的兩點長度囉。\n\n更多 babel-preset-env 的配置選項可參考官網，有空也可以來試試 ES7 的 async, await 喔，我們下次見！\n範例 Github\n參考資料\nBabel-loader\nBabel\nES6 Classes\nbabel-preset-env\n\n","dateCreated":"2017-10-01T00:00:00+08:00","dateModified":"2017-10-01T00:00:00+08:00","datePublished":"2017-10-01T00:00:00+08:00","description":"此篇介紹如何加入並使用 babel-loader，並使用 ES6 語法測試撰寫 js。","headline":"Webpack 3 Tutorial - add Babel loader to write js use ES6","image":["https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667","https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/01/1484692838webpack-dependency-tree.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/","keywords":"Webpack","thumbnailUrl":"https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667"}</script>
     <meta name="description" content="此篇介紹如何加入並使用 babel-loader，並使用 ES6 語法測試撰寫 js。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Webpack 3 Tutorial - add Babel loader to write js use ES6">
@@ -52,7 +52,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -125,7 +125,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -303,7 +303,7 @@
         <div class="post-meta">
     <time datetime="2017-10-01T00:00:00+08:00">
 	
-		    10月 01, 2017
+		    2017 年 10 月 1 日
     	
     </time>
     
@@ -321,31 +321,25 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p>
-<span id="more"></span>
-
-<h2 id="安裝-babel-loader"><a href="#安裝-babel-loader" class="headerlink" title="安裝 babel-loader"></a>安裝 <code>babel-loader</code></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D babel-loader babel-core babel-preset-env</span><br></pre></td></tr></table></figure>
-
-<h2 id="設定-webpack-config-js"><a href="#設定-webpack-config-js" class="headerlink" title="設定 webpack.config.js"></a>設定 <code>webpack.config.js</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      ......</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        <span class="attr">exclude</span>: <span class="regexp">/(node_modules)/</span>, <span class="comment">// 打包時排除 node_modules 資料夾</span></span><br><span class="line">        <span class="attr">use</span>: &#123;</span><br><span class="line">          <span class="attr">loader</span>: <span class="string">&#x27;babel-loader&#x27;</span>,</span><br><span class="line">          <span class="attr">options</span>: &#123;</span><br><span class="line">            <span class="attr">presets</span>: [<span class="string">&#x27;env&#x27;</span>] <span class="comment">// 使用 babel-preset-env</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+            <p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br><a id="more"></a></p>
+<h2 id="安裝-babel-loader"><a href="#安裝-babel-loader" class="headerlink" title="安裝 babel-loader"></a>安裝 <code>babel-loader</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D babel-loader babel-core babel-preset-env</span><br></pre></td></tr></table></figure>
+<h2 id="設定-webpack-config-js"><a href="#設定-webpack-config-js" class="headerlink" title="設定 webpack.config.js"></a>設定 <code>webpack.config.js</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      ......</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        exclude: <span class="regexp">/(node_modules)/</span>, <span class="comment">// 打包時排除 node_modules 資料夾</span></span><br><span class="line">        use: &#123;</span><br><span class="line">          loader: <span class="string">'babel-loader'</span>,</span><br><span class="line">          options: &#123;</span><br><span class="line">            presets: [<span class="string">'env'</span>] <span class="comment">// 使用 babel-preset-env</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>注意：此範例把 <code>Babel</code> 設定直接寫在 <code>webpack.config.js</code>，若 <code>options</code> 設定較複雜的話，可另外寫在 <code>.babelrc</code> 檔案中，參考<a target="_blank" rel="noopener" href="https://babeljs.io/docs/setup/#installation">Babel官網</a>。</p>
+<p>注意：此範例把 <code>Babel</code> 設定直接寫在 <code>webpack.config.js</code>，若 <code>options</code> 設定較複雜的話，可另外寫在 <code>.babelrc</code> 檔案中，參考<a href="https://babeljs.io/docs/setup/#installation" target="_blank" rel="noopener">Babel官網</a>。</p>
 </blockquote>
 <h2 id="測試-ES6-語法"><a href="#測試-ES6-語法" class="headerlink" title="測試 ES6 語法"></a>測試 <code>ES6</code> 語法</h2><p>新增檔案 <code>./src/js/es6.js</code>，撰寫程式如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">x</span> = x;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">y</span> = y;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">distance</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> dx = a.<span class="property">x</span> - b.<span class="property">x</span>;</span><br><span class="line">    <span class="keyword">const</span> dy = a.<span class="property">y</span> - b.<span class="property">y</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">sqrt</span>(dx*dx + dy*dy);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Point</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(x, y) &#123;</span><br><span class="line">    <span class="keyword">this</span>.x = x;</span><br><span class="line">    <span class="keyword">this</span>.y = y;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> distance(a, b) &#123;</span><br><span class="line">    <span class="keyword">const</span> dx = a.x - b.x;</span><br><span class="line">    <span class="keyword">const</span> dy = a.y - b.y;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.sqrt(dx*dx + dy*dy);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>將剛剛寫的程式 <code>import</code> 到 <code>app.js</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Point</span> <span class="keyword">from</span> <span class="string">&#x27;./js/es6&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Test for ES6</span></span><br><span class="line"><span class="comment">// https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Classes</span></span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> <span class="title class_">Point</span>(<span class="number">5</span>, <span class="number">5</span>);</span><br><span class="line"><span class="keyword">const</span> p2 = <span class="keyword">new</span> <span class="title class_">Point</span>(<span class="number">10</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Test ES6 Distance: <span class="subst">$&#123;Point.distance(p1, p2)&#125;</span>`</span>);</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Point <span class="keyword">from</span> <span class="string">'./js/es6'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Test for ES6</span></span><br><span class="line"><span class="comment">// https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Classes</span></span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> Point(<span class="number">5</span>, <span class="number">5</span>);</span><br><span class="line"><span class="keyword">const</span> p2 = <span class="keyword">new</span> Point(<span class="number">10</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`Test ES6 Distance: <span class="subst">$&#123;Point.distance(p1, p2)&#125;</span>`</span>);</span><br></pre></td></tr></table></figure>
 <p>執行 <code>npm run dev</code>，就可以看到 <code>console</code> 出現計算後的兩點長度囉。</p>
 <p><img src="https://lh3.googleusercontent.com/5S_HyO4HXOk9lkTzktk7Nbv93MPlzlh-NwBtwVLHeRStleqxkbU32GXOlJMb6S-jyRLu22Sficg3jtn2PhmUbA_1BxVKqMhLWXHs8mZDRS-dxA9haBSgCzGi4I1xAODh8qeWbPpCgJCSXIEki7h18ADIx_cotpCTD6vqUt8q8xPQoKqCYqufERPzQXwZVYO-GXwUmb7edUGFUi-iCUi9dwqdwPyOpQMmy42bVioArD7DV536i66AOfgYFo1LWQFh3EOVYa3eufssJJaZ_C-e31Xsv2vOrxYiZXCngeL9ZiFm6TOYbyDBIWn6DsFNEmQFHILVoiSCYnURTbZEAAL_5OyVG5dSsc7FpV26p_F9yUPofNay_JbZzDRMuQ870u2c7eBwy5Im9nRLC4ItKnEssvS2ylDWt5NPA3NZV5EFsx9LTR4DFGdQbLj1GIh5fmLdWQXv0AsU-AB2tuaB1mgxzRmkVWUDiPff2OXl2CXHsF2UeJTFtrxKPX9fHblEiO30NXZYjDhcsw_v1JGx9TtGF4QmPCkC3H5aeXyUvpUBnAVXpMmXhrH9FkXZIhaIXl7mdaiEEQR_7nwkhnVzZdSVL0EJq7TfUlQHz5HeRTjEjYfaU0mf7CNgt_KM3o0ReospKxGdl2Ml1hPfTv56QFuyNAl1NKfZiRvw=w1024-h589-no" alt="執行 npm run dev 後畫面" title="dist/index.html"></p>
-<p>更多 <code>babel-preset-env</code> 的配置選項可參考<a target="_blank" rel="noopener" href="http://babeljs.io/docs/plugins/preset-env/#top">官網</a>，有空也可以來試試 ES7 的 <code>async</code>, <code>await</code> 喔，我們下次見！</p>
-<p>範例 <a target="_blank" rel="noopener" href="https://github.com/Annilla/webpack_practice/tree/v1.4.0">Github</a></p>
+<p>更多 <code>babel-preset-env</code> 的配置選項可參考<a href="http://babeljs.io/docs/plugins/preset-env/#top" target="_blank" rel="noopener">官網</a>，有空也可以來試試 ES7 的 <code>async</code>, <code>await</code> 喔，我們下次見！</p>
+<p>範例 <a href="https://github.com/Annilla/webpack_practice/tree/v1.4.0" target="_blank" rel="noopener">Github</a></p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://webpack.js.org/loaders/babel-loader/">Babel-loader</a></li>
-<li><a target="_blank" rel="noopener" href="https://babeljs.io/">Babel</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Classes">ES6 Classes</a></li>
-<li><a target="_blank" rel="noopener" href="http://babeljs.io/docs/plugins/preset-env/#top">babel-preset-env</a></li>
+<li><a href="https://webpack.js.org/loaders/babel-loader/" target="_blank" rel="noopener">Babel-loader</a></li>
+<li><a href="https://babeljs.io/" target="_blank" rel="noopener">Babel</a></li>
+<li><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Classes" target="_blank" rel="noopener">ES6 Classes</a></li>
+<li><a href="http://babeljs.io/docs/plugins/preset-env/#top" target="_blank" rel="noopener">babel-preset-env</a></li>
 </ul>
 
             
@@ -401,7 +395,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -439,7 +433,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -448,7 +442,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -517,7 +511,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -555,7 +549,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -564,7 +558,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -626,14 +620,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -694,7 +688,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -727,7 +721,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -760,7 +754,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -793,7 +787,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -826,7 +820,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -859,7 +853,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -892,7 +886,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -925,7 +919,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1015,7 +1009,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

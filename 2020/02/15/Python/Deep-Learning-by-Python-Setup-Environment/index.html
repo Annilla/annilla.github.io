@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"深度學習(Deep Learning)將以數篇呈現，先簡要介紹以開源機器學習平台Tensorflow與神經網絡API Keras 在Python實作 Deep Learning。\n\n\n\n開源機器學習平台Tensorflow，TensorFlow是一個開源軟件庫，在維基上提到用於各種感知和語言理解任務的機器學習。如語音識別，Gmail，Google相簿和搜尋。TensorFlow提供了一個Python API，以及C++、Haskell、Java、Go和Rust API。第三方包可用於 C#、.NET Core、Julia、R和Scala。TensorFlow的底層核心引擎由C++實現，通過gRPC實現網路互訪、分散式執行。雖然它的Python&#x2F;C++&#x2F;Java API共享了大部分執行代碼，但是有關於反向傳播梯度計算的部分需要在不同語言單獨實現。目前只有Python API較為豐富。\n\nKeras 是一個快速實現深度神經網路用Python編寫的開源神經網路庫，包含許多常用神經網路構建塊的實現，來簡單處理圖像和文字資料。能夠配合TensorFlow，Microsoft Cognitive Toolkit，Theano或PlaidML之上執行，其代碼代管在GitHub上，社區支援論壇包括GitHub的問題頁面和Slack通道。\n\n\n環境設置：原本按照《深度學習入門教室》一書安裝步驟發現遇到許多問題，python版本與Anaconda的適配問題，以及一些tensorflow相關問題。在安裝與環境設定過程常卡住，以下提及安裝需注意的適配版本。以下安裝範例為Python 3.7.4+Anaconda+tensorflow2.0安裝Anaconda：有分python3.7與python2.7版本。\n\n安装Tensorflow ：輸入命令\n1conda create -n tensorflow python=3.7\n\n\n\n安装tensorflow：輸入命令pip install tensorflow==2.0.0 -ihttps://pypi.tuna.tsinghua.edu.cn/simple激活tensorflow：輸入命令conda activate tensorflow\n\n安装Keras：輸入命令sudo pip install keras測試執行：表示安裝成功\n\n\n\n確認安裝環境：輸入命令python\n\n測試執行：輸入命令import tensorflow as tf輸入命令hello=tf.constant(&#39;123&#39;)輸入命令sess=tf.Session()\n\n會錯誤！原因：在於TF 2.0不使用tf.Session，若要繼續使用，需改為sess=tf.compat.v1.Session()\n這裡我先備註以後會需要的資料\n\ntensorflow 指令說明網址 https://www.tensorflow.org/api_docs/python/tf/compat/v1/Session#graph\n\n待研究將TensorFlow 1.X的代碼轉換為TensorFlow2.0代碼https://blog.csdn.net/xovee/article/details/93402172\n\n\n接著輸入命令print(sess.run(hello))\n會發現錯誤！\n\n原因：使用tf.compat.v1.Session()雖可執行，但是，然而TF 1.X的的API 使用 Graph Execution，但是TF 2.0 默認使用 eager execution，要解決這個問題有兩種方式一種辦法先定義數據向量圖形，或是使用tf.compat.v1.disable_eager_execution() ，在tensorflow 指令說明裡提這個指令被使用在TF1.X代碼至TF2.0代碼的轉換(It can be used at the beginning of the program for complex migration projects from TensorFlow 1.x to 2.x.)\n因此，最後如下暫時解決，確認是可執行的。測試執行：\n\n","dateCreated":"2020-02-15T00:00:00+08:00","dateModified":"2020-02-15T00:00:00+08:00","datePublished":"2020-02-15T00:00:00+08:00","description":"深度學習(Deep Learning)將以數篇呈現，先簡要介紹以開源機器學習平台Tensorflow與神經網絡API Keras 在Python實作 Deep Learning。","headline":"Deep Learning by Python - Setup Environment","image":["https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/768px-Python-logo-notext.svg.png","https://logonoid.com/images/python-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2020/02/15/Python/Deep-Learning-by-Python-Setup-Environment/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2020/02/15/Python/Deep-Learning-by-Python-Setup-Environment/","keywords":"Python, Deep Learning, Keras, TensorFlow","thumbnailUrl":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/768px-Python-logo-notext.svg.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"深度學習(Deep Learning)將以數篇呈現，先簡要介紹以開源機器學習平台Tensorflow與神經網絡API Keras 在Python實作 Deep Learning。\n\n\n開源機器學習平台Tensorflow，TensorFlow是一個開源軟件庫，在維基上提到用於各種感知和語言理解任務的機器學習。如語音識別，Gmail，Google相簿和搜尋。TensorFlow提供了一個Python API，以及C++、Haskell、Java、Go和Rust API。第三方包可用於 C#、.NET Core、Julia、R和Scala。TensorFlow的底層核心引擎由C++實現，通過gRPC實現網路互訪、分散式執行。雖然它的Python/C++/Java API共享了大部分執行代碼，但是有關於反向傳播梯度計算的部分需要在不同語言單獨實現。目前只有Python API較為豐富。\n\nKeras 是一個快速實現深度神經網路用Python編寫的開源神經網路庫，包含許多常用神經網路構建塊的實現，來簡單處理圖像和文字資料。能夠配合TensorFlow，Microsoft Cognitive Toolkit，Theano或PlaidML之上執行，其代碼代管在GitHub上，社區支援論壇包括GitHub的問題頁面和Slack通道。\n\n\n環境設置：原本按照《深度學習入門教室》一書安裝步驟發現遇到許多問題，python版本與Anaconda的適配問題，以及一些tensorflow相關問題。在安裝與環境設定過程常卡住，以下提及安裝需注意的適配版本。以下安裝範例為Python 3.7.4+Anaconda+tensorflow2.0安裝Anaconda：有分python3.7與python2.7版本。\n\n安装Tensorflow ：輸入命令1conda create -n tensorflow python=3.7\n\n\n安装tensorflow：輸入命令pip install tensorflow==2.0.0 -ihttps://pypi.tuna.tsinghua.edu.cn/simple激活tensorflow：輸入命令conda activate tensorflow\n\n安装Keras：輸入命令sudo pip install keras測試執行：表示安裝成功\n\n\n\n確認安裝環境：輸入命令python\n\n測試執行：輸入命令import tensorflow as tf輸入命令hello=tf.constant(&#39;123&#39;)輸入命令sess=tf.Session()\n\n會錯誤！原因：在於TF 2.0不使用tf.Session，若要繼續使用，需改為sess=tf.compat.v1.Session()\n這裡我先備註以後會需要的資料\n\ntensorflow 指令說明網址 https://www.tensorflow.org/api_docs/python/tf/compat/v1/Session#graph\n\n待研究將TensorFlow 1.X的代碼轉換為TensorFlow2.0代碼https://blog.csdn.net/xovee/article/details/93402172\n\n\n接著輸入命令print(sess.run(hello))\n會發現錯誤！\n\n原因：使用tf.compat.v1.Session()雖可執行，但是，然而TF 1.X的的API 使用 Graph Execution，但是TF 2.0 默認使用 eager execution，要解決這個問題有兩種方式一種辦法先定義數據向量圖形，或是使用tf.compat.v1.disable_eager_execution() ，在tensorflow 指令說明裡提這個指令被使用在TF1.X代碼至TF2.0代碼的轉換(It can be used at the beginning of the program for complex migration projects from TensorFlow 1.x to 2.x.)\n因此，最後如下暫時解決，確認是可執行的。測試執行：\n\n","dateCreated":"2020-02-15T00:00:00+08:00","dateModified":"2020-02-15T00:00:00+08:00","datePublished":"2020-02-15T00:00:00+08:00","description":"深度學習(Deep Learning)將以數篇呈現，先簡要介紹以開源機器學習平台Tensorflow與神經網絡API Keras 在Python實作 Deep Learning。","headline":"Deep Learning by Python - Setup Environment","image":["https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/768px-Python-logo-notext.svg.png","https://logonoid.com/images/python-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2020/02/15/Python/Deep-Learning-by-Python-Setup-Environment/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2020/02/15/Python/Deep-Learning-by-Python-Setup-Environment/","keywords":"Python, Deep Learning, Keras, TensorFlow","thumbnailUrl":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/768px-Python-logo-notext.svg.png"}</script>
     <meta name="description" content="深度學習(Deep Learning)將以數篇呈現，先簡要介紹以開源機器學習平台Tensorflow與神經網絡API Keras 在Python實作 Deep Learning。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Deep Learning by Python - Setup Environment">
@@ -61,7 +61,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -134,7 +134,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -312,7 +312,7 @@
         <div class="post-meta">
     <time datetime="2020-02-15T00:00:00+08:00">
 	
-		    2月 15, 2020
+		    2020 年 2 月 15 日
     	
     </time>
     
@@ -331,22 +331,19 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>深度學習(Deep Learning)將以數篇呈現，先簡要介紹以開源機器學習平台Tensorflow與神經網絡API Keras 在Python實作 Deep Learning。</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <ol>
-<li><p>開源機器學習平台Tensorflow，TensorFlow是一個開源軟件庫，在維基上提到用於各種感知和語言理解任務的機器學習。如語音識別，Gmail，Google相簿和搜尋。TensorFlow提供了一個Python API，以及C++、Haskell、Java、Go和Rust API。第三方包可用於 C#、.NET Core、Julia、R和Scala。TensorFlow的底層核心引擎由C++實現，通過gRPC實現網路互訪、分散式執行。雖然它的Python&#x2F;C++&#x2F;Java API共享了大部分執行代碼，但是有關於反向傳播梯度計算的部分需要在不同語言單獨實現。目前只有Python API較為豐富。</p>
+<li><p>開源機器學習平台Tensorflow，TensorFlow是一個開源軟件庫，在維基上提到用於各種感知和語言理解任務的機器學習。如語音識別，Gmail，Google相簿和搜尋。TensorFlow提供了一個Python API，以及C++、Haskell、Java、Go和Rust API。第三方包可用於 C#、.NET Core、Julia、R和Scala。TensorFlow的底層核心引擎由C++實現，通過gRPC實現網路互訪、分散式執行。雖然它的Python/C++/Java API共享了大部分執行代碼，但是有關於反向傳播梯度計算的部分需要在不同語言單獨實現。目前只有Python API較為豐富。</p>
 </li>
 <li><p>Keras 是一個快速實現深度神經網路用Python編寫的開源神經網路庫，包含許多常用神經網路構建塊的實現，來簡單處理圖像和文字資料。能夠配合TensorFlow，Microsoft Cognitive Toolkit，Theano或PlaidML之上執行，其代碼代管在GitHub上，社區支援論壇包括GitHub的問題頁面和Slack通道。</p>
 </li>
 </ol>
 <p>環境設置：原本按照《深度學習入門教室》一書安裝步驟發現遇到許多問題，python版本與Anaconda的適配問題，以及一些tensorflow相關問題。<br>在安裝與環境設定過程常卡住，以下提及安裝需注意的適配版本。<br>以下安裝範例為Python 3.7.4+Anaconda+tensorflow2.0<br>安裝Anaconda：有分python3.7與python2.7版本。</p>
 <p><img src="https://miro.medium.com/max/2880/0*svhqy8xjtu21TnE9" alt="Python" title="Python"></p>
-<p>安装Tensorflow ：<br>輸入命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n tensorflow python=3.7</span><br></pre></td></tr></table></figure>
-
+<p>安装Tensorflow ：<br>輸入命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n tensorflow python=3.7</span><br></pre></td></tr></table></figure></p>
 <p><img src="https://miro.medium.com/max/3200/0*DZi-3SBgonasZeH4" alt="Tensorflow" title="Tensorflow"></p>
 <ol>
-<li><p>安装tensorflow：<br>輸入命令<code>pip install tensorflow==2.0.0 -i</code><br><a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a><br>激活tensorflow：輸入命令<code>conda activate tensorflow</code></p>
+<li><p>安装tensorflow：<br>輸入命令<code>pip install tensorflow==2.0.0 -i</code><br><a href="https://pypi.tuna.tsinghua.edu.cn/simple" target="_blank" rel="noopener">https://pypi.tuna.tsinghua.edu.cn/simple</a><br>激活tensorflow：輸入命令<code>conda activate tensorflow</code></p>
 </li>
 <li><p>安装Keras：輸入命令<code>sudo pip install keras</code><br>測試執行：表示安裝成功</p>
 </li>
@@ -359,9 +356,9 @@
 <p>會錯誤！<br>原因：在於TF 2.0不使用<code>tf.Session</code>，若要繼續使用，需改為<code>sess=tf.compat.v1.Session()</code></p>
 <p>這裡我先備註以後會需要的資料</p>
 <ol>
-<li><p>tensorflow 指令說明網址 <a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/compat/v1/Session#graph">https://www.tensorflow.org/api_docs/python/tf/compat/v1/Session#graph</a></p>
+<li><p>tensorflow 指令說明網址 <a href="https://www.tensorflow.org/api_docs/python/tf/compat/v1/Session#graph" target="_blank" rel="noopener">https://www.tensorflow.org/api_docs/python/tf/compat/v1/Session#graph</a></p>
 </li>
-<li><p>待研究將TensorFlow 1.X的代碼轉換為TensorFlow2.0代碼<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/xovee/article/details/93402172">https://blog.csdn.net/xovee/article/details/93402172</a></p>
+<li><p>待研究將TensorFlow 1.X的代碼轉換為TensorFlow2.0代碼<br><a href="https://blog.csdn.net/xovee/article/details/93402172" target="_blank" rel="noopener">https://blog.csdn.net/xovee/article/details/93402172</a></p>
 </li>
 </ol>
 <p>接著<br>輸入命令<code>print(sess.run(hello))</code></p>
@@ -424,7 +421,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -462,7 +459,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -471,7 +468,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -540,7 +537,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -578,7 +575,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -587,7 +584,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -649,14 +646,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -717,7 +714,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -750,7 +747,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -783,7 +780,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -816,7 +813,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -849,7 +846,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -882,7 +879,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -915,7 +912,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -948,7 +945,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1038,7 +1035,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

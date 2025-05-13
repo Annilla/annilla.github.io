@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"此篇記錄 Vuetify 從 v1 升級到 v2 所要注意的事情。\n\n\nColor ThemeV2 color theme 改分成 light 和 dark 兩種模式。為方便管理，做法是另外開一隻 vuetify.js 然後再引入 main.js 做使用。\n&#x2F;js&#x2F;vuetify.js\n1234567891011121314151617181920212223242526272829import Vue from &#x27;vue&#x27;;import Vuetify from &#x27;vuetify&#x27;;Vue.use(Vuetify);export default new Vuetify(&#123;    theme: &#123;        themes: &#123;            light: &#123;                primary: &#x27;...&#x27;,                secondary: &#x27;...&#x27;,                accent: &#x27;...&#x27;,                error: &#x27;...&#x27;,                info: &#x27;...&#x27;,                success: &#x27;...&#x27;,                warning: &#x27;...&#x27;            &#125;,            dark: &#123;                primary: &#x27;...&#x27;,                secondary: &#x27;...&#x27;,                accent: &#x27;...&#x27;,                error: &#x27;...&#x27;,                info: &#x27;...&#x27;,                success: &#x27;...&#x27;,                warning: &#x27;...&#x27;            &#125;        &#125;,    &#125;,&#125;);\n\nmain.js\n12345678910...import vuetify from &#x27;./js/vuetify&#x27;new Vue(&#123;    el: &#x27;#app&#x27;,    vuetify,    router,    store,    render: h =&gt; h(App)&#125;);\n\nv-content to v-mainv-content 名稱在 V2 變成 v-main。\nGrid原本使用 v-layout, v-flex 做排版，V2 改為使用 v-row, v-col，原組件功能保留，若不更動也可以。\nv-toolbar to v-app-bar新版 V2 有另外開新組件 v-app-bar 讓開發者可替換掉 v-toolbar。兩者相比之下，v-app-bar 有更多新功能可使用，可參閱 StackOverflow。\n\nv-app-bar 可下 app 屬性，代表整個應用程式的最上層功能。\n選單 icon v-toolbar-side-icon 名稱改為 v-app-bar-nav-icon。\n\nv-navigation屬性 mobile-break-point 更名為 mobile-breakpoint 。\nv-list只要是 v-list-tile 名稱在 V2 變成 v-list-item。比較常用到的地方是 Navigation 和 Menu 組件。\n\nv-list-tile-sub-title更名為v-list-item-subtitle。\nv-list-item 的屬性 avator 已被移除。\n\nv-dialog原本可在 v-dialog 下 slot=&quot;activator&quot;，改為一定要另外在內部開一個 template 下 slot 語法才行。可參閱 Dialogs。\nv-tooltip原本可在 v-tooltip 下 slot=&quot;activator&quot;，改為一定要另外在內部開一個 template 下 slot 語法才行。可參閱 Tooltips。\nv-menu原本可在 v-menu 下 slot=&quot;activator&quot;，改為一定要另外在內部開一個 template 下 slot 語法才行。可參閱 Menus。另外，取消了 lazy 和 full-width 屬性。\n\nPS. v-menu 需要下 min-width 在 IE 瀏覽器才不會破版。\n\nv-snackbar原本 v-snackbar 不需要下 v-slot，改為一定要另外在內部開一個 template 下 slot 語法才行。可參閱 Snackbars。\nv-btn 預設樣式改變flat 屬性改為 text。\ntext-xs-(align) to text-(align)text-xs-center 名稱在 V2 變成 text-center，以此類推。\nv-chip原本監聽 close  的 @input 屬性改成 @click:close。\nv-data-tablev-data-table 改的地方蠻多的，描述如下。\n\nhide-actions 改為 hide-default-footer\npagination.sync 改為 page.sync\nselect-all 改為 show-select\n需要下 items-per-page 設置每頁資料筆數\n每格資料改為使用 template v-slot 的方式做覆蓋，例如對資料使用 filter。參閱 Item。\n\nv-expansion-panels結構有大幅度的改變，最外層換成 v-expansion-panels。v-expansion-panel 變成內頁，屬性要移到外層。標題一定要拉到 v-expansion-panel-header。參閱 Expansion Panels。\n\n屬性 expand 改為 mutiple\nv-model 陣列改為使用 index (ex: [true, false, true] &#x3D;&gt; [0,2])\n\n","dateCreated":"2021-02-07T00:00:00+08:00","dateModified":"2025-05-12T20:18:00+08:00","datePublished":"2021-02-07T00:00:00+08:00","description":"此篇記錄 Vuetify 從 v1 升級到 v2 所要注意的事情。","headline":"Notes on Transferring from Vuetify V1 to V2","image":["https://styles.redditmedia.com/t5_3nu8v/styles/communityIcon_zuqnf4r5ml111.png?width=256&s=cb1e7da96a8a20995de2e1a934d07b6a0a94958e","https://i.morioh.com/2019/11/01/47e709b4198f.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2021/02/07/Frontend/Notes-on-Transferring-from-Vuetify-V1-to-V2/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2021/02/07/Frontend/Notes-on-Transferring-from-Vuetify-V1-to-V2/","keywords":"JS","thumbnailUrl":"https://styles.redditmedia.com/t5_3nu8v/styles/communityIcon_zuqnf4r5ml111.png?width=256&s=cb1e7da96a8a20995de2e1a934d07b6a0a94958e"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"此篇記錄 Vuetify 從 v1 升級到 v2 所要注意的事情。\n\nColor ThemeV2 color theme 改分成 light 和 dark 兩種模式。為方便管理，做法是另外開一隻 vuetify.js 然後再引入 main.js 做使用。\n/js/vuetify.js\n1234567891011121314151617181920212223242526272829import Vue from 'vue';import Vuetify from 'vuetify';Vue.use(Vuetify);export default new Vuetify(&#123;    theme: &#123;        themes: &#123;            light: &#123;                primary: '...',                secondary: '...',                accent: '...',                error: '...',                info: '...',                success: '...',                warning: '...'            &#125;,            dark: &#123;                primary: '...',                secondary: '...',                accent: '...',                error: '...',                info: '...',                success: '...',                warning: '...'            &#125;        &#125;,    &#125;,&#125;);\nmain.js\n12345678910...import vuetify from './js/vuetify'new Vue(&#123;    el: '#app',    vuetify,    router,    store,    render: h =&gt; h(App)&#125;);\nv-content to v-mainv-content 名稱在 V2 變成 v-main。\nGrid原本使用 v-layout, v-flex 做排版，V2 改為使用 v-row, v-col，原組件功能保留，若不更動也可以。\nv-toolbar to v-app-bar新版 V2 有另外開新組件 v-app-bar 讓開發者可替換掉 v-toolbar。兩者相比之下，v-app-bar 有更多新功能可使用，可參閱 StackOverflow。\n\nv-app-bar 可下 app 屬性，代表整個應用程式的最上層功能。\n選單 icon v-toolbar-side-icon 名稱改為 v-app-bar-nav-icon。\n\nv-navigation屬性 mobile-break-point 更名為 mobile-breakpoint 。\nv-list只要是 v-list-tile 名稱在 V2 變成 v-list-item。比較常用到的地方是 Navigation 和 Menu 組件。\n\nv-list-tile-sub-title更名為v-list-item-subtitle。\nv-list-item 的屬性 avator 已被移除。\n\nv-dialog原本可在 v-dialog 下 slot=&quot;activator&quot;，改為一定要另外在內部開一個 template 下 slot 語法才行。可參閱 Dialogs。\nv-tooltip原本可在 v-tooltip 下 slot=&quot;activator&quot;，改為一定要另外在內部開一個 template 下 slot 語法才行。可參閱 Tooltips。\nv-menu原本可在 v-menu 下 slot=&quot;activator&quot;，改為一定要另外在內部開一個 template 下 slot 語法才行。可參閱 Menus。另外，取消了 lazy 和 full-width 屬性。\n\nPS. v-menu 需要下 min-width 在 IE 瀏覽器才不會破版。\n\nv-snackbar原本 v-snackbar 不需要下 v-slot，改為一定要另外在內部開一個 template 下 slot 語法才行。可參閱 Snackbars。\nv-btn 預設樣式改變flat 屬性改為 text。\ntext-xs-(align) to text-(align)text-xs-center 名稱在 V2 變成 text-center，以此類推。\nv-chip原本監聽 close  的 @input 屬性改成 @click:close。\nv-data-tablev-data-table 改的地方蠻多的，描述如下。\n\nhide-actions 改為 hide-default-footer\npagination.sync 改為 page.sync\nselect-all 改為 show-select\n需要下 items-per-page 設置每頁資料筆數\n每格資料改為使用 template v-slot 的方式做覆蓋，例如對資料使用 filter。參閱 Item。\n\nv-expansion-panels結構有大幅度的改變，最外層換成 v-expansion-panels。v-expansion-panel 變成內頁，屬性要移到外層。標題一定要拉到 v-expansion-panel-header。參閱 Expansion Panels。\n\n屬性 expand 改為 mutiple\nv-model 陣列改為使用 index (ex: [true, false, true] =&gt; [0,2])\n\n","dateCreated":"2021-02-07T00:00:00+08:00","dateModified":"2025-05-12T16:16:23+08:00","datePublished":"2021-02-07T00:00:00+08:00","description":"此篇記錄 Vuetify 從 v1 升級到 v2 所要注意的事情。","headline":"Notes on Transferring from Vuetify V1 to V2","image":["https://styles.redditmedia.com/t5_3nu8v/styles/communityIcon_zuqnf4r5ml111.png?width=256&s=cb1e7da96a8a20995de2e1a934d07b6a0a94958e","https://i.morioh.com/2019/11/01/47e709b4198f.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2021/02/07/Frontend/Notes-on-Transferring-from-Vuetify-V1-to-V2/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2021/02/07/Frontend/Notes-on-Transferring-from-Vuetify-V1-to-V2/","keywords":"JS","thumbnailUrl":"https://styles.redditmedia.com/t5_3nu8v/styles/communityIcon_zuqnf4r5ml111.png?width=256&s=cb1e7da96a8a20995de2e1a934d07b6a0a94958e"}</script>
     <meta name="description" content="此篇記錄 Vuetify 從 v1 升級到 v2 所要注意的事情。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Notes on Transferring from Vuetify V1 to V2">
@@ -28,7 +28,7 @@
 <meta property="og:description" content="此篇記錄 Vuetify 從 v1 升級到 v2 所要注意的事情。">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2021-02-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-05-12T12:18:00.615Z">
+<meta property="article:modified_time" content="2025-05-12T08:16:23.141Z">
 <meta property="article:author" content="Anny Chang">
 <meta property="article:tag" content="JS">
 <meta name="twitter:card" content="summary">
@@ -50,7 +50,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -123,7 +123,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -301,7 +301,7 @@
         <div class="post-meta">
     <time datetime="2021-02-07T00:00:00+08:00">
 	
-		    2月 07, 2021
+		    2021 年 2 月 7 日
     	
     </time>
     
@@ -320,18 +320,15 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>此篇記錄 Vuetify 從 v1 升級到 v2 所要注意的事情。</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <h1 id="Color-Theme"><a href="#Color-Theme" class="headerlink" title="Color Theme"></a>Color Theme</h1><p>V2 color theme 改分成 light 和 dark 兩種模式。為方便管理，做法是另外開一隻 vuetify.js 然後再引入 main.js 做使用。</p>
-<p>&#x2F;js&#x2F;vuetify.js</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuetify</span> <span class="keyword">from</span> <span class="string">&#x27;vuetify&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuetify</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Vuetify</span>(&#123;</span><br><span class="line">    <span class="attr">theme</span>: &#123;</span><br><span class="line">        <span class="attr">themes</span>: &#123;</span><br><span class="line">            <span class="attr">light</span>: &#123;</span><br><span class="line">                <span class="attr">primary</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">secondary</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">accent</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">error</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">info</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">success</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">warning</span>: <span class="string">&#x27;...&#x27;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">dark</span>: &#123;</span><br><span class="line">                <span class="attr">primary</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">secondary</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">accent</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">error</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">info</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">success</span>: <span class="string">&#x27;...&#x27;</span>,</span><br><span class="line">                <span class="attr">warning</span>: <span class="string">&#x27;...&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
+<p>/js/vuetify.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span>;</span><br><span class="line"><span class="keyword">import</span> Vuetify <span class="keyword">from</span> <span class="string">'vuetify'</span>;</span><br><span class="line"></span><br><span class="line">Vue.use(Vuetify);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vuetify(&#123;</span><br><span class="line">    theme: &#123;</span><br><span class="line">        themes: &#123;</span><br><span class="line">            light: &#123;</span><br><span class="line">                primary: <span class="string">'...'</span>,</span><br><span class="line">                secondary: <span class="string">'...'</span>,</span><br><span class="line">                accent: <span class="string">'...'</span>,</span><br><span class="line">                error: <span class="string">'...'</span>,</span><br><span class="line">                info: <span class="string">'...'</span>,</span><br><span class="line">                success: <span class="string">'...'</span>,</span><br><span class="line">                warning: <span class="string">'...'</span></span><br><span class="line">            &#125;,</span><br><span class="line">            dark: &#123;</span><br><span class="line">                primary: <span class="string">'...'</span>,</span><br><span class="line">                secondary: <span class="string">'...'</span>,</span><br><span class="line">                accent: <span class="string">'...'</span>,</span><br><span class="line">                error: <span class="string">'...'</span>,</span><br><span class="line">                info: <span class="string">'...'</span>,</span><br><span class="line">                success: <span class="string">'...'</span>,</span><br><span class="line">                warning: <span class="string">'...'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>main.js</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> vuetify <span class="keyword">from</span> <span class="string">&#x27;./js/vuetify&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">    <span class="attr">el</span>: <span class="string">&#x27;#app&#x27;</span>,</span><br><span class="line">    vuetify,</span><br><span class="line">    router,</span><br><span class="line">    store,</span><br><span class="line">    <span class="attr">render</span>: <span class="function"><span class="params">h</span> =&gt;</span> <span class="title function_">h</span>(<span class="title class_">App</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> vuetify <span class="keyword">from</span> <span class="string">'./js/vuetify'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    el: <span class="string">'#app'</span>,</span><br><span class="line">    vuetify,</span><br><span class="line">    router,</span><br><span class="line">    store,</span><br><span class="line">    render: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <h1 id="v-content-to-v-main"><a href="#v-content-to-v-main" class="headerlink" title="v-content to v-main"></a>v-content to v-main</h1><p><code>v-content</code> 名稱在 V2 變成 <code>v-main</code>。</p>
 <h1 id="Grid"><a href="#Grid" class="headerlink" title="Grid"></a>Grid</h1><p>原本使用 <code>v-layout</code>, <code>v-flex</code> 做排版，V2 改為使用 <code>v-row</code>, <code>v-col</code>，原組件功能保留，若不更動也可以。</p>
-<h1 id="v-toolbar-to-v-app-bar"><a href="#v-toolbar-to-v-app-bar" class="headerlink" title="v-toolbar to v-app-bar"></a>v-toolbar to v-app-bar</h1><p>新版 V2 有另外開新組件 <code>v-app-bar</code> 讓開發者可替換掉 <code>v-toolbar</code>。兩者相比之下，<code>v-app-bar</code> 有更多新功能可使用，可參閱 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/58068147/what-is-difference-between-v-app-bar-and-v-toolbar-in-vuetify">StackOverflow</a>。</p>
+<h1 id="v-toolbar-to-v-app-bar"><a href="#v-toolbar-to-v-app-bar" class="headerlink" title="v-toolbar to v-app-bar"></a>v-toolbar to v-app-bar</h1><p>新版 V2 有另外開新組件 <code>v-app-bar</code> 讓開發者可替換掉 <code>v-toolbar</code>。兩者相比之下，<code>v-app-bar</code> 有更多新功能可使用，可參閱 <a href="https://stackoverflow.com/questions/58068147/what-is-difference-between-v-app-bar-and-v-toolbar-in-vuetify" target="_blank" rel="noopener">StackOverflow</a>。</p>
 <ul>
 <li><code>v-app-bar</code> 可下 app 屬性，代表整個應用程式的最上層功能。</li>
 <li>選單 icon <code>v-toolbar-side-icon</code> 名稱改為 <code>v-app-bar-nav-icon</code>。</li>
@@ -342,13 +339,13 @@
 <li><code>v-list-tile-sub-title</code>更名為<code>v-list-item-subtitle</code>。</li>
 <li><code>v-list-item</code> 的屬性 <code>avator</code> 已被移除。</li>
 </ul>
-<h1 id="v-dialog"><a href="#v-dialog" class="headerlink" title="v-dialog"></a>v-dialog</h1><p>原本可在 <code>v-dialog</code> 下 <code>slot=&quot;activator&quot;</code>，改為一定要另外在內部開一個 <code>template</code> 下 slot 語法才行。可參閱 <a target="_blank" rel="noopener" href="https://vuetifyjs.com/en/components/dialogs/">Dialogs</a>。</p>
-<h1 id="v-tooltip"><a href="#v-tooltip" class="headerlink" title="v-tooltip"></a>v-tooltip</h1><p>原本可在 <code>v-tooltip</code> 下 <code>slot=&quot;activator&quot;</code>，改為一定要另外在內部開一個 <code>template</code> 下 slot 語法才行。可參閱 <a target="_blank" rel="noopener" href="https://vuetifyjs.com/en/components/tooltips/">Tooltips</a>。</p>
-<h1 id="v-menu"><a href="#v-menu" class="headerlink" title="v-menu"></a>v-menu</h1><p>原本可在 <code>v-menu</code> 下 <code>slot=&quot;activator&quot;</code>，改為一定要另外在內部開一個 <code>template</code> 下 slot 語法才行。可參閱 <a target="_blank" rel="noopener" href="https://vuetifyjs.com/en/components/menus/">Menus</a>。另外，取消了 lazy 和 full-width 屬性。</p>
+<h1 id="v-dialog"><a href="#v-dialog" class="headerlink" title="v-dialog"></a>v-dialog</h1><p>原本可在 <code>v-dialog</code> 下 <code>slot=&quot;activator&quot;</code>，改為一定要另外在內部開一個 <code>template</code> 下 slot 語法才行。可參閱 <a href="https://vuetifyjs.com/en/components/dialogs/" target="_blank" rel="noopener">Dialogs</a>。</p>
+<h1 id="v-tooltip"><a href="#v-tooltip" class="headerlink" title="v-tooltip"></a>v-tooltip</h1><p>原本可在 <code>v-tooltip</code> 下 <code>slot=&quot;activator&quot;</code>，改為一定要另外在內部開一個 <code>template</code> 下 slot 語法才行。可參閱 <a href="https://vuetifyjs.com/en/components/tooltips/" target="_blank" rel="noopener">Tooltips</a>。</p>
+<h1 id="v-menu"><a href="#v-menu" class="headerlink" title="v-menu"></a>v-menu</h1><p>原本可在 <code>v-menu</code> 下 <code>slot=&quot;activator&quot;</code>，改為一定要另外在內部開一個 <code>template</code> 下 slot 語法才行。可參閱 <a href="https://vuetifyjs.com/en/components/menus/" target="_blank" rel="noopener">Menus</a>。另外，取消了 lazy 和 full-width 屬性。</p>
 <blockquote>
 <p>PS. <code>v-menu</code> 需要下 <code>min-width</code> 在 IE 瀏覽器才不會破版。</p>
 </blockquote>
-<h1 id="v-snackbar"><a href="#v-snackbar" class="headerlink" title="v-snackbar"></a>v-snackbar</h1><p>原本 <code>v-snackbar</code> 不需要下 v-slot，改為一定要另外在內部開一個 <code>template</code> 下 slot 語法才行。可參閱 <a target="_blank" rel="noopener" href="https://vuetifyjs.com/en/components/snackbars/">Snackbars</a>。</p>
+<h1 id="v-snackbar"><a href="#v-snackbar" class="headerlink" title="v-snackbar"></a>v-snackbar</h1><p>原本 <code>v-snackbar</code> 不需要下 v-slot，改為一定要另外在內部開一個 <code>template</code> 下 slot 語法才行。可參閱 <a href="https://vuetifyjs.com/en/components/snackbars/" target="_blank" rel="noopener">Snackbars</a>。</p>
 <h1 id="v-btn-預設樣式改變"><a href="#v-btn-預設樣式改變" class="headerlink" title="v-btn 預設樣式改變"></a>v-btn 預設樣式改變</h1><p>flat 屬性改為 text。</p>
 <h1 id="text-xs-align-to-text-align"><a href="#text-xs-align-to-text-align" class="headerlink" title="text-xs-(align) to text-(align)"></a>text-xs-(align) to text-(align)</h1><p><code>text-xs-center</code> 名稱在 V2 變成 <code>text-center</code>，以此類推。</p>
 <h1 id="v-chip"><a href="#v-chip" class="headerlink" title="v-chip"></a>v-chip</h1><p>原本監聽 close  的 <code>@input</code> 屬性改成 <code>@click:close</code>。</p>
@@ -358,12 +355,12 @@
 <li><code>pagination.sync</code> 改為 <code>page.sync</code></li>
 <li><code>select-all</code> 改為 <code>show-select</code></li>
 <li>需要下 <code>items-per-page</code> 設置每頁資料筆數</li>
-<li>每格資料改為使用 template v-slot 的方式做覆蓋，例如對資料使用 filter。參閱 <a target="_blank" rel="noopener" href="https://vuetifyjs.com/en/components/data-tables/#item">Item</a>。</li>
+<li>每格資料改為使用 template v-slot 的方式做覆蓋，例如對資料使用 filter。參閱 <a href="https://vuetifyjs.com/en/components/data-tables/#item" target="_blank" rel="noopener">Item</a>。</li>
 </ul>
-<h1 id="v-expansion-panels"><a href="#v-expansion-panels" class="headerlink" title="v-expansion-panels"></a>v-expansion-panels</h1><p>結構有大幅度的改變，最外層換成 <code>v-expansion-panels</code>。<code>v-expansion-panel</code> 變成內頁，屬性要移到外層。標題一定要拉到 <code>v-expansion-panel-header</code>。參閱 <a target="_blank" rel="noopener" href="https://vuetifyjs.com/en/components/expansion-panels/">Expansion Panels</a>。</p>
+<h1 id="v-expansion-panels"><a href="#v-expansion-panels" class="headerlink" title="v-expansion-panels"></a>v-expansion-panels</h1><p>結構有大幅度的改變，最外層換成 <code>v-expansion-panels</code>。<code>v-expansion-panel</code> 變成內頁，屬性要移到外層。標題一定要拉到 <code>v-expansion-panel-header</code>。參閱 <a href="https://vuetifyjs.com/en/components/expansion-panels/" target="_blank" rel="noopener">Expansion Panels</a>。</p>
 <ul>
 <li>屬性 <code>expand</code> 改為 <code>mutiple</code></li>
-<li>v-model 陣列改為使用 index (ex: [true, false, true] &#x3D;&gt; [0,2])</li>
+<li>v-model 陣列改為使用 index (ex: [true, false, true] =&gt; [0,2])</li>
 </ul>
 
             
@@ -419,7 +416,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -457,7 +454,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -466,7 +463,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -535,7 +532,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -573,7 +570,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -582,7 +579,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -644,14 +641,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -712,7 +709,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -745,7 +742,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -778,7 +775,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -811,7 +808,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -844,7 +841,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -877,7 +874,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -910,7 +907,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -943,7 +940,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1033,7 +1030,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

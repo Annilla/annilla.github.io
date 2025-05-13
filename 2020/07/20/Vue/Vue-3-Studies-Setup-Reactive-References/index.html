@@ -19,13 +19,13 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。\n\n\n影片網址： https://www.vuemastery.com/courses/vue-3-essentials/setup-and-reactive-references\n什麼時候要用 composition API？影片中再次強調 composition API 只是多一種選擇的程式寫法，舊有的 Vue 2 寫法還是可以完完全全繼續使用。那我們什麼時候可以用 composition API 呢？\n\n當專案想要使用強型別寫法，將可以順利支援 typescript。\n當組件過於龐大，需要用功能來重新組織程式架構。\n部分功能的程式需要在不同組件中重複使用。\n\n\nSetup &amp; Reactive References我們來看看一般 Vue 2 寫法如下，畫面會顯示 data return 的 capacity 3。\n那在 composition API 要怎麼寫呢？我們使用 setup function，他觸發時機會在 components, props, data, methods, computed properties, lifecycle methods 之前，且他是沒辦法用 this 抓到自己這個組件。\nSetup 可以放兩個參數，先介紹第一個參數用法。第一個參數是 props ，他一樣是 reactive 且 可以使用 watch 監聽改變事件如下圖。\nSetup 第二個參數是 context，剛剛說在 setup 裡面不能用 this 抓取自己這個組件，所以第二個參數 context 就是拿來取得自己這個組件的內容，就相當於以前的 this。\n我們回頭來看看 setup 要怎麼寫。我們會令一個常數 capacity 是 ref(3)，這邊的 ref 是 reactive reference function。這邊將我們的原始值包在一個物件當中，相當於 Vue 2 我們將值包在data返回的物件中。這邊要注意的是：用 composition API 也可以造不跟此組件相關的 reactive 物件。這邊影片當中說這是個好處，但不確定好處是在哪裡？可能要等以後遇到對應的情境才會解釋。\n最後，我們將要關聯 template 的變數和函數 return 出來。雖然這寫法很冗長，但他讓我們的程式更容易維護。我們可以控制讓哪些變數或函式輸出，也可以追蹤屬性是從哪裡定義的。\nVue 2 也可以使用 composition API如果我們想要在 Vue 2 使用 composition API，可以如下圖安裝進來。我覺得設計者設想的很周到，不過礙於目前專案開發者程度參差不齊，我應該也是等到Vue 3 出正式版且vuetify 有更新框架後，才會考慮開始用在工作上的專案。\n參考資料\nComposition API RFC\nSetup &amp; Reactive References\n\n","dateCreated":"2020-07-20T00:00:00+08:00","dateModified":"2020-07-20T00:00:00+08:00","datePublished":"2020-07-20T00:00:00+08:00","description":"上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。","headline":"Vue 3 Studies - Setup & Reactive References","image":["https://vuejs.org/images/logo.png","https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2020/07/20/Vue/Vue-3-Studies-Setup-Reactive-References/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2020/07/20/Vue/Vue-3-Studies-Setup-Reactive-References/","keywords":"Vue","thumbnailUrl":"https://vuejs.org/images/logo.png"}</script>
-    <meta name="description" content="上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。\n\n影片網址： https://www.vuemastery.com/courses/vue-3-essentials/setup-and-reactive-references\n什麼時候要用 composition API？影片中再次強調 composition API 只是多一種選擇的程式寫法，舊有的 Vue 2 寫法還是可以完完全全繼續使用。那我們什麼時候可以用 composition API 呢？\n\n當專案想要使用強型別寫法，將可以順利支援 typescript。\n當組件過於龐大，需要用功能來重新組織程式架構。\n部分功能的程式需要在不同組件中重複使用。\n\n\nSetup &amp; Reactive References我們來看看一般 Vue 2 寫法如下，畫面會顯示 data return 的 capacity 3。\n那在 composition API 要怎麼寫呢？我們使用 setup function，他觸發時機會在 components, props, data, methods, computed properties, lifecycle methods 之前，且他是沒辦法用 this 抓到自己這個組件。\nSetup 可以放兩個參數，先介紹第一個參數用法。第一個參數是 props ，他一樣是 reactive 且 可以使用 watch 監聽改變事件如下圖。\nSetup 第二個參數是 context，剛剛說在 setup 裡面不能用 this 抓取自己這個組件，所以第二個參數 context 就是拿來取得自己這個組件的內容，就相當於以前的 this。\n我們回頭來看看 setup 要怎麼寫。我們會令一個常數 capacity 是 ref(3)，這邊的 ref 是 reactive reference function。這邊將我們的原始值包在一個物件當中，相當於 Vue 2 我們將值包在data返回的物件中。這邊要注意的是：用 composition API 也可以造不跟此組件相關的 reactive 物件。這邊影片當中說這是個好處，但不確定好處是在哪裡？可能要等以後遇到對應的情境才會解釋。\n最後，我們將要關聯 template 的變數和函數 return 出來。雖然這寫法很冗長，但他讓我們的程式更容易維護。我們可以控制讓哪些變數或函式輸出，也可以追蹤屬性是從哪裡定義的。\nVue 2 也可以使用 composition API如果我們想要在 Vue 2 使用 composition API，可以如下圖安裝進來。我覺得設計者設想的很周到，不過礙於目前專案開發者程度參差不齊，我應該也是等到Vue 3 出正式版且vuetify 有更新框架後，才會考慮開始用在工作上的專案。\n參考資料\nComposition API RFC\nSetup &amp; Reactive References\n\n","dateCreated":"2020-07-20T00:00:00+08:00","dateModified":"2020-07-20T00:00:00+08:00","datePublished":"2020-07-20T00:00:00+08:00","description":"上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。","headline":"Vue 3 Studies - Setup & Reactive References","image":["https://vuejs.org/images/logo.png","https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2020/07/20/Vue/Vue-3-Studies-Setup-Reactive-References/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2020/07/20/Vue/Vue-3-Studies-Setup-Reactive-References/","keywords":"Vue","thumbnailUrl":"https://vuejs.org/images/logo.png"}</script>
+    <meta name="description" content="上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Vue 3 Studies - Setup &amp; Reactive References">
 <meta property="og:url" content="http://annilla.github.io/2020/07/20/Vue/Vue-3-Studies-Setup-Reactive-References/index.html">
 <meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
-<meta property="og:description" content="上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。">
+<meta property="og:description" content="上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3eCvFbdVnrb9iLGHa_ZjO--scQhmd4UfRh8xaImOpv_R_amOSXUVy0KvP8-dGZGfayGYuqILhRuaHk8EH30fnjbCDTXQ1sL149XDMQAtlBOiVxNG9-QAa4PM8P9g0eqsdluiHv5Z7G8c1_pS6OBYE3znQ=w1708-h1280-no?authuser=0">
 <meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3fimuHNX70ZHmpdzIw8k22KdDWMKqipei1fu7xw-QKGugH2EyXBA0C7jn0VLOH6F8ypXOCIPtZqpGCTgA8U3mF-D51ktcgy2ti-yIkdrwKu7GnOM0g0xWhkcz4b_FvBuN9hj4pouUSClZBoJmVZ9eMwlQ=w1708-h1280-no?authuser=0">
@@ -59,7 +59,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -132,7 +132,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -310,7 +310,7 @@
         <div class="post-meta">
     <time datetime="2020-07-20T00:00:00+08:00">
 	
-		    7月 20, 2020
+		    2020 年 7 月 20 日
     	
     </time>
     
@@ -328,10 +328,9 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。</p>
-<span id="more"></span>
-
-<p>影片網址： <a target="_blank" rel="noopener" href="https://www.vuemastery.com/courses/vue-3-essentials/setup-and-reactive-references">https://www.vuemastery.com/courses/vue-3-essentials/setup-and-reactive-references</a></p>
+            <p>上一篇我們提到為什麼使用 composition API，這次要複習在何時使用並介紹 Setup &amp; Reactive References 的使用方式。</p>
+<a id="more"></a>
+<p>影片網址： <a href="https://www.vuemastery.com/courses/vue-3-essentials/setup-and-reactive-references" target="_blank" rel="noopener">https://www.vuemastery.com/courses/vue-3-essentials/setup-and-reactive-references</a></p>
 <h1 id="什麼時候要用-composition-API？"><a href="#什麼時候要用-composition-API？" class="headerlink" title="什麼時候要用 composition API？"></a>什麼時候要用 composition API？</h1><p>影片中再次強調 composition API 只是多一種選擇的程式寫法，舊有的 Vue 2 寫法還是可以完完全全繼續使用。那我們什麼時候可以用 composition API 呢？</p>
 <ol>
 <li>當專案想要使用強型別寫法，將可以順利支援 typescript。</li>
@@ -347,8 +346,8 @@
 <p>最後，我們將要關聯 template 的變數和函數 return 出來。雖然這寫法很冗長，但他讓我們的程式更容易維護。我們可以控制讓哪些變數或函式輸出，也可以追蹤屬性是從哪裡定義的。<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3eaJSLKDDeZxuwoPihyTaK-VtIZDVAaXKqPuHWDteFjC1KAjk5UXMCRs-gWVHoHvcQt_WTAqKm1bfUWfETaBCJgURCj3PnJF5jcp1McrVf53Zhl3X0fICg7IwvqzNGNFSG_l-R9u7A-T7EWkgVCJPlSxg=w1708-h1280-no?authuser=0" alt="composition API 寫法"></p>
 <h1 id="Vue-2-也可以使用-composition-API"><a href="#Vue-2-也可以使用-composition-API" class="headerlink" title="Vue 2 也可以使用 composition API"></a>Vue 2 也可以使用 composition API</h1><p>如果我們想要在 Vue 2 使用 composition API，可以如下圖安裝進來。我覺得設計者設想的很周到，不過礙於目前專案開發者程度參差不齊，我應該也是等到Vue 3 出正式版且vuetify 有更新框架後，才會考慮開始用在工作上的專案。<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3evT6PLP96czPiySVh0t_XjIZPawE78kFDXMuxS3JEMM8TEemPNbdqdRxS8Y577J_tIJbE_J_cpKTtciGPnRaQt3UVH29Ue-RR6lrDFGO_l7d6gwa8O7hUUig358G6lmOClZTaRnH_4PPCCw7JA3Hm5Hg=w1708-h1280-no?authuser=0" alt="Vue 2 使用 composition API"></p>
 <h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://composition-api.vuejs.org/">Composition API RFC</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.vuemastery.com/courses/vue-3-essentials/setup-and-reactive-references">Setup &amp; Reactive References</a></li>
+<li><a href="https://composition-api.vuejs.org/" target="_blank" rel="noopener">Composition API RFC</a></li>
+<li><a href="https://www.vuemastery.com/courses/vue-3-essentials/setup-and-reactive-references" target="_blank" rel="noopener">Setup &amp; Reactive References</a></li>
 </ul>
 
             
@@ -404,7 +403,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -442,7 +441,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -451,7 +450,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -520,7 +519,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -558,7 +557,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -567,7 +566,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -629,14 +628,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -697,7 +696,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -730,7 +729,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -763,7 +762,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -796,7 +795,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -829,7 +828,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -862,7 +861,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -895,7 +894,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -928,7 +927,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1018,7 +1017,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

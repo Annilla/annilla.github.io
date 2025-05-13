@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"介紹如何用 SSMS 匯入 Azure DB。\n\n\n設定 Azure portal 防火牆\nPS 如果在匯入期間跳防火牆錯誤，可去 Azure portal 設定比較快\n\nStep1. 進入 DB &gt; 概觀 &gt; 設定伺服器防火牆\n\nStep2. 新增防火牆規則 &gt; 儲存\n\n準備檔案\n需要先轉成 CSV 檔案。注意! 必填欄位要預先補好。\n\nSSMS 匯入步驟Step1. 登入DB (會跳第一次二段驗證) &gt; 對資料庫案右鍵 &gt; 叫出匯入精靈。**(如果防火牆消失，請回 Azure portal 設定。)**\n\nStep2. 設定來源資料\n\n因為資料有中文，所以字碼頁選擇 65001, 文字限定詞輸入 “ (為了跳脫逗號)\n\n\n\n全部 DataType 選 Unicode 字串，若有欄位長度超過 50 ，則需要手動將欄位 key 上加長的數值。\n\n\n\nStep3. 設定目的地資料庫，這邊會再跳第二次二段驗證。**(如果防火牆消失，請回 Azure portal 設定。)**\n\nStep4. 設定目的地表格 &amp; mapping。\n\nStep5. 一直 Next 到最後 Finish 執行。**(如果防火牆消失，請回 Azure portal 設定。)**\n","dateCreated":"2022-07-19T00:00:00+08:00","dateModified":"2022-07-19T00:00:00+08:00","datePublished":"2022-07-19T00:00:00+08:00","description":"介紹如何用 SSMS 匯入 Azure DB。","headline":"SSMS Import Chinese Data into Azure DB","image":["https://www.tec-innova.mx/wp-content/uploads/2021/12/Imagen1.png","https://sysadminas.eu/assets/images/post1/azure-sql.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/07/19/Others/SSMS-Import-Chinese-Data-into-Azure-DB/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/07/19/Others/SSMS-Import-Chinese-Data-into-Azure-DB/","keywords":"AzureDB, SSMS","thumbnailUrl":"https://www.tec-innova.mx/wp-content/uploads/2021/12/Imagen1.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"介紹如何用 SSMS 匯入 Azure DB。\n\n設定 Azure portal 防火牆\nPS 如果在匯入期間跳防火牆錯誤，可去 Azure portal 設定比較快\n\nStep1. 進入 DB &gt; 概觀 &gt; 設定伺服器防火牆\n\nStep2. 新增防火牆規則 &gt; 儲存\n\n準備檔案\n需要先轉成 CSV 檔案。注意! 必填欄位要預先補好。\n\nSSMS 匯入步驟Step1. 登入DB (會跳第一次二段驗證) &gt; 對資料庫案右鍵 &gt; 叫出匯入精靈。(如果防火牆消失，請回 Azure portal 設定。)\n\nStep2. 設定來源資料\n\n因為資料有中文，所以字碼頁選擇 65001, 文字限定詞輸入 “ (為了跳脫逗號)\n\n\n\n全部 DataType 選 Unicode 字串，若有欄位長度超過 50 ，則需要手動將欄位 key 上加長的數值。\n\n\n\nStep3. 設定目的地資料庫，這邊會再跳第二次二段驗證。(如果防火牆消失，請回 Azure portal 設定。)\n\nStep4. 設定目的地表格 &amp; mapping。\n\nStep5. 一直 Next 到最後 Finish 執行。(如果防火牆消失，請回 Azure portal 設定。)\n","dateCreated":"2022-07-19T00:00:00+08:00","dateModified":"2022-07-19T00:00:00+08:00","datePublished":"2022-07-19T00:00:00+08:00","description":"介紹如何用 SSMS 匯入 Azure DB。","headline":"SSMS Import Chinese Data into Azure DB","image":["https://www.tec-innova.mx/wp-content/uploads/2021/12/Imagen1.png","https://sysadminas.eu/assets/images/post1/azure-sql.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/07/19/Others/SSMS-Import-Chinese-Data-into-Azure-DB/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/07/19/Others/SSMS-Import-Chinese-Data-into-Azure-DB/","keywords":"AzureDB, SSMS","thumbnailUrl":"https://www.tec-innova.mx/wp-content/uploads/2021/12/Imagen1.png"}</script>
     <meta name="description" content="介紹如何用 SSMS 匯入 Azure DB。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="SSMS Import Chinese Data into Azure DB">
@@ -60,7 +60,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -133,7 +133,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -311,7 +311,7 @@
         <div class="post-meta">
     <time datetime="2022-07-19T00:00:00+08:00">
 	
-		    7月 19, 2022
+		    2022 年 7 月 19 日
     	
     </time>
     
@@ -330,8 +330,7 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>介紹如何用 SSMS 匯入 Azure DB。</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <h1 id="設定-Azure-portal-防火牆"><a href="#設定-Azure-portal-防火牆" class="headerlink" title="設定 Azure portal 防火牆"></a>設定 Azure portal 防火牆</h1><blockquote>
 <p><strong>PS 如果在匯入期間跳防火牆錯誤，可去 Azure portal 設定比較快</strong></p>
 </blockquote>
@@ -342,7 +341,7 @@
 <h1 id="準備檔案"><a href="#準備檔案" class="headerlink" title="準備檔案"></a>準備檔案</h1><blockquote>
 <p><strong>需要先轉成 CSV 檔案。注意! 必填欄位要預先補好。</strong></p>
 </blockquote>
-<h1 id="SSMS-匯入步驟"><a href="#SSMS-匯入步驟" class="headerlink" title="SSMS 匯入步驟"></a>SSMS 匯入步驟</h1><p>Step1. 登入DB (會跳第一次二段驗證) &gt; 對資料庫案右鍵 &gt; 叫出匯入精靈。**(如果防火牆消失，請回 Azure portal 設定。)**</p>
+<h1 id="SSMS-匯入步驟"><a href="#SSMS-匯入步驟" class="headerlink" title="SSMS 匯入步驟"></a>SSMS 匯入步驟</h1><p>Step1. 登入DB (會跳第一次二段驗證) &gt; 對資料庫案右鍵 &gt; 叫出匯入精靈。<strong>(如果防火牆消失，請回 Azure portal 設定。)</strong></p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLVTxckw3mB6JXx3QiMjCIxoxXhd4d2d1pPWObyCiLza84YJDT5caM5W2SRsDiu0T4bJsDGgl2LwhjsTlXzjoCmRr-6Yui2pcSBV4L0dyf4nmnTni4QTkmY99BTokSGd7JIkCDE7brUfUmc1XTMV-uMfVA=w718-h568-no?authuser=0" alt="叫出匯入精靈"></p>
 <p>Step2. 設定來源資料</p>
 <blockquote>
@@ -354,11 +353,11 @@
 </blockquote>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLXbSjFhxDi2TDMutzGNrYMbEw9op1g5kFpTgmTixbpQrOmOxNFp4AL1bZ2MrjOITB95QqLShmzuGigPTYR__jv4eVB8yFKt-GUI8WBUvgQCPvgpUbK5FSdcrCDU-NclP1eh7fmUsNpE732wdJa5v3S0Cw=w628-h553-no?authuser=0" alt="全部 DataType 選 Unicode 字串"></p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLUBgjM4k-izh7u-DsrJYMIOldeU07F7iJtam7ZWU0ZqclCdTCnjW0Rqons0gzXZWsycLQUFPRHlD6tO-UWH-xvxpdU8ScFGIAogBJAx-y15I02_FmCrMhrlhwS6JomLOYPem_kXeGuPO9sSyGnffwSk_g=w627-h555-no?authuser=0" alt="手動將欄位 key 上加長的數值"></p>
-<p>Step3. 設定目的地資料庫，這邊會再跳第二次二段驗證。**(如果防火牆消失，請回 Azure portal 設定。)**</p>
+<p>Step3. 設定目的地資料庫，這邊會再跳第二次二段驗證。<strong>(如果防火牆消失，請回 Azure portal 設定。)</strong></p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLW0RDriQCY79ONiFjNQuMHiBb_HEo5ecWgUrKHFpgAjZOZMRjns95s1X2uCehCFumB9yZm7nm043h0NyHTsT0eKM2CAyLY0cllG_b_KFVLvAb6ZJmRrqlr09IMhMk5DrKHI201xDAgkR2z6oFzRHhscMA=w747-h728-no?authuser=0" alt="設定目的地資料庫"></p>
 <p>Step4. 設定目的地表格 &amp; mapping。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLVycSafTjcNlZX7nsTQDvGd2THAA1tBvLIC-s0L-5M_PlX5teFNrfPMfDirqFbYfkx8UqMfldwPzVVsTbezNWnNMoSEs8NS3-g_nFT4awF06foGJxpBT8QDlm6s_N-Po5BMC74jXmi9qyYTgEUtw_ED7Q=w958-h738-no?authuser=0" alt="設定目的地表格 &amp; mapping"></p>
-<p>Step5. 一直 Next 到最後 Finish 執行。**(如果防火牆消失，請回 Azure portal 設定。)**</p>
+<p>Step5. 一直 Next 到最後 Finish 執行。<strong>(如果防火牆消失，請回 Azure portal 設定。)</strong></p>
 
             
 
@@ -413,7 +412,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -451,7 +450,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -460,7 +459,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -529,7 +528,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -567,7 +566,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -576,7 +575,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -638,14 +637,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -706,7 +705,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -739,7 +738,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -772,7 +771,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -805,7 +804,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -838,7 +837,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -871,7 +870,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -904,7 +903,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -937,7 +936,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1027,7 +1026,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

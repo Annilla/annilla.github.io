@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近因緣際會下本來想做個讀取 Google Sheet API 的 web app 放在 github page，但發現 github 有擋住部分功能，所以想說看能不能改放在 Azure 雲端上，搜尋之後發現這個神奇的 plugin，Azure Static Web Apps 可以在 vscode 做一些簡單的設定，就能把 github 上的前端 web app 自動透過 github Action，CICD 到 Azure Cloud 上，底層還是會在 Azure 建立一個 Azure Function。話不多說，直接來說明怎麼設定吧～\n\n\n準備好要發布的 github repo這裡我先準備好要測試發布的 Vue 3 專案(用 Vue-cli 5 Create 出來的)。\nVScode 安裝 Extension在 Extension Tab 安裝 Azure Static Web Apps。\n安裝完後可點擊 Azure Icon Tab，會看到裡面有 Azure Static Web Apps 的 panel。第一次使用請先登入個人的 Azure 帳號。\n\n新增 site點擊 + Icon 新增 Azure Static Web App。\n\n選取 Azure 訂閱戶。\n\n輸入 static web app 名稱。\n\n選取伺服器位置，我這邊選 East Asia。\n\n選取專案的架構，這邊選 Vue.js。\n\n設定專案路徑，這邊是建在 &#x2F;my-app 資料夾底下。\n\n設定輸出資料夾，這邊預設就是 dist ，所以不用更改。\n\n設定完成後，他會自動 commit yml 檔案到 github，之後只要有更新 git，就會觸發 github Action CICD，並發布至 Azure Site。\n接著只要對專案按右鍵選擇 Browse Site 就可以打開網站連結看到網站。\n\n好了，設定就是那麼簡單! 因為很少碰 CICD 的東西，這個套件簡化了很多繁瑣的步驟，可以讓我快速將靜態網站放上雲端，實在是非常方便～\nReference\nQuickstart: Building your first static site with Azure Static Web Apps\n\n","dateCreated":"2022-05-18T00:00:00+08:00","dateModified":"2022-05-18T00:00:00+08:00","datePublished":"2022-05-18T00:00:00+08:00","description":"最近因緣際會下本來想做個讀取 Google Sheet API 的 web app 放在 github page，但發現 github 有擋住部分功能，所以想說看能不能改放在 Azure 雲端上，搜尋之後發現這個神奇的 plugin，Azure Static Web Apps 可以在 vscode 做一些簡單的設定，就能把 github 上的前端 web app 自動透過 github Action，CICD 到 Azure Cloud 上，底層還是會在 Azure 建立一個 Azure Function。話不多說，直接來說明怎麼設定吧～","headline":"VScode Extension - Azure Static Web Apps","image":["https://code.visualstudio.com/assets/favicon.ico","https://nickjanetakis.com/assets/blog/cards/my-favorite-vscode-extensions-0a601796807e75dea485f00ded76da1ab2279c3d85364335b715c1918691650f.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/05/18/VScode/VScode-Extension-Azure-Static-Web-Apps/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/05/18/VScode/VScode-Extension-Azure-Static-Web-Apps/","keywords":"VScode, Git, Azure","thumbnailUrl":"https://code.visualstudio.com/assets/favicon.ico"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近因緣際會下本來想做個讀取 Google Sheet API 的 web app 放在 github page，但發現 github 有擋住部分功能，所以想說看能不能改放在 Azure 雲端上，搜尋之後發現這個神奇的 plugin，Azure Static Web Apps 可以在 vscode 做一些簡單的設定，就能把 github 上的前端 web app 自動透過 github Action，CICD 到 Azure Cloud 上，底層還是會在 Azure 建立一個 Azure Function。話不多說，直接來說明怎麼設定吧～\n\n準備好要發布的 github repo這裡我先準備好要測試發布的 Vue 3 專案(用 Vue-cli 5 Create 出來的)。\nVScode 安裝 Extension在 Extension Tab 安裝 Azure Static Web Apps。\n安裝完後可點擊 Azure Icon Tab，會看到裡面有 Azure Static Web Apps 的 panel。第一次使用請先登入個人的 Azure 帳號。\n\n新增 site點擊 + Icon 新增 Azure Static Web App。\n\n選取 Azure 訂閱戶。\n\n輸入 static web app 名稱。\n\n選取伺服器位置，我這邊選 East Asia。\n\n選取專案的架構，這邊選 Vue.js。\n\n設定專案路徑，這邊是建在 /my-app 資料夾底下。\n\n設定輸出資料夾，這邊預設就是 dist ，所以不用更改。\n\n設定完成後，他會自動 commit yml 檔案到 github，之後只要有更新 git，就會觸發 github Action CICD，並發布至 Azure Site。\n接著只要對專案按右鍵選擇 Browse Site 就可以打開網站連結看到網站。\n\n好了，設定就是那麼簡單! 因為很少碰 CICD 的東西，這個套件簡化了很多繁瑣的步驟，可以讓我快速將靜態網站放上雲端，實在是非常方便～\nReference\nQuickstart: Building your first static site with Azure Static Web Apps\n\n","dateCreated":"2022-05-18T00:00:00+08:00","dateModified":"2022-05-18T00:00:00+08:00","datePublished":"2022-05-18T00:00:00+08:00","description":"最近因緣際會下本來想做個讀取 Google Sheet API 的 web app 放在 github page，但發現 github 有擋住部分功能，所以想說看能不能改放在 Azure 雲端上，搜尋之後發現這個神奇的 plugin，Azure Static Web Apps 可以在 vscode 做一些簡單的設定，就能把 github 上的前端 web app 自動透過 github Action，CICD 到 Azure Cloud 上，底層還是會在 Azure 建立一個 Azure Function。話不多說，直接來說明怎麼設定吧～","headline":"VScode Extension - Azure Static Web Apps","image":["https://code.visualstudio.com/assets/favicon.ico","https://nickjanetakis.com/assets/blog/cards/my-favorite-vscode-extensions-0a601796807e75dea485f00ded76da1ab2279c3d85364335b715c1918691650f.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/05/18/VScode/VScode-Extension-Azure-Static-Web-Apps/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/05/18/VScode/VScode-Extension-Azure-Static-Web-Apps/","keywords":"VScode, Git, Azure","thumbnailUrl":"https://code.visualstudio.com/assets/favicon.ico"}</script>
     <meta name="description" content="最近因緣際會下本來想做個讀取 Google Sheet API 的 web app 放在 github page，但發現 github 有擋住部分功能，所以想說看能不能改放在 Azure 雲端上，搜尋之後發現這個神奇的 plugin，Azure Static Web Apps 可以在 vscode 做一些簡單的設定，就能把 github 上的前端 web app 自動透過 github Actio">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="VScode Extension - Azure Static Web Apps">
@@ -62,7 +62,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -135,7 +135,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -313,7 +313,7 @@
         <div class="post-meta">
     <time datetime="2022-05-18T00:00:00+08:00">
 	
-		    5月 18, 2022
+		    2022 年 5 月 18 日
     	
     </time>
     
@@ -332,10 +332,9 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>最近因緣際會下本來想做個讀取 Google Sheet API 的 web app 放在 github page，但發現 github 有擋住部分功能，所以想說看能不能改放在 Azure 雲端上，搜尋之後發現這個神奇的 plugin，Azure Static Web Apps 可以在 vscode 做一些簡單的設定，就能把 github 上的前端 web app 自動透過 github Action，CICD 到 Azure Cloud 上，底層還是會在 Azure 建立一個 Azure Function。話不多說，直接來說明怎麼設定吧～</p>
-<span id="more"></span>
-
-<h1 id="準備好要發布的-github-repo"><a href="#準備好要發布的-github-repo" class="headerlink" title="準備好要發布的 github repo"></a>準備好要發布的 github repo</h1><p>這裡我先準備好要測試發布的 <a target="_blank" rel="noopener" href="https://github.com/Annilla/Azure-Static-Web-Apps-Test">Vue 3</a> 專案(用 Vue-cli 5 Create 出來的)。</p>
-<h1 id="VScode-安裝-Extension"><a href="#VScode-安裝-Extension" class="headerlink" title="VScode 安裝 Extension"></a>VScode 安裝 Extension</h1><p>在 Extension Tab 安裝 <a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps">Azure Static Web Apps</a>。</p>
+<a id="more"></a>
+<h1 id="準備好要發布的-github-repo"><a href="#準備好要發布的-github-repo" class="headerlink" title="準備好要發布的 github repo"></a>準備好要發布的 github repo</h1><p>這裡我先準備好要測試發布的 <a href="https://github.com/Annilla/Azure-Static-Web-Apps-Test" target="_blank" rel="noopener">Vue 3</a> 專案(用 Vue-cli 5 Create 出來的)。</p>
+<h1 id="VScode-安裝-Extension"><a href="#VScode-安裝-Extension" class="headerlink" title="VScode 安裝 Extension"></a>VScode 安裝 Extension</h1><p>在 Extension Tab 安裝 <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps" target="_blank" rel="noopener">Azure Static Web Apps</a>。</p>
 <p>安裝完後可點擊 Azure Icon Tab，會看到裡面有 Azure Static Web Apps 的 panel。第一次使用請先登入個人的 Azure 帳號。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLWAvS3dAHOv4-hgnTEqDQLTq4AynruunlJHD0h3HYOGEbXesj5BMZRwWsQS2_Z8PzRlqgx5TF0kiZVmNcepm1qXetaXbDgEslUcUOehK5MHlP71fksNl-M6HMw21cfKVtC8a-uyZ2vGmip7H72QXbqq0w=w2308-h1442-no?authuser=0" alt="Azure Static Web Apps 的 panel"></p>
 <h1 id="新增-site"><a href="#新增-site" class="headerlink" title="新增 site"></a>新增 site</h1><p>點擊 + Icon 新增 Azure Static Web App。</p>
@@ -348,16 +347,16 @@
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLWvk7wCs80cN0SBZuEo3ZaPzlI311LrYfE_k0oncgNhjOxPQ34afmn8WW7UEGiqTqOgiNKt0AWXxUakQIfw8iO0tkmUiMKkWizkKTiajTtu2WBT8sIT4C1bGio8FbfsAWZ6D8CJXLKWUVd4ScATscmdLw=w1600-h508-no?authuser=0" alt="選取伺服器位置"></p>
 <p>選取專案的架構，這邊選 Vue.js。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLVg6Bvh64gcn1FRllsYl3pJn3RTMFCoRObItMPeWf9KFABDYZy7vlRAHLK04ktmx7tLbHSKbL01DLansHVhYeiT6ezNeGCjDCIiEhVyAb6jE11uWNZZB6rqhVb88cVjZDw0s6PxFfEnzd7F6OgcbGY06A=w1596-h820-no?authuser=0" alt="選取專案的架構"></p>
-<p>設定專案路徑，這邊是建在 &#x2F;my-app 資料夾底下。</p>
+<p>設定專案路徑，這邊是建在 /my-app 資料夾底下。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLXZfigJbpbdF-Cn7BrQ4O9rQPDXhBhASC87jncaqLR15PygdF8Ct-vxSz1nr4h92j2PVimJuiPqLzofwcDtXkBMgyLI-333vt2UbLyjW4FYiH71AzWTm3mnWeaux7bb-FoxKQ-JgsDVRxmQThVSOiQZPg=w1610-h356-no?authuser=0" alt="設定專案路徑"></p>
 <p>設定輸出資料夾，這邊預設就是 dist ，所以不用更改。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AM-JKLU-UivhBdjy6CdasFx9XKFWPQg5N8u8buRAxhkhDSbNsZBScNjnnEhInz2Q3-ELIOjH88taxcSASqVLi8uwE1lK94WIWQ86oQqgW0tSUIS3lr5k2q0q_b1bsTxjvQMpIEv2I_B5hlhhx7vUqCuBtowwjQ=w1602-h410-no?authuser=0" alt="設定輸出資料夾"></p>
-<p>設定完成後，他會自動 commit yml 檔案到 github，之後只要有更新 git，就會觸發 <a target="_blank" rel="noopener" href="https://github.com/Annilla/Azure-Static-Web-Apps-Test/actions">github Action</a> CICD，並發布至 Azure Site。</p>
+<p>設定完成後，他會自動 commit yml 檔案到 github，之後只要有更新 git，就會觸發 <a href="https://github.com/Annilla/Azure-Static-Web-Apps-Test/actions" target="_blank" rel="noopener">github Action</a> CICD，並發布至 Azure Site。</p>
 <p>接著只要對專案按右鍵選擇 Browse Site 就可以打開網站連結看到網站。</p>
 <p><img src="https://docs.microsoft.com/en-us/azure/static-web-apps/media/getting-started/extension-browse-site.png" alt="Browse Site"></p>
 <p>好了，設定就是那麼簡單! 因為很少碰 CICD 的東西，這個套件簡化了很多繁瑣的步驟，可以讓我快速將靜態網站放上雲端，實在是非常方便～</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/azure/static-web-apps/getting-started?tabs=vanilla-javascript">Quickstart: Building your first static site with Azure Static Web Apps</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/static-web-apps/getting-started?tabs=vanilla-javascript" target="_blank" rel="noopener">Quickstart: Building your first static site with Azure Static Web Apps</a></li>
 </ul>
 
             
@@ -413,7 +412,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -451,7 +450,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -460,7 +459,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -529,7 +528,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -567,7 +566,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -576,7 +575,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -638,14 +637,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -706,7 +705,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -739,7 +738,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -772,7 +771,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -805,7 +804,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -838,7 +837,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -871,7 +870,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -904,7 +903,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -937,7 +936,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1027,7 +1026,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

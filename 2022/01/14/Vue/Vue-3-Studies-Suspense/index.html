@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"Suspense 這個元件是 Vue 參考 React 那邊所得到的靈感。當我們打開頁面時，通常會有多個非同步的 API 呼叫，出現 Loading 中，等到資料都到齊，才會看到完整的頁面。以往都是用 v-if 來判別 data 是否都到齊，在 Vue 3 中就能用 Suspense 元件來做這件事情，且多個非同步的 API 也能自動判別，非常省時省力。\n\n\nSuspense 範例我們先來看這段程式碼。\n12345678910&lt;template&gt;  &lt;Suspense&gt;    &lt;template #default&gt;      &lt;!-- Put components here, one or more of which makes an asychronous call --&gt;    &lt;/template&gt;    &lt;template #fallback&gt;      &lt;!-- What to display when loading --&gt;    &lt;/template&gt;  &lt;/Suspense&gt;&lt;/template&gt;\n\nSuspense 元件內，用 template block 區分要顯示的內容， default 為主要內容，在這裡串接 API， fallback 則是顯示 Loading 的畫面。我們放一個簡單的範例如下。\n12345678910111213141516&lt;template&gt;  &lt;Suspense&gt;    &lt;template #default&gt;      &lt;Event /&gt;    &lt;/template&gt;    &lt;template #fallback&gt;      Loading...    &lt;/template&gt;  &lt;/Suspense&gt;&lt;/template&gt;&lt;script&gt;  import Event from &quot;@/components/Event.vue&quot;;  export default &#123;    components: &#123; Event &#125;,  &#125;;&lt;/script&gt;\n\nEvent.vue 大約長下面這樣。\n123456789101112&lt;template&gt;  ...&lt;/template&gt;&lt;script&gt;  import useEventSpace from &quot;@/composables/use-event-space&quot;;  export default &#123;    async setup() &#123;      const &#123; capacity, attending, spaceLeft, increaseCapacity &#125; = await useEventSpace();      return &#123; capacity, attending, spaceLeft, increaseCapacity &#125;;    &#125;,  &#125;;&lt;/script&gt;\n\n注意！這邊 setup 有用 async，因為 useEventSpace 裡面有接 API 。如此一來 Suspense 就能知道若 API 還沒回傳 data 的時候，換先顯示 Loading 的字樣。若想放多個非同步的 API 也能自動判別，非常方便。\n當 error 發生要怎麼處理？如果 API 出現 error 要怎麼處理？我們可以再加一層簡單的 v-if 防呆，並使用新的 lifecycle hook 監聽錯誤的訊息，適當的傳出來，程式碼大約長下面這個樣子，這樣前端的使用者就不會接到 console 的錯誤。\n1234567891011121314151617181920212223242526&lt;template&gt;  &lt;div v-if=&quot;error&quot;&gt;Uh oh .. &#123;&#123; error &#125;&#125;&lt;/div&gt;  &lt;Suspense v-else&gt;    &lt;template #default&gt;      &lt;Event /&gt;    &lt;/template&gt;    &lt;template #fallback&gt;      Loading...    &lt;/template&gt;  &lt;/Suspense&gt;&lt;/template&gt;&lt;script&gt;  import Event from &quot;@/components/Event.vue&quot;;  import &#123; ref, onErrorCaptured &#125; from &quot;vue&quot;;  export default &#123;    components: &#123; Event &#125;,    setup() &#123;      const error = ref(null);      onErrorCaptured((e) =&gt; &#123;        error.value = e;        return true;      &#125;);      return &#123; error &#125;;    &#125;,  &#125;;&lt;/script&gt;\n\n延伸應用：Skeleton Loading Screens像外面常看的 UX 應用 Skeleton Loading，就可以跟 Suspense 結合，放在 fallback 的地方，非常適合。\n參考資料\nComposition API RFC\n\n","dateCreated":"2022-01-14T00:00:00+08:00","dateModified":"2022-01-14T00:00:00+08:00","datePublished":"2022-01-14T00:00:00+08:00","description":"Suspense 這個元件是 Vue 參考 React 那邊所得到的靈感。當我們打開頁面時，通常會有多個非同步的 API 呼叫，出現 Loading 中，等到資料都到齊，才會看到完整的頁面。以往都是用 v-if 來判別 data 是否都到齊，在 Vue 3 中就能用 Suspense 元件來做這件事情，且多個非同步的 API 也能自動判別，非常省時省力。","headline":"Vue 3 Studies - Suspense","image":["https://vuejs.org/images/logo.png","https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/01/14/Vue/Vue-3-Studies-Suspense/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/01/14/Vue/Vue-3-Studies-Suspense/","keywords":"Vue","thumbnailUrl":"https://vuejs.org/images/logo.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"Suspense 這個元件是 Vue 參考 React 那邊所得到的靈感。當我們打開頁面時，通常會有多個非同步的 API 呼叫，出現 Loading 中，等到資料都到齊，才會看到完整的頁面。以往都是用 v-if 來判別 data 是否都到齊，在 Vue 3 中就能用 Suspense 元件來做這件事情，且多個非同步的 API 也能自動判別，非常省時省力。\n\nSuspense 範例我們先來看這段程式碼。\n12345678910&lt;template&gt;  &lt;Suspense&gt;    &lt;template #default&gt;      &lt;!-- Put components here, one or more of which makes an asychronous call --&gt;    &lt;/template&gt;    &lt;template #fallback&gt;      &lt;!-- What to display when loading --&gt;    &lt;/template&gt;  &lt;/Suspense&gt;&lt;/template&gt;\nSuspense 元件內，用 template block 區分要顯示的內容， default 為主要內容，在這裡串接 API， fallback 則是顯示 Loading 的畫面。我們放一個簡單的範例如下。\n12345678910111213141516&lt;template&gt;  &lt;Suspense&gt;    &lt;template #default&gt;      &lt;Event /&gt;    &lt;/template&gt;    &lt;template #fallback&gt;      Loading...    &lt;/template&gt;  &lt;/Suspense&gt;&lt;/template&gt;&lt;script&gt;  import Event from \"@/components/Event.vue\";  export default &#123;    components: &#123; Event &#125;,  &#125;;&lt;/script&gt;\nEvent.vue 大約長下面這樣。\n123456789101112&lt;template&gt;  ...&lt;/template&gt;&lt;script&gt;  import useEventSpace from \"@/composables/use-event-space\";  export default &#123;    async setup() &#123;      const &#123; capacity, attending, spaceLeft, increaseCapacity &#125; = await useEventSpace();      return &#123; capacity, attending, spaceLeft, increaseCapacity &#125;;    &#125;,  &#125;;&lt;/script&gt;\n注意！這邊 setup 有用 async，因為 useEventSpace 裡面有接 API 。如此一來 Suspense 就能知道若 API 還沒回傳 data 的時候，換先顯示 Loading 的字樣。若想放多個非同步的 API 也能自動判別，非常方便。\n當 error 發生要怎麼處理？如果 API 出現 error 要怎麼處理？我們可以再加一層簡單的 v-if 防呆，並使用新的 lifecycle hook 監聽錯誤的訊息，適當的傳出來，程式碼大約長下面這個樣子，這樣前端的使用者就不會接到 console 的錯誤。\n1234567891011121314151617181920212223242526&lt;template&gt;  &lt;div v-if=\"error\"&gt;Uh oh .. &#123;&#123; error &#125;&#125;&lt;/div&gt;  &lt;Suspense v-else&gt;    &lt;template #default&gt;      &lt;Event /&gt;    &lt;/template&gt;    &lt;template #fallback&gt;      Loading...    &lt;/template&gt;  &lt;/Suspense&gt;&lt;/template&gt;&lt;script&gt;  import Event from \"@/components/Event.vue\";  import &#123; ref, onErrorCaptured &#125; from \"vue\";  export default &#123;    components: &#123; Event &#125;,    setup() &#123;      const error = ref(null);      onErrorCaptured((e) =&gt; &#123;        error.value = e;        return true;      &#125;);      return &#123; error &#125;;    &#125;,  &#125;;&lt;/script&gt;\n延伸應用：Skeleton Loading Screens像外面常看的 UX 應用 Skeleton Loading，就可以跟 Suspense 結合，放在 fallback 的地方，非常適合。\n參考資料\nComposition API RFC\n\n","dateCreated":"2022-01-14T00:00:00+08:00","dateModified":"2022-01-14T00:00:00+08:00","datePublished":"2022-01-14T00:00:00+08:00","description":"Suspense 這個元件是 Vue 參考 React 那邊所得到的靈感。當我們打開頁面時，通常會有多個非同步的 API 呼叫，出現 Loading 中，等到資料都到齊，才會看到完整的頁面。以往都是用 v-if 來判別 data 是否都到齊，在 Vue 3 中就能用 Suspense 元件來做這件事情，且多個非同步的 API 也能自動判別，非常省時省力。","headline":"Vue 3 Studies - Suspense","image":["https://vuejs.org/images/logo.png","https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/01/14/Vue/Vue-3-Studies-Suspense/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/01/14/Vue/Vue-3-Studies-Suspense/","keywords":"Vue","thumbnailUrl":"https://vuejs.org/images/logo.png"}</script>
     <meta name="description" content="Suspense 這個元件是 Vue 參考 React 那邊所得到的靈感。當我們打開頁面時，通常會有多個非同步的 API 呼叫，出現 Loading 中，等到資料都到齊，才會看到完整的頁面。以往都是用 v-if 來判別 data 是否都到齊，在 Vue 3 中就能用 Suspense 元件來做這件事情，且多個非同步的 API 也能自動判別，非常省時省力。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Vue 3 Studies - Suspense">
@@ -50,7 +50,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -123,7 +123,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -301,7 +301,7 @@
         <div class="post-meta">
     <time datetime="2022-01-14T00:00:00+08:00">
 	
-		    1月 14, 2022
+		    2022 年 1 月 14 日
     	
     </time>
     
@@ -320,24 +320,19 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>Suspense 這個元件是 Vue 參考 React 那邊所得到的靈感。當我們打開頁面時，通常會有多個非同步的 API 呼叫，出現 Loading 中，等到資料都到齊，才會看到完整的頁面。以往都是用 v-if 來判別 data 是否都到齊，在 Vue 3 中就能用 Suspense 元件來做這件事情，且多個非同步的 API 也能自動判別，非常省時省力。</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <h1 id="Suspense-範例"><a href="#Suspense-範例" class="headerlink" title="Suspense 範例"></a>Suspense 範例</h1><p>我們先來看這段程式碼。</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Suspense</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">default</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- Put components here, one or more of which makes an asychronous call --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">fallback</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- What to display when loading --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Suspense</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>Suspense 元件內，用 template block 區分要顯示的內容， default 為主要內容，在這裡串接 API， fallback 則是顯示 Loading 的畫面。我們放一個簡單的範例如下。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Suspense</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">default</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Event</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">fallback</span>&gt;</span></span><br><span class="line">      Loading...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Suspense</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">Event</span> <span class="keyword">from</span> <span class="string">&quot;@/components/Event.vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">components</span>: &#123; <span class="title class_">Event</span> &#125;,</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Suspense</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">default</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Event</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">fallback</span>&gt;</span></span><br><span class="line">      Loading...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Suspense</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">import</span> Event <span class="keyword">from</span> <span class="string">"@/components/Event.vue"</span>;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="undefined">    components: &#123; Event &#125;,</span></span><br><span class="line"><span class="undefined">  &#125;;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Event.vue 大約長下面這樣。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> useEventSpace <span class="keyword">from</span> <span class="string">&quot;@/composables/use-event-space&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">async</span> <span class="title function_">setup</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> &#123; capacity, attending, spaceLeft, increaseCapacity &#125; = <span class="keyword">await</span> <span class="title function_">useEventSpace</span>();</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">return</span> &#123; capacity, attending, spaceLeft, increaseCapacity &#125;;</span></span><br><span class="line"><span class="language-javascript">    &#125;,</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">import</span> useEventSpace <span class="keyword">from</span> <span class="string">"@/composables/use-event-space"</span>;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">async</span> setup() &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> &#123; capacity, attending, spaceLeft, increaseCapacity &#125; = <span class="keyword">await</span> useEventSpace();</span></span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> &#123; capacity, attending, spaceLeft, increaseCapacity &#125;;</span></span><br><span class="line"><span class="undefined">    &#125;,</span></span><br><span class="line"><span class="undefined">  &#125;;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>注意！這邊 setup 有用 async，因為 useEventSpace 裡面有接 API 。如此一來 Suspense 就能知道若 API 還沒回傳 data 的時候，換先顯示 Loading 的字樣。若想放多個非同步的 API 也能自動判別，非常方便。</p>
 <h1 id="當-error-發生要怎麼處理？"><a href="#當-error-發生要怎麼處理？" class="headerlink" title="當 error 發生要怎麼處理？"></a>當 error 發生要怎麼處理？</h1><p>如果 API 出現 error 要怎麼處理？我們可以再加一層簡單的 v-if 防呆，並使用新的 lifecycle hook 監聽錯誤的訊息，適當的傳出來，程式碼大約長下面這個樣子，這樣前端的使用者就不會接到 console 的錯誤。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">v-if</span>=<span class="string">&quot;error&quot;</span>&gt;</span>Uh oh .. &#123;&#123; error &#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Suspense</span> <span class="attr">v-else</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">default</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Event</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">fallback</span>&gt;</span></span><br><span class="line">      Loading...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Suspense</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">Event</span> <span class="keyword">from</span> <span class="string">&quot;@/components/Event.vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> &#123; ref, onErrorCaptured &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">components</span>: &#123; <span class="title class_">Event</span> &#125;,</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">setup</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> error = <span class="title function_">ref</span>(<span class="literal">null</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">onErrorCaptured</span>(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        error.<span class="property">value</span> = e;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">return</span> <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">      &#125;);</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">return</span> &#123; error &#125;;</span></span><br><span class="line"><span class="language-javascript">    &#125;,</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">v-if</span>=<span class="string">"error"</span>&gt;</span>Uh oh .. &#123;&#123; error &#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Suspense</span> <span class="attr">v-else</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">default</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Event</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">template</span> #<span class="attr">fallback</span>&gt;</span></span><br><span class="line">      Loading...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Suspense</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">import</span> Event <span class="keyword">from</span> <span class="string">"@/components/Event.vue"</span>;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">import</span> &#123; ref, onErrorCaptured &#125; <span class="keyword">from</span> <span class="string">"vue"</span>;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="undefined">    components: &#123; Event &#125;,</span></span><br><span class="line"><span class="undefined">    setup() &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> error = ref(<span class="literal">null</span>);</span></span><br><span class="line"><span class="javascript">      onErrorCaptured(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="undefined">        error.value = e;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">return</span> <span class="literal">true</span>;</span></span><br><span class="line"><span class="undefined">      &#125;);</span></span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> &#123; error &#125;;</span></span><br><span class="line"><span class="undefined">    &#125;,</span></span><br><span class="line"><span class="undefined">  &#125;;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h1 id="延伸應用：Skeleton-Loading-Screens"><a href="#延伸應用：Skeleton-Loading-Screens" class="headerlink" title="延伸應用：Skeleton Loading Screens"></a>延伸應用：Skeleton Loading Screens</h1><p>像外面常看的 UX 應用 Skeleton Loading，就可以跟 Suspense 結合，放在 fallback 的地方，非常適合。</p>
 <h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://composition-api.vuejs.org/">Composition API RFC</a></li>
+<li><a href="https://composition-api.vuejs.org/" target="_blank" rel="noopener">Composition API RFC</a></li>
 </ul>
 
             
@@ -393,7 +388,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -431,7 +426,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -440,7 +435,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -509,7 +504,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -547,7 +542,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -556,7 +551,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -618,14 +613,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -686,7 +681,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -719,7 +714,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -752,7 +747,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -785,7 +780,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -818,7 +813,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -851,7 +846,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -884,7 +879,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -917,7 +912,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1007,7 +1002,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

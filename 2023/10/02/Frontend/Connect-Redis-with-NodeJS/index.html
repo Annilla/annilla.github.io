@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,爽!!!\n\n\n安裝 node-redis 並連線安裝\n1npm install redis\n\n啟用連線\n123456789101112131415import &#123; createClient &#125; from &#x27;redis&#x27;;const client = createClient(&#123;    url: &#x27;redis[s]://[[username][:password]@][host][:port][/db-number]&#x27; // 這邊替換成需要的 Redis Server&#125;);client.on(&#x27;error&#x27;, (err) =&gt; console.log(&#x27;Redis Client Error&#x27;, err));async function connectRedis() &#123;    cosole.log(client.isReady); // false 尚未連線    await client.connect(); // 啟用連線    cosole.log(client.isReady); // true 連線成功&#125;connectRedis();\n\n抓資料並存取12345678910import fs from &#x27;fs&#x27;;...async function connectRedis() &#123;    await client.connect(); // 啟用連線    const Data = await client.GET(`key`); // 取得資料, 這邊要換成實際資料用的 key 才抓的到    fs.writeFileSync(`Data.json`, Data); // 儲存 json 資料到本機&#125;connectRedis();\n\n\n這邊小加碼一下~如果想要把檔案儲存到指定的資料夾名稱, 可以用下列指令新增資料夾, 再把檔案儲存到指定的資料夾名稱.\n\n123456789101112131415161718...async function connectRedis() &#123;    await client.connect(); // 啟用連線    const destination = &#x27;C:\\\\XXX&#x27;; // 儲存檔案的目的地    const folderName = &#x27;folderName&#x27;; // 儲存檔案的資料夾名稱    // Add Folder    if (!fs.existsSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;`)) &#123;        fs.mkdirSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;`);    &#125;    const Data = await client.GET(`key`); // 取得資料, 這邊要換成實際資料用的 key 才抓的到    fs.writeFileSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;\\\\Data.json`, Data); // 儲存 json 資料到本機&#125;connectRedis();\n\nReference\nnode-redis\n\n","dateCreated":"2023-10-02T00:00:00+08:00","dateModified":"2023-10-02T00:00:00+08:00","datePublished":"2023-10-02T00:00:00+08:00","description":"最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,爽!!!","headline":"Connect Redis with NodeJS","image":["https://microstream.one/blog/wp-content/uploads/2023/06/redis_logo-1.png","https://ps.w.org/redis-cache/assets/banner-1544x500.png?rev=2315420"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2023/10/02/Frontend/Connect-Redis-with-NodeJS/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2023/10/02/Frontend/Connect-Redis-with-NodeJS/","keywords":"JS, Redis","thumbnailUrl":"https://microstream.one/blog/wp-content/uploads/2023/06/redis_logo-1.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,爽!!!\n\n安裝 node-redis 並連線安裝\n1npm install redis\n啟用連線\n123456789101112131415import &#123; createClient &#125; from 'redis';const client = createClient(&#123;    url: 'redis[s]://[[username][:password]@][host][:port][/db-number]' // 這邊替換成需要的 Redis Server&#125;);client.on('error', (err) =&gt; console.log('Redis Client Error', err));async function connectRedis() &#123;    cosole.log(client.isReady); // false 尚未連線    await client.connect(); // 啟用連線    cosole.log(client.isReady); // true 連線成功&#125;connectRedis();\n抓資料並存取12345678910import fs from 'fs';...async function connectRedis() &#123;    await client.connect(); // 啟用連線    const Data = await client.GET(`key`); // 取得資料, 這邊要換成實際資料用的 key 才抓的到    fs.writeFileSync(`Data.json`, Data); // 儲存 json 資料到本機&#125;connectRedis();\n\n這邊小加碼一下~如果想要把檔案儲存到指定的資料夾名稱, 可以用下列指令新增資料夾, 再把檔案儲存到指定的資料夾名稱.\n\n123456789101112131415161718...async function connectRedis() &#123;    await client.connect(); // 啟用連線    const destination = 'C:\\\\XXX'; // 儲存檔案的目的地    const folderName = 'folderName'; // 儲存檔案的資料夾名稱    // Add Folder    if (!fs.existsSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;`)) &#123;        fs.mkdirSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;`);    &#125;    const Data = await client.GET(`key`); // 取得資料, 這邊要換成實際資料用的 key 才抓的到    fs.writeFileSync(`$&#123;destination&#125;\\\\$&#123;folderName&#125;\\\\Data.json`, Data); // 儲存 json 資料到本機&#125;connectRedis();\nReference\nnode-redis\n\n","dateCreated":"2023-10-02T00:00:00+08:00","dateModified":"2023-10-02T00:00:00+08:00","datePublished":"2023-10-02T00:00:00+08:00","description":"最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,爽!!!","headline":"Connect Redis with NodeJS","image":["https://microstream.one/blog/wp-content/uploads/2023/06/redis_logo-1.png","https://ps.w.org/redis-cache/assets/banner-1544x500.png?rev=2315420"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2023/10/02/Frontend/Connect-Redis-with-NodeJS/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2023/10/02/Frontend/Connect-Redis-with-NodeJS/","keywords":"JS, Redis","thumbnailUrl":"https://microstream.one/blog/wp-content/uploads/2023/06/redis_logo-1.png"}</script>
     <meta name="description" content="最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Connect Redis with NodeJS">
@@ -51,7 +51,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -124,7 +124,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -302,7 +302,7 @@
         <div class="post-meta">
     <time datetime="2023-10-02T00:00:00+08:00">
 	
-		    10月 02, 2023
+		    2023 年 10 月 2 日
     	
     </time>
     
@@ -321,23 +321,18 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>最近因工作需求, 需從 Redis Server 找大量的資料出來 Debug 程式邏輯. 但每次手動從 UI 介面點開 -&gt; 複製 -&gt; 貼到 VSCode -&gt; 存檔, 非常繁瑣, 且一次都要抓快十個不等的檔案, 非常費時。所以為了能節省我寶貴的時間, 決定用 NodeJS 直接寫一隻來接 Redis 抓資料. 原本要花十分鐘弄得東西, 幾秒鐘就搞定,心理 OS 只有一個字,爽!!!</p>
-<span id="more"></span>
-
+<a id="more"></a>
 <h1 id="安裝-node-redis-並連線"><a href="#安裝-node-redis-並連線" class="headerlink" title="安裝 node-redis 並連線"></a>安裝 node-redis 並連線</h1><p>安裝</p>
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install redis</span><br></pre></td></tr></table></figure>
-
 <p>啟用連線</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createClient &#125; <span class="keyword">from</span> <span class="string">&#x27;redis&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> client = <span class="title function_">createClient</span>(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&#x27;redis[s]://[[username][:password]@][host][:port][/db-number]&#x27;</span> <span class="comment">// 這邊替換成需要的 Redis Server</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">client.<span class="title function_">on</span>(<span class="string">&#x27;error&#x27;</span>, <span class="function">(<span class="params">err</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Redis Client Error&#x27;</span>, err));</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectRedis</span>(<span class="params"></span>) &#123;</span><br><span class="line">    cosole.<span class="title function_">log</span>(client.<span class="property">isReady</span>); <span class="comment">// false 尚未連線</span></span><br><span class="line">    <span class="keyword">await</span> client.<span class="title function_">connect</span>(); <span class="comment">// 啟用連線</span></span><br><span class="line">    cosole.<span class="title function_">log</span>(client.<span class="property">isReady</span>); <span class="comment">// true 連線成功</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">connectRedis</span>();</span><br></pre></td></tr></table></figure>
-
-<h1 id="抓資料並存取"><a href="#抓資料並存取" class="headerlink" title="抓資料並存取"></a>抓資料並存取</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">&#x27;fs&#x27;</span>;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectRedis</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">await</span> client.<span class="title function_">connect</span>(); <span class="comment">// 啟用連線</span></span><br><span class="line">    <span class="keyword">const</span> <span class="title class_">Data</span> = <span class="keyword">await</span> client.<span class="title function_">GET</span>(<span class="string">`key`</span>); <span class="comment">// 取得資料, 這邊要換成實際資料用的 key 才抓的到</span></span><br><span class="line">    fs.<span class="title function_">writeFileSync</span>(<span class="string">`Data.json`</span>, <span class="title class_">Data</span>); <span class="comment">// 儲存 json 資料到本機</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">connectRedis</span>();</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createClient &#125; <span class="keyword">from</span> <span class="string">'redis'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> client = createClient(&#123;</span><br><span class="line">    url: <span class="string">'redis[s]://[[username][:password]@][host][:port][/db-number]'</span> <span class="comment">// 這邊替換成需要的 Redis Server</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">client.on(<span class="string">'error'</span>, (err) =&gt; <span class="built_in">console</span>.log(<span class="string">'Redis Client Error'</span>, err));</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">connectRedis</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    cosole.log(client.isReady); <span class="comment">// false 尚未連線</span></span><br><span class="line">    <span class="keyword">await</span> client.connect(); <span class="comment">// 啟用連線</span></span><br><span class="line">    cosole.log(client.isReady); <span class="comment">// true 連線成功</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">connectRedis();</span><br></pre></td></tr></table></figure>
+<h1 id="抓資料並存取"><a href="#抓資料並存取" class="headerlink" title="抓資料並存取"></a>抓資料並存取</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">'fs'</span>;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">connectRedis</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> client.connect(); <span class="comment">// 啟用連線</span></span><br><span class="line">    <span class="keyword">const</span> Data = <span class="keyword">await</span> client.GET(<span class="string">`key`</span>); <span class="comment">// 取得資料, 這邊要換成實際資料用的 key 才抓的到</span></span><br><span class="line">    fs.writeFileSync(<span class="string">`Data.json`</span>, Data); <span class="comment">// 儲存 json 資料到本機</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">connectRedis();</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p><strong>這邊小加碼一下~如果想要把檔案儲存到指定的資料夾名稱, 可以用下列指令新增資料夾, 再把檔案儲存到指定的資料夾名稱.</strong></p>
 </blockquote>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectRedis</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">await</span> client.<span class="title function_">connect</span>(); <span class="comment">// 啟用連線</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> destination = <span class="string">&#x27;C:\\XXX&#x27;</span>; <span class="comment">// 儲存檔案的目的地</span></span><br><span class="line">    <span class="keyword">const</span> folderName = <span class="string">&#x27;folderName&#x27;</span>; <span class="comment">// 儲存檔案的資料夾名稱</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Add Folder</span></span><br><span class="line">    <span class="keyword">if</span> (!fs.<span class="title function_">existsSync</span>(<span class="string">`<span class="subst">$&#123;destination&#125;</span>\\<span class="subst">$&#123;folderName&#125;</span>`</span>)) &#123;</span><br><span class="line">        fs.<span class="title function_">mkdirSync</span>(<span class="string">`<span class="subst">$&#123;destination&#125;</span>\\<span class="subst">$&#123;folderName&#125;</span>`</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title class_">Data</span> = <span class="keyword">await</span> client.<span class="title function_">GET</span>(<span class="string">`key`</span>); <span class="comment">// 取得資料, 這邊要換成實際資料用的 key 才抓的到</span></span><br><span class="line">    fs.<span class="title function_">writeFileSync</span>(<span class="string">`<span class="subst">$&#123;destination&#125;</span>\\<span class="subst">$&#123;folderName&#125;</span>\\Data.json`</span>, <span class="title class_">Data</span>); <span class="comment">// 儲存 json 資料到本機</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">connectRedis</span>();</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">connectRedis</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> client.connect(); <span class="comment">// 啟用連線</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> destination = <span class="string">'C:\\XXX'</span>; <span class="comment">// 儲存檔案的目的地</span></span><br><span class="line">    <span class="keyword">const</span> folderName = <span class="string">'folderName'</span>; <span class="comment">// 儲存檔案的資料夾名稱</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Add Folder</span></span><br><span class="line">    <span class="keyword">if</span> (!fs.existsSync(<span class="string">`<span class="subst">$&#123;destination&#125;</span>\\<span class="subst">$&#123;folderName&#125;</span>`</span>)) &#123;</span><br><span class="line">        fs.mkdirSync(<span class="string">`<span class="subst">$&#123;destination&#125;</span>\\<span class="subst">$&#123;folderName&#125;</span>`</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> Data = <span class="keyword">await</span> client.GET(<span class="string">`key`</span>); <span class="comment">// 取得資料, 這邊要換成實際資料用的 key 才抓的到</span></span><br><span class="line">    fs.writeFileSync(<span class="string">`<span class="subst">$&#123;destination&#125;</span>\\<span class="subst">$&#123;folderName&#125;</span>\\Data.json`</span>, Data); <span class="comment">// 儲存 json 資料到本機</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">connectRedis();</span><br></pre></td></tr></table></figure>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/redis/node-redis">node-redis</a></li>
+<li><a href="https://github.com/redis/node-redis" target="_blank" rel="noopener">node-redis</a></li>
 </ul>
 
             
@@ -393,7 +388,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -431,7 +426,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -440,7 +435,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -509,7 +504,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -547,7 +542,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -556,7 +551,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -618,14 +613,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -686,7 +681,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -719,7 +714,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -752,7 +747,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -785,7 +780,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -818,7 +813,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -851,7 +846,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -884,7 +879,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -917,7 +912,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1007,7 +1002,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

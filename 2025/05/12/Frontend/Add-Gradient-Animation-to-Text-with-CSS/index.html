@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近工作上需要設計將文字當作圖樣的 Logo, 起因為了減少後續維護成本，不打算針對每個部門製作專屬圖片。取而代之，會在介面中直接使用部門名稱，並搭配漸層動畫，讓每個部門既能有自己的識別感，又不需要額外製圖，省時省力又有彈性。 Demo 放在 Codepen。\n\n\nCSS話不多說, 直接上 Code. HTML 直接灌一個 gradient-text class, 其他想要的地方都能貼上套用相同 class 超方便!\n123&lt;header&gt;  &lt;h1 class=&quot;gradient-text&quot;&gt;WORKSPACE&lt;/h1&gt;&lt;/header&gt;\n\n12345678910111213141516171819202122232425262728293031323334353637383940/* 影格變數 gradientAnimate 將漸層顏色背景位置從左上到右下位移, 製造動畫變色視覺感 */@keyframes gradientAnimate &#123;  0% &#123;    background-position: 0% 0%;  &#125;  100% &#123;    background-position: 100% 100%;  &#125;&#125;.gradient-text &#123;  /* Fallback: Set a background color. */  background-color: #FA3323;  /* Create the gradient. */  background-image: linear-gradient(90deg,    #FA3323 20%,    #6100FF 40%,    #FA3323 60%,    #6100FF 80%);  /* Set the background size and repeat properties. */  background-size: 200% auto;  background-repeat: repeat;  /* Use the text as a mask for the background. */  /* This will show the gradient as a text color rather than element bg. */  -webkit-background-clip: text;  -webkit-text-fill-color: transparent;  -moz-background-clip: text;  -moz-text-fill-color: transparent;  /* 將動畫設定 3 秒無限重複, 讓文字有炫彩動畫效果 */  animation: gradientAnimate 3s ease-in-out infinite alternate;&#125;/* Style the rest of the page. */...\n\nReference\nHow to add a gradient overlay to text with CSS\nMy Codepen\n\n","dateCreated":"2025-05-12T00:00:00+08:00","dateModified":"2025-05-12T00:00:00+08:00","datePublished":"2025-05-12T00:00:00+08:00","description":"最近工作上需要設計將文字當作圖樣的 Logo, 起因為了減少後續維護成本，不打算針對每個部門製作專屬圖片。取而代之，會在介面中直接使用部門名稱，並搭配漸層動畫，讓每個部門既能有自己的識別感，又不需要額外製圖，省時省力又有彈性。 Demo 放在 Codepen。","headline":"Add Gradient Animation to Text with CSS","image":["https://images.seeklogo.com/logo-png/29/2/css-3-logo-png_seeklogo-297888.png","https://1000logos.net/wp-content/uploads/2020/09/CSS-Logo-2011.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2025/05/12/Frontend/Add-Gradient-Animation-to-Text-with-CSS/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2025/05/12/Frontend/Add-Gradient-Animation-to-Text-with-CSS/","keywords":"CSS","thumbnailUrl":"https://images.seeklogo.com/logo-png/29/2/css-3-logo-png_seeklogo-297888.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近工作上需要設計將文字當作圖樣的 Logo, 起因為了減少後續維護成本，不打算針對每個部門製作專屬圖片。取而代之，會在介面中直接使用部門名稱，並搭配漸層動畫，讓每個部門既能有自己的識別感，又不需要額外製圖，省時省力又有彈性。 Demo 放在 Codepen。\n\nCSS話不多說, 直接上 Code. HTML 直接灌一個 gradient-text class, 其他想要的地方都能貼上套用相同 class 超方便!\n123&lt;header&gt;  &lt;h1 class=\"gradient-text\"&gt;WORKSPACE&lt;/h1&gt;&lt;/header&gt;\n123456789101112131415161718192021222324252627282930313233343536373839/* 影格變數 gradientAnimate 將漸層顏色背景位置從左上到右下位移, 製造動畫變色視覺感 */@keyframes gradientAnimate &#123;  0% &#123;    background-position: 0% 0%;  &#125;  100% &#123;    background-position: 100% 100%;  &#125;&#125;.gradient-text &#123;  /* Fallback: Set a background color. */  background-color: #FA3323;  /* Create the gradient. */  background-image: linear-gradient(90deg,    #FA3323 20%,    #6100FF 40%,    #FA3323 60%,    #6100FF 80%);  /* Set the background size and repeat properties. */  background-size: 200% auto;  background-repeat: repeat;  /* Use the text as a mask for the background. */  /* This will show the gradient as a text color rather than element bg. */  -webkit-background-clip: text;  -webkit-text-fill-color: transparent;  -moz-background-clip: text;  -moz-text-fill-color: transparent;  /* 將動畫設定 3 秒無限重複, 讓文字有炫彩動畫效果 */  animation: gradientAnimate 3s ease-in-out infinite alternate;&#125;/* Style the rest of the page. */...\nReference\nHow to add a gradient overlay to text with CSS\nMy Codepen\n\n","dateCreated":"2025-05-12T00:00:00+08:00","dateModified":"2025-05-12T00:00:00+08:00","datePublished":"2025-05-12T00:00:00+08:00","description":"最近工作上需要設計將文字當作圖樣的 Logo, 起因為了減少後續維護成本，不打算針對每個部門製作專屬圖片。取而代之，會在介面中直接使用部門名稱，並搭配漸層動畫，讓每個部門既能有自己的識別感，又不需要額外製圖，省時省力又有彈性。 Demo 放在 Codepen。","headline":"Add Gradient Animation to Text with CSS","image":["https://images.seeklogo.com/logo-png/29/2/css-3-logo-png_seeklogo-297888.png","https://1000logos.net/wp-content/uploads/2020/09/CSS-Logo-2011.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2025/05/12/Frontend/Add-Gradient-Animation-to-Text-with-CSS/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2025/05/12/Frontend/Add-Gradient-Animation-to-Text-with-CSS/","keywords":"CSS","thumbnailUrl":"https://images.seeklogo.com/logo-png/29/2/css-3-logo-png_seeklogo-297888.png"}</script>
     <meta name="description" content="最近工作上需要設計將文字當作圖樣的 Logo, 起因為了減少後續維護成本，不打算針對每個部門製作專屬圖片。取而代之，會在介面中直接使用部門名稱，並搭配漸層動畫，讓每個部門既能有自己的識別感，又不需要額外製圖，省時省力又有彈性。 Demo 放在 Codepen。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Add Gradient Animation to Text with CSS">
@@ -50,7 +50,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -123,7 +123,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -301,7 +301,7 @@
         <div class="post-meta">
     <time datetime="2025-05-12T00:00:00+08:00">
 	
-		    5月 12, 2025
+		    2025 年 5 月 12 日
     	
     </time>
     
@@ -319,17 +319,14 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>最近工作上需要設計將文字當作圖樣的 Logo, 起因為了減少後續維護成本，不打算針對每個部門製作專屬圖片。取而代之，會在介面中直接使用部門名稱，並搭配漸層動畫，讓每個部門既能有自己的識別感，又不需要額外製圖，省時省力又有彈性。 Demo 放在 <a target="_blank" rel="noopener" href="https://codepen.io/annilla/pen/jEOjRQE">Codepen</a>。</p>
-<span id="more"></span>
-
+            <p>最近工作上需要設計將文字當作圖樣的 Logo, 起因為了減少後續維護成本，不打算針對每個部門製作專屬圖片。取而代之，會在介面中直接使用部門名稱，並搭配漸層動畫，讓每個部門既能有自己的識別感，又不需要額外製圖，省時省力又有彈性。 Demo 放在 <a href="https://codepen.io/annilla/pen/jEOjRQE" target="_blank" rel="noopener">Codepen</a>。</p>
+<a id="more"></a>
 <h1 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h1><p>話不多說, 直接上 Code. HTML 直接灌一個 gradient-text class, 其他想要的地方都能貼上套用相同 class 超方便!</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">&quot;gradient-text&quot;</span>&gt;</span>WORKSPACE<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 影格變數 gradientAnimate 將漸層顏色背景位置從左上到右下位移, 製造動畫變色視覺感 */</span></span><br><span class="line"><span class="keyword">@keyframes</span> gradientAnimate &#123;</span><br><span class="line">  <span class="number">0%</span> &#123;</span><br><span class="line">    <span class="attribute">background-position</span>: <span class="number">0%</span> <span class="number">0%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="number">100%</span> &#123;</span><br><span class="line">    <span class="attribute">background-position</span>: <span class="number">100%</span> <span class="number">100%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.gradient-text</span> &#123;</span><br><span class="line">  <span class="comment">/* Fallback: Set a background color. */</span></span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#FA3323</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Create the gradient. */</span></span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">linear-gradient</span>(<span class="number">90deg</span>,</span><br><span class="line">    <span class="number">#FA3323</span> <span class="number">20%</span>,</span><br><span class="line">    <span class="number">#6100FF</span> <span class="number">40%</span>,</span><br><span class="line">    <span class="number">#FA3323</span> <span class="number">60%</span>,</span><br><span class="line">    <span class="number">#6100FF</span> <span class="number">80%</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Set the background size and repeat properties. */</span></span><br><span class="line">  <span class="attribute">background-size</span>: <span class="number">200%</span> auto;</span><br><span class="line">  <span class="attribute">background-repeat</span>: repeat;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Use the text as a mask for the background. */</span></span><br><span class="line">  <span class="comment">/* This will show the gradient as a text color rather than element bg. */</span></span><br><span class="line">  -webkit-<span class="attribute">background-clip</span>: text;</span><br><span class="line">  -webkit-text-fill-<span class="attribute">color</span>: transparent;</span><br><span class="line">  -moz-<span class="attribute">background-clip</span>: text;</span><br><span class="line">  -moz-text-fill-<span class="attribute">color</span>: transparent;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 將動畫設定 3 秒無限重複, 讓文字有炫彩動畫效果 */</span></span><br><span class="line">  <span class="attribute">animation</span>: gradientAnimate <span class="number">3s</span> ease-in-out infinite alternate;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Style the rest of the page. */</span></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">"gradient-text"</span>&gt;</span>WORKSPACE<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 影格變數 gradientAnimate 將漸層顏色背景位置從左上到右下位移, 製造動畫變色視覺感 */</span></span><br><span class="line">@<span class="keyword">keyframes</span> gradientAnimate &#123;</span><br><span class="line">  0% &#123;</span><br><span class="line">    <span class="attribute">background-position</span>: <span class="number">0%</span> <span class="number">0%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  100% &#123;</span><br><span class="line">    <span class="attribute">background-position</span>: <span class="number">100%</span> <span class="number">100%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.gradient-text</span> &#123;</span><br><span class="line">  <span class="comment">/* Fallback: Set a background color. */</span></span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#FA3323</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Create the gradient. */</span></span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">linear-gradient</span>(90deg,</span><br><span class="line">    #FA3323 20%,</span><br><span class="line">    #6100FF 40%,</span><br><span class="line">    #FA3323 60%,</span><br><span class="line">    #6100FF 80%);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Set the background size and repeat properties. */</span></span><br><span class="line">  <span class="attribute">background-size</span>: <span class="number">200%</span> auto;</span><br><span class="line">  <span class="attribute">background-repeat</span>: repeat;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Use the text as a mask for the background. */</span></span><br><span class="line">  <span class="comment">/* This will show the gradient as a text color rather than element bg. */</span></span><br><span class="line">  <span class="attribute">-webkit-background-clip</span>: text;</span><br><span class="line">  <span class="attribute">-webkit-text-fill-color</span>: transparent;</span><br><span class="line">  <span class="attribute">-moz-background-clip</span>: text;</span><br><span class="line">  <span class="attribute">-moz-text-fill-color</span>: transparent;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 將動畫設定 3 秒無限重複, 讓文字有炫彩動畫效果 */</span></span><br><span class="line">  <span class="attribute">animation</span>: gradientAnimate <span class="number">3s</span> ease-in-out infinite alternate;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Style the rest of the page. */</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://fossheim.io/writing/posts/css-text-gradient/">How to add a gradient overlay to text with CSS</a></li>
-<li><a target="_blank" rel="noopener" href="https://codepen.io/annilla/pen/jEOjRQE">My Codepen</a></li>
+<li><a href="https://fossheim.io/writing/posts/css-text-gradient/" target="_blank" rel="noopener">How to add a gradient overlay to text with CSS</a></li>
+<li><a href="https://codepen.io/annilla/pen/jEOjRQE" target="_blank" rel="noopener">My Codepen</a></li>
 </ul>
 
             
@@ -385,7 +382,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -423,7 +420,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -432,7 +429,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -501,7 +498,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -539,7 +536,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -548,7 +545,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -610,14 +607,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -678,7 +675,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -711,7 +708,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -744,7 +741,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -777,7 +774,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -810,7 +807,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -843,7 +840,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -876,7 +873,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -909,7 +906,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -999,7 +996,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 

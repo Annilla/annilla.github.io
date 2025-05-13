@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 Vite 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。\n\n\n起始 NET 6 專案dotnet new 指令會自動產生 react SPA 專案，我們接著對此專案稍作修改。\n1dotnet new react\n\n刪除原本的 ClientApp 資料夾。\n\n用 Vite 建立 Vue 專案1npm create vite@latest\n\n專案名稱一樣取 ClientApp 即可，接著照步驟選擇 Vue 專案。\n修改 .csproj 檔案針對以下幾點參數作說明:\n\nSpaProxyServerUrl: NET 專案起來之後的網址，可以放預設不動(https://localhost:44434)，或自己另外指定 port。\nSpaProxyLaunchCommand: 開發時要起 HMR 的指令，這邊用 Vite 專案內建的 npm run dev。\nSpaRoot: 這邊要放前端專案的資料夾名稱，因為我們故意取跟預設一樣的 ClientApp，所以這邊不用修改。\nDistFiles: 這邊要放 build 完成後的資料夾位置，這邊用 Vite 專案內建的 dist 資料夾 $(SpaRoot)dist\\**。\n\n123456789101112131415161718192021222324252627282930...&lt;PropertyGroup&gt;  &lt;TargetFramework&gt;net6.0&lt;/TargetFramework&gt;  &lt;Nullable&gt;enable&lt;/Nullable&gt;  &lt;TypeScriptCompileBlocked&gt;true&lt;/TypeScriptCompileBlocked&gt;  &lt;TypeScriptToolsVersion&gt;Latest&lt;/TypeScriptToolsVersion&gt;  &lt;IsPackable&gt;false&lt;/IsPackable&gt;  &lt;SpaRoot&gt;ClientApp\\&lt;/SpaRoot&gt;  &lt;DefaultItemExcludes&gt;$(DefaultItemExcludes);$(SpaRoot)node_modules\\**&lt;/DefaultItemExcludes&gt;  &lt;SpaProxyServerUrl&gt;https://localhost:44434&lt;/SpaProxyServerUrl&gt;  &lt;SpaProxyLaunchCommand&gt;npm run dev&lt;/SpaProxyLaunchCommand&gt;  &lt;RootNamespace&gt;test_dotnet_vue_vite&lt;/RootNamespace&gt;  &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;&lt;/PropertyGroup&gt;...&lt;Target Name=&quot;PublishRunWebpack&quot; AfterTargets=&quot;ComputeFilesToPublish&quot;&gt;  &lt;!-- As part of publishing, ensure the JS resources are freshly built in production mode --&gt;  &lt;Exec WorkingDirectory=&quot;$(SpaRoot)&quot; Command=&quot;npm install&quot; /&gt;  &lt;Exec WorkingDirectory=&quot;$(SpaRoot)&quot; Command=&quot;npm run build&quot; /&gt;  &lt;!-- Include the newly-built files in the publish output --&gt;  &lt;ItemGroup&gt;    &lt;DistFiles Include=&quot;$(SpaRoot)dist\\**&quot; /&gt;    &lt;ResolvedFileToPublish Include=&quot;@(DistFiles-&gt;&#x27;%(FullPath)&#x27;)&quot; Exclude=&quot;@(ResolvedFileToPublish)&quot;&gt;      &lt;RelativePath&gt;wwwroot\\%(RecursiveDir)%(FileName)%(Extension)&lt;/RelativePath&gt;      &lt;CopyToPublishDirectory&gt;PreserveNewest&lt;/CopyToPublishDirectory&gt;      &lt;ExcludeFromSingleFile&gt;true&lt;/ExcludeFromSingleFile&gt;    &lt;/ResolvedFileToPublish&gt;  &lt;/ItemGroup&gt;&lt;/Target&gt;\n\n設定 Vue 專案的 https 憑證如果要開通 Vite https 可以安裝 https://github.com/liuweiGL/vite-plugin-mkcert。\n1npm install --save-dev vite-plugin-mkcert\n\n設定 Vite.config.js接著去設定 Vite.config.js。\n123456789101112131415161718192021import &#123; defineConfig &#125; from &#x27;vite&#x27;import vue from &#x27;@vitejs/plugin-vue&#x27;import mkcert from &#x27;vite-plugin-mkcert&#x27;// https://vitejs.dev/config/export default defineConfig(&#123;  plugins: [vue(), mkcert()],  server: &#123;    port: 44434, // 要跟 .csproj 檔案中的 SpaProxyServerUrl 一致    https: true, // vite-plugin-mkcert    strictPort : true,    proxy: &#123;      &#x27;/api&#x27; : &#123;        target: &#x27;https://localhost:7092&#x27;, // 要跟 launchSettings.json 中的 applicationUrl 一致        changeOrigin: true,        secure: false,        rewrite: (path) =&gt; path.replace(/^\\/api/, &#x27;/api&#x27;)      &#125;    &#125;  &#125;&#125;)\n\n完成~~完成後，可以直接使用 VS or VScode 的專案執行按鈕就能成功啟動囉~\n\n今天的範例在 github，下回見～\n參考資料\nA guide to getting started with ASP.NET Core 6, Vite, and Vue 3\nVite\nVue 3\n\n","dateCreated":"2022-10-26T00:00:00+08:00","dateModified":"2022-10-26T00:00:00+08:00","datePublished":"2022-10-26T00:00:00+08:00","description":"Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 Vite 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。","headline":".NET 6.0 SPA with Vite and Vue 3 - Start New Project","image":["https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg","https://vitejs.dev/og-image-announcing-vite3.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/","keywords":"Vue, dotnet, SPA, MVC, VScode, .NET, Vite","thumbnailUrl":"https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 Vite 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。\n\n起始 NET 6 專案dotnet new 指令會自動產生 react SPA 專案，我們接著對此專案稍作修改。\n1dotnet new react\n刪除原本的 ClientApp 資料夾。\n\n用 Vite 建立 Vue 專案1npm create vite@latest\n專案名稱一樣取 ClientApp 即可，接著照步驟選擇 Vue 專案。\n修改 .csproj 檔案針對以下幾點參數作說明:\n\nSpaProxyServerUrl: NET 專案起來之後的網址，可以放預設不動(https://localhost:44434)，或自己另外指定 port。\nSpaProxyLaunchCommand: 開發時要起 HMR 的指令，這邊用 Vite 專案內建的 npm run dev。\nSpaRoot: 這邊要放前端專案的資料夾名稱，因為我們故意取跟預設一樣的 ClientApp，所以這邊不用修改。\nDistFiles: 這邊要放 build 完成後的資料夾位置，這邊用 Vite 專案內建的 dist 資料夾 $(SpaRoot)dist\\**。\n\n123456789101112131415161718192021222324252627282930...&lt;PropertyGroup&gt;  &lt;TargetFramework&gt;net6.0&lt;/TargetFramework&gt;  &lt;Nullable&gt;enable&lt;/Nullable&gt;  &lt;TypeScriptCompileBlocked&gt;true&lt;/TypeScriptCompileBlocked&gt;  &lt;TypeScriptToolsVersion&gt;Latest&lt;/TypeScriptToolsVersion&gt;  &lt;IsPackable&gt;false&lt;/IsPackable&gt;  &lt;SpaRoot&gt;ClientApp\\&lt;/SpaRoot&gt;  &lt;DefaultItemExcludes&gt;$(DefaultItemExcludes);$(SpaRoot)node_modules\\**&lt;/DefaultItemExcludes&gt;  &lt;SpaProxyServerUrl&gt;https://localhost:44434&lt;/SpaProxyServerUrl&gt;  &lt;SpaProxyLaunchCommand&gt;npm run dev&lt;/SpaProxyLaunchCommand&gt;  &lt;RootNamespace&gt;test_dotnet_vue_vite&lt;/RootNamespace&gt;  &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;&lt;/PropertyGroup&gt;...&lt;Target Name=\"PublishRunWebpack\" AfterTargets=\"ComputeFilesToPublish\"&gt;  &lt;!-- As part of publishing, ensure the JS resources are freshly built in production mode --&gt;  &lt;Exec WorkingDirectory=\"$(SpaRoot)\" Command=\"npm install\" /&gt;  &lt;Exec WorkingDirectory=\"$(SpaRoot)\" Command=\"npm run build\" /&gt;  &lt;!-- Include the newly-built files in the publish output --&gt;  &lt;ItemGroup&gt;    &lt;DistFiles Include=\"$(SpaRoot)dist\\**\" /&gt;    &lt;ResolvedFileToPublish Include=\"@(DistFiles-&gt;'%(FullPath)')\" Exclude=\"@(ResolvedFileToPublish)\"&gt;      &lt;RelativePath&gt;wwwroot\\%(RecursiveDir)%(FileName)%(Extension)&lt;/RelativePath&gt;      &lt;CopyToPublishDirectory&gt;PreserveNewest&lt;/CopyToPublishDirectory&gt;      &lt;ExcludeFromSingleFile&gt;true&lt;/ExcludeFromSingleFile&gt;    &lt;/ResolvedFileToPublish&gt;  &lt;/ItemGroup&gt;&lt;/Target&gt;\n設定 Vue 專案的 https 憑證如果要開通 Vite https 可以安裝 https://github.com/liuweiGL/vite-plugin-mkcert。\n1npm install --save-dev vite-plugin-mkcert\n設定 Vite.config.js接著去設定 Vite.config.js。\n123456789101112131415161718192021import &#123; defineConfig &#125; from 'vite'import vue from '@vitejs/plugin-vue'import mkcert from 'vite-plugin-mkcert'// https://vitejs.dev/config/export default defineConfig(&#123;  plugins: [vue(), mkcert()],  server: &#123;    port: 44434, // 要跟 .csproj 檔案中的 SpaProxyServerUrl 一致    https: true, // vite-plugin-mkcert    strictPort : true,    proxy: &#123;      '/api' : &#123;        target: 'https://localhost:7092', // 要跟 launchSettings.json 中的 applicationUrl 一致        changeOrigin: true,        secure: false,        rewrite: (path) =&gt; path.replace(/^\\/api/, '/api')      &#125;    &#125;  &#125;&#125;)\n完成~~完成後，可以直接使用 VS or VScode 的專案執行按鈕就能成功啟動囉~\n\n今天的範例在 github，下回見～\n參考資料\nA guide to getting started with ASP.NET Core 6, Vite, and Vue 3\nVite\nVue 3\n\n","dateCreated":"2022-10-26T00:00:00+08:00","dateModified":"2022-10-26T00:00:00+08:00","datePublished":"2022-10-26T00:00:00+08:00","description":"Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 Vite 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。","headline":".NET 6.0 SPA with Vite and Vue 3 - Start New Project","image":["https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg","https://vitejs.dev/og-image-announcing-vite3.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/","keywords":"Vue, dotnet, SPA, MVC, VScode, .NET, Vite","thumbnailUrl":"https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg"}</script>
     <meta name="description" content="Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 Vite 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content=".NET 6.0 SPA with Vite and Vue 3 - Start New Project">
@@ -60,7 +60,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-ttumfszmmxao9exojy0bsx8ajgyvh7vbiqozw3j5qs3x5jf3qcsjjvbqwosd.min.css">
+<link rel="stylesheet" href="/assets/css/style-d3rritkqn4m48uzfqwlnaqzxhyykf4lkh5rzhioa93e3rbjraiikwobag2zb.min.css">
 
     <!--STYLES END-->
     
@@ -133,7 +133,7 @@
                 </a>
                 <h4 class="sidebar-profile-name">Anny Chang</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>Know my limits but never stop trying to exceed them.</p>
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
                 
             </div>
@@ -311,7 +311,7 @@
         <div class="post-meta">
     <time datetime="2022-10-26T00:00:00+08:00">
 	
-		    10月 26, 2022
+		    2022 年 10 月 26 日
     	
     </time>
     
@@ -329,16 +329,13 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 <a target="_blank" rel="noopener" href="https://vitejs.dev/">Vite</a> 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。</p>
-<span id="more"></span>
-
+            <p>Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。</p>
+<a id="more"></a>
 <h2 id="起始-NET-6-專案"><a href="#起始-NET-6-專案" class="headerlink" title="起始 NET 6 專案"></a>起始 NET 6 專案</h2><p>dotnet new 指令會自動產生 react SPA 專案，我們接著對此專案稍作修改。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new react</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new react</span><br></pre></td></tr></table></figure>
 <p>刪除原本的 ClientApp 資料夾。</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AL9nZEVq6mhxqbGkTScsxRNoBg8zQ2dKwUIao8A7aOXGmDiENHyOchrOS5ufJ3TzKNsoNsii9iXxtSEGAsSBL4-ioZT75DhaldcURq9hZVjwclfOkF7WV6d4t_ND0yH3m-ZpJS4cYLsxWk4PsYEFUtjFIn5tSA=w1058-h1080-no?authuser=0" alt="刪除原本的 ClientApp 資料夾"></p>
-<h2 id="用-Vite-建立-Vue-專案"><a href="#用-Vite-建立-Vue-專案" class="headerlink" title="用 Vite 建立 Vue 專案"></a>用 Vite 建立 Vue 專案</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm create vite@latest</span><br></pre></td></tr></table></figure>
-
+<h2 id="用-Vite-建立-Vue-專案"><a href="#用-Vite-建立-Vue-專案" class="headerlink" title="用 Vite 建立 Vue 專案"></a>用 Vite 建立 Vue 專案</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm create vite@latest</span><br></pre></td></tr></table></figure>
 <p>專案名稱一樣取 ClientApp 即可，接著照步驟選擇 Vue 專案。<br><img src="https://lh3.googleusercontent.com/pw/AL9nZEXGCPDqdSBVl7JYhsH-5_uSZYSQkN8DcEKhBcJXKT56VDHuzo7qP0dSYNaawCLD3AXgDDg-gUAVmFtr6LTbO4UMbE0OfzsA4Ef9kNkre6X5vn-LoLDrnGEX3esyBpV890Z3yFkDPYX_tpvyT1eVgHPOqQ=w1252-h560-no?authuser=0" alt="照步驟選擇 Vue 專案"></p>
 <h2 id="修改-csproj-檔案"><a href="#修改-csproj-檔案" class="headerlink" title="修改 .csproj 檔案"></a>修改 .csproj 檔案</h2><p>針對以下幾點參數作說明:</p>
 <ol>
@@ -347,21 +344,18 @@
 <li>SpaRoot: 這邊要放前端專案的資料夾名稱，因為我們故意取跟預設一樣的 ClientApp，所以這邊不用修改。</li>
 <li>DistFiles: 這邊要放 build 完成後的資料夾位置，這邊用 Vite 專案內建的 dist 資料夾 <code>$(SpaRoot)dist\**</code>。</li>
 </ol>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TargetFramework</span>&gt;</span>net6.0<span class="tag">&lt;/<span class="name">TargetFramework</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Nullable</span>&gt;</span>enable<span class="tag">&lt;/<span class="name">Nullable</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TypeScriptCompileBlocked</span>&gt;</span>true<span class="tag">&lt;/<span class="name">TypeScriptCompileBlocked</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TypeScriptToolsVersion</span>&gt;</span>Latest<span class="tag">&lt;/<span class="name">TypeScriptToolsVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">IsPackable</span>&gt;</span>false<span class="tag">&lt;/<span class="name">IsPackable</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">SpaRoot</span>&gt;</span>ClientApp\<span class="tag">&lt;/<span class="name">SpaRoot</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">DefaultItemExcludes</span>&gt;</span>$(DefaultItemExcludes);$(SpaRoot)node_modules\**<span class="tag">&lt;/<span class="name">DefaultItemExcludes</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">SpaProxyServerUrl</span>&gt;</span>https://localhost:44434<span class="tag">&lt;/<span class="name">SpaProxyServerUrl</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">SpaProxyLaunchCommand</span>&gt;</span>npm run dev<span class="tag">&lt;/<span class="name">SpaProxyLaunchCommand</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">RootNamespace</span>&gt;</span>test_dotnet_vue_vite<span class="tag">&lt;/<span class="name">RootNamespace</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ImplicitUsings</span>&gt;</span>enable<span class="tag">&lt;/<span class="name">ImplicitUsings</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">Target</span> <span class="attr">Name</span>=<span class="string">&quot;PublishRunWebpack&quot;</span> <span class="attr">AfterTargets</span>=<span class="string">&quot;ComputeFilesToPublish&quot;</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- As part of publishing, ensure the JS resources are freshly built in production mode --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Exec</span> <span class="attr">WorkingDirectory</span>=<span class="string">&quot;$(SpaRoot)&quot;</span> <span class="attr">Command</span>=<span class="string">&quot;npm install&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Exec</span> <span class="attr">WorkingDirectory</span>=<span class="string">&quot;$(SpaRoot)&quot;</span> <span class="attr">Command</span>=<span class="string">&quot;npm run build&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- Include the newly-built files in the publish output --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">DistFiles</span> <span class="attr">Include</span>=<span class="string">&quot;$(SpaRoot)dist\**&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ResolvedFileToPublish</span> <span class="attr">Include</span>=<span class="string">&quot;@(DistFiles-&gt;&#x27;%(FullPath)&#x27;)&quot;</span> <span class="attr">Exclude</span>=<span class="string">&quot;@(ResolvedFileToPublish)&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RelativePath</span>&gt;</span>wwwroot\%(RecursiveDir)%(FileName)%(Extension)<span class="tag">&lt;/<span class="name">RelativePath</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">CopyToPublishDirectory</span>&gt;</span>PreserveNewest<span class="tag">&lt;/<span class="name">CopyToPublishDirectory</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ExcludeFromSingleFile</span>&gt;</span>true<span class="tag">&lt;/<span class="name">ExcludeFromSingleFile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ResolvedFileToPublish</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Target</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="設定-Vue-專案的-https-憑證"><a href="#設定-Vue-專案的-https-憑證" class="headerlink" title="設定 Vue 專案的 https 憑證"></a>設定 Vue 專案的 https 憑證</h2><p>如果要開通 Vite https 可以安裝 <a target="_blank" rel="noopener" href="https://github.com/liuweiGL/vite-plugin-mkcert%E3%80%82">https://github.com/liuweiGL/vite-plugin-mkcert。</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev vite-plugin-mkcert</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TargetFramework</span>&gt;</span>net6.0<span class="tag">&lt;/<span class="name">TargetFramework</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Nullable</span>&gt;</span>enable<span class="tag">&lt;/<span class="name">Nullable</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TypeScriptCompileBlocked</span>&gt;</span>true<span class="tag">&lt;/<span class="name">TypeScriptCompileBlocked</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TypeScriptToolsVersion</span>&gt;</span>Latest<span class="tag">&lt;/<span class="name">TypeScriptToolsVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">IsPackable</span>&gt;</span>false<span class="tag">&lt;/<span class="name">IsPackable</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">SpaRoot</span>&gt;</span>ClientApp\<span class="tag">&lt;/<span class="name">SpaRoot</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">DefaultItemExcludes</span>&gt;</span>$(DefaultItemExcludes);$(SpaRoot)node_modules\**<span class="tag">&lt;/<span class="name">DefaultItemExcludes</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">SpaProxyServerUrl</span>&gt;</span>https://localhost:44434<span class="tag">&lt;/<span class="name">SpaProxyServerUrl</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">SpaProxyLaunchCommand</span>&gt;</span>npm run dev<span class="tag">&lt;/<span class="name">SpaProxyLaunchCommand</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">RootNamespace</span>&gt;</span>test_dotnet_vue_vite<span class="tag">&lt;/<span class="name">RootNamespace</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ImplicitUsings</span>&gt;</span>enable<span class="tag">&lt;/<span class="name">ImplicitUsings</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">Target</span> <span class="attr">Name</span>=<span class="string">"PublishRunWebpack"</span> <span class="attr">AfterTargets</span>=<span class="string">"ComputeFilesToPublish"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- As part of publishing, ensure the JS resources are freshly built in production mode --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Exec</span> <span class="attr">WorkingDirectory</span>=<span class="string">"$(SpaRoot)"</span> <span class="attr">Command</span>=<span class="string">"npm install"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Exec</span> <span class="attr">WorkingDirectory</span>=<span class="string">"$(SpaRoot)"</span> <span class="attr">Command</span>=<span class="string">"npm run build"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- Include the newly-built files in the publish output --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">DistFiles</span> <span class="attr">Include</span>=<span class="string">"$(SpaRoot)dist\**"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ResolvedFileToPublish</span> <span class="attr">Include</span>=<span class="string">"@(DistFiles-&gt;'%(FullPath)')"</span> <span class="attr">Exclude</span>=<span class="string">"@(ResolvedFileToPublish)"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RelativePath</span>&gt;</span>wwwroot\%(RecursiveDir)%(FileName)%(Extension)<span class="tag">&lt;/<span class="name">RelativePath</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">CopyToPublishDirectory</span>&gt;</span>PreserveNewest<span class="tag">&lt;/<span class="name">CopyToPublishDirectory</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ExcludeFromSingleFile</span>&gt;</span>true<span class="tag">&lt;/<span class="name">ExcludeFromSingleFile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ResolvedFileToPublish</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Target</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="設定-Vue-專案的-https-憑證"><a href="#設定-Vue-專案的-https-憑證" class="headerlink" title="設定 Vue 專案的 https 憑證"></a>設定 Vue 專案的 https 憑證</h2><p>如果要開通 Vite https 可以安裝 <a href="https://github.com/liuweiGL/vite-plugin-mkcert。" target="_blank" rel="noopener">https://github.com/liuweiGL/vite-plugin-mkcert。</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev vite-plugin-mkcert</span><br></pre></td></tr></table></figure>
 <h3 id="設定-Vite-config-js"><a href="#設定-Vite-config-js" class="headerlink" title="設定 Vite.config.js"></a>設定 Vite.config.js</h3><p>接著去設定 Vite.config.js。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> mkcert <span class="keyword">from</span> <span class="string">&#x27;vite-plugin-mkcert&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// https://vitejs.dev/config/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="title function_">vue</span>(), <span class="title function_">mkcert</span>()],</span><br><span class="line">  <span class="attr">server</span>: &#123;</span><br><span class="line">    <span class="attr">port</span>: <span class="number">44434</span>, <span class="comment">// 要跟 .csproj 檔案中的 SpaProxyServerUrl 一致</span></span><br><span class="line">    <span class="attr">https</span>: <span class="literal">true</span>, <span class="comment">// vite-plugin-mkcert</span></span><br><span class="line">    strictPort : <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">proxy</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;/api&#x27;</span> : &#123;</span><br><span class="line">        <span class="attr">target</span>: <span class="string">&#x27;https://localhost:7092&#x27;</span>, <span class="comment">// 要跟 launchSettings.json 中的 applicationUrl 一致</span></span><br><span class="line">        <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">secure</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">rewrite</span>: <span class="function">(<span class="params">path</span>) =&gt;</span> path.<span class="title function_">replace</span>(<span class="regexp">/^\/api/</span>, <span class="string">&#x27;/api&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">'vite'</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">'@vitejs/plugin-vue'</span></span><br><span class="line"><span class="keyword">import</span> mkcert <span class="keyword">from</span> <span class="string">'vite-plugin-mkcert'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// https://vitejs.dev/config/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;</span><br><span class="line">  plugins: [vue(), mkcert()],</span><br><span class="line">  server: &#123;</span><br><span class="line">    port: <span class="number">44434</span>, <span class="comment">// 要跟 .csproj 檔案中的 SpaProxyServerUrl 一致</span></span><br><span class="line">    https: <span class="literal">true</span>, <span class="comment">// vite-plugin-mkcert</span></span><br><span class="line">    strictPort : <span class="literal">true</span>,</span><br><span class="line">    proxy: &#123;</span><br><span class="line">      <span class="string">'/api'</span> : &#123;</span><br><span class="line">        target: <span class="string">'https://localhost:7092'</span>, <span class="comment">// 要跟 launchSettings.json 中的 applicationUrl 一致</span></span><br><span class="line">        changeOrigin: <span class="literal">true</span>,</span><br><span class="line">        secure: <span class="literal">false</span>,</span><br><span class="line">        rewrite: <span class="function">(<span class="params">path</span>) =&gt;</span> path.replace(<span class="regexp">/^\/api/</span>, <span class="string">'/api'</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <h2 id="完成"><a href="#完成" class="headerlink" title="完成~~"></a>完成~~</h2><p>完成後，可以直接使用 VS or VScode 的專案執行按鈕就能成功啟動囉~</p>
 <p><img src="https://lh3.googleusercontent.com/pw/AL9nZEWpZD0_CrJszyUa5jnBkxTo7XFUfJrWszZJ3-jt88Qipkkt0mRQDhi45FNrso4NQkXdmF-CXJMsR_H5lsaXHoEjvFxFERuRvL7z8GOd8XalpW1LdMEBMG2XCqLRnX4qTuPLhP7nQX5KXMmVCPpb8D19dQ=w2490-h1442-no?authuser=0" alt="啟動畫面"></p>
-<p>今天的範例在 <a target="_blank" rel="noopener" href="https://github.com/Annilla/test-dotnet-vue-vite/tree/v1.0">github</a>，下回見～</p>
+<p>今天的範例在 <a href="https://github.com/Annilla/test-dotnet-vue-vite/tree/v1.0" target="_blank" rel="noopener">github</a>，下回見～</p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/keithn/dotnetviteguide">A guide to getting started with ASP.NET Core 6, Vite, and Vue 3</a></li>
-<li><a target="_blank" rel="noopener" href="https://vitejs.dev/">Vite</a></li>
-<li><a target="_blank" rel="noopener" href="https://vuejs.org/">Vue 3</a></li>
+<li><a href="https://github.com/keithn/dotnetviteguide" target="_blank" rel="noopener">A guide to getting started with ASP.NET Core 6, Vite, and Vue 3</a></li>
+<li><a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a></li>
+<li><a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a></li>
 </ul>
 
             
@@ -417,7 +411,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -455,7 +449,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -464,7 +458,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -533,7 +527,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -571,7 +565,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -580,7 +574,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -642,14 +636,14 @@
         
             <h4 id="about-card-name">Anny Chang</h4>
         
-            <div id="about-card-bio"><p>Know my limits but never stop trying to exceed them.</p>
+            <div id="about-card-bio"><p>author.bio</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>F2E &amp; UI Designer</p>
+                <p>author.job</p>
 
             </div>
         
@@ -710,7 +704,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -743,7 +737,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -776,7 +770,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -809,7 +803,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -842,7 +836,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -875,7 +869,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -908,7 +902,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -941,7 +935,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1031,7 +1025,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-dnqzkpjdnehhummrka7hd2q2zp6abtkzfz8pbvwk9fr1spl7z7hzxgtnbydx.min.js"></script>
+<script src="/assets/js/script-qymklzvqmjkzndnf0y2cb2csuuvuwdstoqhkajqhgq3jjogah3gni3cb2jmg.min.js"></script>
 
 <!--SCRIPTS END-->
 
