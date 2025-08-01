@@ -1,0 +1,1113 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>React Redux Practice - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近朋友問我關於 Redux 的問題，但我已經有兩年沒碰 React 了。所以藉此機會找了 youtube 上的教程，好好複習一次。\n\nRedux\nRedux 透過單向數據流模型來管理狀態，幫助應用程式擴展規模\n\n\n\nRedux Devtools 幫助開發者進行狀態的監控與偵錯\n\n\nRedux FlowRedux Flow 有個儲存所有狀態 (State) 的倉庫 (Store)，頁面會依據這些狀態 (State) 產生對應的介面 (UI)。當使用者對介面 (UI) 觸發動作 (Actions) 時，動作 (Actions) 會把使用者所做的事情 (payload) 傳輸給處理器 (Reducer) 做運算， 處理器 (Reducer) 處理完後變會把倉庫 (Store) 裡的狀態 (State) 更新，所以頁面就會再依據狀態 (State) 的改變產生對應的新介面 (UI)。\n\n安裝打下列指令安裝 React App。\n1npx create-react-app redux-tutorial\n誒？為什麼是 npx 呢？那是什麼？所以我去搜尋了npx 使用教程如下。\n\n除了調用項目內部模塊，npx 還能避免全局安裝的模塊。比如，create-react-app 這個模塊是全局安裝，npx 可以運行它，而且不進行全局安裝。上面代碼運行時，npx 將create-react-app下載到一個臨時目錄，使用以後再刪除。所以，以後再次執行上面的命令，會重新下載create-react-app。\n\n意思就是他不會在你電腦安裝 create-react-app 這個項目呦～幫你產生好專案後，就會自動移除不佔空間。\n接下來進入專案，安裝 Redux。\n1cd redux-tutorial\n1yarn add redux react-redux\n將專案啟動檢查有沒有安裝成功。\n1yarn start\n起成功的話會看到瀏覽器自動開啟頁面如下圖。頁面上會提示去修改 src/App.js 就會自動 reload 畫面。\n\n創建 StorecreateStore教程在 index.js 先創建了簡易的 store。Git#1\n12345678910111213141516171819202122232425262728293031323334...import &#123; createStore &#125; from 'redux';// reducerfunction reducer(state, action) &#123;  // 當 action type 為 _changeState 時，將 state 更改為 action 帶過來的 payload 值  if (action.type === '_changeState') &#123;    return action.payload.newState;  &#125;  // 預設沒有動作時的值  return 'state';&#125;// 創建 sotreconst store = createStore(reducer);// 印出初始的 state 值console.log(store.getState());// 設定動作屬性所帶的 payload 值const action = &#123;  type: '_changeState',  payload: &#123;    newState: 'New State'  &#125;&#125;;// 將動作帶入 reducer 中，進而更新 store 中的 statestore.dispatch(action);// 印出經過動作後的 state 值console.log(store.getState());...\ncombineReducers當有兩個以上的 Reducers 時，在 index.js 做合併。 Git#2\n12345678910111213141516171819202122232425262728293031323334353637383940414243444546...import &#123; createStore, combineReducers &#125; from 'redux';// 將 Reducer 分成專門處理產品和使用者資訊兩種// 專門處理產品的 Reducerfunction productsReducer(state = [], action) &#123;  return state;&#125;// 專門處理使用者的 Reducerfunction userReducer(state = '', &#123;type, payload&#125;) &#123;  switch (type) &#123;    case 'updateUser':      return payload.user;  &#125;  return state;&#125;// 將兩種 Reducer 合起來放在 store 用const allReducers = combineReducers(&#123;  products: productsReducer,  user: userReducer&#125;);const store = createStore(  allReducers,  // 放入起始值  &#123;    products: [&#123; name: 'iPhone' &#125;],    user: 'Anny Chang'  &#125;,  // 開啟 devTool  window.__REDUX_DEVTOOLS_EXTENSION__ &amp;&amp; window.__REDUX_DEVTOOLS_EXTENSION__());// 定義動作const updateUserAction = &#123;  type: 'updateUser',  payload: &#123;    user: 'John'  &#125;&#125;// 將動作帶入 reducer 中，進而更新 store 中的 statestore.dispatch(updateUserAction);ReactDOM.render(&lt;Provider store=&#123;store&#125;&gt;&lt;App /&gt;&lt;/Provider&gt;, document.getElementById('root'));...\nReducers and Actions將 Reducers 和 Actions 從 index.js 中抽離。Git#3\nActions在 src/acitons/ 新增 user-actions.js 和 products-actions.js。\nuser-actions.js\n1234567891011// 將 type 名稱輸出供 Reducer 共用export const UPDATE_USER = 'users:updateUser';export function updateUser (newUser) &#123;  return &#123;    type: UPDATE_USER,    payload: &#123;      user: newUser    &#125;  &#125;&#125;\nReducers在 src/reducers/ 新增 user-reducer.js 和 products-reducer.js。\nuser-reducer.js\n1234567891011// 從 Action 那裡取得動作名稱import &#123; UPDATE_USER &#125; from '../actions/user-actions'export default function userReducer(state = '', &#123;type, payload&#125;) &#123;  switch (type) &#123;    case UPDATE_USER:      return payload.user;    default:      return state;  &#125;&#125;\nViewApp.js\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162import React, &#123; Component &#125; from 'react';import logo from './logo.svg';import './App.css';import &#123; connect &#125; from 'react-redux';import &#123; updateUser &#125; from './actions/user-actions'class App extends Component &#123;  constructor(props) &#123;    // Using super in classes    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super#Using_super_in_classes    // super() 將父類的構建項目傳到子項目    super(props);    // 將 onUpdateUser(event) 綁定 component 本身 = this    this.onUpdateUser = this.onUpdateUser.bind(this);  &#125;  onUpdateUser(event) &#123;    // this = component 本身    // 將輸入框的文字丟給 Redux Action    this.props.onUpdateUser(event.target.value);  &#125;  render() &#123;    return (      &lt;div className=\"App\"&gt;        &lt;header className=\"App-header\"&gt;          &lt;img src=&#123;logo&#125; className=\"App-logo\" alt=\"logo\" /&gt;          &lt;p&gt;            Edit &lt;code&gt;src/App.js&lt;/code&gt; and save to reload.          &lt;/p&gt;          &lt;p&gt;Practice by Anny Chang&lt;/p&gt;          &lt;a            className=\"App-link\"            href=\"https://reactjs.org\"            target=\"_blank\"            rel=\"noopener noreferrer\"          &gt;            Learn React          &lt;/a&gt;          &lt;h1&gt;            &lt;input onChange=&#123;this.onUpdateUser&#125;&gt;&lt;/input&gt;            &lt;br/&gt;            &#123;this.props.user&#125;          &lt;/h1&gt;        &lt;/header&gt;      &lt;/div&gt;    );  &#125;&#125;// 將 Redux State 丟到此 component 的 propconst mapStateToProps = state =&gt; (&#123;  products: state.products,  user: state.user&#125;);// 將 Redux Action 丟到此 component 的 propconst mapActionsToProps = &#123;  onUpdateUser: updateUser&#125;;export default connect(mapStateToProps, mapActionsToProps)(App);\nRedux-thunk當我們在接取 API 非同步的請求時，就需要 Redux-thunk 這個 middleware，幫助 Promise 回傳過後可以在 dispatch 其他的 Action。Git#4\n安裝 redux-thunk。\n1yarn add redux-thunk\n在 index.js 引用 thunk。\n1234567891011121314151617181920212223...import thunk from 'redux-thunk';import &#123; applyMiddleware, compose, createStore, combineReducers &#125; from 'redux';...// 使用 applyMiddleware 將 thunk 帶進去改變原生 dispatch 行為// Thunk 是一個以 action 為本的包裹器// 在 Redux 中藉由 Redux-Thunk 這個 Redux Middleware 讓我們可以在使用時不去區分 pure action creator 還是 thunk action creatorconst allStoreEnhancers = compose (  applyMiddleware(thunk),  window.__REDUX_DEVTOOLS_EXTENSION__ &amp;&amp; window.__REDUX_DEVTOOLS_EXTENSION__());const store = createStore(  allReducers,  &#123;    products: [&#123; name: 'iPhone' &#125;],    user: 'Anny Chang'  &#125;,  allStoreEnhancers);...\nActionsuser-actions.js\n12345678910111213141516171819202122232425262728293031323334import axios from 'axios';...export const SHOW_ERROR = 'users:showError';...export function showError () &#123;  return &#123;    type: SHOW_ERROR,    payload: &#123;      user: 'ERROR!!'    &#125;  &#125;&#125;export function apiRequest() &#123;  return dispatch =&gt; &#123;    // 使用 axios 接取 API Promise    // 這邊網址因為有 CORS，所以必定 ERROR    axios(&#123;      method: 'GET',      url: 'http://google.com'    &#125;).then(response =&gt; &#123;      // 成功的話會 dispatch updateUser Action      console.log('SUCCESS');      dispatch(updateUser(response.newUser));    &#125;).catch(response =&gt; &#123;      // 失敗的話會 dispatch showError Action      console.log('ERROR');      dispatch(showError());    &#125;)  &#125;&#125;\nReducersuser-reducer.js\n123456789101112import &#123; UPDATE_USER, SHOW_ERROR &#125; from '../actions/user-actions'export default function userReducer(state = '', &#123;type, payload&#125;) &#123;  switch (type) &#123;    case UPDATE_USER:      return payload.user;    case SHOW_ERROR:      return payload.user;    default:      return state;  &#125;&#125;\nViewApp.js\n1234567891011121314151617181920212223242526272829...import &#123; updateUser, apiRequest &#125; from './actions/user-actions'class App extends Component &#123;  constructor(props) &#123;    ...  &#125;  // 在 component 出現的時候進行 API request  componentDidMount () &#123;    this.props.onApiRequest();  &#125;  ...  render() &#123;    ...  &#125;&#125;...// 將 apiRequest 放到此 component 的 propsconst mapActionsToProps = &#123;  onUpdateUser: updateUser,  onApiRequest: apiRequest&#125;;export default connect(mapStateToProps, mapActionsToProps)(App);\nReselect使用者每次都會透過 action 去做 dispatch 進而改變 state 的值。那麼，問題來了，如果需要的計算量比較大，每次更新的重新計算就會造成性能的問題。為了避免不必要的計算，Reselect 就是來解決此問題。Git#5\n\n如果有用過 Vue 的話，就類似 computed 的功能。\n\nSelectors 的特點為：\n\nSelectors 可以用來計算延伸的資料，允許 Redux 去儲存最低限度的 state。也就是說，state 只儲存原始的基本資料，中間延伸的計算透過 Selector 呈現即可。\n\nSelectors 很有效率。一個 selector 只會在與他相關的變數有改變的時候才會重新計算。\n\nSelectors 可以多個組合。可被其他的 selectors 當作變數來運用。\n\n\n這邊解釋就不用影片中的範例，因為我覺得官方提供的 example 解釋更為貼切。\n12345678910111213141516171819202122232425262728293031323334353637383940import &#123; createSelector &#125; from 'reselect'// 把 shop 裡面的 items 抓出來const shopItemsSelector = state =&gt; state.shop.items// 把 shop 裡面的 taxPercent 抓出來const taxPercentSelector = state =&gt; state.shop.taxPercent// 把 items 的 value 做總和const subtotalSelector = createSelector(  shopItemsSelector,  items =&gt; items.reduce((acc, item) =&gt; acc + item.value, 0))// 用 subtotal 和 taxPercent 計算總稅額const taxSelector = createSelector(  subtotalSelector,  taxPercentSelector,  (subtotal, taxPercent) =&gt; subtotal * (taxPercent / 100))// 用 subtotal 和 tax 計算加稅後的總金額export const totalSelector = createSelector(  subtotalSelector,  taxSelector,  (subtotal, tax) =&gt; (&#123; total: subtotal + tax &#125;))let exampleState = &#123;  shop: &#123;    taxPercent: 8,    items: [      &#123; name: 'apple', value: 1.20 &#125;,      &#123; name: 'orange', value: 0.95 &#125;,    ]  &#125;&#125;console.log(subtotalSelector(exampleState)) // 2.15console.log(taxSelector(exampleState))      // 0.172console.log(totalSelector(exampleState))    // &#123; total: 2.322 &#125;\nSmart VS Dumb Component你不可能把每個子 component 都跟 Store 做聯繫，這樣很累且是過度使用。所以我們就會有一個專門和 Store 做聯繫的 Component，也就是 Smart Component。他接到資料後會往下傳給只吃 prop 的 Dumb Component。如此一來我們就能保持只有少數 Smart Component 控制 Store，而底下的 Dumb Component 因為只吃 prop 傳進來的值，所以也可安心的重複使用。\n\nSmart VS Dumb Component 的概念是通用的理論，並不是 React 獨有。所以同樣的概念也適用在 Vue 和 Angular 等框架上。\n\n\n參考資料\nRedux Middleware大略架構\n讓你的Action能作更多 — Redux-Thunk\nreact-redux性能优化之reselect\nSmart 组件 vs Dumb 组件\n\n","dateCreated":"2019-07-03T00:00:00+08:00","dateModified":"2019-07-03T00:00:00+08:00","datePublished":"2019-07-03T00:00:00+08:00","description":"最近朋友問我關於 Redux 的問題，但我已經有兩年沒碰 React 了。所以藉此機會找了 youtube 上的教程，好好複習一次。","headline":"React Redux Practice","image":["https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png","https://cdn-images-1.medium.com/max/1200/1*y6C4nSvy2Woe0m7bWEn4BA.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/","keywords":"JS, React, Redux","thumbnailUrl":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png"}</script>
+    <meta name="description" content="最近朋友問我關於 Redux 的問題，但我已經有兩年沒碰 React 了。所以藉此機會找了 youtube 上的教程，好好複習一次。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="React Redux Practice">
+<meta property="og:url" content="http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="最近朋友問我關於 Redux 的問題，但我已經有兩年沒碰 React 了。所以藉此機會找了 youtube 上的教程，好好複習一次。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lh3.googleusercontent.com/RCAqIMcoBNaVcnbKPXupA177bJvvluPn3GeaSEywgKbQ9tqDWh-cjeds7KbOJiCWStxVGOQLR23kbd0nRhY31T_f7BlJY3CfCXXhGGqYqTaQvZiZKwIpOkY2QBnDdNxY1rEkqvHJAuIrvfRYS5HU5PAiW-JK5baYknZXW-dn14aeptIf1OXblwufjzgNDRSP1gZqUzvG1yyKF88XxV8isg76MQ2yONKLHhrzDNu5Yx_OrcP1u95MtLR9F-mZf_ah65I-JmVYpbtfECihE7VNEn58n7vMp2CIym4JLvRTFspEzCAerEklTkI4aF7oWqcnO-2fK_IImagVK_JU5D2dqBvGA9ZB6XChXPMmbYDs-dinini_zUPgFvYFQK0ZvhW7-KIBsMIVFNNgFhhVZb3wc3mcwrwIvLlmWkqpGHevqclMLAuWlaj-1LeYndUMfE5MzcZ8CSzu7Vo3YO_MjEh8mxSzICgvz-gnIUs6ezMhTCxxSp8SXuta7SZbTcgqDDFzx1BovCKvVgxlvOOD0hNneBq3C0yPBhVAB5mcNInZhjfhWYshXmEJUPZDUiHFXRmMzeCLmoRzUU0DzE2oasezhmYktkb4aRq9XzSkE2d8b9DILg4wWP3skCXG6syozRvTQwnu6z9tZMi96CvFm6RmyKiRebM-Vro_=w922-h548-no">
+<meta property="og:image" content="https://user-images.githubusercontent.com/7957859/48663602-3aac4900-ea9b-11e8-921f-97059cbb599c.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/4fNoEoelX9xGuY9ujaqlV5bkoRzFWVJ12urnnBAs17FYumoFnC31TKe4hTzfpNBzG0Rde55vjURuPCCh7JiRYcl66xMZdgiijutv6ld2sRCwNBevGcfHj5sSUmCBmU3YrVGsagAVIpmmqGiZlI4wIGniBspsMA1CtGFA7f2punGbnfQLE_NhcPU8u_3VAxc3wmJJ1hxhaf_wO_FViTMzHx43-Lk3dmT3H219W4AAUPoPFMwWiiPyzNBtRZVzIyhLb6bGGLZPojsdaf5COQNN4NqfXnwgU0dNFX44tdM-10gYftyOBzsXwiCXu0aoPCei0nRvCp_cRlCClGYC6n9rp-4aNZ8GcaelZqN5nIf0jUYqegcGDoXeruwiy8g0x8_tlX5gAayXencALfp6LjfRTrM9Yry4z_VfgQuws0Y1-zvNdERmcZcFi3xfIPAfWuSxgdn5LeTxsm3fJ9eSCWobTf8n8KLW9rEXiwkBMiIqy4k7gYF6AnLzb9jssIp_huq0gStGif0pQdC-zjk144oSFkqmh9WtQGMGwSXTMfSL0g0NWKk9MehbxzFhRVKA-UrsN961N6dJXvs91IDJk3kT2Pb4ba_rx9yRnTu1mbPEvKp0hB73vro_RC94REWLrlzgkG6i_N9ezftI2z7TciZqnyMlGvCbwLIA=w1340-h932-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/0eGc8PAV_LPbfRoLNBV1BkkTQD37TUEjNij_RlVgxSEuYZNY4DKF8uGzrLBHVf2AE4TBM8x9rWyyKuJVMinEABsb-JvpT9bkwb0NNTSKNjYcBbNBmdnZ6W_kg54n3dGO5Nn4z3ODEQeiLYYKsdOj5jwyrsb1o8hgfX6PiirzQaKCa-Nn7uyHM22VNhwKD8ycZsBYICwXla6-z_C-y7a8ycYR1zN7oa0TaMHidHVS74tcBOumyuO5ZZISjlDhYjajvV5ERdTi6ypNQbBq79zXlwjRmjq9UyATG39FOn5Dk3byoatX_sEfevfBxTxDTEgukeEz2anjaoIIzDzEwJJS0MLXZxkAGhtSAwBkU9LCGRh9IPc4IgShJuqA2B8-9qqSBznAukDaKrdbkjotC6gbbv2wsm_ogOhB68qf9fWHap_Jh_32gF-znppLcU-kP9cyGAF1hEBSDdeOngarYU6uSaIuuVlqJFjakf3CgBFdZVspwHQbdYGOmSyxPN_NU_nrZg7dgjYJeI_FkPzR8lY4qETFKPYyfWTCArWuzry2GwQ36VIrcc4lmp5SlhLnyW2WNZmaf-MMkVpjYMmzkNbRymIFamQzA2GO49BmecALKJXy4z_tSkYqsa8pDyRECxa1RGspkoog9YUvthBasLtLTForiwJN0iez=w2560-h1446-no">
+<meta property="og:image" content="https://huzidaha.github.io/static/assets/img/posts/25608378-BE07-4050-88B1-72025085875A.png">
+<meta property="article:published_time" content="2019-07-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-07-02T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="React">
+<meta property="article:tag" content="Redux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/RCAqIMcoBNaVcnbKPXupA177bJvvluPn3GeaSEywgKbQ9tqDWh-cjeds7KbOJiCWStxVGOQLR23kbd0nRhY31T_f7BlJY3CfCXXhGGqYqTaQvZiZKwIpOkY2QBnDdNxY1rEkqvHJAuIrvfRYS5HU5PAiW-JK5baYknZXW-dn14aeptIf1OXblwufjzgNDRSP1gZqUzvG1yyKF88XxV8isg76MQ2yONKLHhrzDNu5Yx_OrcP1u95MtLR9F-mZf_ah65I-JmVYpbtfECihE7VNEn58n7vMp2CIym4JLvRTFspEzCAerEklTkI4aF7oWqcnO-2fK_IImagVK_JU5D2dqBvGA9ZB6XChXPMmbYDs-dinini_zUPgFvYFQK0ZvhW7-KIBsMIVFNNgFhhVZb3wc3mcwrwIvLlmWkqpGHevqclMLAuWlaj-1LeYndUMfE5MzcZ8CSzu7Vo3YO_MjEh8mxSzICgvz-gnIUs6ezMhTCxxSp8SXuta7SZbTcgqDDFzx1BovCKvVgxlvOOD0hNneBq3C0yPBhVAB5mcNInZhjfhWYshXmEJUPZDUiHFXRmMzeCLmoRzUU0DzE2oasezhmYktkb4aRq9XzSkE2d8b9DILg4wWP3skCXG6syozRvTQwnu6z9tZMi96CvFm6RmyKiRebM-Vro_=w922-h548-no">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png"/>
+    
+    
+        <meta property="og:image" content="https://cdn-images-1.medium.com/max/1200/1*y6C4nSvy2Woe0m7bWEn4BA.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://cdn-images-1.medium.com/max/1200/1*y6C4nSvy2Woe0m7bWEn4BA.png"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://cdn-images-1.medium.com/max/1200/1*y6C4nSvy2Woe0m7bWEn4BA.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            React Redux Practice
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-07-03T00:00:00+08:00">
+	
+		    2019 年 7 月 3 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/Frontend/">Frontend</a>, <a class="category-link" href="/categories/Frontend/React/">React</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>最近朋友問我關於 Redux 的問題，但我已經有兩年沒碰 React 了。所以藉此機會找了 youtube 上的<a href="https://youtu.be/OSSpVLpuVWA" target="_blank" rel="noopener">教程</a>，好好複習一次。</p>
+<a id="more"></a>
+<h2 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h2><ul>
+<li>Redux 透過單向數據流模型來管理狀態，幫助應用程式擴展規模</li>
+</ul>
+<p><img src="https://lh3.googleusercontent.com/RCAqIMcoBNaVcnbKPXupA177bJvvluPn3GeaSEywgKbQ9tqDWh-cjeds7KbOJiCWStxVGOQLR23kbd0nRhY31T_f7BlJY3CfCXXhGGqYqTaQvZiZKwIpOkY2QBnDdNxY1rEkqvHJAuIrvfRYS5HU5PAiW-JK5baYknZXW-dn14aeptIf1OXblwufjzgNDRSP1gZqUzvG1yyKF88XxV8isg76MQ2yONKLHhrzDNu5Yx_OrcP1u95MtLR9F-mZf_ah65I-JmVYpbtfECihE7VNEn58n7vMp2CIym4JLvRTFspEzCAerEklTkI4aF7oWqcnO-2fK_IImagVK_JU5D2dqBvGA9ZB6XChXPMmbYDs-dinini_zUPgFvYFQK0ZvhW7-KIBsMIVFNNgFhhVZb3wc3mcwrwIvLlmWkqpGHevqclMLAuWlaj-1LeYndUMfE5MzcZ8CSzu7Vo3YO_MjEh8mxSzICgvz-gnIUs6ezMhTCxxSp8SXuta7SZbTcgqDDFzx1BovCKvVgxlvOOD0hNneBq3C0yPBhVAB5mcNInZhjfhWYshXmEJUPZDUiHFXRmMzeCLmoRzUU0DzE2oasezhmYktkb4aRq9XzSkE2d8b9DILg4wWP3skCXG6syozRvTQwnu6z9tZMi96CvFm6RmyKiRebM-Vro_=w922-h548-no" alt="單向數據流模型" title="單向數據流模型"></p>
+<ul>
+<li><a href="https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd" target="_blank" rel="noopener">Redux Devtools</a> 幫助開發者進行狀態的監控與偵錯</li>
+</ul>
+<p><img src="https://user-images.githubusercontent.com/7957859/48663602-3aac4900-ea9b-11e8-921f-97059cbb599c.png" alt="Redux Devtools" title="Redux Devtools"></p>
+<h2 id="Redux-Flow"><a href="#Redux-Flow" class="headerlink" title="Redux Flow"></a>Redux Flow</h2><p>Redux Flow 有個儲存所有狀態 (State) 的倉庫 (Store)，頁面會依據這些狀態 (State) 產生對應的介面 (UI)。當使用者對介面 (UI) 觸發動作 (Actions) 時，動作 (Actions) 會把使用者所做的事情 (payload) 傳輸給處理器 (Reducer) 做運算， 處理器 (Reducer) 處理完後變會把倉庫 (Store) 裡的狀態 (State) 更新，所以頁面就會再依據狀態 (State) 的改變產生對應的新介面 (UI)。</p>
+<p><img src="https://lh3.googleusercontent.com/4fNoEoelX9xGuY9ujaqlV5bkoRzFWVJ12urnnBAs17FYumoFnC31TKe4hTzfpNBzG0Rde55vjURuPCCh7JiRYcl66xMZdgiijutv6ld2sRCwNBevGcfHj5sSUmCBmU3YrVGsagAVIpmmqGiZlI4wIGniBspsMA1CtGFA7f2punGbnfQLE_NhcPU8u_3VAxc3wmJJ1hxhaf_wO_FViTMzHx43-Lk3dmT3H219W4AAUPoPFMwWiiPyzNBtRZVzIyhLb6bGGLZPojsdaf5COQNN4NqfXnwgU0dNFX44tdM-10gYftyOBzsXwiCXu0aoPCei0nRvCp_cRlCClGYC6n9rp-4aNZ8GcaelZqN5nIf0jUYqegcGDoXeruwiy8g0x8_tlX5gAayXencALfp6LjfRTrM9Yry4z_VfgQuws0Y1-zvNdERmcZcFi3xfIPAfWuSxgdn5LeTxsm3fJ9eSCWobTf8n8KLW9rEXiwkBMiIqy4k7gYF6AnLzb9jssIp_huq0gStGif0pQdC-zjk144oSFkqmh9WtQGMGwSXTMfSL0g0NWKk9MehbxzFhRVKA-UrsN961N6dJXvs91IDJk3kT2Pb4ba_rx9yRnTu1mbPEvKp0hB73vro_RC94REWLrlzgkG6i_N9ezftI2z7TciZqnyMlGvCbwLIA=w1340-h932-no" alt="Redux Flow" title="Redux Flow"></p>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p>打下列指令安裝 React App。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx create-react-app redux-tutorial</span><br></pre></td></tr></table></figure>
+<p>誒？為什麼是 npx 呢？那是什麼？<br>所以我去搜尋了<a href="https://www.ruanyifeng.com/blog/2019/02/npx.html" target="_blank" rel="noopener">npx 使用教程</a>如下。</p>
+<blockquote>
+<p>除了調用項目內部模塊，npx 還能避免全局安裝的模塊。比如，create-react-app 這個模塊是全局安裝，npx 可以運行它，而且不進行全局安裝。上面代碼運行時，npx 將create-react-app下載到一個臨時目錄，使用以後再刪除。所以，以後再次執行上面的命令，會重新下載create-react-app。</p>
+</blockquote>
+<p>意思就是他不會在你電腦安裝 create-react-app 這個項目呦～幫你產生好專案後，就會自動移除不佔空間。</p>
+<p>接下來進入專案，安裝 Redux。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd redux-tutorial</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add redux react-redux</span><br></pre></td></tr></table></figure>
+<p>將專案啟動檢查有沒有安裝成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn start</span><br></pre></td></tr></table></figure>
+<p>起成功的話會看到瀏覽器自動開啟頁面如下圖。頁面上會提示去修改 src/App.js 就會自動 reload 畫面。</p>
+<p><img src="https://lh3.googleusercontent.com/0eGc8PAV_LPbfRoLNBV1BkkTQD37TUEjNij_RlVgxSEuYZNY4DKF8uGzrLBHVf2AE4TBM8x9rWyyKuJVMinEABsb-JvpT9bkwb0NNTSKNjYcBbNBmdnZ6W_kg54n3dGO5Nn4z3ODEQeiLYYKsdOj5jwyrsb1o8hgfX6PiirzQaKCa-Nn7uyHM22VNhwKD8ycZsBYICwXla6-z_C-y7a8ycYR1zN7oa0TaMHidHVS74tcBOumyuO5ZZISjlDhYjajvV5ERdTi6ypNQbBq79zXlwjRmjq9UyATG39FOn5Dk3byoatX_sEfevfBxTxDTEgukeEz2anjaoIIzDzEwJJS0MLXZxkAGhtSAwBkU9LCGRh9IPc4IgShJuqA2B8-9qqSBznAukDaKrdbkjotC6gbbv2wsm_ogOhB68qf9fWHap_Jh_32gF-znppLcU-kP9cyGAF1hEBSDdeOngarYU6uSaIuuVlqJFjakf3CgBFdZVspwHQbdYGOmSyxPN_NU_nrZg7dgjYJeI_FkPzR8lY4qETFKPYyfWTCArWuzry2GwQ36VIrcc4lmp5SlhLnyW2WNZmaf-MMkVpjYMmzkNbRymIFamQzA2GO49BmecALKJXy4z_tSkYqsa8pDyRECxa1RGspkoog9YUvthBasLtLTForiwJN0iez=w2560-h1446-no" alt="專案啟動頁面" title="專案啟動頁面"></p>
+<h2 id="創建-Store"><a href="#創建-Store" class="headerlink" title="創建 Store"></a>創建 Store</h2><h3 id="createStore"><a href="#createStore" class="headerlink" title="createStore"></a>createStore</h3><p>教程在 index.js 先創建了簡易的 store。<a href="https://github.com/Annilla/react-redux-practice/tree/V1" target="_blank" rel="noopener">Git#1</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// reducer</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reducer</span>(<span class="params">state, action</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 當 action type 為 _changeState 時，將 state 更改為 action 帶過來的 payload 值</span></span><br><span class="line">  <span class="keyword">if</span> (action.type === <span class="string">'_changeState'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> action.payload.newState;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 預設沒有動作時的值</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">'state'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 創建 sotre</span></span><br><span class="line"><span class="keyword">const</span> store = createStore(reducer);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 印出初始的 state 值</span></span><br><span class="line"><span class="built_in">console</span>.log(store.getState());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 設定動作屬性所帶的 payload 值</span></span><br><span class="line"><span class="keyword">const</span> action = &#123;</span><br><span class="line">  type: <span class="string">'_changeState'</span>,</span><br><span class="line">  payload: &#123;</span><br><span class="line">    newState: <span class="string">'New State'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將動作帶入 reducer 中，進而更新 store 中的 state</span></span><br><span class="line">store.dispatch(action);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 印出經過動作後的 state 值</span></span><br><span class="line"><span class="built_in">console</span>.log(store.getState());</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="combineReducers"><a href="#combineReducers" class="headerlink" title="combineReducers"></a>combineReducers</h3><p>當有兩個以上的 Reducers 時，在 index.js 做合併。 <a href="https://github.com/Annilla/react-redux-practice/tree/V2" target="_blank" rel="noopener">Git#2</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; createStore, combineReducers &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將 Reducer 分成專門處理產品和使用者資訊兩種</span></span><br><span class="line"><span class="comment">// 專門處理產品的 Reducer</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">productsReducer</span>(<span class="params">state = [], action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> state;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 專門處理使用者的 Reducer</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">userReducer</span>(<span class="params">state = <span class="string">''</span>, &#123;type, payload&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'updateUser'</span>:</span><br><span class="line">      <span class="keyword">return</span> payload.user;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> state;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 將兩種 Reducer 合起來放在 store 用</span></span><br><span class="line"><span class="keyword">const</span> allReducers = combineReducers(&#123;</span><br><span class="line">  products: productsReducer,</span><br><span class="line">  user: userReducer</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = createStore(</span><br><span class="line">  allReducers,</span><br><span class="line">  <span class="comment">// 放入起始值</span></span><br><span class="line">  &#123;</span><br><span class="line">    products: [&#123; <span class="attr">name</span>: <span class="string">'iPhone'</span> &#125;],</span><br><span class="line">    user: <span class="string">'Anny Chang'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 開啟 devTool</span></span><br><span class="line">  <span class="built_in">window</span>.__REDUX_DEVTOOLS_EXTENSION__ &amp;&amp; <span class="built_in">window</span>.__REDUX_DEVTOOLS_EXTENSION__()</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定義動作</span></span><br><span class="line"><span class="keyword">const</span> updateUserAction = &#123;</span><br><span class="line">  type: <span class="string">'updateUser'</span>,</span><br><span class="line">  payload: &#123;</span><br><span class="line">    user: <span class="string">'John'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將動作帶入 reducer 中，進而更新 store 中的 state</span></span><br><span class="line">store.dispatch(updateUserAction);</span><br><span class="line"></span><br><span class="line">ReactDOM.render(<span class="xml"><span class="tag">&lt;<span class="name">Provider</span> <span class="attr">store</span>=<span class="string">&#123;store&#125;</span>&gt;</span><span class="tag">&lt;<span class="name">App</span> /&gt;</span><span class="tag">&lt;/<span class="name">Provider</span>&gt;</span></span>, <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>));</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="Reducers-and-Actions"><a href="#Reducers-and-Actions" class="headerlink" title="Reducers and Actions"></a>Reducers and Actions</h2><p>將 Reducers 和 Actions 從 index.js 中抽離。<a href="https://github.com/Annilla/react-redux-practice/tree/V3" target="_blank" rel="noopener">Git#3</a></p>
+<h3 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h3><p>在 <code>src/acitons/</code> 新增 <code>user-actions.js</code> 和 <code>products-actions.js</code>。</p>
+<p>user-actions.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 將 type 名稱輸出供 Reducer 共用</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> UPDATE_USER = <span class="string">'users:updateUser'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">updateUser</span> (<span class="params">newUser</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: UPDATE_USER,</span><br><span class="line">    payload: &#123;</span><br><span class="line">      user: newUser</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Reducers"><a href="#Reducers" class="headerlink" title="Reducers"></a>Reducers</h3><p>在 <code>src/reducers/</code> 新增 <code>user-reducer.js</code> 和 <code>products-reducer.js</code>。</p>
+<p>user-reducer.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 從 Action 那裡取得動作名稱</span></span><br><span class="line"><span class="keyword">import</span> &#123; UPDATE_USER &#125; <span class="keyword">from</span> <span class="string">'../actions/user-actions'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">userReducer</span>(<span class="params">state = <span class="string">''</span>, &#123;type, payload&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">    <span class="keyword">case</span> UPDATE_USER:</span><br><span class="line">      <span class="keyword">return</span> payload.user;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><p>App.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> logo <span class="keyword">from</span> <span class="string">'./logo.svg'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'./App.css'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; connect &#125; <span class="keyword">from</span> <span class="string">'react-redux'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; updateUser &#125; <span class="keyword">from</span> <span class="string">'./actions/user-actions'</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="comment">// Using super in classes</span></span><br><span class="line">    <span class="comment">// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super#Using_super_in_classes</span></span><br><span class="line">    <span class="comment">// super() 將父類的構建項目傳到子項目</span></span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">    <span class="comment">// 將 onUpdateUser(event) 綁定 component 本身 = this</span></span><br><span class="line">    <span class="keyword">this</span>.onUpdateUser = <span class="keyword">this</span>.onUpdateUser.bind(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  onUpdateUser(event) &#123;</span><br><span class="line">    <span class="comment">// this = component 本身</span></span><br><span class="line">    <span class="comment">// 將輸入框的文字丟給 Redux Action</span></span><br><span class="line">    <span class="keyword">this</span>.props.onUpdateUser(event.target.value);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div className=<span class="string">"App"</span>&gt;</span><br><span class="line">        &lt;header className=<span class="string">"App-header"</span>&gt;</span><br><span class="line">          &lt;img src=&#123;logo&#125; className=<span class="string">"App-logo"</span> alt=<span class="string">"logo"</span> /&gt;</span><br><span class="line">          &lt;p&gt;</span><br><span class="line">            Edit &lt;code&gt;src/App.js&lt;<span class="regexp">/code&gt; and save to reload.</span></span><br><span class="line"><span class="regexp">          &lt;/</span>p&gt;</span><br><span class="line">          &lt;p&gt;Practice by Anny Chang&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">          &lt;a</span></span><br><span class="line"><span class="regexp">            className="App-link"</span></span><br><span class="line"><span class="regexp">            href="https:/</span><span class="regexp">/reactjs.org"</span></span><br><span class="line"><span class="regexp">            target="_blank"</span></span><br><span class="line"><span class="regexp">            rel="noopener noreferrer"</span></span><br><span class="line"><span class="regexp">          &gt;</span></span><br><span class="line"><span class="regexp">            Learn React</span></span><br><span class="line"><span class="regexp">          &lt;/</span>a&gt;</span><br><span class="line">          &lt;h1&gt;</span><br><span class="line">            &lt;input onChange=&#123;<span class="keyword">this</span>.onUpdateUser&#125;&gt;<span class="xml"><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span></span><br><span class="line">            &lt;br/&gt;</span><br><span class="line">            &#123;<span class="keyword">this</span>.props.user&#125;</span><br><span class="line">          &lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>header&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 將 Redux State 丟到此 component 的 prop</span></span><br><span class="line"><span class="regexp">const mapStateToProps = state =&gt; (&#123;</span></span><br><span class="line"><span class="regexp">  products: state.products,</span></span><br><span class="line"><span class="regexp">  user: state.user</span></span><br><span class="line"><span class="regexp">&#125;);</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 將 Redux Action 丟到此 component 的 prop</span></span><br><span class="line"><span class="regexp">const mapActionsToProps = &#123;</span></span><br><span class="line"><span class="regexp">  onUpdateUser: updateUser</span></span><br><span class="line"><span class="regexp">&#125;;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">export default connect(mapStateToProps, mapActionsToProps)(App);</span></span><br></pre></td></tr></table></figure>
+<h2 id="Redux-thunk"><a href="#Redux-thunk" class="headerlink" title="Redux-thunk"></a>Redux-thunk</h2><p>當我們在接取 API 非同步的請求時，就需要 Redux-thunk 這個 middleware，幫助 Promise 回傳過後可以在 dispatch 其他的 Action。<a href="https://github.com/Annilla/react-redux-practice/tree/V4" target="_blank" rel="noopener">Git#4</a></p>
+<p>安裝 redux-thunk。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add redux-thunk</span><br></pre></td></tr></table></figure>
+<p>在 index.js 引用 thunk。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> thunk <span class="keyword">from</span> <span class="string">'redux-thunk'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; applyMiddleware, compose, createStore, combineReducers &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 applyMiddleware 將 thunk 帶進去改變原生 dispatch 行為</span></span><br><span class="line"><span class="comment">// Thunk 是一個以 action 為本的包裹器</span></span><br><span class="line"><span class="comment">// 在 Redux 中藉由 Redux-Thunk 這個 Redux Middleware 讓我們可以在使用時不去區分 pure action creator 還是 thunk action creator</span></span><br><span class="line"><span class="keyword">const</span> allStoreEnhancers = compose (</span><br><span class="line">  applyMiddleware(thunk),</span><br><span class="line">  <span class="built_in">window</span>.__REDUX_DEVTOOLS_EXTENSION__ &amp;&amp; <span class="built_in">window</span>.__REDUX_DEVTOOLS_EXTENSION__()</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = createStore(</span><br><span class="line">  allReducers,</span><br><span class="line">  &#123;</span><br><span class="line">    products: [&#123; <span class="attr">name</span>: <span class="string">'iPhone'</span> &#125;],</span><br><span class="line">    user: <span class="string">'Anny Chang'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  allStoreEnhancers</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="Actions-1"><a href="#Actions-1" class="headerlink" title="Actions"></a>Actions</h3><p>user-actions.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span>;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> SHOW_ERROR = <span class="string">'users:showError'</span>;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">showError</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: SHOW_ERROR,</span><br><span class="line">    payload: &#123;</span><br><span class="line">      user: <span class="string">'ERROR!!'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">apiRequest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">dispatch</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 使用 axios 接取 API Promise</span></span><br><span class="line">    <span class="comment">// 這邊網址因為有 CORS，所以必定 ERROR</span></span><br><span class="line">    axios(&#123;</span><br><span class="line">      method: <span class="string">'GET'</span>,</span><br><span class="line">      url: <span class="string">'http://google.com'</span></span><br><span class="line">    &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 成功的話會 dispatch updateUser Action</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'SUCCESS'</span>);</span><br><span class="line">      dispatch(updateUser(response.newUser));</span><br><span class="line">    &#125;).catch(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 失敗的話會 dispatch showError Action</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'ERROR'</span>);</span><br><span class="line">      dispatch(showError());</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Reducers-1"><a href="#Reducers-1" class="headerlink" title="Reducers"></a>Reducers</h3><p>user-reducer.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; UPDATE_USER, SHOW_ERROR &#125; <span class="keyword">from</span> <span class="string">'../actions/user-actions'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">userReducer</span>(<span class="params">state = <span class="string">''</span>, &#123;type, payload&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">    <span class="keyword">case</span> UPDATE_USER:</span><br><span class="line">      <span class="keyword">return</span> payload.user;</span><br><span class="line">    <span class="keyword">case</span> SHOW_ERROR:</span><br><span class="line">      <span class="keyword">return</span> payload.user;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="View-1"><a href="#View-1" class="headerlink" title="View"></a>View</h3><p>App.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; updateUser, apiRequest &#125; <span class="keyword">from</span> <span class="string">'./actions/user-actions'</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 在 component 出現的時候進行 API request</span></span><br><span class="line">  componentDidMount () &#123;</span><br><span class="line">    <span class="keyword">this</span>.props.onApiRequest();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將 apiRequest 放到此 component 的 props</span></span><br><span class="line"><span class="keyword">const</span> mapActionsToProps = &#123;</span><br><span class="line">  onUpdateUser: updateUser,</span><br><span class="line">  onApiRequest: apiRequest</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> connect(mapStateToProps, mapActionsToProps)(App);</span><br></pre></td></tr></table></figure>
+<h2 id="Reselect"><a href="#Reselect" class="headerlink" title="Reselect"></a>Reselect</h2><p>使用者每次都會透過 action 去做 dispatch 進而改變 state 的值。那麼，問題來了，如果需要的計算量比較大，每次更新的重新計算就會造成性能的問題。為了避免不必要的計算，Reselect 就是來解決此問題。<a href="https://github.com/Annilla/react-redux-practice/tree/V5" target="_blank" rel="noopener">Git#5</a></p>
+<blockquote>
+<p>如果有用過 Vue 的話，就類似 computed 的功能。</p>
+</blockquote>
+<p>Selectors 的特點為：</p>
+<ul>
+<li><p>Selectors 可以用來計算延伸的資料，允許 Redux 去儲存最低限度的 state。也就是說，state 只儲存原始的基本資料，中間延伸的計算透過 Selector 呈現即可。</p>
+</li>
+<li><p>Selectors 很有效率。一個 selector 只會在與他相關的變數有改變的時候才會重新計算。</p>
+</li>
+<li><p>Selectors 可以多個組合。可被其他的 selectors 當作變數來運用。</p>
+</li>
+</ul>
+<p>這邊解釋就不用影片中的範例，因為我覺得官方提供的 example 解釋更為貼切。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createSelector &#125; <span class="keyword">from</span> <span class="string">'reselect'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 把 shop 裡面的 items 抓出來</span></span><br><span class="line"><span class="keyword">const</span> shopItemsSelector = <span class="function"><span class="params">state</span> =&gt;</span> state.shop.items</span><br><span class="line"><span class="comment">// 把 shop 裡面的 taxPercent 抓出來</span></span><br><span class="line"><span class="keyword">const</span> taxPercentSelector = <span class="function"><span class="params">state</span> =&gt;</span> state.shop.taxPercent</span><br><span class="line"></span><br><span class="line"><span class="comment">// 把 items 的 value 做總和</span></span><br><span class="line"><span class="keyword">const</span> subtotalSelector = createSelector(</span><br><span class="line">  shopItemsSelector,</span><br><span class="line">  items =&gt; items.reduce(<span class="function">(<span class="params">acc, item</span>) =&gt;</span> acc + item.value, <span class="number">0</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用 subtotal 和 taxPercent 計算總稅額</span></span><br><span class="line"><span class="keyword">const</span> taxSelector = createSelector(</span><br><span class="line">  subtotalSelector,</span><br><span class="line">  taxPercentSelector,</span><br><span class="line">  (subtotal, taxPercent) =&gt; subtotal * (taxPercent / <span class="number">100</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用 subtotal 和 tax 計算加稅後的總金額</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> totalSelector = createSelector(</span><br><span class="line">  subtotalSelector,</span><br><span class="line">  taxSelector,</span><br><span class="line">  (subtotal, tax) =&gt; (&#123; <span class="attr">total</span>: subtotal + tax &#125;)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> exampleState = &#123;</span><br><span class="line">  shop: &#123;</span><br><span class="line">    taxPercent: <span class="number">8</span>,</span><br><span class="line">    items: [</span><br><span class="line">      &#123; <span class="attr">name</span>: <span class="string">'apple'</span>, <span class="attr">value</span>: <span class="number">1.20</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">name</span>: <span class="string">'orange'</span>, <span class="attr">value</span>: <span class="number">0.95</span> &#125;,</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(subtotalSelector(exampleState)) <span class="comment">// 2.15</span></span><br><span class="line"><span class="built_in">console</span>.log(taxSelector(exampleState))      <span class="comment">// 0.172</span></span><br><span class="line"><span class="built_in">console</span>.log(totalSelector(exampleState))    <span class="comment">// &#123; total: 2.322 &#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Smart-VS-Dumb-Component"><a href="#Smart-VS-Dumb-Component" class="headerlink" title="Smart VS Dumb Component"></a>Smart VS Dumb Component</h2><p>你不可能把每個子 component 都跟 Store 做聯繫，這樣很累且是過度使用。所以我們就會有一個專門和 Store 做聯繫的 Component，也就是 Smart Component。他接到資料後會往下傳給只吃 prop 的 Dumb Component。如此一來我們就能保持只有少數 Smart Component 控制 Store，而底下的 Dumb Component 因為只吃 prop 傳進來的值，所以也可安心的重複使用。</p>
+<blockquote>
+<p>Smart VS Dumb Component 的概念是通用的理論，並不是 React 獨有。所以同樣的概念也適用在 Vue 和 Angular 等框架上。</p>
+</blockquote>
+<p><img src="https://huzidaha.github.io/static/assets/img/posts/25608378-BE07-4050-88B1-72025085875A.png" alt="Smart VS Dumb Component" title="Smart VS Dumb Component"></p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a href="https://medium.com/@WendellLiu/redux-middleware%E5%A4%A7%E7%95%A5%E6%9E%B6%E6%A7%8B-ace7e646c929" target="_blank" rel="noopener">Redux Middleware大略架構</a></li>
+<li><a href="https://medium.com/frochu/%E9%80%81%E8%AE%93%E4%BD%A0%E7%9A%84action%E8%83%BD%E4%BD%9C%E6%9B%B4%E5%A4%9A-redux-thunk-c07bc5488e48" target="_blank" rel="noopener">讓你的Action能作更多 — Redux-Thunk</a></li>
+<li><a href="https://www.jianshu.com/p/1fcef4c892ba" target="_blank" rel="noopener">react-redux性能优化之reselect</a></li>
+<li><a href="http://huziketang.mangojuice.top/books/react/lesson43" target="_blank" rel="noopener">Smart 组件 vs Dumb 组件</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/JS/" rel="tag">JS</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/React/" rel="tag">React</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Redux/" rel="tag">Redux</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/07/04/Frontend/Grab-Data-To-CSV-By-Using-NodeJS/"
+                    data-tooltip="Grab Data to CSV by using NodeJS"
+                    aria-label="上一篇: Grab Data to CSV by using NodeJS"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/06/07/UXUI/Google-Material-Studies-Shrine/"
+                    data-tooltip="Google Material Studies - Shrine"
+                    aria-label="下一篇: Google Material Studies - Shrine"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/07/04/Frontend/Grab-Data-To-CSV-By-Using-NodeJS/"
+                    data-tooltip="Grab Data to CSV by using NodeJS"
+                    aria-label="上一篇: Grab Data to CSV by using NodeJS"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/06/07/UXUI/Google-Material-Studies-Shrine/"
+                    data-tooltip="Google Material Studies - Shrine"
+                    aria-label="下一篇: Google Material Studies - Shrine"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2019/07/03/Frontend/React-Redux-Practice/';
+              
+            this.page.identifier = '2019/07/03/Frontend/React-Redux-Practice/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

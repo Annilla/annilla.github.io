@@ -1,0 +1,1074 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>D3 v4 with Vue - SVG Vertical Bar Chart - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"這次要來練習用 D3 搭配 Vue 做多組動態的 SVG 直條圖囉～\n前面幾篇有講過的原理這裡就不再次解釋，我們直接從繪製直條開始說起。\n\n繪製直條\nHTML\n\n這邊直條圖外面包了兩次 transition-group 是因為第一次進來頁面的時候，並不會呈現動畫，所以為了 Fixed 這個 Bug 所以外面又包了一次 transition-group。\n1234567891011121314151617&lt;!-- 直條 --&gt;&lt;!-- 為了初始有動畫，所以包了兩次 transition-group --&gt;&lt;transition-group tag=\"g\" name=\"growBar\"&gt;  &lt;transition-group tag=\"g\" name=\"growBar\" class=\"bar\" v-for=\"(group, key) in bar\" :key=\"`$&#123;key&#125;$&#123;group.rect.height&#125;$&#123;group.rect.x&#125;`\"&gt;      &lt;rect      v-for=\"(r, k) in group.rect\"      :key=\"`$&#123;k&#125;$&#123;r.height&#125;$&#123;r.x&#125;`\"      :fill=\"group.color\"      :x=\"r.x\"      :y=\"r.y\"      :width=\"r.width\"      :height=\"r.height\"      v-on:mouseover=\"showTooltip(key, k, $event)\"      v-on:mouseout=\"hiddenTooltip\"      &gt;&lt;/rect&gt;  &lt;/transition-group&gt;&lt;/transition-group&gt;\n\nCSS\n\n123456789101112131415161718192021222324252627282930313233/* 動畫 */.growBar-enter-active &#123; /* 進入動畫：進行中 */  /* 動畫時間： 伸縮變形1秒, 透明度1秒 */  transition: transform 0.7s, opacity 1s;&#125;.growBar-enter &#123; /* 進入動畫：開始 */  /* 因為直條的起始點 x, y 位於矩形的左上角，  若用 js 的方式是要同時變動 y 座標和高度，  但因為我們使用 css transition 的方式，  所以只能微調縮放和位移的比例，做到近乎相似的效果。  垂直縮放從0.55開始，垂直位移從-12%開始 */  transform: scaleY(0.55) translateY(-12%);  opacity: 0; /* 淡入從透明度0開始 */&#125;....../* 統計圖 */.chartContain &#123;  ....  .chart &#123;    ....    .chartWrap &#123;      ....      /* 因為起始點預設是左上角，所以要改成縮放中心為中間底部開始。         包了兩次 transition-group 所以群組.bar也要設定縮放中心。 */      .bar &#123;        transform-origin: 50% 100%;        rect &#123;          transform-origin: 50% 100%;        &#125;      &#125;    &#125;  &#125;&#125;\n\nJS\n\n直條寬度(barWidth)和個別 x 座標這兩個比較難懂的地方，在後面會用圖解的方式說明。\n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455// 顏色函數color() &#123;  return d3.scaleOrdinal(d3.schemeCategory20c);&#125;,barWidth() &#123;  /* --------------------  1. 剩下可放圖的地方 = 圖表寬度 - 左右的間距 (大約是x軸寬除上總刻數+1)      this.chart.width / (this.valueLength + 1) * this.valueLength  2. 扣掉長條圖中間的間隔      - (this.chart.gap * this.data.length)  3. 剩下的寬度分給所有長條      / (this.valueLength * this.data.length)  -------------------- */  return (    (this.chart.width / (this.valueLength + 1) * this.valueLength -      this.chart.gap * this.data.length) /    (this.valueLength * this.data.length)  );&#125;,// 直條座標、顏色bar() &#123;  let rectArray = [];  // 產生直條的陣列  if (this.valueLength) &#123;    this.data.forEach((group, index) =&gt; &#123;      let rectGroup = [];      group.value.forEach((e, i) =&gt; &#123;        rectGroup.push(&#123;          /* --------------------          1. 把群組直條往左推整體的一半              - this.barWidth * this.data.length / 2          2. 依個別順序向右平移              + this.barWidth * index          -------------------- */          x:            this.xScale(i + 1) -            this.barWidth * this.data.length / 2 +            this.barWidth * index, // 設定x座標          y: this.yScale(e.number), // 設定y座標          width: this.barWidth, // 設定寬度          height: this.chart.height - this.yScale(e.number) // 設定高度        &#125;);      &#125;);      rectArray.push(&#123;        rect: rectGroup,        color: this.color(index) // 設定顏色      &#125;);    &#125;);  &#125;  return rectArray;&#125;,\n\n直條寬度(barWidth)\n\n\n剩下可放圖的地方 = 圖表寬度 - 左右的間距 (大約是x軸寬除上總刻數+1)\n\n扣掉長條圖中間的間隔\n\n剩下的寬度分給所有長條\n\n\n\n直條x座標\n\n把群組直條往左推整體的一半\n\n依個別順序向右平移\n\n\n全部畫好的樣子如下圖，可以去 Github 查看完整程式碼喔！也可以在這裡查看直條圖的 Demo，我們下回見～\n\n","dateCreated":"2018-04-06T00:00:00+08:00","dateModified":"2018-04-06T00:00:00+08:00","datePublished":"2018-04-06T00:00:00+08:00","description":"這次要來練習用 D3 搭配 Vue 做多組動態的 SVG 直條圖囉～","headline":"D3 v4 with Vue - SVG Vertical Bar Chart","image":["https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no","https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/","keywords":"D3, Vue, SVG","thumbnailUrl":"https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"}</script>
+    <meta name="description" content="這次要來練習用 D3 搭配 Vue 做多組動態的 SVG 直條圖囉～">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="D3 v4 with Vue - SVG Vertical Bar Chart">
+<meta property="og:url" content="http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="這次要來練習用 D3 搭配 Vue 做多組動態的 SVG 直條圖囉～">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lh3.googleusercontent.com/jZblvHrlEVkWivyJRdqbnChcpzjIGTO0W51dGDMQTSJqtL6Fz3OgGclg79-eXpB9suVivseGe0NCGUcl3kA1n14BIBuUeS0KDzDq8LTTXVMBNiYtjm-KiY8-BnvmkaSxeF-qCUZIKL6atH_5Kh8utztXHtG-hhbq49oXesaVbGiHoc1bpwpA_YT3hcox7eqPiTt-oOTWmC_Uu3VSN8tZ1NKi0k6xpFqlJTrLxLc4PZ3SyDxHSDtscDZPMwAip5Ee7Dz3FnvETQxusKCu_7mnsosIVmY48P55F00UepRxv3gX_wGJ03dH7faNCLFeXShHVH54-Aw4iY8nLEX_p8qjPuhVgII9FO9BCR3Zrc7Y4AKRh6xnTPfNzGana3cm_Hfc01Imz_Dg_4dDnwimmzMOaDsF9wiMIhDlVc9O44RRu8L1T665QvIyANpYCnm8ujL6GAzZ39j6hXh1u-WKglTUpUBlgpO5GeOTSiG9XgKrA3pVL80fIq9kvgD61TZPmhSXId4Aj-m7tPkVMGJeDp-K_ukaoZW15RN-MIkQsRIxSurqhoGWkQ20lsKdKh4FvyAMbbG_Y1u68sPbdYvFZ5ka41-a5f7VtAu_alWZFw3XSLIBgXzoXfkHQtedzByyafq57wGhMLBb8qA__hutfVu4Omcvf3Zfbu9Q=w604-h694-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/TTY0912pddpHrNUxQY04UZm2rUYh9fucfjoaoxX33yjbSRf__xOZq-rIgZFjvJbR8Q4cIKD9kLZGyR10lt8uBG0_gUzDKmWF1Vmzy5ijYWybjCAkeo27OkiYiXDSyPdFJM89WcdajieDv0KyqaFj7swZ8mVpQNYSX76kvDN565oR6iIejII7hbHC4Oi69k6x897AdXx_uPWHrWmbshttNWoWtKkEoxHZQO37AR9HouaTD1vDGyh7EvfdP0zKL1lQOiLNqbmk2-CTdw3JrKysn84gVAa3ulKKVtg269fmV-vK3ITRyvh0Bp5kpgv_HfnUMenVp_HYdh0ldGimVi9FhmXJqjIY4emmKOH55Up5oaMMW2Z91C_dJA8mbex3Cev6AZXjU8aWsXmpGQIalHzjAzBXIUese1T3W6zMYrJeXNuxX_26ZfF_hKIMtuKMsHDtKRRsHwmgi1ZnBohh8vBArUJWpL210_i2feIToAWpm0doTzCNEiYMx6Lp75ySeejMjsunMzBPF_gPNKEDQPwwHovKxzgJbfQ22vvov4DNl-DVkJgqSPK-7tGPAcbttInT2VjU6BmHkV4EHsSZPQHRCQynilcLdrfKMGKyVVCx2jpChOrLZlSebOwESJ1q6mKV7CK4-EMbjm3whgVhuN1KjMwyyNEYC9pm=w604-h694-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/oPWMvbdY76bF-4K5gZKM6Lmees8dv6dDwCEz_hFvqcCK0vuGfcB2I_PafS41ajU3ehgU43swWfptKkqBFP1ap-WxQ8VeY0bWhypPglFygisUB8rtqBEJ6BhfPUgHw-dwQE23Z9QEMPH1geS5TsR4RrMHVmqQJBuKYhx0CPuvfOyuDoWoq2ynppBF7f0UMkaX6Qbko1nbw-T0RPHs9UgwxIUcvw4072hgGGVoXfwEFjXMFF3hHnepRt6Ap6aZh1pFPD6k9ZCOJKFvooaR0HiFE71nKfot2xwk3Q-aVEKjVAuwfDIu8EgPziuPDmZKkYnP1bFhXXvJIRw2pQCYFDnZSdL4eOwZ_JgOhRVc9aZwnrPkCN_CJDn0Ps4Uw6h5cvdlSITjjTyFPuQ_7oBrXAOnO0lVHzxqhb0SFrUbIEj_1AIdp5IkpoyuM3rKxiOlzBcS9I1DW9efIyDEUqF0KwBuMxwjoJaSyoxryGW0HWkFNaCCshb9PJZHWEvxI_63H-l7X1Uxn3Kv3StFS2VgzuvU0o4MfdYYEFH1STCK_6vZMv_xbCtXyWZM1Ag-ci2LqATgfQ9GyGD3Se1oxjmDrRBP8MOdfH_guJLmvCGEQYm7FK-YZZX1YsiGR_p1zM4X7KtS77Zd6hpXVJa31bzQISz7kUStKR01lCZG=w604-h694-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/B6TzzgsZw8pI0JAbb7_DHD3on1AKCSLQPs3N0uMIfiJQRNY1hvZ803AcoXCcFrYEfxHzDxCOau_DUmhILVyNumh_ZRWDd3332BsI787fiD3oO8UCBOI7qzwUjk0B_42izUfJJAKseu6mzDgkBePYY1e2_RiMysSHBc_hQ_rjupXuZyYeBjRY7HOd_VuyWMbjaYMzgDVbTy5Szs1cOC4obFVrc-E_-NynRtkTRQXrfoPF_sS6259qxcDMs6nvXeoFoVsIhwo56uCAw2K07ciS-Md-4m7WwV-kx-YMJMFAilrZ_aJXUPRwYdTA_8u9AmCynhASNzOpSUmfeiDPvYFsjdWD9FeR7UmRjRaRP0KrROeQRmLPx0B4hbfuy467v83Zkvp7ghEwyymFOTyB83kvXWzjLPij4k5xziN5dPKX7cQnuAOvpnumew3Dx7wrXDST9wx6qPOrisLUoeQjjEVnwl2L012UT0ow7fh21HBjSCglX33mipaAD5QJZz_iYf6Yff4HlRXvPSr3a_kkRAw_BLxm0J-5RI8Q-T9js8vIXn3At2u6Nk7MwKhede7Mkcq3W4MjCu7ZEZdMuMdBMskdNl4takHf5FFgUjPhid1EpXkASa9RWVpYicmaeuf4QvcBu3IfIl4b3zGMbB_j8M4_QwFBA4cz1gw_=w917-h1024-no">
+<meta property="article:published_time" content="2018-04-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2018-04-05T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="D3">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="SVG">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/jZblvHrlEVkWivyJRdqbnChcpzjIGTO0W51dGDMQTSJqtL6Fz3OgGclg79-eXpB9suVivseGe0NCGUcl3kA1n14BIBuUeS0KDzDq8LTTXVMBNiYtjm-KiY8-BnvmkaSxeF-qCUZIKL6atH_5Kh8utztXHtG-hhbq49oXesaVbGiHoc1bpwpA_YT3hcox7eqPiTt-oOTWmC_Uu3VSN8tZ1NKi0k6xpFqlJTrLxLc4PZ3SyDxHSDtscDZPMwAip5Ee7Dz3FnvETQxusKCu_7mnsosIVmY48P55F00UepRxv3gX_wGJ03dH7faNCLFeXShHVH54-Aw4iY8nLEX_p8qjPuhVgII9FO9BCR3Zrc7Y4AKRh6xnTPfNzGana3cm_Hfc01Imz_Dg_4dDnwimmzMOaDsF9wiMIhDlVc9O44RRu8L1T665QvIyANpYCnm8ujL6GAzZ39j6hXh1u-WKglTUpUBlgpO5GeOTSiG9XgKrA3pVL80fIq9kvgD61TZPmhSXId4Aj-m7tPkVMGJeDp-K_ukaoZW15RN-MIkQsRIxSurqhoGWkQ20lsKdKh4FvyAMbbG_Y1u68sPbdYvFZ5ka41-a5f7VtAu_alWZFw3XSLIBgXzoXfkHQtedzByyafq57wGhMLBb8qA__hutfVu4Omcvf3Zfbu9Q=w604-h694-no">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            D3 v4 with Vue - SVG Vertical Bar Chart
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-04-06T00:00:00+08:00">
+	
+		    2018 年 4 月 6 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/D3/">D3</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>這次要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做多組動態的 <code>SVG</code> 直條圖囉～<br><a id="more"></a></p>
+<p>前面幾篇有講過的原理這裡就不再次解釋，我們直接從繪製直條開始說起。</p>
+<hr>
+<h2 id="繪製直條"><a href="#繪製直條" class="headerlink" title="繪製直條"></a>繪製直條</h2><ul>
+<li>HTML</li>
+</ul>
+<p>這邊直條圖外面包了兩次 <code>transition-group</code> 是因為第一次進來頁面的時候，並不會呈現動畫，所以為了 Fixed 這個 Bug 所以外面又包了一次 <code>transition-group</code>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 直條 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 為了初始有動畫，所以包了兩次 transition-group --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">transition-group</span> <span class="attr">tag</span>=<span class="string">"g"</span> <span class="attr">name</span>=<span class="string">"growBar"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">transition-group</span> <span class="attr">tag</span>=<span class="string">"g"</span> <span class="attr">name</span>=<span class="string">"growBar"</span> <span class="attr">class</span>=<span class="string">"bar"</span> <span class="attr">v-for</span>=<span class="string">"(group, key) in bar"</span> <span class="attr">:key</span>=<span class="string">"`$&#123;key&#125;$&#123;group.rect.height&#125;$&#123;group.rect.x&#125;`"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">rect</span></span></span><br><span class="line"><span class="tag">      <span class="attr">v-for</span>=<span class="string">"(r, k) in group.rect"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:key</span>=<span class="string">"`$&#123;k&#125;$&#123;r.height&#125;$&#123;r.x&#125;`"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:fill</span>=<span class="string">"group.color"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:x</span>=<span class="string">"r.x"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:y</span>=<span class="string">"r.y"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:width</span>=<span class="string">"r.width"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:height</span>=<span class="string">"r.height"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">v-on:mouseover</span>=<span class="string">"showTooltip(key, k, $event)"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">v-on:mouseout</span>=<span class="string">"hiddenTooltip"</span></span></span><br><span class="line"><span class="tag">      &gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">transition-group</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">transition-group</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>CSS</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 動畫 */</span></span><br><span class="line"><span class="selector-class">.growBar-enter-active</span> &#123; <span class="comment">/* 進入動畫：進行中 */</span></span><br><span class="line">  <span class="comment">/* 動畫時間： 伸縮變形1秒, 透明度1秒 */</span></span><br><span class="line">  <span class="attribute">transition</span>: transform <span class="number">0.7s</span>, opacity <span class="number">1s</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.growBar-enter</span> &#123; <span class="comment">/* 進入動畫：開始 */</span></span><br><span class="line">  <span class="comment">/* 因為直條的起始點 x, y 位於矩形的左上角，</span></span><br><span class="line"><span class="comment">  若用 js 的方式是要同時變動 y 座標和高度，</span></span><br><span class="line"><span class="comment">  但因為我們使用 css transition 的方式，</span></span><br><span class="line"><span class="comment">  所以只能微調縮放和位移的比例，做到近乎相似的效果。</span></span><br><span class="line"><span class="comment">  垂直縮放從0.55開始，垂直位移從-12%開始 */</span></span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">scaleY</span>(0.55) <span class="built_in">translateY</span>(-12%);</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">0</span>; <span class="comment">/* 淡入從透明度0開始 */</span></span><br><span class="line">&#125;</span><br><span class="line">......</span><br><span class="line"><span class="comment">/* 統計圖 */</span></span><br><span class="line"><span class="selector-class">.chartContain</span> &#123;</span><br><span class="line">  ....</span><br><span class="line">  <span class="selector-class">.chart</span> &#123;</span><br><span class="line">    ....</span><br><span class="line">    <span class="selector-class">.chartWrap</span> &#123;</span><br><span class="line">      ....</span><br><span class="line">      <span class="comment">/* 因為起始點預設是左上角，所以要改成縮放中心為中間底部開始。</span></span><br><span class="line"><span class="comment">         包了兩次 transition-group 所以群組.bar也要設定縮放中心。 */</span></span><br><span class="line">      <span class="selector-class">.bar</span> &#123;</span><br><span class="line">        <span class="attribute">transform-origin</span>: <span class="number">50%</span> <span class="number">100%</span>;</span><br><span class="line">        rect &#123;</span><br><span class="line">          <span class="selector-tag">transform-origin</span>: 50% 100%;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>JS</li>
+</ul>
+<p>直條寬度(barWidth)和個別 x 座標這兩個比較難懂的地方，在後面會用圖解的方式說明。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 顏色函數</span></span><br><span class="line">color() &#123;</span><br><span class="line">  <span class="keyword">return</span> d3.scaleOrdinal(d3.schemeCategory20c);</span><br><span class="line">&#125;,</span><br><span class="line">barWidth() &#123;</span><br><span class="line">  <span class="comment">/* --------------------</span></span><br><span class="line"><span class="comment">  1. 剩下可放圖的地方 = 圖表寬度 - 左右的間距 (大約是x軸寬除上總刻數+1)</span></span><br><span class="line"><span class="comment">      this.chart.width / (this.valueLength + 1) * this.valueLength</span></span><br><span class="line"><span class="comment">  2. 扣掉長條圖中間的間隔</span></span><br><span class="line"><span class="comment">      - (this.chart.gap * this.data.length)</span></span><br><span class="line"><span class="comment">  3. 剩下的寬度分給所有長條</span></span><br><span class="line"><span class="comment">      / (this.valueLength * this.data.length)</span></span><br><span class="line"><span class="comment">  -------------------- */</span></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    (<span class="keyword">this</span>.chart.width / (<span class="keyword">this</span>.valueLength + <span class="number">1</span>) * <span class="keyword">this</span>.valueLength -</span><br><span class="line">      <span class="keyword">this</span>.chart.gap * <span class="keyword">this</span>.data.length) /</span><br><span class="line">    (<span class="keyword">this</span>.valueLength * <span class="keyword">this</span>.data.length)</span><br><span class="line">  );</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// 直條座標、顏色</span></span><br><span class="line">bar() &#123;</span><br><span class="line">  <span class="keyword">let</span> rectArray = [];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 產生直條的陣列</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.valueLength) &#123;</span><br><span class="line">    <span class="keyword">this</span>.data.forEach(<span class="function">(<span class="params">group, index</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> rectGroup = [];</span><br><span class="line"></span><br><span class="line">      group.value.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">        rectGroup.push(&#123;</span><br><span class="line">          <span class="comment">/* --------------------</span></span><br><span class="line"><span class="comment">          1. 把群組直條往左推整體的一半</span></span><br><span class="line"><span class="comment">              - this.barWidth * this.data.length / 2</span></span><br><span class="line"><span class="comment">          2. 依個別順序向右平移</span></span><br><span class="line"><span class="comment">              + this.barWidth * index</span></span><br><span class="line"><span class="comment">          -------------------- */</span></span><br><span class="line">          x:</span><br><span class="line">            <span class="keyword">this</span>.xScale(i + <span class="number">1</span>) -</span><br><span class="line">            <span class="keyword">this</span>.barWidth * <span class="keyword">this</span>.data.length / <span class="number">2</span> +</span><br><span class="line">            <span class="keyword">this</span>.barWidth * index, <span class="comment">// 設定x座標</span></span><br><span class="line">          y: <span class="keyword">this</span>.yScale(e.number), <span class="comment">// 設定y座標</span></span><br><span class="line">          width: <span class="keyword">this</span>.barWidth, <span class="comment">// 設定寬度</span></span><br><span class="line">          height: <span class="keyword">this</span>.chart.height - <span class="keyword">this</span>.yScale(e.number) <span class="comment">// 設定高度</span></span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      rectArray.push(&#123;</span><br><span class="line">        rect: rectGroup,</span><br><span class="line">        color: <span class="keyword">this</span>.color(index) <span class="comment">// 設定顏色</span></span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> rectArray;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="直條寬度-barWidth"><a href="#直條寬度-barWidth" class="headerlink" title="直條寬度(barWidth)"></a>直條寬度(barWidth)</h2><p><img src="https://lh3.googleusercontent.com/jZblvHrlEVkWivyJRdqbnChcpzjIGTO0W51dGDMQTSJqtL6Fz3OgGclg79-eXpB9suVivseGe0NCGUcl3kA1n14BIBuUeS0KDzDq8LTTXVMBNiYtjm-KiY8-BnvmkaSxeF-qCUZIKL6atH_5Kh8utztXHtG-hhbq49oXesaVbGiHoc1bpwpA_YT3hcox7eqPiTt-oOTWmC_Uu3VSN8tZ1NKi0k6xpFqlJTrLxLc4PZ3SyDxHSDtscDZPMwAip5Ee7Dz3FnvETQxusKCu_7mnsosIVmY48P55F00UepRxv3gX_wGJ03dH7faNCLFeXShHVH54-Aw4iY8nLEX_p8qjPuhVgII9FO9BCR3Zrc7Y4AKRh6xnTPfNzGana3cm_Hfc01Imz_Dg_4dDnwimmzMOaDsF9wiMIhDlVc9O44RRu8L1T665QvIyANpYCnm8ujL6GAzZ39j6hXh1u-WKglTUpUBlgpO5GeOTSiG9XgKrA3pVL80fIq9kvgD61TZPmhSXId4Aj-m7tPkVMGJeDp-K_ukaoZW15RN-MIkQsRIxSurqhoGWkQ20lsKdKh4FvyAMbbG_Y1u68sPbdYvFZ5ka41-a5f7VtAu_alWZFw3XSLIBgXzoXfkHQtedzByyafq57wGhMLBb8qA__hutfVu4Omcvf3Zfbu9Q=w604-h694-no" alt="剩下可放圖的地方 = 圖表寬度 - 左右的間距 (大約是x軸寬除上總刻數+1)" title="剩下可放圖的地方 = 圖表寬度 - 左右的間距 (大約是x軸寬除上總刻數+1)"></p>
+<p><img src="https://lh3.googleusercontent.com/TTY0912pddpHrNUxQY04UZm2rUYh9fucfjoaoxX33yjbSRf__xOZq-rIgZFjvJbR8Q4cIKD9kLZGyR10lt8uBG0_gUzDKmWF1Vmzy5ijYWybjCAkeo27OkiYiXDSyPdFJM89WcdajieDv0KyqaFj7swZ8mVpQNYSX76kvDN565oR6iIejII7hbHC4Oi69k6x897AdXx_uPWHrWmbshttNWoWtKkEoxHZQO37AR9HouaTD1vDGyh7EvfdP0zKL1lQOiLNqbmk2-CTdw3JrKysn84gVAa3ulKKVtg269fmV-vK3ITRyvh0Bp5kpgv_HfnUMenVp_HYdh0ldGimVi9FhmXJqjIY4emmKOH55Up5oaMMW2Z91C_dJA8mbex3Cev6AZXjU8aWsXmpGQIalHzjAzBXIUese1T3W6zMYrJeXNuxX_26ZfF_hKIMtuKMsHDtKRRsHwmgi1ZnBohh8vBArUJWpL210_i2feIToAWpm0doTzCNEiYMx6Lp75ySeejMjsunMzBPF_gPNKEDQPwwHovKxzgJbfQ22vvov4DNl-DVkJgqSPK-7tGPAcbttInT2VjU6BmHkV4EHsSZPQHRCQynilcLdrfKMGKyVVCx2jpChOrLZlSebOwESJ1q6mKV7CK4-EMbjm3whgVhuN1KjMwyyNEYC9pm=w604-h694-no" alt="扣掉長條圖中間的間隔，剩下的寬度分給所有長條" title="扣掉長條圖中間的間隔，剩下的寬度分給所有長條"></p>
+<ol>
+<li><p>剩下可放圖的地方 = 圖表寬度 - 左右的間距 (大約是x軸寬除上總刻數+1)</p>
+</li>
+<li><p>扣掉長條圖中間的間隔</p>
+</li>
+<li><p>剩下的寬度分給所有長條</p>
+</li>
+</ol>
+<hr>
+<h2 id="直條x座標"><a href="#直條x座標" class="headerlink" title="直條x座標"></a>直條x座標</h2><p><img src="https://lh3.googleusercontent.com/oPWMvbdY76bF-4K5gZKM6Lmees8dv6dDwCEz_hFvqcCK0vuGfcB2I_PafS41ajU3ehgU43swWfptKkqBFP1ap-WxQ8VeY0bWhypPglFygisUB8rtqBEJ6BhfPUgHw-dwQE23Z9QEMPH1geS5TsR4RrMHVmqQJBuKYhx0CPuvfOyuDoWoq2ynppBF7f0UMkaX6Qbko1nbw-T0RPHs9UgwxIUcvw4072hgGGVoXfwEFjXMFF3hHnepRt6Ap6aZh1pFPD6k9ZCOJKFvooaR0HiFE71nKfot2xwk3Q-aVEKjVAuwfDIu8EgPziuPDmZKkYnP1bFhXXvJIRw2pQCYFDnZSdL4eOwZ_JgOhRVc9aZwnrPkCN_CJDn0Ps4Uw6h5cvdlSITjjTyFPuQ_7oBrXAOnO0lVHzxqhb0SFrUbIEj_1AIdp5IkpoyuM3rKxiOlzBcS9I1DW9efIyDEUqF0KwBuMxwjoJaSyoxryGW0HWkFNaCCshb9PJZHWEvxI_63H-l7X1Uxn3Kv3StFS2VgzuvU0o4MfdYYEFH1STCK_6vZMv_xbCtXyWZM1Ag-ci2LqATgfQ9GyGD3Se1oxjmDrRBP8MOdfH_guJLmvCGEQYm7FK-YZZX1YsiGR_p1zM4X7KtS77Zd6hpXVJa31bzQISz7kUStKR01lCZG=w604-h694-no" alt="扣掉長條圖中間的間隔，剩下的寬度分給所有長條" title="扣掉長條圖中間的間隔，剩下的寬度分給所有長條"></p>
+<ol>
+<li><p>把群組直條往左推整體的一半</p>
+</li>
+<li><p>依個別順序向右平移</p>
+</li>
+</ol>
+<p>全部畫好的樣子如下圖，可以去 <a href="https://github.com/Annilla/d3-practice-vue-svg/blob/master/src/components/BarVChart.vue" target="_blank" rel="noopener">Github</a> 查看完整程式碼喔！也可以在<a href="https://annilla.github.io/d3-practice-vue-svg/dist/">這裡</a>查看直條圖的 Demo，我們下回見～</p>
+<p><img src="https://lh3.googleusercontent.com/B6TzzgsZw8pI0JAbb7_DHD3on1AKCSLQPs3N0uMIfiJQRNY1hvZ803AcoXCcFrYEfxHzDxCOau_DUmhILVyNumh_ZRWDd3332BsI787fiD3oO8UCBOI7qzwUjk0B_42izUfJJAKseu6mzDgkBePYY1e2_RiMysSHBc_hQ_rjupXuZyYeBjRY7HOd_VuyWMbjaYMzgDVbTy5Szs1cOC4obFVrc-E_-NynRtkTRQXrfoPF_sS6259qxcDMs6nvXeoFoVsIhwo56uCAw2K07ciS-Md-4m7WwV-kx-YMJMFAilrZ_aJXUPRwYdTA_8u9AmCynhASNzOpSUmfeiDPvYFsjdWD9FeR7UmRjRaRP0KrROeQRmLPx0B4hbfuy467v83Zkvp7ghEwyymFOTyB83kvXWzjLPij4k5xziN5dPKX7cQnuAOvpnumew3Dx7wrXDST9wx6qPOrisLUoeQjjEVnwl2L012UT0ow7fh21HBjSCglX33mipaAD5QJZz_iYf6Yff4HlRXvPSr3a_kkRAw_BLxm0J-5RI8Q-T9js8vIXn3At2u6Nk7MwKhede7Mkcq3W4MjCu7ZEZdMuMdBMskdNl4takHf5FFgUjPhid1EpXkASa9RWVpYicmaeuf4QvcBu3IfIl4b3zGMbB_j8M4_QwFBA4cz1gw_=w917-h1024-no" alt="直條圖完成" title="直條圖"></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/D3/" rel="tag">D3</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/SVG/" rel="tag">SVG</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Vue/" rel="tag">Vue</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                    data-tooltip="D3 v4 with Vue - SVG Donut Chart"
+                    aria-label="上一篇: D3 v4 with Vue - SVG Donut Chart"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                    data-tooltip="D3 v4 with Vue - SVG Horizontal Bar Chart"
+                    aria-label="下一篇: D3 v4 with Vue - SVG Horizontal Bar Chart"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                    data-tooltip="D3 v4 with Vue - SVG Donut Chart"
+                    aria-label="上一篇: D3 v4 with Vue - SVG Donut Chart"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                    data-tooltip="D3 v4 with Vue - SVG Horizontal Bar Chart"
+                    aria-label="下一篇: D3 v4 with Vue - SVG Horizontal Bar Chart"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/';
+              
+            this.page.identifier = '2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

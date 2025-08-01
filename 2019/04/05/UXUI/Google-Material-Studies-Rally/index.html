@@ -1,0 +1,1166 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Google Material Studies - Rally - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"Material Guildline 應該很多設計師都閱讀過 N 遍了，但要設計時如何在框架下做到客制這件事應該還是很疑惑。官網上提出了幾個業界的實例分享，這點讓我很有興趣，所以接下來我會一一對這些案例做介紹。因為我上班做的案子比較多是系統類的設計，所以我第一個想介紹比較類似的是 Rally 這個案例。下面內容會一邊介紹，一邊穿插自己在職場上的一些心得或想法。\n\n案例背景Rally 是一個管理財務的 APP，它會追蹤使用者的花費習慣並產生預測和適當的警示通知。Rally 是設計來呈現大量且密集的資訊，讓使用者可管理和研究資料模式。\n數據性導向之美 (Data-driven aesthetic)UI 採用暗灰色提高質感，並用亮色系凸顯資料。在資料與背景顏色高對比之下，讓使用者更容易閱讀 APP 內的圖表。\n\nUI 設計專注在查看、研究和了解資料。圖表呈現在儀表板上，讓使用者查看花費摘要和單一交易的細節。此 UI 設計透過排版、顏色和形狀的凸顯，讓畫面是密集且直覺的。\n\n心得：蠻喜歡這樣的暗色背景搭亮色的配色，但因目前公司的一般使用者還是比較習慣白色背景的配色模式，所以暗色背景的搭配在考慮時間和緊急度下，我自己是只敢用在自己小組內部用的專案上，比較沒有時間上的壓力。\n\n產品架構Rally 架構是層級式的，讓使用者透過不同分類查看他們的財務。\n內容根據個人財務區分不同的 sections，像是帳戶、預算、帳單。首頁著重在讓使用者前往這些 sections 的導向。\n導覽列因為 Rally 專注在呈現和描述不同面向的財務資訊，所以如何讓使用者能輕易的在這些sections 移動是很重要的。Rally 有一個固定位置的導覽列讓使用者能方便的切換 sections。在桌機和平板，Rally 使用的是直列式的導覽列。在手機，則是用橫向標籤的方式。這項的導航模式很理想，雖然它們總是在屏幕上，但佔用的空間非常小。\n\n在直列式的導覽列中，每個目的地會用一個獨特的 icon 呈現。當 section 被點選的時候，icon 就會變亮且標題會出現在 icon 下方。\n\n在橫向標籤導覽中，當 section 被點選的時候，icon 就會變亮且標題會出現在 icon 右方，其他 icon 將會適當的移動位置。\n\n\n心得：這邊如果導覽項目數目很少，這樣設計ok。但要注意往後的擴充性，若是 section 的數目增加是否要增加 sub section，手機上方 tab 的空間是否會不夠呈現，這些都是可能會碰到的問題。\n\n排版Rally 使用 12 grid system。\nyour browser does not support the video tag\n\n視覺層級Rally 使用色彩或紗幕來區分視覺上的層級。\n舉例：當使用者滑動下方資料的時候，為確保統計圖固定在上方，使用不同的色彩來區分視覺層級。\nyour browser does not support the video tag\n\n舉例：當有 popup 出現時，背景使用紗幕霧化背景。\n\n\n心得：用色彩和霧化效果來做層級區分我覺得還蠻實用且能提升質感。但在霧化背景的方式，需要考量到開發者是否能配合。若還有捨棄不了 IE 瀏覽器的公司，則會因為裝置的限制而必須要有第二方案來替代霧化的方式，比如說改用暗色且透明度低的樣式。\n\n顏色有時候需要顯示多個圖表在一個螢幕上，且每個圖表包含多個 sections。為了能足夠表達狀態， Rally 的配色採用 1 個主色調加上 5 個配色。這個設計讓系統呈現可讀性高且獨特的信息圖表。\n當三個圖表出現在同一個螢幕上，每個圖表使用其中的兩個顏色。\n\nPrimary Green and Dark Green.\nOrange and Yellow.\nPurple and Blue.\n\n\n顏色主題除了 6 色以外， Rally 還有一個針對這 6 個顏色延伸 10 色版的調色盤。如下圖。\n\n圓圈形狀代表在此 APP 中有用到的色版\n“P” 代表主色調\n其他沒有文字的圓圈則是配色\n\n\n\n心得：我還沒用過那麼多的配色設計過，因為顏色越多，需要考量的點會更複雜，可能需要找時間嘗試看看。\n\n文字與圖示Rally 用兩種字體：Eczar 和 Roboto Condensed。\n\nRoboto Condensed：介面預設字體，適合密集的佈局。\nEczar：只用在首要標題和純數字清單，適合呈現數據。\n\n\nRally 使用客製化的 icon 來呈現不同的 sections。\n\n所有圖示使用一樣的格線架構確保一致性。\n所有 Rally 圖示\n\n\n\n心得：在數據表達的部分使用另一種字體這是一個不錯的點子，可以凸顯出數據的呈現，會想要嘗試看看。圖示的部分，在統一格線架構下設計很合理，但在一般專案時間不足的狀況下，通常我會直接使用 Material Icons ，省去設計圖示這塊。\n\n形狀元件根據大小使用不同的形狀類型，將形狀做分類可以讓螢幕一次放多個元件，分類包含：\n\n小元件 (S)：文字輸入區塊(Filled text fields)。\n中元件 (M)：卡片(Cards)。\n大元件 (L)：數據表格(Data Tables)。\n\n元件都是 0 圓角。\n\n\n元件卡片和清單在 overview 頁面使用卡片去呈現多個財務摘要，像是 Accounts 和 Bills。\n\n當點選 Accounts，摘要資訊卡片會展開顯示更多細節在清單中。\n\n橫幅、提示bar和對話框\n橫幅(Banners)：比較不那麼重要的訊息選擇用橫幅的方式呈現，通常會搭配圖示。\n提示 bar 和對話框(Snackbars and dialogs)：重要的訊息則是用提示 bar 和對話框呈現，並不會包含圖示。\n\n在平板上的橫幅呈現在導覽列旁。\n\n在手機上的橫幅呈現在最上方。\n\n在桌機上的橫幅則是自己一個直欄位專門呈現。\n\n重要訊息出現提示 bar 或對話框。\n\n\n\n心得：沒有將這三個元件一起混用的經驗，頂多用其中的兩個而已，所以他這樣從訊息的重要性來區分用哪種元件的方式很值得參考。\n\n交互動作Rally 在登入頁面顯示動畫 logo 增加 APP 的印象。\nyour browser does not support the video tag\n\n當用戶點開一個帳戶時，畫面會使用從內到外漸變展開的子頁面。點選返回後，則會從外到內漸變縮合回上一頁。加強使用者對深度的感知。\nyour browser does not support the video tag\n\n點選頁籤則是使用左右滑動的漸變動畫。\nyour browser does not support the video tag\n\n當引入新頁面元素時會使用上方的進度條作為導引。使用時間差的轉圈動畫來凸顯圓餅圖。\nyour browser does not support the video tag\n\n對話框使用彈跳的方式，以傳達訊息的急迫感。\nyour browser does not support the video tag\n\n\n心得：對於父子頁面漸變展開的動畫提升深度感知這點很認同，但在實作上還沒有真正的實行過，可以思考或和其他程式開發者討論實際在 web 或 app 撰寫時的執行難度。\n\n總結：讀完這篇研究後，對於 Material Design 在系統設計上的應用來說，我覺得是很實用的，畢竟要做系統通常都是要大量顯示資訊，如何有條理讓使用者理解顯示資訊變得很重要。這篇在配色和交互動作的部分是很值得參考的案例。\n參考資料\nMaterial Studies - Rally\n\n","dateCreated":"2019-04-05T00:00:00+08:00","dateModified":"2019-04-05T00:00:00+08:00","datePublished":"2019-04-05T00:00:00+08:00","description":"Material Guildline 應該很多設計師都閱讀過 N 遍了，但要設計時如何在框架下做到客制這件事應該還是很疑惑。官網上提出了幾個業界的實例分享，這點讓我很有興趣，所以接下來我會一一對這些案例做介紹。因為我上班做的案子比較多是系統類的設計，所以我第一個想介紹比較類似的是 Rally 這個案例。下面內容會一邊介紹，一邊穿插自己在職場上的一些心得或想法。","headline":"Google Material Studies - Rally","image":["https://lh3.googleusercontent.com/NmeFZOUv61q1keVwsDGU-SYe54WbcTGUaBK4MUv2qpnOZUeBmoIQnctDY2i30Xg9Piub1aUE1hhv_YZkN6aeZ0OeEiFqYy4nQix_M2k6M5Zn1uy6_0BDfTzuD0YfrlezhMtIGlKoVprSIU8jy4204KOqm7k4QJL31RCgQZ6ruuJMX-Ad84Uoyr-4LqIjRdDKG63wsyVnef7GFtHTFFyAcwRfD0D0hqZfDL6X5xZ0IomCU1mnvbPi3kWvWJzFbhypokNRRLGiTRxemhwQmV1IltU_lmZ7S6pdwwsz8GaVW7T7WTXImkmvePksormq21WQJgFdgWndEQDMPoCtQZLarnSNMaHynca_Wi-33a1VAI78aI0jIIXKP7RYmh7JRVY9Mobf2qBFOGFkd64E7uBatZ5VZ8GHwqXWazRZ-I4pFF_medM8ecpPLRTar-KY01iKGMu3zYZ2Z9xMO_AI0x3ibI7XAR71_8hquDpzvUGffIOXqvX5r3H49xYpWMCpPpwfT7NYd3k1W24ncV6TLWE_9cj5pRsY1qCHeqdn2HfkRLBGY0czDFb5J47OwXn0vBzNOuYtWbLGauqZ-sUVSTeO15j2A9gMm3BR0ZmiFb7c1azsyO4n-_-0GCHvJckr4-iRRg7GocwbYjZZdsTlDGvf0bHXkAmhFhWY=s225-no","https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1MvqIqiMU-07zdfL5gFNeKeg1DrzFHOtj%2Fcasestudies-rally-main.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/","keywords":"UX, UI, Material Design","thumbnailUrl":"https://lh3.googleusercontent.com/NmeFZOUv61q1keVwsDGU-SYe54WbcTGUaBK4MUv2qpnOZUeBmoIQnctDY2i30Xg9Piub1aUE1hhv_YZkN6aeZ0OeEiFqYy4nQix_M2k6M5Zn1uy6_0BDfTzuD0YfrlezhMtIGlKoVprSIU8jy4204KOqm7k4QJL31RCgQZ6ruuJMX-Ad84Uoyr-4LqIjRdDKG63wsyVnef7GFtHTFFyAcwRfD0D0hqZfDL6X5xZ0IomCU1mnvbPi3kWvWJzFbhypokNRRLGiTRxemhwQmV1IltU_lmZ7S6pdwwsz8GaVW7T7WTXImkmvePksormq21WQJgFdgWndEQDMPoCtQZLarnSNMaHynca_Wi-33a1VAI78aI0jIIXKP7RYmh7JRVY9Mobf2qBFOGFkd64E7uBatZ5VZ8GHwqXWazRZ-I4pFF_medM8ecpPLRTar-KY01iKGMu3zYZ2Z9xMO_AI0x3ibI7XAR71_8hquDpzvUGffIOXqvX5r3H49xYpWMCpPpwfT7NYd3k1W24ncV6TLWE_9cj5pRsY1qCHeqdn2HfkRLBGY0czDFb5J47OwXn0vBzNOuYtWbLGauqZ-sUVSTeO15j2A9gMm3BR0ZmiFb7c1azsyO4n-_-0GCHvJckr4-iRRg7GocwbYjZZdsTlDGvf0bHXkAmhFhWY=s225-no"}</script>
+    <meta name="description" content="Material Guildline 應該很多設計師都閱讀過 N 遍了，但要設計時如何在框架下做到客制這件事應該還是很疑惑。官網上提出了幾個業界的實例分享，這點讓我很有興趣，所以接下來我會一一對這些案例做介紹。因為我上班做的案子比較多是系統類的設計，所以我第一個想介紹比較類似的是 Rally 這個案例。下面內容會一邊介紹，一邊穿插自己在職場上的一些心得或想法。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Google Material Studies - Rally">
+<meta property="og:url" content="http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="Material Guildline 應該很多設計師都閱讀過 N 遍了，但要設計時如何在框架下做到客制這件事應該還是很疑惑。官網上提出了幾個業界的實例分享，這點讓我很有興趣，所以接下來我會一一對這些案例做介紹。因為我上班做的案子比較多是系統類的設計，所以我第一個想介紹比較類似的是 Rally 這個案例。下面內容會一邊介紹，一邊穿插自己在職場上的一些心得或想法。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F16CNi69TWdOluvYdoeNwd5QK4P5nkE48-%2Fcasestudies-rally-brandattributes.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1PIJeS6GJLIExYX9mWOmb7UzWB0-Nl5VB%2Fcasestudies-family-rally.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1-qsgxAELdMrSDPRKV-l-N_2dW5fYeljj%2Fcasestudies-rally-rail.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1dHfpA4R1RVHn5zRSxInMllujv_C7pxv7%2Fcasestudies-rally-tabs.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1eBiwYfz1_8oSLrlWN_9uNjA_TGVqRBS2%2Fcasestudies-rally-elevation-scrim.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1TnwFyAe31SQDfL21qM9hZ1dcGQVRyB23%2Fcasestudies-rally-color-75percentzoom.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F17gZmwIGdzlDr-Hl2jTu2SSgc_ATBGaPt%2Fcasestudies-rally-color-palettes.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1t7i8LPPdmRkpdLV4u-p0oHvlhRTRbEb3%2Fcasestudies-rally-type.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1zqz0w6AEK_D9Kxb8ntWTb8lXJHkGjakk%2Fcasestudies-rally-icons.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1RpTrPB3UprQBcFfZh6ZnI4xNtUEyThIQ%2Frally-shape.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1HuOHmVEu0rKr8Bfes708nHM9osOWiHIm%2Frally-shape-b.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1gDGHc1gTW-FsOvmmXjZ6i5UF_U9CS0Ga%2Fcasestudies-rally-cards-1.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F128elUbInT1Me7Ra3gJGsndRDRq6JbAcn%2Fcasestudies-rally-list.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1X3ShTSv1KbUgazHtrp7wzXApy36TH1na%2Fcasestudies-rally-alerts-tablet.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1qcuHjBEJaoYI-_Vel0SlCTr4MXrlO3Ta%2Fcasestudies-rally-alerts-mobile.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1aEZcxrXD6L__739kup3Zzi5x73UFoIiz%2Fcasestudies-rally-alerts-desktop.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1UGbGapFacfgXBv5ijUiAjwNBKmw2v9yh%2Fcasestudies-rally-dialogs-mobile.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1ccB2eglPzvAai1YC4QgkxgYlFErDtJFs%2Fcasestudies-rally-snackbar.png">
+<meta property="article:published_time" content="2019-04-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-04-04T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="UX">
+<meta property="article:tag" content="UI">
+<meta property="article:tag" content="Material Design">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F16CNi69TWdOluvYdoeNwd5QK4P5nkE48-%2Fcasestudies-rally-brandattributes.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/NmeFZOUv61q1keVwsDGU-SYe54WbcTGUaBK4MUv2qpnOZUeBmoIQnctDY2i30Xg9Piub1aUE1hhv_YZkN6aeZ0OeEiFqYy4nQix_M2k6M5Zn1uy6_0BDfTzuD0YfrlezhMtIGlKoVprSIU8jy4204KOqm7k4QJL31RCgQZ6ruuJMX-Ad84Uoyr-4LqIjRdDKG63wsyVnef7GFtHTFFyAcwRfD0D0hqZfDL6X5xZ0IomCU1mnvbPi3kWvWJzFbhypokNRRLGiTRxemhwQmV1IltU_lmZ7S6pdwwsz8GaVW7T7WTXImkmvePksormq21WQJgFdgWndEQDMPoCtQZLarnSNMaHynca_Wi-33a1VAI78aI0jIIXKP7RYmh7JRVY9Mobf2qBFOGFkd64E7uBatZ5VZ8GHwqXWazRZ-I4pFF_medM8ecpPLRTar-KY01iKGMu3zYZ2Z9xMO_AI0x3ibI7XAR71_8hquDpzvUGffIOXqvX5r3H49xYpWMCpPpwfT7NYd3k1W24ncV6TLWE_9cj5pRsY1qCHeqdn2HfkRLBGY0czDFb5J47OwXn0vBzNOuYtWbLGauqZ-sUVSTeO15j2A9gMm3BR0ZmiFb7c1azsyO4n-_-0GCHvJckr4-iRRg7GocwbYjZZdsTlDGvf0bHXkAmhFhWY=s225-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/NmeFZOUv61q1keVwsDGU-SYe54WbcTGUaBK4MUv2qpnOZUeBmoIQnctDY2i30Xg9Piub1aUE1hhv_YZkN6aeZ0OeEiFqYy4nQix_M2k6M5Zn1uy6_0BDfTzuD0YfrlezhMtIGlKoVprSIU8jy4204KOqm7k4QJL31RCgQZ6ruuJMX-Ad84Uoyr-4LqIjRdDKG63wsyVnef7GFtHTFFyAcwRfD0D0hqZfDL6X5xZ0IomCU1mnvbPi3kWvWJzFbhypokNRRLGiTRxemhwQmV1IltU_lmZ7S6pdwwsz8GaVW7T7WTXImkmvePksormq21WQJgFdgWndEQDMPoCtQZLarnSNMaHynca_Wi-33a1VAI78aI0jIIXKP7RYmh7JRVY9Mobf2qBFOGFkd64E7uBatZ5VZ8GHwqXWazRZ-I4pFF_medM8ecpPLRTar-KY01iKGMu3zYZ2Z9xMO_AI0x3ibI7XAR71_8hquDpzvUGffIOXqvX5r3H49xYpWMCpPpwfT7NYd3k1W24ncV6TLWE_9cj5pRsY1qCHeqdn2HfkRLBGY0czDFb5J47OwXn0vBzNOuYtWbLGauqZ-sUVSTeO15j2A9gMm3BR0ZmiFb7c1azsyO4n-_-0GCHvJckr4-iRRg7GocwbYjZZdsTlDGvf0bHXkAmhFhWY=s225-no"/>
+    
+    
+        <meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1MvqIqiMU-07zdfL5gFNeKeg1DrzFHOtj%2Fcasestudies-rally-main.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1MvqIqiMU-07zdfL5gFNeKeg1DrzFHOtj%2Fcasestudies-rally-main.png"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1MvqIqiMU-07zdfL5gFNeKeg1DrzFHOtj%2Fcasestudies-rally-main.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Google Material Studies - Rally
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-04-05T00:00:00+08:00">
+	
+		    2019 年 4 月 5 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/UXUI/">UXUI</a>, <a class="category-link" href="/categories/UXUI/Material-Design/">Material Design</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Material Guildline 應該很多設計師都閱讀過 N 遍了，但要設計時如何在框架下做到客制這件事應該還是很疑惑。官網上提出了幾個業界的實例分享，這點讓我很有興趣，所以接下來我會一一對這些案例做介紹。因為我上班做的案子比較多是系統類的設計，所以我第一個想介紹比較類似的是 Rally 這個案例。下面內容會一邊介紹，一邊穿插自己在職場上的一些心得或想法。</p>
+<a id="more"></a>
+<h1 id="案例背景"><a href="#案例背景" class="headerlink" title="案例背景"></a>案例背景</h1><p>Rally 是一個管理財務的 APP，它會追蹤使用者的花費習慣並產生預測和適當的警示通知。Rally 是設計來呈現大量且密集的資訊，讓使用者可管理和研究資料模式。</p>
+<h3 id="數據性導向之美-Data-driven-aesthetic"><a href="#數據性導向之美-Data-driven-aesthetic" class="headerlink" title="數據性導向之美 (Data-driven aesthetic)"></a>數據性導向之美 (Data-driven aesthetic)</h3><p>UI 採用暗灰色提高質感，並用亮色系凸顯資料。在資料與背景顏色高對比之下，讓使用者更容易閱讀 APP 內的圖表。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F16CNi69TWdOluvYdoeNwd5QK4P5nkE48-%2Fcasestudies-rally-brandattributes.png" alt="Rally UI" title="Rally UI"></p>
+<p>UI 設計專注在查看、研究和了解資料。圖表呈現在儀表板上，讓使用者查看花費摘要和單一交易的細節。此 UI 設計透過排版、顏色和形狀的凸顯，讓畫面是密集且直覺的。</p>
+<blockquote>
+<p>心得：蠻喜歡這樣的暗色背景搭亮色的配色，但因目前公司的一般使用者還是比較習慣白色背景的配色模式，所以暗色背景的搭配在考慮時間和緊急度下，我自己是只敢用在自己小組內部用的專案上，比較沒有時間上的壓力。</p>
+</blockquote>
+<h1 id="產品架構"><a href="#產品架構" class="headerlink" title="產品架構"></a>產品架構</h1><p>Rally 架構是層級式的，讓使用者透過不同分類查看他們的財務。</p>
+<p>內容根據個人財務區分不同的 sections，像是帳戶、預算、帳單。首頁著重在讓使用者前往這些 sections 的導向。</p>
+<h3 id="導覽列"><a href="#導覽列" class="headerlink" title="導覽列"></a>導覽列</h3><p>因為 Rally 專注在呈現和描述不同面向的財務資訊，所以如何讓使用者能輕易的在這些sections 移動是很重要的。Rally 有一個固定位置的導覽列讓使用者能方便的切換 sections。在桌機和平板，Rally 使用的是直列式的導覽列。在手機，則是用橫向標籤的方式。這項的導航模式很理想，雖然它們總是在屏幕上，但佔用的空間非常小。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1PIJeS6GJLIExYX9mWOmb7UzWB0-Nl5VB%2Fcasestudies-family-rally.png" alt="Rally 導覽列" title="Rally 導覽列"></p>
+<p>在直列式的導覽列中，每個目的地會用一個獨特的 icon 呈現。當 section 被點選的時候，icon 就會變亮且標題會出現在 icon 下方。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1-qsgxAELdMrSDPRKV-l-N_2dW5fYeljj%2Fcasestudies-rally-rail.png" alt="直列式的導覽列" title="直列式的導覽列"></p>
+<p>在橫向標籤導覽中，當 section 被點選的時候，icon 就會變亮且標題會出現在 icon 右方，其他 icon 將會適當的移動位置。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1dHfpA4R1RVHn5zRSxInMllujv_C7pxv7%2Fcasestudies-rally-tabs.png" alt="橫向標籤導覽" title="橫向標籤導覽"></p>
+<blockquote>
+<p>心得：這邊如果導覽項目數目很少，這樣設計ok。但要注意往後的擴充性，若是 section 的數目增加是否要增加 sub section，手機上方 tab 的空間是否會不夠呈現，這些都是可能會碰到的問題。</p>
+</blockquote>
+<h1 id="排版"><a href="#排版" class="headerlink" title="排版"></a>排版</h1><p>Rally 使用 12 grid system。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1lAQUZTvSoen3matP1gpDJqVpKnZpARy6%2Fcasestudies-rally-grid-1a.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<h3 id="視覺層級"><a href="#視覺層級" class="headerlink" title="視覺層級"></a>視覺層級</h3><p>Rally 使用色彩或紗幕來區分視覺上的層級。</p>
+<p>舉例：當使用者滑動下方資料的時候，為確保統計圖固定在上方，使用不同的色彩來區分視覺層級。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1dq6I1nDovqvUydVHH5jTeI9VA6ftfz7H%2Frally-flow1-170808-casestudies-rally-elevation-1a.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<p>舉例：當有 popup 出現時，背景使用紗幕霧化背景。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1eBiwYfz1_8oSLrlWN_9uNjA_TGVqRBS2%2Fcasestudies-rally-elevation-scrim.png" alt="霧化背景" title="霧化背景"></p>
+<blockquote>
+<p>心得：用色彩和霧化效果來做層級區分我覺得還蠻實用且能提升質感。但在霧化背景的方式，需要考量到開發者是否能配合。若還有捨棄不了 IE 瀏覽器的公司，則會因為裝置的限制而必須要有第二方案來替代霧化的方式，比如說改用暗色且透明度低的樣式。</p>
+</blockquote>
+<h1 id="顏色"><a href="#顏色" class="headerlink" title="顏色"></a>顏色</h1><p>有時候需要顯示多個圖表在一個螢幕上，且每個圖表包含多個 sections。為了能足夠表達狀態， Rally 的配色採用 1 個主色調加上 5 個配色。這個設計讓系統呈現可讀性高且獨特的信息圖表。</p>
+<p>當三個圖表出現在同一個螢幕上，每個圖表使用其中的兩個顏色。</p>
+<ol>
+<li>Primary Green and Dark Green.</li>
+<li>Orange and Yellow.</li>
+<li>Purple and Blue.</li>
+</ol>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1TnwFyAe31SQDfL21qM9hZ1dcGQVRyB23%2Fcasestudies-rally-color-75percentzoom.png" alt="配色" title="配色"></p>
+<h3 id="顏色主題"><a href="#顏色主題" class="headerlink" title="顏色主題"></a>顏色主題</h3><p>除了 6 色以外， Rally 還有一個針對這 6 個顏色延伸 10 色版的調色盤。如下圖。</p>
+<ul>
+<li>圓圈形狀代表在此 APP 中有用到的色版</li>
+<li>“P” 代表主色調</li>
+<li>其他沒有文字的圓圈則是配色</li>
+</ul>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F17gZmwIGdzlDr-Hl2jTu2SSgc_ATBGaPt%2Fcasestudies-rally-color-palettes.png" alt="顏色主題" title="顏色主題"></p>
+<blockquote>
+<p>心得：我還沒用過那麼多的配色設計過，因為顏色越多，需要考量的點會更複雜，可能需要找時間嘗試看看。</p>
+</blockquote>
+<h1 id="文字與圖示"><a href="#文字與圖示" class="headerlink" title="文字與圖示"></a>文字與圖示</h1><p>Rally 用兩種字體：Eczar 和 Roboto Condensed。</p>
+<ol>
+<li>Roboto Condensed：介面預設字體，適合密集的佈局。</li>
+<li>Eczar：只用在首要標題和純數字清單，適合呈現數據。</li>
+</ol>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1t7i8LPPdmRkpdLV4u-p0oHvlhRTRbEb3%2Fcasestudies-rally-type.png" alt="字體" title="字體"></p>
+<p>Rally 使用客製化的 icon 來呈現不同的 sections。</p>
+<ol>
+<li>所有圖示使用一樣的格線架構確保一致性。</li>
+<li>所有 Rally 圖示</li>
+</ol>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1zqz0w6AEK_D9Kxb8ntWTb8lXJHkGjakk%2Fcasestudies-rally-icons.png" alt="圖示" title="圖示"></p>
+<blockquote>
+<p>心得：在數據表達的部分使用另一種字體這是一個不錯的點子，可以凸顯出數據的呈現，會想要嘗試看看。圖示的部分，在統一格線架構下設計很合理，但在一般專案時間不足的狀況下，通常我會直接使用 Material Icons ，省去設計圖示這塊。</p>
+</blockquote>
+<h1 id="形狀"><a href="#形狀" class="headerlink" title="形狀"></a>形狀</h1><p>元件根據大小使用不同的形狀類型，將形狀做分類可以讓螢幕一次放多個元件，分類包含：</p>
+<ol>
+<li>小元件 (S)：文字輸入區塊(Filled text fields)。</li>
+<li>中元件 (M)：卡片(Cards)。</li>
+<li>大元件 (L)：數據表格(Data Tables)。</li>
+</ol>
+<p>元件都是 0 圓角。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1RpTrPB3UprQBcFfZh6ZnI4xNtUEyThIQ%2Frally-shape.png" alt="形狀分類" title="形狀分類"></p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1HuOHmVEu0rKr8Bfes708nHM9osOWiHIm%2Frally-shape-b.png" alt="形狀元件" title="形狀元件"></p>
+<h1 id="元件"><a href="#元件" class="headerlink" title="元件"></a>元件</h1><h3 id="卡片和清單"><a href="#卡片和清單" class="headerlink" title="卡片和清單"></a>卡片和清單</h3><p>在 overview 頁面使用卡片去呈現多個財務摘要，像是 Accounts 和 Bills。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1gDGHc1gTW-FsOvmmXjZ6i5UF_U9CS0Ga%2Fcasestudies-rally-cards-1.png" alt="卡片" title="卡片"></p>
+<p>當點選 Accounts，摘要資訊卡片會展開顯示更多細節在清單中。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F128elUbInT1Me7Ra3gJGsndRDRq6JbAcn%2Fcasestudies-rally-list.png" alt="清單" title="清單"></p>
+<h3 id="橫幅、提示bar和對話框"><a href="#橫幅、提示bar和對話框" class="headerlink" title="橫幅、提示bar和對話框"></a>橫幅、提示bar和對話框</h3><ul>
+<li>橫幅(Banners)：比較不那麼重要的訊息選擇用橫幅的方式呈現，通常會搭配圖示。</li>
+<li>提示 bar 和對話框(Snackbars and dialogs)：重要的訊息則是用提示 bar 和對話框呈現，並不會包含圖示。</li>
+</ul>
+<p>在平板上的橫幅呈現在導覽列旁。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1X3ShTSv1KbUgazHtrp7wzXApy36TH1na%2Fcasestudies-rally-alerts-tablet.png" alt="橫幅 - 平板" title="橫幅 - 平板"></p>
+<p>在手機上的橫幅呈現在最上方。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1qcuHjBEJaoYI-_Vel0SlCTr4MXrlO3Ta%2Fcasestudies-rally-alerts-mobile.png" alt="橫幅 - 手機" title="橫幅 - 手機"></p>
+<p>在桌機上的橫幅則是自己一個直欄位專門呈現。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1aEZcxrXD6L__739kup3Zzi5x73UFoIiz%2Fcasestudies-rally-alerts-desktop.png" alt="橫幅 - 桌機" title="橫幅 - 桌機"></p>
+<p>重要訊息出現提示 bar 或對話框。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1UGbGapFacfgXBv5ijUiAjwNBKmw2v9yh%2Fcasestudies-rally-dialogs-mobile.png" alt="對話框" title="對話框"></p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1ccB2eglPzvAai1YC4QgkxgYlFErDtJFs%2Fcasestudies-rally-snackbar.png" alt="提示 bar" title="提示 bar"></p>
+<blockquote>
+<p>心得：沒有將這三個元件一起混用的經驗，頂多用其中的兩個而已，所以他這樣從訊息的重要性來區分用哪種元件的方式很值得參考。</p>
+</blockquote>
+<h1 id="交互動作"><a href="#交互動作" class="headerlink" title="交互動作"></a>交互動作</h1><p>Rally 在登入頁面顯示動畫 logo 增加 APP 的印象。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SdTGjLEmVjxVQfQHUxjrbWEO9GEnbHab%2F01-rally-launch.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<p>當用戶點開一個帳戶時，畫面會使用從內到外漸變展開的子頁面。點選返回後，則會從外到內漸變縮合回上一頁。加強使用者對深度的感知。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SjV2Eky-4d80UhOL4dm9k-EhG-r8IDm2%2F02-rally-parentchild.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<p>點選頁籤則是使用左右滑動的漸變動畫。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SkeVD6imJA_MwjipNR-DbNh1xw4au9yy%2F02-rally-tabs.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<p>當引入新頁面元素時會使用上方的進度條作為導引。使用時間差的轉圈動畫來凸顯圓餅圖。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SmqucW2ugbXboWf8SSjVngVtm63_VLxf%2F03-rally-sequencing.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<p>對話框使用彈跳的方式，以傳達訊息的急迫感。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SrDQ1yFyIyFYWewhvEIIBZ9Mm0S-6G2z%2F04-rally-overshoot.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<blockquote>
+<p>心得：對於父子頁面漸變展開的動畫提升深度感知這點很認同，但在實作上還沒有真正的實行過，可以思考或和其他程式開發者討論實際在 web 或 app 撰寫時的執行難度。</p>
+</blockquote>
+<p>總結：讀完這篇研究後，對於 Material Design 在系統設計上的應用來說，我覺得是很實用的，畢竟要做系統通常都是要大量顯示資訊，如何有條理讓使用者理解顯示資訊變得很重要。這篇在配色和交互動作的部分是很值得參考的案例。</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a href="https://material.io/design/material-studies/rally.html" target="_blank" rel="noopener">Material Studies - Rally</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Material-Design/" rel="tag">Material Design</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UI/" rel="tag">UI</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UX/" rel="tag">UX</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/05/01/Frontend/JS-Retry-Function/"
+                    data-tooltip="JS Retry Function"
+                    aria-label="上一篇: JS Retry Function"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/"
+                    data-tooltip="Google Material Theming - Workflow Tools"
+                    aria-label="下一篇: Google Material Theming - Workflow Tools"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/05/01/Frontend/JS-Retry-Function/"
+                    data-tooltip="JS Retry Function"
+                    aria-label="上一篇: JS Retry Function"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/03/01/UXUI/Google-Material-Theming-Workflow-Tools/"
+                    data-tooltip="Google Material Theming - Workflow Tools"
+                    aria-label="下一篇: Google Material Theming - Workflow Tools"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2019/04/05/UXUI/Google-Material-Studies-Rally/';
+              
+            this.page.identifier = '2019/04/05/UXUI/Google-Material-Studies-Rally/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1065 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>D3 v4 with Vue - SVG Donut Chart - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"這次要來練習用 D3 搭配 Vue 做 SVG 甜甜圈圖囉～如果要做中間不要洞的圓餅圖，把內圈半徑改成 0 即可。\n\n一開始想說動畫的部分希望由 CSS transition 來主導 stroke-dasharray 進行動畫，但後來發現沒有實際的圖形範圍做 Tooltip 的功能（因為 CSS 做的圓圈每個都一樣，只是透過 stroke-dasharray 長度不同造成甜甜圈的假象）。所以後來透過 D3 計算每個區塊的 &lt;path&gt; 才得以完成 Tooltip 的功能。因為以上種種的考量後，下面就拆分成兩個部分來解釋，一個部分是執行動畫的 &lt;circle&gt; 部分，另一個則是製作 Tooltip 功能的 &lt;path&gt; 部分。\n\n執行動畫的 &lt;circle&gt;\n\nHTML\n\n123456789101112&lt;!-- 執行動畫的圓圈 --&gt;&lt;circle class=\"circle\"  v-for=\"(c, key) in donut\"  ref=\"circles\"  :key=\"`$&#123;key&#125;$&#123;c.percentage&#125;$&#123;c.offset&#125;`\"  :r=\"radius\"  :cx=\"chart.outerRadius\"  :cy=\"chart.outerRadius\"  :stroke-width=\"chart.outerRadius - chart.innerRadius\"  :stroke-dashoffset=\"c.offset\"  :stroke=\"c.color\"  fill= \"transparent\"/&gt;\n\nCSS\n\n123456789101112131415161718192021.donutChart &#123;  /* 說明 */  .detail &#123;    color: gray;  &#125;  /* 統計圖 */  .chartContain &#123;    ....    .chartWrap &#123;      ...      .chart &#123;        ...        /* 因為 &lt;circle&gt; 0 度從右邊開始，但我們想要從上方開始，所以加了往上旋轉 90 度變形 */        transform: rotate(-90deg);        .circle &#123;          transition: 1s; /* 漸變動畫進行的秒數 */        &#125;      &#125;    &#125;  &#125;&#125;\n\nJS\n\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980export default &#123;  computed: &#123;    // 圓周長    circum() &#123;      // circumference = 2 * pi * radius      return 2 * Math.PI * this.radius;    &#125;,    // 顏色函數    color() &#123;      return d3.scaleOrdinal(d3.schemeCategory20c);    &#125;,    // 所有資料值總合    totalSum() &#123;      let sum = 0;      if (this.data.length) &#123;        this.data.forEach((e, i) =&gt; &#123;          sum = sum + e.value;        &#125;);      &#125;      return sum;    &#125;,    // &lt;circle&gt; 屬性    donut() &#123;      let newArray = [];      let afterPer = 0; // 把前面的 percentage 累加 (0.xxx)      // 產生 &lt;circle&gt; 屬性陣列      if (this.data.length) &#123;        this.data.forEach((e, i) =&gt; &#123;          // 新增陣列          newArray.push(&#123;            // 拿來計算跑動畫的線條長度 （在 randomData 後半）            percentage: e.value / this.totalSum * 100,            // 位移長度 = 圓周長 * (1 - 前面累加的長度比例)            offset: this.circum * (1 - afterPer),            color: this.color(i) // 填色          &#125;);          // 把前面的 percentage 累加 (0.xxx)          afterPer = afterPer + e.value / this.totalSum;        &#125;);      &#125;      return newArray;    &#125;,  &#125;,  ...  methods: &#123;    randomData() &#123;      ...      // 用 js 跑展開動畫      this.$nextTick().then(() =&gt; &#123;        // DOM updated        this.donut.forEach((el, index) =&gt; &#123;          let totalTime = 100; // 設定切換 css 狀態的時間間隔          let stroke = this.dasharray(el.percentage); // 計算 stroke-dasharray          // 起始位置          this.$refs.circles[index].style.cssText = `stroke-dasharray: 0 $&#123;this.circum&#125;; opacity: 0`;          // 設定 Interval          setTimeout(() =&gt; &#123;            // 結束位置            this.$refs.circles[index].style.cssText = `stroke-dasharray: $&#123;stroke.dash&#125; $&#123;stroke.gap&#125;; opacity: 1`;          &#125;, totalTime);        &#125;);      &#125;);    &#125;,    // 計算 stroke-dasharray 的 dash &amp; gap    dasharray(percentage) &#123;      let dash = this.circum / 100 * percentage; // percentage %      let gap = this.circum / 100 * (100 - percentage);      return &#123; dash: dash, gap: gap &#125;;    &#125;,  &#125;&#125;\n\n製作 Tooltip 功能的 &lt;path&gt;\n這邊你可能會發現很奇怪的事情，就是為什麼上面已經算過百分比了，但這邊還要再算一次？如果仔細看的話，你應該會發現這邊的百分比是用在甜甜圈上方顯示的文字。想一想，如果統計圖出現小數點後十六位數的百分比，是不是超奇怪！！！所以這邊文字其實是透過 D3 格式換算成我們較易閱讀的百分比，並不是真實的比例。\n\nHTML\n\n123456789101112131415161718&lt;!-- 滑鼠滑過的區塊 --&gt;&lt;g  class=\"arc\"  v-for=\"(p, key) in pie\"  :key=\"`$&#123;key&#125;$&#123;p.d&#125;`\"  :transform=\"`translate($&#123;chart.outerRadius&#125;,$&#123;chart.outerRadius&#125;) rotate(90)`\"  v-on:mouseover=\"showTooltip(key, $event)\" v-on:mouseout=\"hiddenTooltip\"&gt;  &lt;path    fill=\"transparent\"    :d=\"p.d\"&gt;  &lt;/path&gt;  &lt;!-- 文字位置需要由 path 的座標透過 D3 計算，才能把文字放在各自的區塊中間。 --&gt;  &lt;text    :transform=\"`translate($&#123;p.centroid&#125;)`\"    text-anchor=\"middle\"    fill=\"white\"&gt;&#123;&#123; p.percentage &#125;&#125;  &lt;/text&gt;&lt;/g&gt;\n\nJS\n\n1234567891011121314151617181920212223242526272829303132333435363738pie() &#123;  let newArray = [];  let format = d3.format(\".0%\"); // D3 格式化單位（百分比）  let pie = d3    .pie() // 使用 pie 函數    .sort(null) // 不做重新排序    .value(function(d) &#123;      return d.value;    &#125;)(this.data); // 為了等下要使用 arc 角度，先造好 pie 物件  // 產生 &lt;path&gt; &amp; &lt;text&gt; 屬性陣列  if (this.data.length) &#123;    this.data.forEach((e, i) =&gt; &#123;      // 準備好 arc 路徑      let arc = d3        .arc() // 使用 arc 函數        .innerRadius(this.chart.innerRadius) // 甜甜圈內半徑        .outerRadius(this.chart.outerRadius); // 甜甜圈外半徑      // 新增陣列      newArray.push(&#123;        // 計算 path 路徑，使用剛剛造好的 arc 函數        d: arc(&#123;          // 透過上方建立的 pie 函數，得知 arc 的起始角度          startAngle: pie[i].startAngle,           // 透過上方建立的 pie 函數，得知 arc 的結束角度          endAngle: pie[i].endAngle        &#125;),        // 使用 arc.centroid 函數取得 &lt;text&gt; 相對於 &lt;path&gt; 位移至正中間 x, y        centroid: arc.centroid(pie[i]),        // 將顯示的文字轉成易閱讀的格式        percentage: format(e.value / this.totalSum)      &#125;);    &#125;);  &#125;  return newArray;&#125;\n全部畫好的樣子如下圖，可以去 Github 查看完整程式碼喔！也可以在這裡查看直條圖的 Demo，我們下回見～\n\n","dateCreated":"2018-05-01T00:00:00+08:00","dateModified":"2018-05-01T00:00:00+08:00","datePublished":"2018-05-01T00:00:00+08:00","description":"這次要來練習用 D3 搭配 Vue 做 SVG 甜甜圈圖囉～如果要做中間不要洞的圓餅圖，把內圈半徑改成 0 即可。","headline":"D3 v4 with Vue - SVG Donut Chart","image":["https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no","https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/","keywords":"D3, Vue, SVG","thumbnailUrl":"https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"}</script>
+    <meta name="description" content="這次要來練習用 D3 搭配 Vue 做 SVG 甜甜圈圖囉～如果要做中間不要洞的圓餅圖，把內圈半徑改成 0 即可。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="D3 v4 with Vue - SVG Donut Chart">
+<meta property="og:url" content="http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="這次要來練習用 D3 搭配 Vue 做 SVG 甜甜圈圖囉～如果要做中間不要洞的圓餅圖，把內圈半徑改成 0 即可。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lh3.googleusercontent.com/y3ciNP2itQDbjSzjgXxlukSy-kfrNSRuyhAcs6afRYhZoU3jMXL7jB098ANZEWAV8eSsovPlqPCgjuwx5dbtff_ItDj6vvTBiPPmTQRyThIX-XHeeXwgoWCFeGji1KA9DJRyY2_lRjoV0elfwsKcyVn1VaIICoGD5uFBiH2K5vbJvuTPnOLXcgE4Ng6rQZ8d6NNEHWYtPa0UqaGtMpbBXzVGFQmA7U48vwIJdQJwzuyYy0Pj6dmfa7IVDUCSOp84EXTO0tZsoBufOpjUF9miUGNwoQS43xwKtPfl0ur6cA4hTpbn9FlCU4rDym8Jaa9mkBarS8T1Y8hH09udOeiv9dIaKJrniqoXnf4G3wTB79sKLVmDiKv6vQIB504mby_sbn1c3aQVoQlyJfahu59J2IRVFlZ1_jVpkSi9SCu9kf-O_gyMdCQcID79yYuLKsq3nG5X-UwlbX5SDKvPif8YW-r0MtdxZVuMX95Ot4FB0nh5M0l3pSd2NhllyL_Xsa4U9MwgKQB6vPCajdSYNsM6NtTgfUKJfUFANreODCXT9uYwCLd50nkUhOcf9QA0k3gORRJxbDozlchw4y8nuc3EA3G36KVFLM50NYjLnHmw19i05cEnduWlg3d--Ku4Hx6n_NQwPEFjsJVZpX2IU5VZdXU4PBRKgBWS=w600-h576-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/PYNMBI1NGyZvd-VuUfGSGcZR5B4HlbvrPPyBFGPPRV93iTPzhYyQoGipBmZw7xLAuHGvYALgqaunKM3AygQOJQvN-vf7JqiJqyu3pGsrqHOizHIAb37MK7__M8Z7bGsBYqgfhKsmmFr6hnHcYD2V8KUAD8LesMx6bPBvxvw1HdFeAHFIm3zeOtnzdYLeo9CoPE0Cjk-V_SylGwg8vNmp11OBESjJbGfshslHV0ih3FHkB5F7DmGbzY_7usoUDnVOgXdzFAIFMlWrJnR-k_Y_HYeOgfZkk5__OqhokFbvBsAYmuHhIWLNIin3Zs96XgVgF0DAKDLdpJfpVthZTdSdAXYmE9izJnaNf5AbeXKgtspy8ARAoXx4h3soWWg8IorSidCfULUEtUOtNWQ8ZBJ-fGqSzCXYFB4Yr12RI4YDaoB1e51JATaQGDmIu8hwbaUoUecZe0Ryo04VjUZ1bGmRzXMmsoRvNcb2rkPF3n-t1csEU48dxSzZgcgRm7gCWprA2qRbIt-5c_LthwXteMkFsYQj3XRxmZTvl9AOom7Ypme0juX6tcjHEj1ogkSopwGhxr-NZvHNU5qax5vKIcpBF5wLpdAS7INTkNsr_Dxyo3-rTk8tFriT8b2mTY9vLCWOrNm2_seIi8ZM74qPVq-jc9HqE8AfvS8V=w600-h576-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/b5xMuJcWbNk6hgHI5RT0FbGiIN6_XK8pJsXqSmiK-6kXykrTkgYLC4rOtrpZt1fcw3OjOtjgwvNHBkewBHST6Z1WoCrRPo6AD4oekyvYh24S1JS2ja2QGSMFyfhIOSD_eY9AZTvfprwIqDBPs3_E-sFsUpr1YcidoinaoGbhCRT9yJom_ztql5N6isa5lznQ_xLWkbg_8-3QS9_J21qVgBAly90yKebDGLrXmJFNyJG75wZP_vDIyINy2H2fYTg49-spVM76MavB-9ESNxSKFTRbAGaE3xcBR7wmAICq8SzP__ucHYOehi2sWGNsFbc4Vn3jf23QT2JXI6N9aLgmiwrDaRAkYDqGgpYPSJZPzW0gZZysf5nEHLluS8B2q_B5Ewrmz54HWF-ZVpSYoXYbC2G4ynMaOT7g83ils5zDDfZMitBqE9zb7l8esPvxsKa-ODi4qoThsmlj5UfUjWsNT8XuxCb83VwCjPbVF5fZdNJcuC5SAaFqN1IjdKRAwMpgq3ukvg6ITv4TjPSDGE8MXnNQzG2kff-bSnzWUxWaVVA79aRyw4dmEuy74tMV8nTMVZRmQ7o8sRJEzp11f0Qvz91Lqn0HRvEzt6uigBkrfLqno0m0alzaIJj8nBhy2CUEP7BR_VsHtZ1s_GWD927Jbpl2n6o-lilU=w1024-h983-no">
+<meta property="article:published_time" content="2018-04-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2018-04-30T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="D3">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="SVG">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/y3ciNP2itQDbjSzjgXxlukSy-kfrNSRuyhAcs6afRYhZoU3jMXL7jB098ANZEWAV8eSsovPlqPCgjuwx5dbtff_ItDj6vvTBiPPmTQRyThIX-XHeeXwgoWCFeGji1KA9DJRyY2_lRjoV0elfwsKcyVn1VaIICoGD5uFBiH2K5vbJvuTPnOLXcgE4Ng6rQZ8d6NNEHWYtPa0UqaGtMpbBXzVGFQmA7U48vwIJdQJwzuyYy0Pj6dmfa7IVDUCSOp84EXTO0tZsoBufOpjUF9miUGNwoQS43xwKtPfl0ur6cA4hTpbn9FlCU4rDym8Jaa9mkBarS8T1Y8hH09udOeiv9dIaKJrniqoXnf4G3wTB79sKLVmDiKv6vQIB504mby_sbn1c3aQVoQlyJfahu59J2IRVFlZ1_jVpkSi9SCu9kf-O_gyMdCQcID79yYuLKsq3nG5X-UwlbX5SDKvPif8YW-r0MtdxZVuMX95Ot4FB0nh5M0l3pSd2NhllyL_Xsa4U9MwgKQB6vPCajdSYNsM6NtTgfUKJfUFANreODCXT9uYwCLd50nkUhOcf9QA0k3gORRJxbDozlchw4y8nuc3EA3G36KVFLM50NYjLnHmw19i05cEnduWlg3d--Ku4Hx6n_NQwPEFjsJVZpX2IU5VZdXU4PBRKgBWS=w600-h576-no">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            D3 v4 with Vue - SVG Donut Chart
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-05-01T00:00:00+08:00">
+	
+		    2018 年 5 月 1 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/D3/">D3</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>這次要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做 <code>SVG</code> 甜甜圈圖囉～如果要做中間不要洞的圓餅圖，把內圈半徑改成 0 即可。</p>
+<a id="more"></a>
+<p>一開始想說動畫的部分希望由 <code>CSS</code> <code>transition</code> 來主導 <code>stroke-dasharray</code> 進行動畫，但後來發現沒有實際的圖形範圍做 <code>Tooltip</code> 的功能（因為 <code>CSS</code> 做的圓圈每個都一樣，只是透過 <code>stroke-dasharray</code> 長度不同造成甜甜圈的假象）。所以後來透過 <code>D3</code> 計算每個區塊的 <code>&lt;path&gt;</code> 才得以完成 <code>Tooltip</code> 的功能。因為以上種種的考量後，下面就拆分成兩個部分來解釋，一個部分是執行動畫的 <code>&lt;circle&gt;</code> 部分，另一個則是製作 <code>Tooltip</code> 功能的 <code>&lt;path&gt;</code> 部分。</p>
+<hr>
+<h2 id="執行動畫的-lt-circle-gt"><a href="#執行動畫的-lt-circle-gt" class="headerlink" title="執行動畫的 &lt;circle&gt;"></a>執行動畫的 <code>&lt;circle&gt;</code></h2><p><img src="https://lh3.googleusercontent.com/y3ciNP2itQDbjSzjgXxlukSy-kfrNSRuyhAcs6afRYhZoU3jMXL7jB098ANZEWAV8eSsovPlqPCgjuwx5dbtff_ItDj6vvTBiPPmTQRyThIX-XHeeXwgoWCFeGji1KA9DJRyY2_lRjoV0elfwsKcyVn1VaIICoGD5uFBiH2K5vbJvuTPnOLXcgE4Ng6rQZ8d6NNEHWYtPa0UqaGtMpbBXzVGFQmA7U48vwIJdQJwzuyYy0Pj6dmfa7IVDUCSOp84EXTO0tZsoBufOpjUF9miUGNwoQS43xwKtPfl0ur6cA4hTpbn9FlCU4rDym8Jaa9mkBarS8T1Y8hH09udOeiv9dIaKJrniqoXnf4G3wTB79sKLVmDiKv6vQIB504mby_sbn1c3aQVoQlyJfahu59J2IRVFlZ1_jVpkSi9SCu9kf-O_gyMdCQcID79yYuLKsq3nG5X-UwlbX5SDKvPif8YW-r0MtdxZVuMX95Ot4FB0nh5M0l3pSd2NhllyL_Xsa4U9MwgKQB6vPCajdSYNsM6NtTgfUKJfUFANreODCXT9uYwCLd50nkUhOcf9QA0k3gORRJxbDozlchw4y8nuc3EA3G36KVFLM50NYjLnHmw19i05cEnduWlg3d--Ku4Hx6n_NQwPEFjsJVZpX2IU5VZdXU4PBRKgBWS=w600-h576-no" alt="執行動畫的 &lt;circle&gt;" title="&lt;circle&gt;"></p>
+<ul>
+<li>HTML</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 執行動畫的圓圈 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">circle</span> <span class="attr">class</span>=<span class="string">"circle"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">v-for</span>=<span class="string">"(c, key) in donut"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">ref</span>=<span class="string">"circles"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:key</span>=<span class="string">"`$&#123;key&#125;$&#123;c.percentage&#125;$&#123;c.offset&#125;`"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:r</span>=<span class="string">"radius"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:cx</span>=<span class="string">"chart.outerRadius"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:cy</span>=<span class="string">"chart.outerRadius"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:stroke-width</span>=<span class="string">"chart.outerRadius - chart.innerRadius"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:stroke-dashoffset</span>=<span class="string">"c.offset"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:stroke</span>=<span class="string">"c.color"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">fill</span>= <span class="string">"transparent"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>CSS</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.donutChart</span> &#123;</span><br><span class="line">  <span class="comment">/* 說明 */</span></span><br><span class="line">  .detail &#123;</span><br><span class="line">    <span class="selector-tag">color</span>: <span class="selector-tag">gray</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* 統計圖 */</span></span><br><span class="line">  <span class="selector-class">.chartContain</span> &#123;</span><br><span class="line">    ....</span><br><span class="line">    <span class="selector-class">.chartWrap</span> &#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="selector-class">.chart</span> &#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">/* 因為 &lt;circle&gt; 0 度從右邊開始，但我們想要從上方開始，所以加了往上旋轉 90 度變形 */</span></span><br><span class="line">        <span class="selector-tag">transform</span>: <span class="selector-tag">rotate</span>(<span class="selector-tag">-90deg</span>);</span><br><span class="line">        <span class="selector-class">.circle</span> &#123;</span><br><span class="line">          <span class="attribute">transition</span>: <span class="number">1s</span>; <span class="comment">/* 漸變動畫進行的秒數 */</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>JS</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  computed: &#123;</span><br><span class="line">    <span class="comment">// 圓周長</span></span><br><span class="line">    circum() &#123;</span><br><span class="line">      <span class="comment">// circumference = 2 * pi * radius</span></span><br><span class="line">      <span class="keyword">return</span> <span class="number">2</span> * <span class="built_in">Math</span>.PI * <span class="keyword">this</span>.radius;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 顏色函數</span></span><br><span class="line">    color() &#123;</span><br><span class="line">      <span class="keyword">return</span> d3.scaleOrdinal(d3.schemeCategory20c);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 所有資料值總合</span></span><br><span class="line">    totalSum() &#123;</span><br><span class="line">      <span class="keyword">let</span> sum = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.data.length) &#123;</span><br><span class="line">        <span class="keyword">this</span>.data.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">          sum = sum + e.value;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// &lt;circle&gt; 屬性</span></span><br><span class="line">    donut() &#123;</span><br><span class="line">      <span class="keyword">let</span> newArray = [];</span><br><span class="line">      <span class="keyword">let</span> afterPer = <span class="number">0</span>; <span class="comment">// 把前面的 percentage 累加 (0.xxx)</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">// 產生 &lt;circle&gt; 屬性陣列</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.data.length) &#123;</span><br><span class="line">        <span class="keyword">this</span>.data.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="comment">// 新增陣列</span></span><br><span class="line">          newArray.push(&#123;</span><br><span class="line">            <span class="comment">// 拿來計算跑動畫的線條長度 （在 randomData 後半）</span></span><br><span class="line">            percentage: e.value / <span class="keyword">this</span>.totalSum * <span class="number">100</span>,</span><br><span class="line">            <span class="comment">// 位移長度 = 圓周長 * (1 - 前面累加的長度比例)</span></span><br><span class="line">            offset: <span class="keyword">this</span>.circum * (<span class="number">1</span> - afterPer),</span><br><span class="line">            color: <span class="keyword">this</span>.color(i) <span class="comment">// 填色</span></span><br><span class="line">          &#125;);</span><br><span class="line"></span><br><span class="line">          <span class="comment">// 把前面的 percentage 累加 (0.xxx)</span></span><br><span class="line">          afterPer = afterPer + e.value / <span class="keyword">this</span>.totalSum;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> newArray;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  ...</span><br><span class="line">  methods: &#123;</span><br><span class="line">    randomData() &#123;</span><br><span class="line">      ...</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 用 js 跑展開動畫</span></span><br><span class="line">      <span class="keyword">this</span>.$nextTick().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// DOM updated</span></span><br><span class="line">        <span class="keyword">this</span>.donut.forEach(<span class="function">(<span class="params">el, index</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">let</span> totalTime = <span class="number">100</span>; <span class="comment">// 設定切換 css 狀態的時間間隔</span></span><br><span class="line">          <span class="keyword">let</span> stroke = <span class="keyword">this</span>.dasharray(el.percentage); <span class="comment">// 計算 stroke-dasharray</span></span><br><span class="line"></span><br><span class="line">          <span class="comment">// 起始位置</span></span><br><span class="line">          <span class="keyword">this</span>.$refs.circles[index].style.cssText = <span class="string">`stroke-dasharray: 0 <span class="subst">$&#123;<span class="keyword">this</span>.circum&#125;</span>; opacity: 0`</span>;</span><br><span class="line"></span><br><span class="line">          <span class="comment">// 設定 Interval</span></span><br><span class="line">          setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="comment">// 結束位置</span></span><br><span class="line">            <span class="keyword">this</span>.$refs.circles[index].style.cssText = <span class="string">`stroke-dasharray: <span class="subst">$&#123;stroke.dash&#125;</span> <span class="subst">$&#123;stroke.gap&#125;</span>; opacity: 1`</span>;</span><br><span class="line">          &#125;, totalTime);</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 計算 stroke-dasharray 的 dash &amp; gap</span></span><br><span class="line">    dasharray(percentage) &#123;</span><br><span class="line">      <span class="keyword">let</span> dash = <span class="keyword">this</span>.circum / <span class="number">100</span> * percentage; <span class="comment">// percentage %</span></span><br><span class="line">      <span class="keyword">let</span> gap = <span class="keyword">this</span>.circum / <span class="number">100</span> * (<span class="number">100</span> - percentage);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> &#123; <span class="attr">dash</span>: dash, <span class="attr">gap</span>: gap &#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="製作-Tooltip-功能的-lt-path-gt"><a href="#製作-Tooltip-功能的-lt-path-gt" class="headerlink" title="製作 Tooltip 功能的 &lt;path&gt;"></a>製作 <code>Tooltip</code> 功能的 <code>&lt;path&gt;</code></h2><p><img src="https://lh3.googleusercontent.com/PYNMBI1NGyZvd-VuUfGSGcZR5B4HlbvrPPyBFGPPRV93iTPzhYyQoGipBmZw7xLAuHGvYALgqaunKM3AygQOJQvN-vf7JqiJqyu3pGsrqHOizHIAb37MK7__M8Z7bGsBYqgfhKsmmFr6hnHcYD2V8KUAD8LesMx6bPBvxvw1HdFeAHFIm3zeOtnzdYLeo9CoPE0Cjk-V_SylGwg8vNmp11OBESjJbGfshslHV0ih3FHkB5F7DmGbzY_7usoUDnVOgXdzFAIFMlWrJnR-k_Y_HYeOgfZkk5__OqhokFbvBsAYmuHhIWLNIin3Zs96XgVgF0DAKDLdpJfpVthZTdSdAXYmE9izJnaNf5AbeXKgtspy8ARAoXx4h3soWWg8IorSidCfULUEtUOtNWQ8ZBJ-fGqSzCXYFB4Yr12RI4YDaoB1e51JATaQGDmIu8hwbaUoUecZe0Ryo04VjUZ1bGmRzXMmsoRvNcb2rkPF3n-t1csEU48dxSzZgcgRm7gCWprA2qRbIt-5c_LthwXteMkFsYQj3XRxmZTvl9AOom7Ypme0juX6tcjHEj1ogkSopwGhxr-NZvHNU5qax5vKIcpBF5wLpdAS7INTkNsr_Dxyo3-rTk8tFriT8b2mTY9vLCWOrNm2_seIi8ZM74qPVq-jc9HqE8AfvS8V=w600-h576-no" alt="製作 Tooltip 功能的 &lt;path&gt;" title="&lt;path&gt;"></p>
+<p>這邊你可能會發現很奇怪的事情，就是為什麼上面已經算過百分比了，但這邊還要再算一次？如果仔細看的話，你應該會發現這邊的百分比是用在甜甜圈上方顯示的文字。想一想，如果統計圖出現小數點後十六位數的百分比，是不是超奇怪！！！所以這邊文字其實是透過 <code>D3</code> 格式換算成我們較易閱讀的百分比，並不是真實的比例。</p>
+<ul>
+<li>HTML</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 滑鼠滑過的區塊 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">g</span></span></span><br><span class="line"><span class="tag">  <span class="attr">class</span>=<span class="string">"arc"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">v-for</span>=<span class="string">"(p, key) in pie"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:key</span>=<span class="string">"`$&#123;key&#125;$&#123;p.d&#125;`"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:transform</span>=<span class="string">"`translate($&#123;chart.outerRadius&#125;,$&#123;chart.outerRadius&#125;) rotate(90)`"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">v-on:mouseover</span>=<span class="string">"showTooltip(key, $event)"</span> <span class="attr">v-on:mouseout</span>=<span class="string">"hiddenTooltip"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">path</span></span></span><br><span class="line"><span class="tag">    <span class="attr">fill</span>=<span class="string">"transparent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">:d</span>=<span class="string">"p.d"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 文字位置需要由 path 的座標透過 D3 計算，才能把文字放在各自的區塊中間。 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">text</span></span></span><br><span class="line"><span class="tag">    <span class="attr">:transform</span>=<span class="string">"`translate($&#123;p.centroid&#125;)`"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">text-anchor</span>=<span class="string">"middle"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">fill</span>=<span class="string">"white"</span>&gt;</span>&#123;&#123; p.percentage &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">g</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>JS</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">pie() &#123;</span><br><span class="line">  <span class="keyword">let</span> newArray = [];</span><br><span class="line">  <span class="keyword">let</span> format = d3.format(<span class="string">".0%"</span>); <span class="comment">// D3 格式化單位（百分比）</span></span><br><span class="line">  <span class="keyword">let</span> pie = d3</span><br><span class="line">    .pie() <span class="comment">// 使用 pie 函數</span></span><br><span class="line">    .sort(<span class="literal">null</span>) <span class="comment">// 不做重新排序</span></span><br><span class="line">    .value(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> d.value;</span><br><span class="line">    &#125;)(<span class="keyword">this</span>.data); <span class="comment">// 為了等下要使用 arc 角度，先造好 pie 物件</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 產生 &lt;path&gt; &amp; &lt;text&gt; 屬性陣列</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.data.length) &#123;</span><br><span class="line">    <span class="keyword">this</span>.data.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 準備好 arc 路徑</span></span><br><span class="line">      <span class="keyword">let</span> arc = d3</span><br><span class="line">        .arc() <span class="comment">// 使用 arc 函數</span></span><br><span class="line">        .innerRadius(<span class="keyword">this</span>.chart.innerRadius) <span class="comment">// 甜甜圈內半徑</span></span><br><span class="line">        .outerRadius(<span class="keyword">this</span>.chart.outerRadius); <span class="comment">// 甜甜圈外半徑</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">// 新增陣列</span></span><br><span class="line">      newArray.push(&#123;</span><br><span class="line">        <span class="comment">// 計算 path 路徑，使用剛剛造好的 arc 函數</span></span><br><span class="line">        d: arc(&#123;</span><br><span class="line">          <span class="comment">// 透過上方建立的 pie 函數，得知 arc 的起始角度</span></span><br><span class="line">          startAngle: pie[i].startAngle, </span><br><span class="line">          <span class="comment">// 透過上方建立的 pie 函數，得知 arc 的結束角度</span></span><br><span class="line">          endAngle: pie[i].endAngle</span><br><span class="line">        &#125;),</span><br><span class="line">        <span class="comment">// 使用 arc.centroid 函數取得 &lt;text&gt; 相對於 &lt;path&gt; 位移至正中間 x, y</span></span><br><span class="line">        centroid: arc.centroid(pie[i]),</span><br><span class="line">        <span class="comment">// 將顯示的文字轉成易閱讀的格式</span></span><br><span class="line">        percentage: format(e.value / <span class="keyword">this</span>.totalSum)</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> newArray;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>全部畫好的樣子如下圖，可以去 <a href="https://github.com/Annilla/d3-practice-vue-svg/blob/master/src/components/DonutChart.vue" target="_blank" rel="noopener">Github</a> 查看完整程式碼喔！也可以在<a href="https://annilla.github.io/d3-practice-vue-svg/dist/">這裡</a>查看直條圖的 Demo，我們下回見～</p>
+<p><img src="https://lh3.googleusercontent.com/b5xMuJcWbNk6hgHI5RT0FbGiIN6_XK8pJsXqSmiK-6kXykrTkgYLC4rOtrpZt1fcw3OjOtjgwvNHBkewBHST6Z1WoCrRPo6AD4oekyvYh24S1JS2ja2QGSMFyfhIOSD_eY9AZTvfprwIqDBPs3_E-sFsUpr1YcidoinaoGbhCRT9yJom_ztql5N6isa5lznQ_xLWkbg_8-3QS9_J21qVgBAly90yKebDGLrXmJFNyJG75wZP_vDIyINy2H2fYTg49-spVM76MavB-9ESNxSKFTRbAGaE3xcBR7wmAICq8SzP__ucHYOehi2sWGNsFbc4Vn3jf23QT2JXI6N9aLgmiwrDaRAkYDqGgpYPSJZPzW0gZZysf5nEHLluS8B2q_B5Ewrmz54HWF-ZVpSYoXYbC2G4ynMaOT7g83ils5zDDfZMitBqE9zb7l8esPvxsKa-ODi4qoThsmlj5UfUjWsNT8XuxCb83VwCjPbVF5fZdNJcuC5SAaFqN1IjdKRAwMpgq3ukvg6ITv4TjPSDGE8MXnNQzG2kff-bSnzWUxWaVVA79aRyw4dmEuy74tMV8nTMVZRmQ7o8sRJEzp11f0Qvz91Lqn0HRvEzt6uigBkrfLqno0m0alzaIJj8nBhy2CUEP7BR_VsHtZ1s_GWD927Jbpl2n6o-lilU=w1024-h983-no" alt="甜甜圈圖完成" title="甜甜圈圖"></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/D3/" rel="tag">D3</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/SVG/" rel="tag">SVG</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Vue/" rel="tag">Vue</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/"
+                    data-tooltip="D3 v4 with Vue - CANVAS Line Chart"
+                    aria-label="上一篇: D3 v4 with Vue - CANVAS Line Chart"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/"
+                    data-tooltip="D3 v4 with Vue - SVG Vertical Bar Chart"
+                    aria-label="下一篇: D3 v4 with Vue - SVG Vertical Bar Chart"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/"
+                    data-tooltip="D3 v4 with Vue - CANVAS Line Chart"
+                    aria-label="上一篇: D3 v4 with Vue - CANVAS Line Chart"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/04/06/D3/D3-v4-with-Vue-SVG-Vertical-Bar-Chart/"
+                    data-tooltip="D3 v4 with Vue - SVG Vertical Bar Chart"
+                    aria-label="下一篇: D3 v4 with Vue - SVG Vertical Bar Chart"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/';
+              
+            this.page.identifier = '2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

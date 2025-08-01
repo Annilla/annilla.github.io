@@ -1,0 +1,1073 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Git Control for Using Abstract to Manage Sketch Files - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"這篇要來介紹 Abstract 的主要功能，和我平常會怎麼使用他來做版本控制。\n\n\nProjects 所有專案登入後的首頁就是顯示所有專案的頁面。專案分為 ACTIVE 和 ARCHIVED，這兩個分類主要是讓設計師團隊去區分哪些專案是還在進行的，哪些專案是已經結案的。專案只會越來越多，所以我覺得這個功能很好，可以在團隊合作時能很快的找到要設計的專案。我自己目前是一人設計，但目前管理的專案就有十幾個以上，往後專案數量只會遞增，所以我覺得這個功能對設計師來說是十分貼心。但要注意若要使用專案分類的話，是要自己去手動設定的喔，並不會自動知道你的專案已經結案了，所以這部分是手動設定也蠻合理的。\n\n\n\nTip: 預設專案的排序是照名稱，如果想要專案特別置頂的話，可以按專案卡片上的星星就會強制置頂囉～\n\n要開新專案就按 New Project 新增，詳細操作可以參考官網的說明，這裡就不再贅述。\n\n\nProject Overview 專案概況點擊進入單一專案後，會看到 Overview 頁面，這頁是把專案的概況整理成一張張的小卡，讓設計師能快速回憶過往設計並能儘快進入狀態。比較特別的是其中有一個小卡 About，類似小白板的感覺，主要功能是紀錄專案的描述和相關文件的參照，我覺得這個部分超棒的！！！因為要設計一個專案，絕對是有許許多多的需求，這些需求總有一個管理的地方，而 Abstract 運用了這張卡片讓流程可以順利的參照。但美中不足的是如果可以像 Azure Devops 有個 task board 聯繫 git，並在 merge 的時候有 close task 的功能，將會對設計師團隊有很大的助益。\n\n\nProject Master 專案主分支Master 就是此專案的主要 branch，分為 Overview/Commits/Files 三個小功能。正常來說 Abstract 不會讓設計師去 commit Master branch，所以如果在這裡去點擊 EDIT IN SKETCH 做任何變更是不會讓使用者 commit 上去的。在 Master branch 設計師只會有兩種選擇，要麻獨立開啟檔案不給你做 commit，要麻就是建議你開 branch 做完後再 merge 回來，這一點跟一般的 git 不太一樣，畢竟設計檔案也不會有用到 hotfix 的時候，所以這樣防呆也比較安全。\n\n\n\nProject Branches 專案分支這個功能是 Abstract 的核心。上一段提到正常的版本控制流程如同 git 一般，應該要做 NEW BRANCH 的動作開新分隻，並在新分支做 EDIT IN SKETCH，儲存完後對分支進行 commit 的動作，確定都修改完成最後才會將數個 commit merge 到 Master branch。這樣做除了多人設計師可以合作外，如果像我一樣孤獨的設計師也有好處嗎？答案絕對是YES! 因為設計跟寫程式不一樣，同一個需求，常常需要多種設計方案來比較，但 BOSS 又是那種看不到畫面就感覺不到的人，所以這時候開 branch 就非常好用。不同 branch 代表不同的設計方案，這樣既不會干擾原設計，又可以將最後確定要做的 branch 做 merge，其他不需要的方案也可以留底做紀錄。超愛！！\n\n\nTip: 對每張預覽圖點進去都可以做 COMMENT/COMPARE/INSPECT 的功能。 COMMENT 就是給不同設計師合作時的討論。 COMPARE 就是可以比對設計圖修改前後的不同處。 INSPECT 是新功能尚未開放，但我猜應該是讓設計師可跟工程師溝通的 spec，這部分我目前是先用 Sketch 的 plugin 輸出成互動的 HTML 解決，如果 Abstract 之後有開放此功能的話，將會是一大福音。\n\n\n\n2018 對應 Sketch Library 的功能Sketch 的新功能 Library， Abstract 也有支援，而且使用起來相當順暢。當已經有一組設計元件/框架想要共用多個不同的專案時，我們可以開一個單獨的專案並將其 sketch 檔案 import 為 Library 做管理。在另一個要使用此 Library 的專案在 Files 的子頁面做 Link Library 的動作。這樣只要原本 Library 的元件有做修改，有使用到此共用元件的專案也會一併更新，如此一來就可以做到 Library 和一般專案分開管理，又可以做到互相關聯。這個新功能雖然是 Sketch 研發，但搭配上 Abstract 後更是如虎添翼，打 BOSS 嚇嚇叫！詳細實作可參考官網說明。\n\nTip: Import Sketch file as Library 後檔案的 icon 會變成粉紫色鑽石（預設是橘黃色），這樣就表示有新增 Library 成功喔～\n\n\n","dateCreated":"2018-11-04T00:00:00+08:00","dateModified":"2018-11-04T00:00:00+08:00","datePublished":"2018-11-04T00:00:00+08:00","description":"這篇要來介紹 Abstract 的主要功能，和我平常會怎麼使用他來做版本控制。","headline":"Git Control for Using Abstract to Manage Sketch Files","image":["https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no","https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/","keywords":"Sketch, UX, UI, Abstract","thumbnailUrl":"https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no"}</script>
+    <meta name="description" content="這篇要來介紹 Abstract 的主要功能，和我平常會怎麼使用他來做版本控制。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Git Control for Using Abstract to Manage Sketch Files">
+<meta property="og:url" content="http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="這篇要來介紹 Abstract 的主要功能，和我平常會怎麼使用他來做版本控制。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-2IXT8A9fh8LNqeFa7pv9eOVku3fBO0fYRQR3T7GdbaMUgaEmddURlFrA2RvBF-PI3HAzqHw3M40mKvpZAwAFo7YYD5Xleugxzc5K88Ty2XkOqwKLBiIghOtch6ycWlYTaJrLtd95nbmUUS60JO9tz_xGIl9M9eYuwH2sik7ddUyvx8bVVAt75p_mIVPHcQ-6Eo2IhZCGq-KG4VkLA7AcbAAC6jcWpuy5H3OgaTTGf2N_lSwtlm-gwLgIHhJlB2E56Q1QZDPaDAebgJ8c8t3PyD5nDw_AML2BgqdQISujtesJBi3P34_PhzG_HD63suwNy_0n72Qb3Y-mnIJKCA7Nnvjh-towFitQn9gex7mEk7Sk0Q_cYnlPH4t7oCRp5bx5x4iSkYXfG5xr_MWAF2N3dAJeCr5JPNjMBEUWjPhJfJPMFIqGtNhBDknNnqBc93OgeP3Y1lGxvbD2M30nb1QGijbr6m_g3ouzva4kUqZ--NlsXdJwueyJJv7v6HSNx3LSfOYAEvsUIaqb7PcY8am89PIdW4rK_BWMIpVRIVISs61xeD3uYoBRQ1enaWUQY18eMRB2BErTh9dGQg3uOzYKUE7L1kg5W6XteSJozWp9XvZBvVMo4T0B5x8263RZw0jwbsiXT8RfOgjx-GqAFRWUWTkoGzy2XkU=w1023-h619-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pAv7exhVOlv-orzAfufPHGAP6I_hX345rCvKJHQcynwpP_L_X1fyAjLPwO3wGHyqCJ9073wuy0hPH6nU8tOIKwESYswPLMypk37S0xWQ00tYAYGy7w3cADAxDn3Xmb85VHEydHzqk1MA34BaH6wEjO7m_js3q8esOO07JE702_ee2yeisNnbny--tD54E_lZd_agJcSgLcr-I7cjEWiyZHB72S2BXMx0Ybn3Ylstvie5hYL69Im8LZN4QKgmOU-9gMm6rZxiyzDU8Sh1-qPpNqQ7YROhDP0UpIhE6Ju8yIQv3ElBZN8hhSQF5gpcMrFKsk_BVTAb9ZLz88_q9o_tAk18f5l8VaN97rO9JQzcytg2z-4qj-Jxu2OjuB9TLnCNjiPuUftI0vkiPJ2GuTXFiiI5Zr7iXJKu9az639PP3-hbj3Hx6x8_9dSXgWG12e8Jy4Fwni59R8_BN0zx6FYAngfSV1-k8I416Egj81_Tn98LQD-3JsShYEMfJrAix_qx9yyO-VesL2UEslhRF7rd87TYNtZNPe9g1LDHwlrDl89gpvB9dP1g6zNfMmr5gUB6yQvGDlFtkhZ8dzqptGSUtoYc4EbYxVGdLOUnRcQ8E31foJLkv3hubyklf7J4Dy4Q5Hf7SJ15BwkjX0vZHqYoXbA05z4L59MR=w1023-h618-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/1Vz2DcZM1aWCJjYeOv6hLGZ6Tc0n0cLd75Ap7ze5z2Lng3k24WvV8lGII0UsFLgsyZNnhu8eWe5uI5StppnBqSzSARjP93-FYEHrBRtSLujEWPwDitK5Ve0NofifsEDeDeplzpaouF_w9vrIwMJ7F9ESivEMZfm8EGLu8CspQXcn24eBgwJReBCv1HbmKZScDjbrOnSUs6MbITqwS5QLYLpLePRPGx-dBEBggKGNKq3i8qB5tEnQijuqyVjryDlGMJqLLjxNHVBIysXKV0rviQNJFB-kk3u4Y1FeJs2NzCSuZHXjxKIv-Hbc44EzsfDz10-YsDzWOym2UsukCu8QLdbueDe20oiF71qQTI8zE1aVaIF54Fb45PUtg0FPqP7Fl3bCpWeHf9tBcyo6g31dJRHUKAJ68Yx9nJhBCE2ZoVjYCbnTgqyvYHmthzyJNDgaGZGtIFsSBGjTXYMMNJVHUAmJjcnw3aqd8AKBX9qZVZG0c76YqSv0KIHCEmWd1oKVcpevvrafRQrxcLMGXV0ycAwmvQF2f6Jg30Gxfbs8fQ48IJK1cELVXm7mW5LMih7APLgpCdr-M0wYrPgOJN-FSuu6-6rU_jqej25j6ogYKuFI6Erzy81uV9HRbA65Mg6GxWXzJnzeX8H-2F1kWIKS03EX-ZuX5v5h=w1023-h614-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-_oB_2ao_K1fbmbMm1DD7plg9BaWkLBzZrRxVLAQK-_2EB9YldTsNHBkz27nljxApmRpBEEbP6fEVZaoxlBuxeiOgF6BU65lUnYTJaSKpprANPD4KGXmB8swyIFyQTtQBz7RcyqxzlYtTy7Bo53kkQl96iiqOvoUaxTsdpTJVuHwE_yWmsu7lz52wr0MhbT6axYvYrrHqKYda_JIOLkGkpyxofVzRM4U79UM_kS9oieYbckdHEcT7t_gyxqUdeygLyewc1rZxXrq2yzQjNs7W6vxYvR6PTh6-1jt97NrH32wl6sPLQpGe7nMUQc8-c4fyQR1dOnX9uQ3ndczBLumUGvSUlmsjkm-GzdEumIySQO3-DeIxZb20wRCVsgUAcO5uGsZO2iGwxgeVWyfjIe0vtX-WKtO6H2XKAwVXsT7_a-7QvYZEa1Vu-uz5mZnlb5vaseRwB7tiv_UnB1wwnXjbLrlaTUAsNGvfQmPIPdJKcQNGi_rfpx_sRG-_6fbgej0HCkzFRokgKP10CFesWbD9BpnnYWx9DS9_NYAJEZonLDdrbY3wDzTd8zpAHTObHzet1Q4DUw7spKDT5rBmgMnZU1YthqYBh5nBZh1ICphlxBP2Dn5Ugb-xMOO63qp2-kNMF5ra1tGdODUhJcMnVA4E0yfXnC-ETHj=w1023-h619-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/gjq4zyufwjTpLB7hQ_wg9Rusr5hnnhsqpdIKEbIT3EDk3Rnm5YQ-tk81C4ASq3dEgPx43wb3mxsjD6z8I0FZjJnRa_IgtyoLWmXutsxrnqYfCMmcftB1vKkk0LV8im7JxZ1nu0dbVFtA4NnfqstnC34WTBcSdrcjhQcC0nuW7SnRBaY_6OVWCt7TTV6hLdA-9Q_0AdniVqOjcOzgB3pLXPhtX1xUOZqFVS5Vsd2EEsAeOkz_DcEZlsMJ8k_a-MCywYO6HEmepK3ZgKAyCPMmA2WmINZt4TvwlbOp9yffx1TDcQ4ZwHPtaLgwOqO6bsyUPrUSSj7_9Dj53UuickyDTAYGbGWKK-UG8bFBBclYMGeksorPu4VV2oeevIeroJsPl8bGNgqByyTimoO0qIG7Qc_8691kwEfHRh19my6xaD6CPKCry6Pzsi8P-KKGjVZCR-iiEy0NpBWMwOYmj4RlrXonRjm62nd8QWK4SIjHcHWglFTVGQ44BL4dgD-k7kQsd28qTBRzpfj0uOIY8CLTpwkTuW10OP6KHeZ56EqcJR538Ae2cuoKvc2Wd93WRySCdf9yL2gR-twyNnxEW5RxiTLP9Fbw4P8DOdkqx1T60CvdXZwI5PgyyA0Ck2LnK33F32FxjHElds3NJiWil9rrCdntPU7tW3yl=w1022-h620-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/znS0iAXuVEvPOlhIOL_wlzCmYt9VgJCLEWJ4Lm9y0kAdCef9SfTel1NL8-h5hE1jGsra526Pp5BmxWDsLJnuE2cKNIirE8jQDcIOuDfKQi_SfBWFZvjBUKOyL5OtChPUQD26xUEW-xajZoHKmrJnAYKSfIPMqseCJzSQkrL_90DDnA_N20B-43SG4lYwBHHdQHe_XOPLkGt4fa6voR9KhnxBI4TCmx8Ba2AyRCnKp_u3XEUSTHR32Z-QjO-_z1GE8AKi3S2WJjDHRoIyAtW85D7YxZ3sXDpdzAr9cEAdreouTY_8bTt0zK9TzmhZfUuYnOJ6CoFTwA7YcBm5k4_x9qIA2FF1BSNHCqDvNnu4nyWlzVYiyA7JrBulgeodU7tCLCrdvpiUKXaPQ2yzM4LD8paoUFU6ljHYtYxVV6-4KOd4DDDnfYIqGpfSqrGEmQGoVejG7HJ-KJ90a-kycmgnFz08CrZ145IHu-9Bk2KZUAtkB5uRe769mojUtelz80Y74aA6VxD7Fn_R93-wJlMoeWIDg2GTHlMinW5aCNZdg4_7x1wsTHmNARvBeAYeLdXFdi7ZbuHJGfMum74xO4LLO5_Ym8pUzLD6o5f3vkOPqQJXm2dHulxrnt5tTER6Unh520zJO5DI8PZSxEEoNut23dntE9xeyXvR=w1026-h620-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/YMwJ6QF8ELcQyu9v149YVgKqPMBd6coFba1xGhj0pZIcFo5pIXOj__M9q8HexsG98T642rfCSG5kBsW049dAs_RkpeWYzXNifgZqt8CYVuA8JJy4w8gdeokOfsHdmZpfh25QV4RLLXKeBzeDa39zltfoKn6wm4BA2KnzNCWCjMtUu9ZyvleFX_p7xTzenabPy9nq_nO3_c0ygpVfRfrsH3dxvfwNak18bIbcMBoZAHANMZpN7aWAuXTbwSroLPvc4E2IDYuG8DvtkyLGFIeQ0DxxazXNmF6nb7AD-mH3CtRQwO10grAK9Kh3TJKRutOXmyaypvQ52ppw8ixSG3CBmnvI6q7AX0d6-LQAhox_IElE6m2nRfSIh0ATu6NY4dqEpy4UEuu3-uveuzBqpKjBdA09UctNxrbpVwZSjZkPzmHgzEzEF9zpEjClwJvjCQGOm-mMBhhxPA8nwOnVXAib6EX8yQVA9JbgjoDlpl89B57hhcu9d4vOfTRGnQLbygT3Pd3wyc0cbVikM_Z1fdkN3HVAJ3nNz2LwkyDtjiwItopNVawGu2dxBRzmak5BMCEgAFOfi4fJV1ZFTjZoQ4kLWNOXA0OWcjDKkMlyb3VJ9tZSVD_c3G8TtTtb9TlCJ1LdtaLiBKPxKqmd3d4vGyyix9UbzwBAxkDX=w1022-h616-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/ZRGh0dvdsa4_9yjD0zsq1rYQ4rfJjo8VxLSG4q6jD4p-KvE0s-fwPaEdBGxV26ol9LNfC15pGrfNIrjBYf-7UbK0WkGw7wsMPhvf_Nb45ecIlD_aC_bK1y844cuiP-WftQaZF3sasfinPGXm_UF6ROnCWfMafg5feUwnYSmJWh04jnVD0wUbi6D-CuCjOm3gVc-hANHCKfmDskpjmlLFn-AeMoj79-3fmkKSa8aQjQUslFHRuwn8W4XC7xTCztFy8JP7sAStDVu8BEcmECyXKS4t2WqCwVJE1Q4ptuJWszgo_8yDFzW_1v_aL3wolRUIt0F0yf9IP0BxQzlATEDgyasinQB_JGYoUtlr0mUNZjg6QFeLT47ZDQr3pqf70_FjTON7eJsubnwUclXTonbHK6ERD_pZlECnVUIRy-T1vFWQYroxlZ4upb2BrEG3l1Haum6UdAuULeQr0D6qxeoNEscYFnTAWRCV1AcRUP0iy0yiXkYRSwzBeqnU0PjFbtHxtGmanY8ijx1spIjNQ_65bmHGlDaaOPT7yvvZwHDRlPWm7HH1dTr_gK1iXYPA2ZV0WKIn-sUV7vDkSMMH-0do6REnQvRT_Sp4S3jBSbWWeEnH-Ky9Cwpknc-_EDfZpaUvEN7Txx3qQACbTMqUyAurEepMlViHatVQ=w1023-h621-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/AmGnIR7k0l-SdY5hD_94kR6OO-pCMseKchuEeBcrfPtlgEtmule4zv5GB-GCFafrWYnuB_WgLM-HUbq1MSn19wvglEBu_SZ330zh-lu3GTdbiPotoc6KAR7ZCCGL-4NHj8lfL23FxkM3Yc-wSD9Ecu8L5WWx0vMUznNXsSFOcKXOjnBS8uk_n2XefeKGlS7ZZrvXLmHi5vlY8bVrz-rRoBTSwZft6njuqlKpBw5KP5nmjqqEaIpO9rxbB3GT5nwbLmAZeVITJjVnJoOsPR5hX6Z_WD2j0Qn6Q8jj-mKr-Pu9gWRmdYy4oT6G5ZemDpRHtq7I5NcgO9-hDgOFGTXDEneff0tdKfuu7lfyKz7MDimBAqZELILN5dCf6V8gzIhoUHNHSU7XndmlXXUP-CUn_vJJxWeOBNlVB0tnbsG8UziCyG_hj0hKmyIHvEeYwxPwGwX_2uWOH_tt1MIguJGu1SXJIrzYOL9lTY7crgjFduWMztg5IoBv5F8pbXFBdNBGnPgPlf8p8SHfKm5-nKcsqgHnDd4ADyYuuDPIhDtenZc97AuLnBj6oJVkZwVoxvf8IZdrZACuDIIOiZJ02b9HNvUzIMvegeUBxxjKisJdd_yT81jTwq7rcXhW4vacP6RvdPriXhQ61zE6qm5vQLLMGfWL3Hjd3kxi=w1021-h619-no">
+<meta property="article:published_time" content="2018-11-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2018-11-03T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="Sketch">
+<meta property="article:tag" content="UX">
+<meta property="article:tag" content="UI">
+<meta property="article:tag" content="Abstract">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/-2IXT8A9fh8LNqeFa7pv9eOVku3fBO0fYRQR3T7GdbaMUgaEmddURlFrA2RvBF-PI3HAzqHw3M40mKvpZAwAFo7YYD5Xleugxzc5K88Ty2XkOqwKLBiIghOtch6ycWlYTaJrLtd95nbmUUS60JO9tz_xGIl9M9eYuwH2sik7ddUyvx8bVVAt75p_mIVPHcQ-6Eo2IhZCGq-KG4VkLA7AcbAAC6jcWpuy5H3OgaTTGf2N_lSwtlm-gwLgIHhJlB2E56Q1QZDPaDAebgJ8c8t3PyD5nDw_AML2BgqdQISujtesJBi3P34_PhzG_HD63suwNy_0n72Qb3Y-mnIJKCA7Nnvjh-towFitQn9gex7mEk7Sk0Q_cYnlPH4t7oCRp5bx5x4iSkYXfG5xr_MWAF2N3dAJeCr5JPNjMBEUWjPhJfJPMFIqGtNhBDknNnqBc93OgeP3Y1lGxvbD2M30nb1QGijbr6m_g3ouzva4kUqZ--NlsXdJwueyJJv7v6HSNx3LSfOYAEvsUIaqb7PcY8am89PIdW4rK_BWMIpVRIVISs61xeD3uYoBRQ1enaWUQY18eMRB2BErTh9dGQg3uOzYKUE7L1kg5W6XteSJozWp9XvZBvVMo4T0B5x8263RZw0jwbsiXT8RfOgjx-GqAFRWUWTkoGzy2XkU=w1023-h619-no">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Git Control for Using Abstract to Manage Sketch Files
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-11-04T00:00:00+08:00">
+	
+		    2018 年 11 月 4 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/UXUI/">UXUI</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>這篇要來介紹 <code>Abstract</code> 的主要功能，和我平常會怎麼使用他來做版本控制。</p>
+<a id="more"></a>
+<hr>
+<h2 id="Projects-所有專案"><a href="#Projects-所有專案" class="headerlink" title="Projects 所有專案"></a>Projects 所有專案</h2><p>登入後的首頁就是顯示所有專案的頁面。專案分為 <code>ACTIVE</code> 和 <code>ARCHIVED</code>，這兩個分類主要是讓設計師團隊去區分哪些專案是還在進行的，哪些專案是已經結案的。專案只會越來越多，所以我覺得這個功能很好，可以在團隊合作時能很快的找到要設計的專案。我自己目前是一人設計，但目前管理的專案就有十幾個以上，往後專案數量只會遞增，所以我覺得這個功能對設計師來說是十分貼心。但要注意若要使用專案分類的話，是要自己去手動設定的喔，並不會自動知道你的專案已經結案了，所以這部分是手動設定也蠻合理的。</p>
+<p><img src="https://lh3.googleusercontent.com/-2IXT8A9fh8LNqeFa7pv9eOVku3fBO0fYRQR3T7GdbaMUgaEmddURlFrA2RvBF-PI3HAzqHw3M40mKvpZAwAFo7YYD5Xleugxzc5K88Ty2XkOqwKLBiIghOtch6ycWlYTaJrLtd95nbmUUS60JO9tz_xGIl9M9eYuwH2sik7ddUyvx8bVVAt75p_mIVPHcQ-6Eo2IhZCGq-KG4VkLA7AcbAAC6jcWpuy5H3OgaTTGf2N_lSwtlm-gwLgIHhJlB2E56Q1QZDPaDAebgJ8c8t3PyD5nDw_AML2BgqdQISujtesJBi3P34_PhzG_HD63suwNy_0n72Qb3Y-mnIJKCA7Nnvjh-towFitQn9gex7mEk7Sk0Q_cYnlPH4t7oCRp5bx5x4iSkYXfG5xr_MWAF2N3dAJeCr5JPNjMBEUWjPhJfJPMFIqGtNhBDknNnqBc93OgeP3Y1lGxvbD2M30nb1QGijbr6m_g3ouzva4kUqZ--NlsXdJwueyJJv7v6HSNx3LSfOYAEvsUIaqb7PcY8am89PIdW4rK_BWMIpVRIVISs61xeD3uYoBRQ1enaWUQY18eMRB2BErTh9dGQg3uOzYKUE7L1kg5W6XteSJozWp9XvZBvVMo4T0B5x8263RZw0jwbsiXT8RfOgjx-GqAFRWUWTkoGzy2XkU=w1023-h619-no" alt="Projects/ACTIVE" title="Projects/ACTIVE"></p>
+<p><img src="https://lh3.googleusercontent.com/pAv7exhVOlv-orzAfufPHGAP6I_hX345rCvKJHQcynwpP_L_X1fyAjLPwO3wGHyqCJ9073wuy0hPH6nU8tOIKwESYswPLMypk37S0xWQ00tYAYGy7w3cADAxDn3Xmb85VHEydHzqk1MA34BaH6wEjO7m_js3q8esOO07JE702_ee2yeisNnbny--tD54E_lZd_agJcSgLcr-I7cjEWiyZHB72S2BXMx0Ybn3Ylstvie5hYL69Im8LZN4QKgmOU-9gMm6rZxiyzDU8Sh1-qPpNqQ7YROhDP0UpIhE6Ju8yIQv3ElBZN8hhSQF5gpcMrFKsk_BVTAb9ZLz88_q9o_tAk18f5l8VaN97rO9JQzcytg2z-4qj-Jxu2OjuB9TLnCNjiPuUftI0vkiPJ2GuTXFiiI5Zr7iXJKu9az639PP3-hbj3Hx6x8_9dSXgWG12e8Jy4Fwni59R8_BN0zx6FYAngfSV1-k8I416Egj81_Tn98LQD-3JsShYEMfJrAix_qx9yyO-VesL2UEslhRF7rd87TYNtZNPe9g1LDHwlrDl89gpvB9dP1g6zNfMmr5gUB6yQvGDlFtkhZ8dzqptGSUtoYc4EbYxVGdLOUnRcQ8E31foJLkv3hubyklf7J4Dy4Q5Hf7SJ15BwkjX0vZHqYoXbA05z4L59MR=w1023-h618-no" alt="Projects/ARCHIVED" title="Projects/ARCHIVED"></p>
+<blockquote>
+<p>Tip: 預設專案的排序是照名稱，如果想要專案特別置頂的話，可以按專案卡片上的星星就會強制置頂囉～</p>
+</blockquote>
+<p>要開新專案就按 <code>New Project</code> 新增，詳細操作可以參考官網的<a href="https://www.goabstract.com/how-it-works/" target="_blank" rel="noopener">說明</a>，這裡就不再贅述。</p>
+<p><img src="https://lh3.googleusercontent.com/1Vz2DcZM1aWCJjYeOv6hLGZ6Tc0n0cLd75Ap7ze5z2Lng3k24WvV8lGII0UsFLgsyZNnhu8eWe5uI5StppnBqSzSARjP93-FYEHrBRtSLujEWPwDitK5Ve0NofifsEDeDeplzpaouF_w9vrIwMJ7F9ESivEMZfm8EGLu8CspQXcn24eBgwJReBCv1HbmKZScDjbrOnSUs6MbITqwS5QLYLpLePRPGx-dBEBggKGNKq3i8qB5tEnQijuqyVjryDlGMJqLLjxNHVBIysXKV0rviQNJFB-kk3u4Y1FeJs2NzCSuZHXjxKIv-Hbc44EzsfDz10-YsDzWOym2UsukCu8QLdbueDe20oiF71qQTI8zE1aVaIF54Fb45PUtg0FPqP7Fl3bCpWeHf9tBcyo6g31dJRHUKAJ68Yx9nJhBCE2ZoVjYCbnTgqyvYHmthzyJNDgaGZGtIFsSBGjTXYMMNJVHUAmJjcnw3aqd8AKBX9qZVZG0c76YqSv0KIHCEmWd1oKVcpevvrafRQrxcLMGXV0ycAwmvQF2f6Jg30Gxfbs8fQ48IJK1cELVXm7mW5LMih7APLgpCdr-M0wYrPgOJN-FSuu6-6rU_jqej25j6ogYKuFI6Erzy81uV9HRbA65Mg6GxWXzJnzeX8H-2F1kWIKS03EX-ZuX5v5h=w1023-h614-no" alt="New Project" title="New Project"></p>
+<hr>
+<h2 id="Project-Overview-專案概況"><a href="#Project-Overview-專案概況" class="headerlink" title="Project Overview 專案概況"></a>Project Overview 專案概況</h2><p>點擊進入單一專案後，會看到 <code>Overview</code> 頁面，這頁是把專案的概況整理成一張張的小卡，讓設計師能快速回憶過往設計並能儘快進入狀態。比較特別的是其中有一個小卡 <code>About</code>，類似小白板的感覺，主要功能是紀錄專案的描述和相關文件的參照，我覺得這個部分超棒的！！！因為要設計一個專案，絕對是有許許多多的需求，這些需求總有一個管理的地方，而 Abstract 運用了這張卡片讓流程可以順利的參照。但美中不足的是如果可以像 <code>Azure Devops</code> 有個 task board 聯繫 git，並在 merge 的時候有 close task 的功能，將會對設計師團隊有很大的助益。</p>
+<p><img src="https://lh3.googleusercontent.com/-_oB_2ao_K1fbmbMm1DD7plg9BaWkLBzZrRxVLAQK-_2EB9YldTsNHBkz27nljxApmRpBEEbP6fEVZaoxlBuxeiOgF6BU65lUnYTJaSKpprANPD4KGXmB8swyIFyQTtQBz7RcyqxzlYtTy7Bo53kkQl96iiqOvoUaxTsdpTJVuHwE_yWmsu7lz52wr0MhbT6axYvYrrHqKYda_JIOLkGkpyxofVzRM4U79UM_kS9oieYbckdHEcT7t_gyxqUdeygLyewc1rZxXrq2yzQjNs7W6vxYvR6PTh6-1jt97NrH32wl6sPLQpGe7nMUQc8-c4fyQR1dOnX9uQ3ndczBLumUGvSUlmsjkm-GzdEumIySQO3-DeIxZb20wRCVsgUAcO5uGsZO2iGwxgeVWyfjIe0vtX-WKtO6H2XKAwVXsT7_a-7QvYZEa1Vu-uz5mZnlb5vaseRwB7tiv_UnB1wwnXjbLrlaTUAsNGvfQmPIPdJKcQNGi_rfpx_sRG-_6fbgej0HCkzFRokgKP10CFesWbD9BpnnYWx9DS9_NYAJEZonLDdrbY3wDzTd8zpAHTObHzet1Q4DUw7spKDT5rBmgMnZU1YthqYBh5nBZh1ICphlxBP2Dn5Ugb-xMOO63qp2-kNMF5ra1tGdODUhJcMnVA4E0yfXnC-ETHj=w1023-h619-no" alt="Project Overview" title="Project Overview"></p>
+<hr>
+<h2 id="Project-Master-專案主分支"><a href="#Project-Master-專案主分支" class="headerlink" title="Project Master 專案主分支"></a>Project Master 專案主分支</h2><p>Master 就是此專案的主要 branch，分為 Overview/Commits/Files 三個小功能。正常來說 <code>Abstract</code> 不會讓設計師去 commit Master branch，所以如果在這裡去點擊 <code>EDIT IN SKETCH</code> 做任何變更是不會讓使用者 commit 上去的。在 Master branch 設計師只會有兩種選擇，要麻獨立開啟檔案不給你做 commit，要麻就是建議你開 branch 做完後再 merge 回來，這一點跟一般的 git 不太一樣，畢竟設計檔案也不會有用到 hotfix 的時候，所以這樣防呆也比較安全。</p>
+<p><img src="https://lh3.googleusercontent.com/gjq4zyufwjTpLB7hQ_wg9Rusr5hnnhsqpdIKEbIT3EDk3Rnm5YQ-tk81C4ASq3dEgPx43wb3mxsjD6z8I0FZjJnRa_IgtyoLWmXutsxrnqYfCMmcftB1vKkk0LV8im7JxZ1nu0dbVFtA4NnfqstnC34WTBcSdrcjhQcC0nuW7SnRBaY_6OVWCt7TTV6hLdA-9Q_0AdniVqOjcOzgB3pLXPhtX1xUOZqFVS5Vsd2EEsAeOkz_DcEZlsMJ8k_a-MCywYO6HEmepK3ZgKAyCPMmA2WmINZt4TvwlbOp9yffx1TDcQ4ZwHPtaLgwOqO6bsyUPrUSSj7_9Dj53UuickyDTAYGbGWKK-UG8bFBBclYMGeksorPu4VV2oeevIeroJsPl8bGNgqByyTimoO0qIG7Qc_8691kwEfHRh19my6xaD6CPKCry6Pzsi8P-KKGjVZCR-iiEy0NpBWMwOYmj4RlrXonRjm62nd8QWK4SIjHcHWglFTVGQ44BL4dgD-k7kQsd28qTBRzpfj0uOIY8CLTpwkTuW10OP6KHeZ56EqcJR538Ae2cuoKvc2Wd93WRySCdf9yL2gR-twyNnxEW5RxiTLP9Fbw4P8DOdkqx1T60CvdXZwI5PgyyA0Ck2LnK33F32FxjHElds3NJiWil9rrCdntPU7tW3yl=w1022-h620-no" alt="Project Master Files" title="Project Master Files"></p>
+<p><img src="https://lh3.googleusercontent.com/znS0iAXuVEvPOlhIOL_wlzCmYt9VgJCLEWJ4Lm9y0kAdCef9SfTel1NL8-h5hE1jGsra526Pp5BmxWDsLJnuE2cKNIirE8jQDcIOuDfKQi_SfBWFZvjBUKOyL5OtChPUQD26xUEW-xajZoHKmrJnAYKSfIPMqseCJzSQkrL_90DDnA_N20B-43SG4lYwBHHdQHe_XOPLkGt4fa6voR9KhnxBI4TCmx8Ba2AyRCnKp_u3XEUSTHR32Z-QjO-_z1GE8AKi3S2WJjDHRoIyAtW85D7YxZ3sXDpdzAr9cEAdreouTY_8bTt0zK9TzmhZfUuYnOJ6CoFTwA7YcBm5k4_x9qIA2FF1BSNHCqDvNnu4nyWlzVYiyA7JrBulgeodU7tCLCrdvpiUKXaPQ2yzM4LD8paoUFU6ljHYtYxVV6-4KOd4DDDnfYIqGpfSqrGEmQGoVejG7HJ-KJ90a-kycmgnFz08CrZ145IHu-9Bk2KZUAtkB5uRe769mojUtelz80Y74aA6VxD7Fn_R93-wJlMoeWIDg2GTHlMinW5aCNZdg4_7x1wsTHmNARvBeAYeLdXFdi7ZbuHJGfMum74xO4LLO5_Ym8pUzLD6o5f3vkOPqQJXm2dHulxrnt5tTER6Unh520zJO5DI8PZSxEEoNut23dntE9xeyXvR=w1026-h620-no" alt="Project Master Commits" title="Project Master Commits"></p>
+<hr>
+<h2 id="Project-Branches-專案分支"><a href="#Project-Branches-專案分支" class="headerlink" title="Project Branches 專案分支"></a>Project Branches 專案分支</h2><p>這個功能是 <code>Abstract</code> 的核心。上一段提到正常的版本控制流程如同 git 一般，應該要做 <code>NEW BRANCH</code> 的動作開新分隻，並在新分支做 <code>EDIT IN SKETCH</code>，儲存完後對分支進行 commit 的動作，確定都修改完成最後才會將數個 commit merge 到 Master branch。這樣做除了多人設計師可以合作外，如果像我一樣孤獨的設計師也有好處嗎？答案絕對是YES! 因為設計跟寫程式不一樣，同一個需求，常常需要多種設計方案來比較，但 BOSS 又是那種看不到畫面就感覺不到的人，所以這時候開 branch 就非常好用。不同 branch 代表不同的設計方案，這樣既不會干擾原設計，又可以將最後確定要做的 branch 做 merge，其他不需要的方案也可以留底做紀錄。超愛！！</p>
+<p><img src="https://lh3.googleusercontent.com/YMwJ6QF8ELcQyu9v149YVgKqPMBd6coFba1xGhj0pZIcFo5pIXOj__M9q8HexsG98T642rfCSG5kBsW049dAs_RkpeWYzXNifgZqt8CYVuA8JJy4w8gdeokOfsHdmZpfh25QV4RLLXKeBzeDa39zltfoKn6wm4BA2KnzNCWCjMtUu9ZyvleFX_p7xTzenabPy9nq_nO3_c0ygpVfRfrsH3dxvfwNak18bIbcMBoZAHANMZpN7aWAuXTbwSroLPvc4E2IDYuG8DvtkyLGFIeQ0DxxazXNmF6nb7AD-mH3CtRQwO10grAK9Kh3TJKRutOXmyaypvQ52ppw8ixSG3CBmnvI6q7AX0d6-LQAhox_IElE6m2nRfSIh0ATu6NY4dqEpy4UEuu3-uveuzBqpKjBdA09UctNxrbpVwZSjZkPzmHgzEzEF9zpEjClwJvjCQGOm-mMBhhxPA8nwOnVXAib6EX8yQVA9JbgjoDlpl89B57hhcu9d4vOfTRGnQLbygT3Pd3wyc0cbVikM_Z1fdkN3HVAJ3nNz2LwkyDtjiwItopNVawGu2dxBRzmak5BMCEgAFOfi4fJV1ZFTjZoQ4kLWNOXA0OWcjDKkMlyb3VJ9tZSVD_c3G8TtTtb9TlCJ1LdtaLiBKPxKqmd3d4vGyyix9UbzwBAxkDX=w1022-h616-no" alt="Project Branches" title="Project Branches"></p>
+<blockquote>
+<p>Tip: 對每張預覽圖點進去都可以做 COMMENT/COMPARE/INSPECT 的功能。 COMMENT 就是給不同設計師合作時的討論。 COMPARE 就是可以比對設計圖修改前後的不同處。 INSPECT 是新功能尚未開放，但我猜應該是讓設計師可跟工程師溝通的 spec，這部分我目前是先用 Sketch 的 plugin 輸出成互動的 HTML 解決，如果 Abstract 之後有開放此功能的話，將會是一大福音。</p>
+</blockquote>
+<p><img src="https://lh3.googleusercontent.com/ZRGh0dvdsa4_9yjD0zsq1rYQ4rfJjo8VxLSG4q6jD4p-KvE0s-fwPaEdBGxV26ol9LNfC15pGrfNIrjBYf-7UbK0WkGw7wsMPhvf_Nb45ecIlD_aC_bK1y844cuiP-WftQaZF3sasfinPGXm_UF6ROnCWfMafg5feUwnYSmJWh04jnVD0wUbi6D-CuCjOm3gVc-hANHCKfmDskpjmlLFn-AeMoj79-3fmkKSa8aQjQUslFHRuwn8W4XC7xTCztFy8JP7sAStDVu8BEcmECyXKS4t2WqCwVJE1Q4ptuJWszgo_8yDFzW_1v_aL3wolRUIt0F0yf9IP0BxQzlATEDgyasinQB_JGYoUtlr0mUNZjg6QFeLT47ZDQr3pqf70_FjTON7eJsubnwUclXTonbHK6ERD_pZlECnVUIRy-T1vFWQYroxlZ4upb2BrEG3l1Haum6UdAuULeQr0D6qxeoNEscYFnTAWRCV1AcRUP0iy0yiXkYRSwzBeqnU0PjFbtHxtGmanY8ijx1spIjNQ_65bmHGlDaaOPT7yvvZwHDRlPWm7HH1dTr_gK1iXYPA2ZV0WKIn-sUV7vDkSMMH-0do6REnQvRT_Sp4S3jBSbWWeEnH-Ky9Cwpknc-_EDfZpaUvEN7Txx3qQACbTMqUyAurEepMlViHatVQ=w1023-h621-no" alt="Pages" title="Pages"></p>
+<hr>
+<h2 id="2018-對應-Sketch-Library-的功能"><a href="#2018-對應-Sketch-Library-的功能" class="headerlink" title="2018 對應 Sketch Library 的功能"></a>2018 對應 Sketch Library 的功能</h2><p>Sketch 的新功能 <code>Library</code>， Abstract 也有支援，而且使用起來相當順暢。當已經有一組設計元件/框架想要共用多個不同的專案時，我們可以開一個單獨的專案並將其 sketch 檔案 import 為 Library 做管理。在另一個要使用此 Library 的專案在 Files 的子頁面做 <code>Link Library</code> 的動作。這樣只要原本 Library 的元件有做修改，有使用到此共用元件的專案也會一併更新，如此一來就可以做到 Library 和一般專案分開管理，又可以做到互相關聯。這個新功能雖然是 Sketch 研發，但搭配上 Abstract 後更是如虎添翼，打 BOSS 嚇嚇叫！詳細實作可參考官網<a href="https://support.goabstract.com/hc/en-us/articles/360016370931-Build-a-Library" target="_blank" rel="noopener">說明</a>。</p>
+<blockquote>
+<p>Tip: <code>Import Sketch file as Library</code> 後檔案的 icon 會變成粉紫色鑽石（預設是橘黃色），這樣就表示有新增 Library 成功喔～</p>
+</blockquote>
+<p><img src="https://lh3.googleusercontent.com/AmGnIR7k0l-SdY5hD_94kR6OO-pCMseKchuEeBcrfPtlgEtmule4zv5GB-GCFafrWYnuB_WgLM-HUbq1MSn19wvglEBu_SZ330zh-lu3GTdbiPotoc6KAR7ZCCGL-4NHj8lfL23FxkM3Yc-wSD9Ecu8L5WWx0vMUznNXsSFOcKXOjnBS8uk_n2XefeKGlS7ZZrvXLmHi5vlY8bVrz-rRoBTSwZft6njuqlKpBw5KP5nmjqqEaIpO9rxbB3GT5nwbLmAZeVITJjVnJoOsPR5hX6Z_WD2j0Qn6Q8jj-mKr-Pu9gWRmdYy4oT6G5ZemDpRHtq7I5NcgO9-hDgOFGTXDEneff0tdKfuu7lfyKz7MDimBAqZELILN5dCf6V8gzIhoUHNHSU7XndmlXXUP-CUn_vJJxWeOBNlVB0tnbsG8UziCyG_hj0hKmyIHvEeYwxPwGwX_2uWOH_tt1MIguJGu1SXJIrzYOL9lTY7crgjFduWMztg5IoBv5F8pbXFBdNBGnPgPlf8p8SHfKm5-nKcsqgHnDd4ADyYuuDPIhDtenZc97AuLnBj6oJVkZwVoxvf8IZdrZACuDIIOiZJ02b9HNvUzIMvegeUBxxjKisJdd_yT81jTwq7rcXhW4vacP6RvdPriXhQ61zE6qm5vQLLMGfWL3Hjd3kxi=w1021-h619-no" alt="Library" title="Library"></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Abstract/" rel="tag">Abstract</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Sketch/" rel="tag">Sketch</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UI/" rel="tag">UI</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UX/" rel="tag">UX</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/"
+                    data-tooltip="2018 My Sketch Useful Plugins"
+                    aria-label="上一篇: 2018 My Sketch Useful Plugins"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/09/13/UXUI/UX-UI-Workflow-Tool-in-2018/"
+                    data-tooltip="UX/UI Workflow Tool in 2018"
+                    aria-label="下一篇: UX/UI Workflow Tool in 2018"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/"
+                    data-tooltip="2018 My Sketch Useful Plugins"
+                    aria-label="上一篇: 2018 My Sketch Useful Plugins"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/09/13/UXUI/UX-UI-Workflow-Tool-in-2018/"
+                    data-tooltip="UX/UI Workflow Tool in 2018"
+                    aria-label="下一篇: UX/UI Workflow Tool in 2018"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/';
+              
+            this.page.identifier = '2018/11/04/UXUI/Git-Control-for-Using-Abstract-to-Manage-Sketch-Files/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

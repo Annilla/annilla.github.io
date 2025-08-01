@@ -1,0 +1,1082 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Develop Plugin Using Vite &amp; Svelte &amp; TailwindCSS - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近工作上需要寫一隻全新的 chatbot plugin, 因為這種 case 很吃 UI 的畫面, 所以除了 js 外一定會用到 html + css, 而且由兩個人以上共同維護。之後這個 plugin 將會接到各 website 上, 所以想要出來的成品能輕量化且高執行效率。我開始爬文比較各種 JS, CSS 框架，最終選擇 Vite &amp; Svelte &amp; TailwindCSS, 作為 plugin 的基底, 他們都有很完整的文件, 對於多人開發很方便。接下來針對這個組合一一做介紹。程式放在 github。\n\nVite若不考慮 IE 瀏覽器, Vite 在開發上比 Webpack 快上許多, 因為 Vite 會將程式直接加載到瀏覽器中跑, 這樣就不需要過多的映射過程, 速度也會快上許多.\n先初始一個 vite 專案\n1npm create vite@latest\n設定 vite.config.js, 預設可輸出 umd, es 兩種 js 格式\n12345678910111213...export default defineConfig(&#123;    ...    build: &#123;        lib: &#123;            entry: path.resolve(__dirname, 'lib/main.js'), // input js            name: 'annyLib', // library name            fileName: (format) =&gt; `annyLib.$&#123;format&#125;.js` // output file name        &#125;,        ...    &#125;,&#125;);\n設定 package.json\n123456789101112131415161718192021222324&#123;  \"name\": \"anny-lib\",  \"private\": true,  \"version\": \"1.0.0\",  \"description\": \"\",  \"type\": \"module\",  \"files\": [    \"dist\"  ],  \"main\": \"./dist/annyLib.umd.js\",  \"module\": \"./dist/annyLib.es.js\",  \"exports\": &#123;    \".\": &#123;      \"import\": \"./dist/annyLib.es.js\",      \"require\": \"./dist/annyLib.umd.js\"    &#125;  &#125;,  \"scripts\": &#123;    \"dev\": \"vite\",    \"build\": \"vite build\",    \"preview\": \"vite preview\"  &#125;,  ...&#125;\nlib/main.js 為輸出 library 的地方\n1234...import annyLib from './init';export default annyLib;\nlib/init.js 為起始 library 的地方, 從 constructor 傳入參數\n123456789101112import &#123; config &#125; from './config.js';...export default class &#123;    constructor(setting) &#123;        config.setConfig(setting);    &#125;    // initialize plugin    init() &#123;        ...    &#125;&#125;\n在 index.html 測試 js, 開發的時候用 module 引入直接使用, 輸出成 dist 的時候就用 window.xxx 呼叫.\n123456789101112131415161718192021222324&lt;!DOCTYPE html&gt;&lt;html lang=\"en\"&gt;&lt;head&gt;    &lt;meta charset=\"UTF-8\"&gt;    &lt;meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"&gt;    &lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"&gt;    &lt;!-- &lt;script src=\"./dist/annyLib.umd.js\"&gt;&lt;/script&gt; --&gt;    &lt;title&gt;anny-lib&lt;/title&gt;&lt;/head&gt;&lt;body&gt;    &lt;!-- &lt;script&gt;        new window.annyLib(&#123;system: 'Anny Lib'&#125;).init();    &lt;/script&gt; --&gt;    &lt;script type=\"module\"&gt;        import annyLib from './lib/main.js';        new annyLib(&#123;system: 'Anny Lib'&#125;).init();    &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;\n接下來將 Svelte 加上去.\nSvelte選擇 Svelte 是因為他不像三大框架用 Virtual DOM, Svelte 是直接去改實體 DOM, 所以執行效率更快, 且用起來就像純 JS 一樣直覺, 學習曲線小, 最近更票選為前端最喜歡用的 framework, 所以非常想用用看!\n安裝官方 vite 套件\n1npm install --save-dev @sveltejs/vite-plugin-svelte\n修改 svelte.config.js\n1234567import &#123; vitePreprocess &#125; from '@sveltejs/vite-plugin-svelte'export default &#123;  // Consult https://svelte.dev/docs#compile-time-svelte-preprocess  // for more information about preprocessors  preprocess: vitePreprocess(),&#125;\n寫一個簡單的 Svelte componemt (lib/comp.svelte)\n1234567&lt;script&gt;\timport &#123; config &#125; from './config.js';    let configValue;    configValue = config.setting;&lt;/script&gt;&lt;div class=\"annylib-w-24 annylib-bg-gray-200\"&gt;System Name is &#123;configValue.system&#125;&lt;/div&gt;\n在 lib/init.js 引入\n12345678910111213141516171819import &#123; config &#125; from './config.js';import Comp from './comp.svelte';export default class &#123;    constructor(setting) &#123;        config.setConfig(setting);    &#125;    // initialize plugin    init() &#123;        const idName = 'annyLib'        const body = document.querySelector('body');        const el = document.createElement('div');        el.id = idName;        body.appendChild(el);        new Comp(&#123;            target: document.getElementById(idName),        &#125;)    &#125;&#125;\n接下來加上 TailwindCSS\nTailwindCSSTailwindCSS 他的特性就是有很多 utils 可以用, 可以完全不寫 style, 用他現成 class 的方式去客製樣式, 而且他可以用 prefix, 所以 class name 完全不會跟原本專案互相干擾, 可以做到無汙染又不會跑版的動作. 最棒的是他可以選擇只要輸出有用到的 utils, 所以檔案可以做到最輕量，真是棒極了XD\n安裝 TailwindCSS\n1npm install -D tailwindcss postcss autoprefixer\n設定 postcss.config.js\n123456export default &#123;    plugins: &#123;        tailwindcss: &#123;&#125;,        autoprefixer: &#123;&#125;,    &#125;,&#125;\n設定 tailwind.config.js\n123456789101112131415/** @type &#123;import('tailwindcss').Config&#125; */export default &#123;    content: [        \"./lib/**/*.&#123;js,svelte&#125;\", // 設定會使用到 tailwind 的檔案    ],    theme: &#123;        extend: &#123;&#125;,    &#125;,    plugins: [],    corePlugins: [ // 設定輸出有用到的 utils        'backgroundColor',        'width'    ],    prefix: 'annylib-' // 設定 class name 前贅詞&#125;\n設定 lib/main.css\n123@tailwind base;@tailwind components;@tailwind utilities;\n設定 vite 輸出的 css 名稱 (vite.config.js)\n12345678910111213141516...export default defineConfig(&#123;    ...    build: &#123;        ...        rollupOptions: &#123;            output: &#123;                assetFileNames: (assetInfo) =&gt; &#123;                    if (assetInfo.name === 'style.css') return 'annyLib.css';                    return assetInfo.name;                &#125;,            &#125;,        &#125;,    &#125;,&#125;);\n\n這邊加碼應用!! 因為 tailwindcss preflight 沒辦法加前贅詞. 如果要在自己的 library 裡面用自己前贅詞的 preflight, 可以先去下載 tailwindcss preflight, 在前面全加上 :where(.annylib-preflight), 然後在自己的根組件使用 .annylib-preflight 就可以達到一樣的 css reset 效果. 不過這個功能應該未來也會被加入 tailwindcss 才對 XD\n\nlib/main.css 加入 annylib-preflight.css\n12345@import './annylib-preflight.css';@tailwind base;@tailwind components;@tailwind utilities;\nlib/comp.svelte 測試使用 class\n1&lt;div class=\"annylib-preflight annylib-w-24 annylib-bg-gray-200\"&gt;System Name is &#123;configValue.system&#125;&lt;/div&gt;\nbuild 出來的 css, js 都非常小且就是只有專案有用到的東西才會被 output 優~超貼心 ❤\n123456vite v4.3.6 building for production...✓ 6 modules transformed.dist/annyLib.css    4.63 kB │ gzip: 1.17 kBdist/annyLib.es.js  5.64 kB │ gzip: 2.25 kBdist/annyLib.umd.js  4.24 kB │ gzip: 2.01 kB✓ built in 1.63s\nReference\nUse Vite for JavaScript Libraries\nScoping Normalized Preflight CSS\n\n","dateCreated":"2023-05-30T00:00:00+08:00","dateModified":"2023-05-30T00:00:00+08:00","datePublished":"2023-05-30T00:00:00+08:00","description":"最近工作上需要寫一隻全新的 chatbot plugin, 因為這種 case 很吃 UI 的畫面, 所以除了 js 外一定會用到 html + css, 而且由兩個人以上共同維護。之後這個 plugin 將會接到各 website 上, 所以想要出來的成品能輕量化且高執行效率。我開始爬文比較各種 JS, CSS 框架，最終選擇 Vite &amp; Svelte &amp; TailwindCSS, 作為 plugin 的基底, 他們都有很完整的文件, 對於多人開發很方便。接下來針對這個組合一一做介紹。程式放在 github。","headline":"Develop Plugin Using Vite & Svelte & TailwindCSS","image":["https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg","https://vitejs.dev/og-image-announcing-vite3.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/","keywords":"JS, Vite, Svelte, TailwindCSS","thumbnailUrl":"https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg"}</script>
+    <meta name="description" content="最近工作上需要寫一隻全新的 chatbot plugin, 因為這種 case 很吃 UI 的畫面, 所以除了 js 外一定會用到 html + css, 而且由兩個人以上共同維護。之後這個 plugin 將會接到各 website 上, 所以想要出來的成品能輕量化且高執行效率。我開始爬文比較各種 JS, CSS 框架，最終選擇 Vite &amp; Svelte &amp; TailwindCS">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Develop Plugin Using Vite &amp; Svelte &amp; TailwindCSS">
+<meta property="og:url" content="http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="最近工作上需要寫一隻全新的 chatbot plugin, 因為這種 case 很吃 UI 的畫面, 所以除了 js 外一定會用到 html + css, 而且由兩個人以上共同維護。之後這個 plugin 將會接到各 website 上, 所以想要出來的成品能輕量化且高執行效率。我開始爬文比較各種 JS, CSS 框架，最終選擇 Vite &amp; Svelte &amp; TailwindCS">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2023-05-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-29T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="Vite">
+<meta property="article:tag" content="Svelte">
+<meta property="article:tag" content="TailwindCSS">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg"/>
+    
+    
+        <meta property="og:image" content="https://vitejs.dev/og-image-announcing-vite3.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://vitejs.dev/og-image-announcing-vite3.png"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://vitejs.dev/og-image-announcing-vite3.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Develop Plugin Using Vite &amp; Svelte &amp; TailwindCSS
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2023-05-30T00:00:00+08:00">
+	
+		    2023 年 5 月 30 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/Frontend/">Frontend</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>最近工作上需要寫一隻全新的 chatbot plugin, 因為這種 case 很吃 UI 的畫面, 所以除了 js 外一定會用到 html + css, 而且由兩個人以上共同維護。之後這個 plugin 將會接到各 website 上, 所以想要出來的成品能輕量化且高執行效率。我開始爬文比較各種 JS, CSS 框架，最終選擇 Vite &amp; Svelte &amp; TailwindCSS, 作為 plugin 的基底, 他們都有很完整的文件, 對於多人開發很方便。接下來針對這個組合一一做介紹。程式放在 <a href="https://github.com/Annilla/Vite-Library-Test" target="_blank" rel="noopener">github</a>。</p>
+<a id="more"></a>
+<h1 id="Vite"><a href="#Vite" class="headerlink" title="Vite"></a>Vite</h1><p>若不考慮 IE 瀏覽器, Vite 在開發上比 Webpack 快上許多, 因為 Vite 會將程式直接加載到瀏覽器中跑, 這樣就不需要過多的映射過程, 速度也會快上許多.</p>
+<p>先初始一個 vite 專案</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm create vite@latest</span><br></pre></td></tr></table></figure>
+<p>設定 vite.config.js, 預設可輸出 umd, es 兩種 js 格式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;</span><br><span class="line">    ...</span><br><span class="line">    build: &#123;</span><br><span class="line">        lib: &#123;</span><br><span class="line">            entry: path.resolve(__dirname, <span class="string">'lib/main.js'</span>), <span class="comment">// input js</span></span><br><span class="line">            name: <span class="string">'annyLib'</span>, <span class="comment">// library name</span></span><br><span class="line">            fileName: <span class="function">(<span class="params">format</span>) =&gt;</span> <span class="string">`annyLib.<span class="subst">$&#123;format&#125;</span>.js`</span> <span class="comment">// output file name</span></span><br><span class="line">        &#125;,</span><br><span class="line">        ...</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>設定 package.json</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"anny-lib"</span>,</span><br><span class="line">  <span class="attr">"private"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="attr">"description"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="attr">"type"</span>: <span class="string">"module"</span>,</span><br><span class="line">  <span class="attr">"files"</span>: [</span><br><span class="line">    <span class="string">"dist"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"main"</span>: <span class="string">"./dist/annyLib.umd.js"</span>,</span><br><span class="line">  <span class="attr">"module"</span>: <span class="string">"./dist/annyLib.es.js"</span>,</span><br><span class="line">  <span class="attr">"exports"</span>: &#123;</span><br><span class="line">    <span class="attr">"."</span>: &#123;</span><br><span class="line">      <span class="attr">"import"</span>: <span class="string">"./dist/annyLib.es.js"</span>,</span><br><span class="line">      <span class="attr">"require"</span>: <span class="string">"./dist/annyLib.umd.js"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"dev"</span>: <span class="string">"vite"</span>,</span><br><span class="line">    <span class="attr">"build"</span>: <span class="string">"vite build"</span>,</span><br><span class="line">    <span class="attr">"preview"</span>: <span class="string">"vite preview"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>lib/main.js 為輸出 library 的地方</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> annyLib <span class="keyword">from</span> <span class="string">'./init'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> annyLib;</span><br></pre></td></tr></table></figure>
+<p>lib/init.js 為起始 library 的地方, 從 constructor 傳入參數</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; config &#125; <span class="keyword">from</span> <span class="string">'./config.js'</span>;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(setting) &#123;</span><br><span class="line">        config.setConfig(setting);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// initialize plugin</span></span><br><span class="line">    init() &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 index.html 測試 js, 開發的時候用 module 引入直接使用, 輸出成 dist 的時候就用 window.xxx 呼叫.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &lt;script src="./dist/annyLib.umd.js"&gt;&lt;/script&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>anny-lib<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &lt;script&gt;</span></span><br><span class="line"><span class="comment">        new window.annyLib(&#123;system: 'Anny Lib'&#125;).init();</span></span><br><span class="line"><span class="comment">    &lt;/script&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"module"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="javascript">        <span class="keyword">import</span> annyLib <span class="keyword">from</span> <span class="string">'./lib/main.js'</span>;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="javascript">        <span class="keyword">new</span> annyLib(&#123;<span class="attr">system</span>: <span class="string">'Anny Lib'</span>&#125;).init();</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接下來將 Svelte 加上去.</p>
+<h1 id="Svelte"><a href="#Svelte" class="headerlink" title="Svelte"></a>Svelte</h1><p>選擇 Svelte 是因為他不像三大框架用 Virtual DOM, Svelte 是直接去改實體 DOM, 所以執行效率更快, 且用起來就像純 JS 一樣直覺, 學習曲線小, 最近更票選為前端最喜歡用的 framework, 所以非常想用用看!</p>
+<p>安裝官方 vite 套件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev @sveltejs/vite-plugin-svelte</span><br></pre></td></tr></table></figure>
+<p>修改 svelte.config.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; vitePreprocess &#125; <span class="keyword">from</span> <span class="string">'@sveltejs/vite-plugin-svelte'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="comment">// Consult https://svelte.dev/docs#compile-time-svelte-preprocess</span></span><br><span class="line">  <span class="comment">// for more information about preprocessors</span></span><br><span class="line">  preprocess: vitePreprocess(),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>寫一個簡單的 Svelte componemt (lib/comp.svelte)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">	<span class="keyword">import</span> &#123; config &#125; <span class="keyword">from</span> <span class="string">'./config.js'</span>;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> configValue;</span></span><br><span class="line"><span class="undefined">    configValue = config.setting;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"annylib-w-24 annylib-bg-gray-200"</span>&gt;</span>System Name is &#123;configValue.system&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在 lib/init.js 引入</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; config &#125; <span class="keyword">from</span> <span class="string">'./config.js'</span>;</span><br><span class="line"><span class="keyword">import</span> Comp <span class="keyword">from</span> <span class="string">'./comp.svelte'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(setting) &#123;</span><br><span class="line">        config.setConfig(setting);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// initialize plugin</span></span><br><span class="line">    init() &#123;</span><br><span class="line">        <span class="keyword">const</span> idName = <span class="string">'annyLib'</span></span><br><span class="line">        <span class="keyword">const</span> body = <span class="built_in">document</span>.querySelector(<span class="string">'body'</span>);</span><br><span class="line">        <span class="keyword">const</span> el = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line">        el.id = idName;</span><br><span class="line">        body.appendChild(el);</span><br><span class="line">        <span class="keyword">new</span> Comp(&#123;</span><br><span class="line">            target: <span class="built_in">document</span>.getElementById(idName),</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下來加上 TailwindCSS</p>
+<h1 id="TailwindCSS"><a href="#TailwindCSS" class="headerlink" title="TailwindCSS"></a>TailwindCSS</h1><p>TailwindCSS 他的特性就是有很多 utils 可以用, 可以完全不寫 style, 用他現成 class 的方式去客製樣式, 而且他可以用 prefix, 所以 class name 完全不會跟原本專案互相干擾, 可以做到無汙染又不會跑版的動作. 最棒的是他可以選擇只要輸出有用到的 utils, 所以檔案可以做到最輕量，真是棒極了XD</p>
+<p>安裝 TailwindCSS</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -D tailwindcss postcss autoprefixer</span><br></pre></td></tr></table></figure>
+<p>設定 postcss.config.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    plugins: &#123;</span><br><span class="line">        tailwindcss: &#123;&#125;,</span><br><span class="line">        autoprefixer: &#123;&#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>設定 tailwind.config.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** @type &#123;import('tailwindcss').Config&#125; */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    content: [</span><br><span class="line">        <span class="string">"./lib/**/*.&#123;js,svelte&#125;"</span>, <span class="comment">// 設定會使用到 tailwind 的檔案</span></span><br><span class="line">    ],</span><br><span class="line">    theme: &#123;</span><br><span class="line">        extend: &#123;&#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [],</span><br><span class="line">    corePlugins: [ <span class="comment">// 設定輸出有用到的 utils</span></span><br><span class="line">        <span class="string">'backgroundColor'</span>,</span><br><span class="line">        <span class="string">'width'</span></span><br><span class="line">    ],</span><br><span class="line">    prefix: <span class="string">'annylib-'</span> <span class="comment">// 設定 class name 前贅詞</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>設定 lib/main.css</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">tailwind</span> base;</span><br><span class="line">@<span class="keyword">tailwind</span> components;</span><br><span class="line">@<span class="keyword">tailwind</span> utilities;</span><br></pre></td></tr></table></figure>
+<p>設定 vite 輸出的 css 名稱 (vite.config.js)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;</span><br><span class="line">    ...</span><br><span class="line">    build: &#123;</span><br><span class="line">        ...</span><br><span class="line">        rollupOptions: &#123;</span><br><span class="line">            output: &#123;</span><br><span class="line">                assetFileNames: <span class="function">(<span class="params">assetInfo</span>) =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (assetInfo.name === <span class="string">'style.css'</span>) <span class="keyword">return</span> <span class="string">'annyLib.css'</span>;</span><br><span class="line">                    <span class="keyword">return</span> assetInfo.name;</span><br><span class="line">                &#125;,</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>這邊加碼應用!! 因為 tailwindcss preflight 沒辦法加前贅詞. 如果要在自己的 library 裡面用自己前贅詞的 preflight, 可以先去下載 tailwindcss preflight, 在前面全加上 <code>:where(.annylib-preflight)</code>, 然後在自己的根組件使用 .annylib-preflight 就可以達到一樣的 css reset 效果. 不過這個功能應該未來也會被加入 tailwindcss 才對 XD</strong></p>
+</blockquote>
+<p>lib/main.css 加入 annylib-preflight.css</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">import</span> <span class="string">'./annylib-preflight.css'</span>;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">tailwind</span> base;</span><br><span class="line">@<span class="keyword">tailwind</span> components;</span><br><span class="line">@<span class="keyword">tailwind</span> utilities;</span><br></pre></td></tr></table></figure>
+<p>lib/comp.svelte 測試使用 class</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"annylib-preflight annylib-w-24 annylib-bg-gray-200"</span>&gt;</span>System Name is &#123;configValue.system&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>build 出來的 css, js 都非常小且就是只有專案有用到的東西才會被 output 優~超貼心 ❤</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vite v4.<span class="number">3</span>.<span class="number">6</span> building <span class="keyword">for</span> production...</span><br><span class="line">✓ <span class="number">6</span> modules transformed.</span><br><span class="line">dist/annyLib.css    <span class="number">4</span>.<span class="number">63</span> kB │ gzip: <span class="number">1</span>.<span class="number">17</span> kB</span><br><span class="line">dist/annyLib.es.js  <span class="number">5</span>.<span class="number">64</span> kB │ gzip: <span class="number">2</span>.<span class="number">25</span> kB</span><br><span class="line">dist/annyLib.umd.js  <span class="number">4</span>.<span class="number">24</span> kB │ gzip: <span class="number">2</span>.<span class="number">01</span> kB</span><br><span class="line">✓ built <span class="keyword">in</span> <span class="number">1</span>.<span class="number">63</span>s</span><br></pre></td></tr></table></figure>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://andrewwalpole.com/blog/use-vite-for-javascript-libraries/" target="_blank" rel="noopener">Use Vite for JavaScript Libraries</a></li>
+<li><a href="https://dev.to/ajscommunications/scoping-normalized-preflight-css-c29" target="_blank" rel="noopener">Scoping Normalized Preflight CSS</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/JS/" rel="tag">JS</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Svelte/" rel="tag">Svelte</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/TailwindCSS/" rel="tag">TailwindCSS</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Vite/" rel="tag">Vite</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/07/05/UXUI/Recraft-ai-SVG-Illustration/"
+                    data-tooltip="Recraft.ai - SVG Illustration"
+                    aria-label="上一篇: Recraft.ai - SVG Illustration"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/04/15/UXUI/Figma-Useful-Plugins-for-Content-Data/"
+                    data-tooltip="Figma Useful Plugins for Content Data"
+                    aria-label="下一篇: Figma Useful Plugins for Content Data"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/07/05/UXUI/Recraft-ai-SVG-Illustration/"
+                    data-tooltip="Recraft.ai - SVG Illustration"
+                    aria-label="上一篇: Recraft.ai - SVG Illustration"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/04/15/UXUI/Figma-Useful-Plugins-for-Content-Data/"
+                    data-tooltip="Figma Useful Plugins for Content Data"
+                    aria-label="下一篇: Figma Useful Plugins for Content Data"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/';
+              
+            this.page.identifier = '2023/05/30/Frontend/Develop-Plugin-Using-Vite-Svelte-TailwindCSS/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

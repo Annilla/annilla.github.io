@@ -1,0 +1,1067 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>.NET 6.0 SPA with Vite and Vue 3 - Start New Project - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 Vite 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。\n\n起始 NET 6 專案dotnet new 指令會自動產生 react SPA 專案，我們接著對此專案稍作修改。\n1dotnet new react\n刪除原本的 ClientApp 資料夾。\n\n用 Vite 建立 Vue 專案1npm create vite@latest\n專案名稱一樣取 ClientApp 即可，接著照步驟選擇 Vue 專案。\n修改 .csproj 檔案針對以下幾點參數作說明:\n\nSpaProxyServerUrl: NET 專案起來之後的網址，可以放預設不動(https://localhost:44434)，或自己另外指定 port。\nSpaProxyLaunchCommand: 開發時要起 HMR 的指令，這邊用 Vite 專案內建的 npm run dev。\nSpaRoot: 這邊要放前端專案的資料夾名稱，因為我們故意取跟預設一樣的 ClientApp，所以這邊不用修改。\nDistFiles: 這邊要放 build 完成後的資料夾位置，這邊用 Vite 專案內建的 dist 資料夾 $(SpaRoot)dist\\**。\n\n123456789101112131415161718192021222324252627282930...&lt;PropertyGroup&gt;  &lt;TargetFramework&gt;net6.0&lt;/TargetFramework&gt;  &lt;Nullable&gt;enable&lt;/Nullable&gt;  &lt;TypeScriptCompileBlocked&gt;true&lt;/TypeScriptCompileBlocked&gt;  &lt;TypeScriptToolsVersion&gt;Latest&lt;/TypeScriptToolsVersion&gt;  &lt;IsPackable&gt;false&lt;/IsPackable&gt;  &lt;SpaRoot&gt;ClientApp\\&lt;/SpaRoot&gt;  &lt;DefaultItemExcludes&gt;$(DefaultItemExcludes);$(SpaRoot)node_modules\\**&lt;/DefaultItemExcludes&gt;  &lt;SpaProxyServerUrl&gt;https://localhost:44434&lt;/SpaProxyServerUrl&gt;  &lt;SpaProxyLaunchCommand&gt;npm run dev&lt;/SpaProxyLaunchCommand&gt;  &lt;RootNamespace&gt;test_dotnet_vue_vite&lt;/RootNamespace&gt;  &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;&lt;/PropertyGroup&gt;...&lt;Target Name=\"PublishRunWebpack\" AfterTargets=\"ComputeFilesToPublish\"&gt;  &lt;!-- As part of publishing, ensure the JS resources are freshly built in production mode --&gt;  &lt;Exec WorkingDirectory=\"$(SpaRoot)\" Command=\"npm install\" /&gt;  &lt;Exec WorkingDirectory=\"$(SpaRoot)\" Command=\"npm run build\" /&gt;  &lt;!-- Include the newly-built files in the publish output --&gt;  &lt;ItemGroup&gt;    &lt;DistFiles Include=\"$(SpaRoot)dist\\**\" /&gt;    &lt;ResolvedFileToPublish Include=\"@(DistFiles-&gt;'%(FullPath)')\" Exclude=\"@(ResolvedFileToPublish)\"&gt;      &lt;RelativePath&gt;wwwroot\\%(RecursiveDir)%(FileName)%(Extension)&lt;/RelativePath&gt;      &lt;CopyToPublishDirectory&gt;PreserveNewest&lt;/CopyToPublishDirectory&gt;      &lt;ExcludeFromSingleFile&gt;true&lt;/ExcludeFromSingleFile&gt;    &lt;/ResolvedFileToPublish&gt;  &lt;/ItemGroup&gt;&lt;/Target&gt;\n設定 Vue 專案的 https 憑證如果要開通 Vite https 可以安裝 https://github.com/liuweiGL/vite-plugin-mkcert。\n1npm install --save-dev vite-plugin-mkcert\n設定 Vite.config.js接著去設定 Vite.config.js。\n123456789101112131415161718192021import &#123; defineConfig &#125; from 'vite'import vue from '@vitejs/plugin-vue'import mkcert from 'vite-plugin-mkcert'// https://vitejs.dev/config/export default defineConfig(&#123;  plugins: [vue(), mkcert()],  server: &#123;    port: 44434, // 要跟 .csproj 檔案中的 SpaProxyServerUrl 一致    https: true, // vite-plugin-mkcert    strictPort : true,    proxy: &#123;      '/api' : &#123;        target: 'https://localhost:7092', // 要跟 launchSettings.json 中的 applicationUrl 一致        changeOrigin: true,        secure: false,        rewrite: (path) =&gt; path.replace(/^\\/api/, '/api')      &#125;    &#125;  &#125;&#125;)\n完成~~完成後，可以直接使用 VS or VScode 的專案執行按鈕就能成功啟動囉~\n\n今天的範例在 github，下回見～\n參考資料\nA guide to getting started with ASP.NET Core 6, Vite, and Vue 3\nVite\nVue 3\n\n","dateCreated":"2022-10-26T00:00:00+08:00","dateModified":"2022-10-26T00:00:00+08:00","datePublished":"2022-10-26T00:00:00+08:00","description":"Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 Vite 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。","headline":".NET 6.0 SPA with Vite and Vue 3 - Start New Project","image":["https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg","https://vitejs.dev/og-image-announcing-vite3.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/","keywords":"Vue, dotnet, SPA, MVC, VScode, .NET, Vite","thumbnailUrl":"https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg"}</script>
+    <meta name="description" content="Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 Vite 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content=".NET 6.0 SPA with Vite and Vue 3 - Start New Project">
+<meta property="og:url" content="http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 Vite 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/AL9nZEVq6mhxqbGkTScsxRNoBg8zQ2dKwUIao8A7aOXGmDiENHyOchrOS5ufJ3TzKNsoNsii9iXxtSEGAsSBL4-ioZT75DhaldcURq9hZVjwclfOkF7WV6d4t_ND0yH3m-ZpJS4cYLsxWk4PsYEFUtjFIn5tSA=w1058-h1080-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/AL9nZEXGCPDqdSBVl7JYhsH-5_uSZYSQkN8DcEKhBcJXKT56VDHuzo7qP0dSYNaawCLD3AXgDDg-gUAVmFtr6LTbO4UMbE0OfzsA4Ef9kNkre6X5vn-LoLDrnGEX3esyBpV890Z3yFkDPYX_tpvyT1eVgHPOqQ=w1252-h560-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/AL9nZEWpZD0_CrJszyUa5jnBkxTo7XFUfJrWszZJ3-jt88Qipkkt0mRQDhi45FNrso4NQkXdmF-CXJMsR_H5lsaXHoEjvFxFERuRvL7z8GOd8XalpW1LdMEBMG2XCqLRnX4qTuPLhP7nQX5KXMmVCPpb8D19dQ=w2490-h1442-no?authuser=0">
+<meta property="article:published_time" content="2022-10-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-25T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="dotnet">
+<meta property="article:tag" content="SPA">
+<meta property="article:tag" content="MVC">
+<meta property="article:tag" content="VScode">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="Vite">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/pw/AL9nZEVq6mhxqbGkTScsxRNoBg8zQ2dKwUIao8A7aOXGmDiENHyOchrOS5ufJ3TzKNsoNsii9iXxtSEGAsSBL4-ioZT75DhaldcURq9hZVjwclfOkF7WV6d4t_ND0yH3m-ZpJS4cYLsxWk4PsYEFUtjFIn5tSA=w1058-h1080-no?authuser=0">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://s3-us-west-2.amazonaws.com/ca3db/pbs.twimg.com/c4bff765d9dfb3d8c6163b1de3a8e1a78cf0f9399b5a79c35695a49813821c44.jpg"/>
+    
+    
+        <meta property="og:image" content="https://vitejs.dev/og-image-announcing-vite3.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://vitejs.dev/og-image-announcing-vite3.png"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://vitejs.dev/og-image-announcing-vite3.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            .NET 6.0 SPA with Vite and Vue 3 - Start New Project
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-10-26T00:00:00+08:00">
+	
+		    2022 年 10 月 26 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/NET/">.NET</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Webpack 雖然在前端很強大，起專案和 HMR 的速度也跟著套件裝越多越慢，但隨著 IE 的沒落，很多套件其實都不需再使用。這時候新一代的技術 <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> 颳起一陣旋風，利用現代瀏覽器支持 ES 模塊的特性，直接用瀏覽器的資源做更快速的打包 &amp; HMR，用了一次之後就回不去 Webpack 了 XD ~ 本篇說明如何用 NET 6 + Vite + Vue 3 來起一個新專案。</p>
+<a id="more"></a>
+<h2 id="起始-NET-6-專案"><a href="#起始-NET-6-專案" class="headerlink" title="起始 NET 6 專案"></a>起始 NET 6 專案</h2><p>dotnet new 指令會自動產生 react SPA 專案，我們接著對此專案稍作修改。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet new react</span><br></pre></td></tr></table></figure>
+<p>刪除原本的 ClientApp 資料夾。</p>
+<p><img src="https://lh3.googleusercontent.com/pw/AL9nZEVq6mhxqbGkTScsxRNoBg8zQ2dKwUIao8A7aOXGmDiENHyOchrOS5ufJ3TzKNsoNsii9iXxtSEGAsSBL4-ioZT75DhaldcURq9hZVjwclfOkF7WV6d4t_ND0yH3m-ZpJS4cYLsxWk4PsYEFUtjFIn5tSA=w1058-h1080-no?authuser=0" alt="刪除原本的 ClientApp 資料夾"></p>
+<h2 id="用-Vite-建立-Vue-專案"><a href="#用-Vite-建立-Vue-專案" class="headerlink" title="用 Vite 建立 Vue 專案"></a>用 Vite 建立 Vue 專案</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm create vite@latest</span><br></pre></td></tr></table></figure>
+<p>專案名稱一樣取 ClientApp 即可，接著照步驟選擇 Vue 專案。<br><img src="https://lh3.googleusercontent.com/pw/AL9nZEXGCPDqdSBVl7JYhsH-5_uSZYSQkN8DcEKhBcJXKT56VDHuzo7qP0dSYNaawCLD3AXgDDg-gUAVmFtr6LTbO4UMbE0OfzsA4Ef9kNkre6X5vn-LoLDrnGEX3esyBpV890Z3yFkDPYX_tpvyT1eVgHPOqQ=w1252-h560-no?authuser=0" alt="照步驟選擇 Vue 專案"></p>
+<h2 id="修改-csproj-檔案"><a href="#修改-csproj-檔案" class="headerlink" title="修改 .csproj 檔案"></a>修改 .csproj 檔案</h2><p>針對以下幾點參數作說明:</p>
+<ol>
+<li>SpaProxyServerUrl: NET 專案起來之後的網址，可以放預設不動(<code>https://localhost:44434</code>)，或自己另外指定 port。</li>
+<li>SpaProxyLaunchCommand: 開發時要起 HMR 的指令，這邊用 Vite 專案內建的 <code>npm run dev</code>。</li>
+<li>SpaRoot: 這邊要放前端專案的資料夾名稱，因為我們故意取跟預設一樣的 ClientApp，所以這邊不用修改。</li>
+<li>DistFiles: 這邊要放 build 完成後的資料夾位置，這邊用 Vite 專案內建的 dist 資料夾 <code>$(SpaRoot)dist\**</code>。</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TargetFramework</span>&gt;</span>net6.0<span class="tag">&lt;/<span class="name">TargetFramework</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Nullable</span>&gt;</span>enable<span class="tag">&lt;/<span class="name">Nullable</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TypeScriptCompileBlocked</span>&gt;</span>true<span class="tag">&lt;/<span class="name">TypeScriptCompileBlocked</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">TypeScriptToolsVersion</span>&gt;</span>Latest<span class="tag">&lt;/<span class="name">TypeScriptToolsVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">IsPackable</span>&gt;</span>false<span class="tag">&lt;/<span class="name">IsPackable</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">SpaRoot</span>&gt;</span>ClientApp\<span class="tag">&lt;/<span class="name">SpaRoot</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">DefaultItemExcludes</span>&gt;</span>$(DefaultItemExcludes);$(SpaRoot)node_modules\**<span class="tag">&lt;/<span class="name">DefaultItemExcludes</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">SpaProxyServerUrl</span>&gt;</span>https://localhost:44434<span class="tag">&lt;/<span class="name">SpaProxyServerUrl</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">SpaProxyLaunchCommand</span>&gt;</span>npm run dev<span class="tag">&lt;/<span class="name">SpaProxyLaunchCommand</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">RootNamespace</span>&gt;</span>test_dotnet_vue_vite<span class="tag">&lt;/<span class="name">RootNamespace</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ImplicitUsings</span>&gt;</span>enable<span class="tag">&lt;/<span class="name">ImplicitUsings</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">Target</span> <span class="attr">Name</span>=<span class="string">"PublishRunWebpack"</span> <span class="attr">AfterTargets</span>=<span class="string">"ComputeFilesToPublish"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- As part of publishing, ensure the JS resources are freshly built in production mode --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Exec</span> <span class="attr">WorkingDirectory</span>=<span class="string">"$(SpaRoot)"</span> <span class="attr">Command</span>=<span class="string">"npm install"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Exec</span> <span class="attr">WorkingDirectory</span>=<span class="string">"$(SpaRoot)"</span> <span class="attr">Command</span>=<span class="string">"npm run build"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- Include the newly-built files in the publish output --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">DistFiles</span> <span class="attr">Include</span>=<span class="string">"$(SpaRoot)dist\**"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ResolvedFileToPublish</span> <span class="attr">Include</span>=<span class="string">"@(DistFiles-&gt;'%(FullPath)')"</span> <span class="attr">Exclude</span>=<span class="string">"@(ResolvedFileToPublish)"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RelativePath</span>&gt;</span>wwwroot\%(RecursiveDir)%(FileName)%(Extension)<span class="tag">&lt;/<span class="name">RelativePath</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">CopyToPublishDirectory</span>&gt;</span>PreserveNewest<span class="tag">&lt;/<span class="name">CopyToPublishDirectory</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ExcludeFromSingleFile</span>&gt;</span>true<span class="tag">&lt;/<span class="name">ExcludeFromSingleFile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ResolvedFileToPublish</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Target</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="設定-Vue-專案的-https-憑證"><a href="#設定-Vue-專案的-https-憑證" class="headerlink" title="設定 Vue 專案的 https 憑證"></a>設定 Vue 專案的 https 憑證</h2><p>如果要開通 Vite https 可以安裝 <a href="https://github.com/liuweiGL/vite-plugin-mkcert。" target="_blank" rel="noopener">https://github.com/liuweiGL/vite-plugin-mkcert。</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev vite-plugin-mkcert</span><br></pre></td></tr></table></figure>
+<h3 id="設定-Vite-config-js"><a href="#設定-Vite-config-js" class="headerlink" title="設定 Vite.config.js"></a>設定 Vite.config.js</h3><p>接著去設定 Vite.config.js。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">'vite'</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">'@vitejs/plugin-vue'</span></span><br><span class="line"><span class="keyword">import</span> mkcert <span class="keyword">from</span> <span class="string">'vite-plugin-mkcert'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// https://vitejs.dev/config/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;</span><br><span class="line">  plugins: [vue(), mkcert()],</span><br><span class="line">  server: &#123;</span><br><span class="line">    port: <span class="number">44434</span>, <span class="comment">// 要跟 .csproj 檔案中的 SpaProxyServerUrl 一致</span></span><br><span class="line">    https: <span class="literal">true</span>, <span class="comment">// vite-plugin-mkcert</span></span><br><span class="line">    strictPort : <span class="literal">true</span>,</span><br><span class="line">    proxy: &#123;</span><br><span class="line">      <span class="string">'/api'</span> : &#123;</span><br><span class="line">        target: <span class="string">'https://localhost:7092'</span>, <span class="comment">// 要跟 launchSettings.json 中的 applicationUrl 一致</span></span><br><span class="line">        changeOrigin: <span class="literal">true</span>,</span><br><span class="line">        secure: <span class="literal">false</span>,</span><br><span class="line">        rewrite: <span class="function">(<span class="params">path</span>) =&gt;</span> path.replace(<span class="regexp">/^\/api/</span>, <span class="string">'/api'</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="完成"><a href="#完成" class="headerlink" title="完成~~"></a>完成~~</h2><p>完成後，可以直接使用 VS or VScode 的專案執行按鈕就能成功啟動囉~</p>
+<p><img src="https://lh3.googleusercontent.com/pw/AL9nZEWpZD0_CrJszyUa5jnBkxTo7XFUfJrWszZJ3-jt88Qipkkt0mRQDhi45FNrso4NQkXdmF-CXJMsR_H5lsaXHoEjvFxFERuRvL7z8GOd8XalpW1LdMEBMG2XCqLRnX4qTuPLhP7nQX5KXMmVCPpb8D19dQ=w2490-h1442-no?authuser=0" alt="啟動畫面"></p>
+<p>今天的範例在 <a href="https://github.com/Annilla/test-dotnet-vue-vite/tree/v1.0" target="_blank" rel="noopener">github</a>，下回見～</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a href="https://github.com/keithn/dotnetviteguide" target="_blank" rel="noopener">A guide to getting started with ASP.NET Core 6, Vite, and Vue 3</a></li>
+<li><a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a></li>
+<li><a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET/" rel="tag">.NET</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/MVC/" rel="tag">MVC</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/SPA/" rel="tag">SPA</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/VScode/" rel="tag">VScode</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Vite/" rel="tag">Vite</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Vue/" rel="tag">Vue</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/dotnet/" rel="tag">dotnet</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/04/15/UXUI/Figma-Useful-Plugins-for-Content-Data/"
+                    data-tooltip="Figma Useful Plugins for Content Data"
+                    aria-label="上一篇: Figma Useful Plugins for Content Data"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/09/14/UXUI/Midjourney-AI-Art/"
+                    data-tooltip="Midjourney - AI Art"
+                    aria-label="下一篇: Midjourney - AI Art"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/04/15/UXUI/Figma-Useful-Plugins-for-Content-Data/"
+                    data-tooltip="Figma Useful Plugins for Content Data"
+                    aria-label="上一篇: Figma Useful Plugins for Content Data"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/09/14/UXUI/Midjourney-AI-Art/"
+                    data-tooltip="Midjourney - AI Art"
+                    aria-label="下一篇: Midjourney - AI Art"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/';
+              
+            this.page.identifier = '2022/10/26/Dotnet/NET-6-SPA-with-Vite-Vue-3/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1074 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Use Cypress with Cucumber for UI Testing - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"隨著時間越長，專案總會越寫越多功能，可是如果每次重構後都要人工測試，會花費很多不必要的時間。所以為了往後能安心的重構程式，我想要一個可以方便 debug 且使用簡易的 UI Testing Framework。參考了許多架構後，決定要使用 cypress + cucumber 來寫測試。\n\nCypress 的好處是對於開發者非常友善，開發時在 chrome 瀏覽器模擬，且有變更都會自動觸發 reload，大大減少每次重跑的繁瑣動作，且每個步驟的紀錄都會視覺化的呈現在左方，Debug 時還可隨時搭配 chrome dev tool，真的是開發者的救星呀～如果要搭配 CI 的話，他也有 headless 模式啟用 electron 來跑模擬，出來的 log 也是非常漂亮還會順便錄影！\nCucumber 的好處是他可以寫可讀性高的測試情境，讀寫上很直覺，搭配不同 tag 的功能，可以把測試情境分類的很清楚。\n接著我們就來介紹怎麼結合 cypress 和 cucumber 吧～\n安裝 cypress + cucumber專案內安裝 cypress\n1npm install cypress --save-dev\n在 package.json 加上啟動 cpress 指令並執行 npm run cypress:open。\n12345&#123;  \"scripts\": &#123;    \"cypress:open\": \"cypress open\"  &#125;&#125;\n若啟動成功會自動建立測試情境，確定安裝完成後，可刪掉範例。\n\n關掉 cypress 視窗，接下來我們安裝 cucumber plugin\n1npm install --save-dev cypress-cucumber-preprocessor\n在 cypress/plugins/index.js 設置 plugin\n12345const cucumber = require('cypress-cucumber-preprocessor').defaultmodule.exports = (on, config) =&gt; &#123;  on('file:preprocessor', cucumber())&#125;\n在 cypress.json 設置測試檔案位置\n123&#123;  \"testFiles\": \"**/*.feature\"&#125;\n在 package.json 設置 cucumber 的情境預設非 global，這樣可以區分是否要用 global 的情境。\n123\"cypress-cucumber-preprocessor\": &#123;  \"nonGlobalStepDefinitions\": true&#125;,\n把原本 cypress/integration, cypress/fixtures 資料夾的檔案都刪除，就可以開始寫一個測試囉～\n寫一個測試新增 cypress/integration/Google.feature\n12345678# language: zh-TW功能: Google    * 前往 Google 首頁        @Google    場景: 前往 Google 首頁        假設 前往 Google 網址        那麼 看到標題包含 \"Google\"\n@Google 這個 tag 是讓你能將測試做分類，這樣之後要跑測試的時候，可以指定執行特定類別。\n新增 cypress/integration/Google/google.js\n1234567import &#123; Given &#125; from \"cypress-cucumber-preprocessor/steps\";const url = 'https://google.com'Given('前往 Google 網址', () =&gt; &#123;  cy.visit(url)&#125;)\n若是放在自訂的資料夾內，則情境不會被共用，下面示範將看到標題這個結果放在 global 的情況。\n新增 cypress/integration/common/i_see_string_in_the_title.js\n12345import &#123; Then &#125; from \"cypress-cucumber-preprocessor/steps\";Then(`看到標題包含 &#123;string&#125;`, (title) =&gt; &#123;  cy.title().should('include', title)&#125;)\n這樣我們就放好 global 的情境囉～其他情境若是要共用的話就可以不用再寫一次。\n測試～跑起來吧！因為剛剛有使用 tag 的功能，所以我們可以把 npm script 改成指定執行特定標籤，package.json 修改如下。\n123\"scripts\": &#123;  \"cypress:open\": \"cypress open -e TAGS=@Google\"&#125;,\n再次執行 npm run cypress:open。跳出 cypress 視窗後，點選 Google.feature 開始測試，成功就會出現下面的畫面囉～\n\n今天的練習放在 Github，下回見～\nReference\nCypress\nCucumber\ncypress-cucumber-preprocessor\n\n","dateCreated":"2020-01-04T00:00:00+08:00","dateModified":"2020-01-04T00:00:00+08:00","datePublished":"2020-01-04T00:00:00+08:00","description":"隨著時間越長，專案總會越寫越多功能，可是如果每次重構後都要人工測試，會花費很多不必要的時間。所以為了往後能安心的重構程式，我想要一個可以方便 debug 且使用簡易的 UI Testing Framework。參考了許多架構後，決定要使用 cypress + cucumber 來寫測試。","headline":"Use Cypress with Cucumber for UI Testing","image":["https://avatars2.githubusercontent.com/u/8908513?s=400&v=4","https://i.udemycdn.com/course/750x422/2470214_97a0_4.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/","keywords":"JS, Cypress, Testing, Cucumber","thumbnailUrl":"https://avatars2.githubusercontent.com/u/8908513?s=400&v=4"}</script>
+    <meta name="description" content="隨著時間越長，專案總會越寫越多功能，可是如果每次重構後都要人工測試，會花費很多不必要的時間。所以為了往後能安心的重構程式，我想要一個可以方便 debug 且使用簡易的 UI Testing Framework。參考了許多架構後，決定要使用 cypress + cucumber 來寫測試。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Use Cypress with Cucumber for UI Testing">
+<meta property="og:url" content="http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="隨著時間越長，專案總會越寫越多功能，可是如果每次重構後都要人工測試，會花費很多不必要的時間。所以為了往後能安心的重構程式，我想要一個可以方便 debug 且使用簡易的 UI Testing Framework。參考了許多架構後，決定要使用 cypress + cucumber 來寫測試。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lh3.googleusercontent.com/OSU2uLttYHh0s8kaXnZocadud55Ocg3pyVv3_qE4xK7X6DoKsLxdu5_xbRUpiqGEAQlgFuqg2JoCYQBnUQ6GjDpyBz7th_1HzIeu9jR_GcWq5h1_jYaJuiqN7NESfbV8md-WAfZA1juon6IzsD173Y3-yoF2WLfnVrX_A8TPLrWajG67KGg4rBCDDzdE2hQmEb4ZH8JSKSgSOPwUbDsAyfqjzWDeV960edneVbOF4QubqRro6e4E19g5W3AxN1csRix71ltckQjgzu_gGE4lqxLN0khOgRCDwORgTmlhDipHi9Gk10l2hPuD-1w673agOUFqJdZf8zCdK3EIHxOsj2hJv7Za6iz3r7cjp3FqYTlKjBpoz3w_fWASXHCokwzq7h5hyzYS4aj58CWN4MSKd08zPpP-xKdK-f5fdkvh0vs0J6T2IrQYCaA9RSsaAMp6DHD9FwFe0wN1T2oj8rLuQ5fUMbyq0G8IzFUi8Hbyw06yD_lWMaFdGj-eoXug0tfAgAygE3L06DZalwhltkyIajN4h2iFu922dAEJQyEH2UvF_N8mjXShSrZdSmJ-WpJANLnzQqgjaO51x2Ub0zrd1nLuzuG8eSGyRHtEN17YGmhOEvcnX7O7pDEbrM4VeAKuvJ80-HUzF9Pe3lPtoI6tK1iN5wVQPzKTHvMyym576jk1sKUdv2zwo6nXUFVD_z_7WoVNP8E2OtZREC-aDlKy4LSbJP0P206fRR4VlBcmq8DZcdO1AA=w1720-h1196-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/3NKaZFg0tnUSbAdvXVq8YQ2y2nVZeUmNQ1oiCujS9rltLp-920w2uP4-bY38Wqg3aDooYB4BBR9wB_ndxabv-8y0r0Q_PTeKF38zHSa4BM5rNksa9X65HNTG_DtguFuB6W-wzSlno2A8l0c1aZFl-bgpmXoUCgKQmS1mAH-Ep5CpOZ7VMeebFambMqaoSBsYpWlhEzneck1Luk4oo-n1ilw1U4T8sAbZ61D00-gcPdNPD4pJNIoJjwsoQys38NbQGlGKFjoCOP4qZEn84VDuY_sRBQaUbV1LUKBzoJWs0QzgO2cn4WAVfQ9b6SiM50VivyHre9awThFdy8FPCteyIUW185Ssf0k8HtKPghH9blF4fL5iigVO97F_VYby50hlX21vAQUNCk8jtIAPp9NHqVKuWditNgKKlsUpVwRS-UVsBBvE9ChpIh3UrDlyb0otGggx2CgBzu3CASL5vxSElUtGuKdUddjD5HUojNUD2Ua_pZBHr1uEOumD6L5ypSlkx5GbhWjxTB9ROqTtsr6w7fOLH0KcjG0cfSnap9igjoJ-eVI0oKFgkJv1gqXz8hyQEgKW0_xWwBay0p1hVjG2zEVHrHByzgdIzWZ0fdWe1NVdcavOvHhfO7bnYv-EXrVFcfH_EZRqRV02oK3Q3Zl-wFh6v2oJ7HIwdiwh8nOBep4g3QI0jKrd30f3hmFOgQZlUieKrTjZQ9xh8ZM47RZbFs1elT9VLPAp0unTXixIl1w7VyYunA=w2206-h1378-no">
+<meta property="article:published_time" content="2020-01-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-01-03T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="Cypress">
+<meta property="article:tag" content="Testing">
+<meta property="article:tag" content="Cucumber">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/OSU2uLttYHh0s8kaXnZocadud55Ocg3pyVv3_qE4xK7X6DoKsLxdu5_xbRUpiqGEAQlgFuqg2JoCYQBnUQ6GjDpyBz7th_1HzIeu9jR_GcWq5h1_jYaJuiqN7NESfbV8md-WAfZA1juon6IzsD173Y3-yoF2WLfnVrX_A8TPLrWajG67KGg4rBCDDzdE2hQmEb4ZH8JSKSgSOPwUbDsAyfqjzWDeV960edneVbOF4QubqRro6e4E19g5W3AxN1csRix71ltckQjgzu_gGE4lqxLN0khOgRCDwORgTmlhDipHi9Gk10l2hPuD-1w673agOUFqJdZf8zCdK3EIHxOsj2hJv7Za6iz3r7cjp3FqYTlKjBpoz3w_fWASXHCokwzq7h5hyzYS4aj58CWN4MSKd08zPpP-xKdK-f5fdkvh0vs0J6T2IrQYCaA9RSsaAMp6DHD9FwFe0wN1T2oj8rLuQ5fUMbyq0G8IzFUi8Hbyw06yD_lWMaFdGj-eoXug0tfAgAygE3L06DZalwhltkyIajN4h2iFu922dAEJQyEH2UvF_N8mjXShSrZdSmJ-WpJANLnzQqgjaO51x2Ub0zrd1nLuzuG8eSGyRHtEN17YGmhOEvcnX7O7pDEbrM4VeAKuvJ80-HUzF9Pe3lPtoI6tK1iN5wVQPzKTHvMyym576jk1sKUdv2zwo6nXUFVD_z_7WoVNP8E2OtZREC-aDlKy4LSbJP0P206fRR4VlBcmq8DZcdO1AA=w1720-h1196-no">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://avatars2.githubusercontent.com/u/8908513?s=400&amp;v=4"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://avatars2.githubusercontent.com/u/8908513?s=400&amp;v=4"/>
+    
+    
+        <meta property="og:image" content="https://i.udemycdn.com/course/750x422/2470214_97a0_4.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://i.udemycdn.com/course/750x422/2470214_97a0_4.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://i.udemycdn.com/course/750x422/2470214_97a0_4.jpg');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Use Cypress with Cucumber for UI Testing
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-01-04T00:00:00+08:00">
+	
+		    2020 年 1 月 4 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/Testing/">Testing</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>隨著時間越長，專案總會越寫越多功能，可是如果每次重構後都要人工測試，會花費很多不必要的時間。所以為了往後能安心的重構程式，我想要一個可以方便 debug 且使用簡易的 UI Testing Framework。參考了許多架構後，決定要使用 cypress + cucumber 來寫測試。</p>
+<a id="more"></a>
+<p><a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a> 的好處是對於開發者非常友善，開發時在 chrome 瀏覽器模擬，且有變更都會自動觸發 reload，大大減少每次重跑的繁瑣動作，且每個步驟的紀錄都會視覺化的呈現在左方，Debug 時還可隨時搭配 chrome dev tool，真的是開發者的救星呀～如果要搭配 CI 的話，他也有 headless 模式啟用 electron 來跑模擬，出來的 log 也是非常漂亮還會順便錄影！</p>
+<p><a href="https://cucumber.io/" target="_blank" rel="noopener">Cucumber</a> 的好處是他可以寫可讀性高的測試情境，讀寫上很直覺，搭配不同 tag 的功能，可以把測試情境分類的很清楚。</p>
+<p>接著我們就來介紹怎麼結合 cypress 和 cucumber 吧～</p>
+<h1 id="安裝-cypress-cucumber"><a href="#安裝-cypress-cucumber" class="headerlink" title="安裝 cypress + cucumber"></a>安裝 cypress + cucumber</h1><p>專案內安裝 cypress</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install cypress --save-dev</span><br></pre></td></tr></table></figure>
+<p>在 <code>package.json</code> 加上啟動 cpress 指令並執行 <code>npm run cypress:open</code>。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"cypress:open"</span>: <span class="string">"cypress open"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>若啟動成功會自動建立測試情境，確定安裝完成後，可刪掉範例。</p>
+<p><img src="https://lh3.googleusercontent.com/OSU2uLttYHh0s8kaXnZocadud55Ocg3pyVv3_qE4xK7X6DoKsLxdu5_xbRUpiqGEAQlgFuqg2JoCYQBnUQ6GjDpyBz7th_1HzIeu9jR_GcWq5h1_jYaJuiqN7NESfbV8md-WAfZA1juon6IzsD173Y3-yoF2WLfnVrX_A8TPLrWajG67KGg4rBCDDzdE2hQmEb4ZH8JSKSgSOPwUbDsAyfqjzWDeV960edneVbOF4QubqRro6e4E19g5W3AxN1csRix71ltckQjgzu_gGE4lqxLN0khOgRCDwORgTmlhDipHi9Gk10l2hPuD-1w673agOUFqJdZf8zCdK3EIHxOsj2hJv7Za6iz3r7cjp3FqYTlKjBpoz3w_fWASXHCokwzq7h5hyzYS4aj58CWN4MSKd08zPpP-xKdK-f5fdkvh0vs0J6T2IrQYCaA9RSsaAMp6DHD9FwFe0wN1T2oj8rLuQ5fUMbyq0G8IzFUi8Hbyw06yD_lWMaFdGj-eoXug0tfAgAygE3L06DZalwhltkyIajN4h2iFu922dAEJQyEH2UvF_N8mjXShSrZdSmJ-WpJANLnzQqgjaO51x2Ub0zrd1nLuzuG8eSGyRHtEN17YGmhOEvcnX7O7pDEbrM4VeAKuvJ80-HUzF9Pe3lPtoI6tK1iN5wVQPzKTHvMyym576jk1sKUdv2zwo6nXUFVD_z_7WoVNP8E2OtZREC-aDlKy4LSbJP0P206fRR4VlBcmq8DZcdO1AA=w1720-h1196-no" alt="npm run cypress:open" title="npm run cypress:open"></p>
+<p>關掉 cypress 視窗，接下來我們安裝 cucumber plugin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev cypress-cucumber-preprocessor</span><br></pre></td></tr></table></figure>
+<p>在 <code>cypress/plugins/index.js</code> 設置 plugin</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cucumber = <span class="built_in">require</span>(<span class="string">'cypress-cucumber-preprocessor'</span>).default</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">on, config</span>) =&gt;</span> &#123;</span><br><span class="line">  on(<span class="string">'file:preprocessor'</span>, cucumber())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <code>cypress.json</code> 設置測試檔案位置</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"testFiles"</span>: <span class="string">"**/*.feature"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <code>package.json</code> 設置 cucumber 的情境預設非 global，這樣可以區分是否要用 global 的情境。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"cypress-cucumber-preprocessor": &#123;</span><br><span class="line">  "nonGlobalStepDefinitions": true</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>把原本 cypress/integration, cypress/fixtures 資料夾的檔案都刪除，就可以開始寫一個測試囉～</p>
+<h1 id="寫一個測試"><a href="#寫一個測試" class="headerlink" title="寫一個測試"></a>寫一個測試</h1><p>新增 <code>cypress/integration/Google.feature</code></p>
+<figure class="highlight feature"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># language: zh-TW</span></span><br><span class="line">功能: Google</span><br><span class="line">    <span class="symbol">*</span> 前往 Google 首頁</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Google</span></span><br><span class="line">    場景: 前往 Google 首頁</span><br><span class="line">        假設 前往 Google 網址</span><br><span class="line">        那麼 看到標題包含 <span class="string">"Google"</span></span><br></pre></td></tr></table></figure>
+<p>@Google 這個 tag 是讓你能將測試做分類，這樣之後要跑測試的時候，可以指定執行特定類別。</p>
+<p>新增 <code>cypress/integration/Google/google.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Given &#125; <span class="keyword">from</span> <span class="string">"cypress-cucumber-preprocessor/steps"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">'https://google.com'</span></span><br><span class="line"></span><br><span class="line">Given(<span class="string">'前往 Google 網址'</span>, () =&gt; &#123;</span><br><span class="line">  cy.visit(url)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>若是放在自訂的資料夾內，則情境不會被共用，下面示範將看到標題這個結果放在 global 的情況。</p>
+<p>新增 <code>cypress/integration/common/i_see_string_in_the_title.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Then &#125; <span class="keyword">from</span> <span class="string">"cypress-cucumber-preprocessor/steps"</span>;</span><br><span class="line"></span><br><span class="line">Then(<span class="string">`看到標題包含 &#123;string&#125;`</span>, (title) =&gt; &#123;</span><br><span class="line">  cy.title().should(<span class="string">'include'</span>, title)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>這樣我們就放好 global 的情境囉～其他情境若是要共用的話就可以不用再寫一次。</p>
+<h1 id="測試～跑起來吧！"><a href="#測試～跑起來吧！" class="headerlink" title="測試～跑起來吧！"></a>測試～跑起來吧！</h1><p>因為剛剛有使用 tag 的功能，所以我們可以把 npm script 改成指定執行特定標籤，<code>package.json</code> 修改如下。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">  "cypress:open": "cypress open -e TAGS=@Google"</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>再次執行 <code>npm run cypress:open</code>。跳出 cypress 視窗後，點選 Google.feature 開始測試，成功就會出現下面的畫面囉～</p>
+<p><img src="https://lh3.googleusercontent.com/3NKaZFg0tnUSbAdvXVq8YQ2y2nVZeUmNQ1oiCujS9rltLp-920w2uP4-bY38Wqg3aDooYB4BBR9wB_ndxabv-8y0r0Q_PTeKF38zHSa4BM5rNksa9X65HNTG_DtguFuB6W-wzSlno2A8l0c1aZFl-bgpmXoUCgKQmS1mAH-Ep5CpOZ7VMeebFambMqaoSBsYpWlhEzneck1Luk4oo-n1ilw1U4T8sAbZ61D00-gcPdNPD4pJNIoJjwsoQys38NbQGlGKFjoCOP4qZEn84VDuY_sRBQaUbV1LUKBzoJWs0QzgO2cn4WAVfQ9b6SiM50VivyHre9awThFdy8FPCteyIUW185Ssf0k8HtKPghH9blF4fL5iigVO97F_VYby50hlX21vAQUNCk8jtIAPp9NHqVKuWditNgKKlsUpVwRS-UVsBBvE9ChpIh3UrDlyb0otGggx2CgBzu3CASL5vxSElUtGuKdUddjD5HUojNUD2Ua_pZBHr1uEOumD6L5ypSlkx5GbhWjxTB9ROqTtsr6w7fOLH0KcjG0cfSnap9igjoJ-eVI0oKFgkJv1gqXz8hyQEgKW0_xWwBay0p1hVjG2zEVHrHByzgdIzWZ0fdWe1NVdcavOvHhfO7bnYv-EXrVFcfH_EZRqRV02oK3Q3Zl-wFh6v2oJ7HIwdiwh8nOBep4g3QI0jKrd30f3hmFOgQZlUieKrTjZQ9xh8ZM47RZbFs1elT9VLPAp0unTXixIl1w7VyYunA=w2206-h1378-no" alt="npm run cypress:open" title="npm run cypress:open"></p>
+<p>今天的練習放在 <a href="https://github.com/Annilla/cycpress-cucumber-practice/tree/v1.0" target="_blank" rel="noopener">Github</a>，下回見～</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a></li>
+<li><a href="https://cucumber.io/" target="_blank" rel="noopener">Cucumber</a></li>
+<li><a href="https://github.com/TheBrainFamily/cypress-cucumber-preprocessor" target="_blank" rel="noopener">cypress-cucumber-preprocessor</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Cucumber/" rel="tag">Cucumber</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Cypress/" rel="tag">Cypress</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/JS/" rel="tag">JS</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Testing/" rel="tag">Testing</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/15/Python/Deep-Learning-by-Python-Setup-Environment/"
+                    data-tooltip="Deep Learning by Python - Setup Environment"
+                    aria-label="上一篇: Deep Learning by Python - Setup Environment"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/07/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3-make-nuget-template/"
+                    data-tooltip=".NET Core 3.0 SPA with Vue-Cli 3 - Make Nuget Template"
+                    aria-label="下一篇: .NET Core 3.0 SPA with Vue-Cli 3 - Make Nuget Template"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/15/Python/Deep-Learning-by-Python-Setup-Environment/"
+                    data-tooltip="Deep Learning by Python - Setup Environment"
+                    aria-label="上一篇: Deep Learning by Python - Setup Environment"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/07/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3-make-nuget-template/"
+                    data-tooltip=".NET Core 3.0 SPA with Vue-Cli 3 - Make Nuget Template"
+                    aria-label="下一篇: .NET Core 3.0 SPA with Vue-Cli 3 - Make Nuget Template"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2020/01/04/Testing/Use-Cypress-ui-testing/';
+              
+            this.page.identifier = '2020/01/04/Testing/Use-Cypress-ui-testing/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

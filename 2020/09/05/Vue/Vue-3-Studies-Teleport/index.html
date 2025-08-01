@@ -1,0 +1,1072 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Vue 3 Studies - Teleport - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"新功能 teleport 讓我們可以很輕鬆的將 HTML render 在 app 以外的地方，且不影響商業邏輯的整理，趕緊來看看吧！\n\n影片網址： https://www.vuemastery.com/courses/vue-3-essentials/teleport\n當我們想要組件的東西 render HTML 在頁面不同地方該怎麼辦？\n\n有時 Fixed 或 absolute 的元件因為 z-index 的緣故，需要放在結尾  的前面。在 Vue 2 如果要把程式移到 #app 的外面是很困難的。\n\nVue 3 提供了 teleport 元件來解決這個問題。以前叫做 portal ，但為了不跟未來的HTML tag 重名，所以改名為 teleport。teleport 讓我們可以把程式寫在子組件，並用 to 的方式指定要 render HTML 的位置，如下圖。\n\nTo 的屬性除了剛剛使用的 css Id 方式，也可以用 class或 meta attribute 的方式指定要render 的位置。如果要動態賦予值也可以直接 :to 接變數即可。\n\n另外，我們可以設定 disabled 屬性，讓組件在 disabled true 的時候把HTML render 回原來組件 app 中。\n\n\n\nTeleport 還有一個好處是他會保留原組件的狀態。假設我們在 teleport 裡面放一隻影片播放，當 toggle disabled 屬性的時候，影片會持續播放不會斷掉。\n\n\n那如果我們想在 disabled true 的時候不要顯示組件要怎麼做呢？其實就很直覺的搭配 v-if 就可以完成這個效果，即便是用兩組 teleport 也可以輕鬆做到。\n\n\n兩組 teleport 可以很神奇的做到誰先觸發就誰先 render 到指定的 HTML 位置，非常的順暢。\n\n\n個人覺得 teleport 的功能蠻強大的，可以將商業邏輯整理在組件中又不影響顯示的畫面，讓程式更有條理，是非常強大的功能。\n參考資料\nComposition API RFC\nTeleport\n\n","dateCreated":"2020-09-05T00:00:00+08:00","dateModified":"2020-09-05T00:00:00+08:00","datePublished":"2020-09-05T00:00:00+08:00","description":"新功能 teleport 讓我們可以很輕鬆的將 HTML render 在 app 以外的地方，且不影響商業邏輯的整理，趕緊來看看吧！","headline":"Vue 3 Studies - Teleport","image":["https://vuejs.org/images/logo.png","https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/","keywords":"Vue","thumbnailUrl":"https://vuejs.org/images/logo.png"}</script>
+    <meta name="description" content="新功能 teleport 讓我們可以很輕鬆的將 HTML render 在 app 以外的地方，且不影響商業邏輯的整理，趕緊來看看吧！">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Vue 3 Studies - Teleport">
+<meta property="og:url" content="http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="新功能 teleport 讓我們可以很輕鬆的將 HTML render 在 app 以外的地方，且不影響商業邏輯的整理，趕緊來看看吧！">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3fpkgtPhFxUWsnrtC1-2Wm18O6xBbtprQGM1uUZ-46b9F2C5DgiJ95_xz1T9QtLC1zEs_SGUdzqsh55YOIjpW6D3Bp9OR5WuZmbSQMkFh-iY_PggFpB3-az3YQ0dj7kNeHiZ7sHnta5V1uzoNPvHzrHqA=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3e8n-bWxudlY_Bnee9-_YQcuGIz5XPxwsQ6DCqpPVtj18JIYQYSq5gSc6Ega_M9bMgAJp1qiGt3ZC67KHWhbpbEKFt8ZYejrqxBqsuYloisI8tHveYDvY0uxxTR2Q_V45iYunfRuJ5Q9B15TfgHaJuMSQ=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3fQL1qJvG8zqkf9D_cBD_FCDWvhgLEka5m4EIILmWKrERGqr2aBCJcYCtY-sjVokVCIc6sASRmefWFWsm03bR40bzBYl2AsVWfxV3ezW9nTnTi_4K0T5EYvy1c058r9d80rpuHUmtNYZVRI0NmRO_RWlQ=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3eP5oZQ8-nfvhtWjwmxyyqctP7Hl79mDZAfQmI6S0aUle_PQYDqTnvziIhYr_ZGcTyHGZvdxJPtIMfgF7jIB6_xzL74vjEEVDZdtwnE_beRgJ9FCqclcFzLCyJ0bfa8Mx9RMMai8ZclPZRT5gM5ZqnTVw=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3dY9NBXMuvnCpFgRMcEcJuRA3Y7iBlull-kzaoX4E6SuhQJlbtvO74rccEln8zfDT3bU1CmOdpya1byr9Mg-VEUJhP7CRXa-Vm7LVfTs6yJsOuaCOfaHZWrJRmJ4VfA6M4z2FpvQyxviMMYp3Myb29akw=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport2.gif?alt=media&amp;token=04d9934b-bead-49d8-b146-79a2e168e851">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport3.gif?alt=media&amp;token=08fd1a88-377c-4397-a6df-8ba561476d25">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3foF18BHGYLWfy1lU9o3Re5ZY0bB81I3vazlvzpsz_pn-x6pkrv9QVxjkAn-vFv7LLMiWHue5l67aVDQszigZVdka8OTZC-eKLmO8JAdr2IJ7mfLU6aOxMOZXVmXwlznWvIcy-QWI0NfCjioGh1e0_TSA=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport4.gif?alt=media&amp;token=d85592f8-4194-4ef8-aec7-f9b5408156dd">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3dCId188L9jHX3OIMDrpgiRBICfTC1w6BNTfYS4Kq4FdGAQcPRAdp-hRftsYkPEcp2ExQB4DxnuwICdifahLdsn66wF3hi7JiZo6mVExf61cUE38PAN2EpxOEEgKirJPoBERHckylXqpOfob5jDTKeQjg=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport5.gif?alt=media&amp;token=0cef8637-db2c-417d-b2b4-c383ec51c84d">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3eEGRXj9uQ-iapGxqPEk13hWSRi1DW23D2_sAA3Ibs6sYOMuisWPxwoZE9farf2_7cXeQ0o_ft5UD9J5D34IrOGkslyR4datkr3xXrfdv5wbgfGjaH6yPwV7TpyS_hoiQu6OcT6EW1oiNJ-QpdUtMWxTA=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport6.gif?alt=media&amp;token=e45bd9f9-0116-4b69-8857-3e60210f4de0">
+<meta property="article:published_time" content="2020-09-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-04T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/pw/ACtC-3fpkgtPhFxUWsnrtC1-2Wm18O6xBbtprQGM1uUZ-46b9F2C5DgiJ95_xz1T9QtLC1zEs_SGUdzqsh55YOIjpW6D3Bp9OR5WuZmbSQMkFh-iY_PggFpB3-az3YQ0dj7kNeHiZ7sHnta5V1uzoNPvHzrHqA=w1708-h1280-no?authuser=0">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://vuejs.org/images/logo.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://vuejs.org/images/logo.png"/>
+    
+    
+        <meta property="og:image" content="https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Vue 3 Studies - Teleport
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-09-05T00:00:00+08:00">
+	
+		    2020 年 9 月 5 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/Vue/">Vue</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>新功能 teleport 讓我們可以很輕鬆的將 HTML render 在 app 以外的地方，且不影響商業邏輯的整理，趕緊來看看吧！</p>
+<a id="more"></a>
+<p>影片網址： <a href="https://www.vuemastery.com/courses/vue-3-essentials/teleport" target="_blank" rel="noopener">https://www.vuemastery.com/courses/vue-3-essentials/teleport</a></p>
+<p>當我們想要組件的東西 render HTML 在頁面不同地方該怎麼辦？</p>
+<p><img src="https://lh3.googleusercontent.com/pw/ACtC-3fpkgtPhFxUWsnrtC1-2Wm18O6xBbtprQGM1uUZ-46b9F2C5DgiJ95_xz1T9QtLC1zEs_SGUdzqsh55YOIjpW6D3Bp9OR5WuZmbSQMkFh-iY_PggFpB3-az3YQ0dj7kNeHiZ7sHnta5V1uzoNPvHzrHqA=w1708-h1280-no?authuser=0" alt="要組件的東西 render HTML 在頁面不同地方該怎麼辦"></p>
+<p>有時 Fixed 或 absolute 的元件因為 z-index 的緣故，需要放在結尾  的前面。在 Vue 2 如果要把程式移到 #app 的外面是很困難的。</p>
+<p><img src="https://lh3.googleusercontent.com/pw/ACtC-3e8n-bWxudlY_Bnee9-_YQcuGIz5XPxwsQ6DCqpPVtj18JIYQYSq5gSc6Ega_M9bMgAJp1qiGt3ZC67KHWhbpbEKFt8ZYejrqxBqsuYloisI8tHveYDvY0uxxTR2Q_V45iYunfRuJ5Q9B15TfgHaJuMSQ=w1708-h1280-no?authuser=0" alt="要組件的東西 render HTML 在頁面不同地方該怎麼辦"></p>
+<p>Vue 3 提供了 teleport 元件來解決這個問題。以前叫做 portal ，但為了不跟未來的HTML tag 重名，所以改名為 teleport。teleport 讓我們可以把程式寫在子組件，並用 to 的方式指定要 render HTML 的位置，如下圖。</p>
+<p><img src="https://lh3.googleusercontent.com/pw/ACtC-3fQL1qJvG8zqkf9D_cBD_FCDWvhgLEka5m4EIILmWKrERGqr2aBCJcYCtY-sjVokVCIc6sASRmefWFWsm03bR40bzBYl2AsVWfxV3ezW9nTnTi_4K0T5EYvy1c058r9d80rpuHUmtNYZVRI0NmRO_RWlQ=w1708-h1280-no?authuser=0" alt="teleport"></p>
+<p>To 的屬性除了剛剛使用的 css Id 方式，也可以用 class或 meta attribute 的方式指定要render 的位置。如果要動態賦予值也可以直接 :to 接變數即可。</p>
+<p><img src="https://lh3.googleusercontent.com/pw/ACtC-3eP5oZQ8-nfvhtWjwmxyyqctP7Hl79mDZAfQmI6S0aUle_PQYDqTnvziIhYr_ZGcTyHGZvdxJPtIMfgF7jIB6_xzL74vjEEVDZdtwnE_beRgJ9FCqclcFzLCyJ0bfa8Mx9RMMai8ZclPZRT5gM5ZqnTVw=w1708-h1280-no?authuser=0" alt="teleport to option"></p>
+<p>另外，我們可以設定 disabled 屬性，讓組件在 disabled true 的時候把HTML render 回原來組件 app 中。</p>
+<p><img src="https://lh3.googleusercontent.com/pw/ACtC-3dY9NBXMuvnCpFgRMcEcJuRA3Y7iBlull-kzaoX4E6SuhQJlbtvO74rccEln8zfDT3bU1CmOdpya1byr9Mg-VEUJhP7CRXa-Vm7LVfTs6yJsOuaCOfaHZWrJRmJ4VfA6M4z2FpvQyxviMMYp3Myb29akw=w1708-h1280-no?authuser=0" alt="teleport disabled"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport2.gif?alt=media&amp;token=04d9934b-bead-49d8-b146-79a2e168e851" alt="teleport disabled"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport3.gif?alt=media&amp;token=08fd1a88-377c-4397-a6df-8ba561476d25" alt="teleport disabled"></p>
+<p>Teleport 還有一個好處是他會保留原組件的狀態。假設我們在 teleport 裡面放一隻影片播放，當 toggle disabled 屬性的時候，影片會持續播放不會斷掉。</p>
+<p><img src="https://lh3.googleusercontent.com/pw/ACtC-3foF18BHGYLWfy1lU9o3Re5ZY0bB81I3vazlvzpsz_pn-x6pkrv9QVxjkAn-vFv7LLMiWHue5l67aVDQszigZVdka8OTZC-eKLmO8JAdr2IJ7mfLU6aOxMOZXVmXwlznWvIcy-QWI0NfCjioGh1e0_TSA=w1708-h1280-no?authuser=0" alt="teleport disabled state"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport4.gif?alt=media&amp;token=d85592f8-4194-4ef8-aec7-f9b5408156dd" alt="teleport disabled state"></p>
+<p>那如果我們想在 disabled true 的時候不要顯示組件要怎麼做呢？其實就很直覺的搭配 v-if 就可以完成這個效果，即便是用兩組 teleport 也可以輕鬆做到。</p>
+<p><img src="https://lh3.googleusercontent.com/pw/ACtC-3dCId188L9jHX3OIMDrpgiRBICfTC1w6BNTfYS4Kq4FdGAQcPRAdp-hRftsYkPEcp2ExQB4DxnuwICdifahLdsn66wF3hi7JiZo6mVExf61cUE38PAN2EpxOEEgKirJPoBERHckylXqpOfob5jDTKeQjg=w1708-h1280-no?authuser=0" alt="teleport disabled v-if"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport5.gif?alt=media&amp;token=0cef8637-db2c-417d-b2b4-c383ec51c84d" alt="teleport disabled v-if"></p>
+<p>兩組 teleport 可以很神奇的做到誰先觸發就誰先 render 到指定的 HTML 位置，非常的順暢。</p>
+<p><img src="https://lh3.googleusercontent.com/pw/ACtC-3eEGRXj9uQ-iapGxqPEk13hWSRi1DW23D2_sAA3Ibs6sYOMuisWPxwoZE9farf2_7cXeQ0o_ft5UD9J5D34IrOGkslyR4datkr3xXrfdv5wbgfGjaH6yPwV7TpyS_hoiQu6OcT6EW1oiNJ-QpdUtMWxTA=w1708-h1280-no?authuser=0" alt="use two teleport"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/vue-mastery.appspot.com/o/flamelink%2Fmedia%2Fteleport6.gif?alt=media&amp;token=e45bd9f9-0116-4b69-8857-3e60210f4de0" alt="use two teleport"></p>
+<p>個人覺得 teleport 的功能蠻強大的，可以將商業邏輯整理在組件中又不影響顯示的畫面，讓程式更有條理，是非常強大的功能。</p>
+<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><ul>
+<li><a href="https://composition-api.vuejs.org/" target="_blank" rel="noopener">Composition API RFC</a></li>
+<li><a href="https://www.vuemastery.com/courses/vue-3-essentials/teleport" target="_blank" rel="noopener">Teleport</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Vue/" rel="tag">Vue</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/09/06/Vue/Vue-3-Studies-Fundamentals-of-Reactivity/"
+                    data-tooltip="Vue 3 Studies - Fundamentals of Reactivity"
+                    aria-label="上一篇: Vue 3 Studies - Fundamentals of Reactivity"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/08/16/Vue/Vue-3-Studies-Lifecycle-Hooks/"
+                    data-tooltip="Vue 3 Studies - Lifecycle Hooks"
+                    aria-label="下一篇: Vue 3 Studies - Lifecycle Hooks"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/09/06/Vue/Vue-3-Studies-Fundamentals-of-Reactivity/"
+                    data-tooltip="Vue 3 Studies - Fundamentals of Reactivity"
+                    aria-label="上一篇: Vue 3 Studies - Fundamentals of Reactivity"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/08/16/Vue/Vue-3-Studies-Lifecycle-Hooks/"
+                    data-tooltip="Vue 3 Studies - Lifecycle Hooks"
+                    aria-label="下一篇: Vue 3 Studies - Lifecycle Hooks"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2020/09/05/Vue/Vue-3-Studies-Teleport/';
+              
+            this.page.identifier = '2020/09/05/Vue/Vue-3-Studies-Teleport/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

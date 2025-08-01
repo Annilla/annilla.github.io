@@ -1,0 +1,1060 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Google Calendar To Discord Webhook - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近因友人需要一個 Discord 的 alert 提醒, 所以研究了一下怎麼單方面將 Google 日曆的內容推送到 Discord 的 channel 中且不要花到錢. 參考了此 repo Google-Calendar-API-to-Discord-Webhook, 並改寫設定讓 alert 一天只發送一次, 大幅減少 google api 的呼叫次數, 這樣就可以繼續用免費帳號使用功能. 設置步驟如下.\n\n設置 google script先去 Google Cloud Apps Script 建立一個專案, 並把 script 貼上如下.\n\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112// This Google Apps Script Will Send a POST to a Discord Webhook creating embed messages of any events starting within the next minute of execution.// Any events that have already started will not appear.// This script should be triggered every minute using Google Triggers.const CHANNEL_POST_URL = \"這邊放 Discord 的 channel url\";const CALENDAR_ID = \"這邊放 google 日曆的 ID\";const NO_VALUE_FOUND = \"N/A\";const minsInAdvance = 60; // Set the number of minutes in advance you'd like events to be posted to discord. Must be 1 or greater 這邊因為會改成一天只有7~8點這個時段發送一次, 所以要設定 script 觸發時間後的 60 分鐘有掃到的日曆事件都要丟出來. google 日曆那邊的事件就是設定 8 點. 就能一天發一次.// Import Luxoneval(UrlFetchApp.fetch('https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js').getContentText());let DateTime = luxon.DateTime;const DTnow = DateTime.now().startOf('minute'); // Will consider 'now' as the beginning the minute to deal with second offsets issues with trigger over time.function postEventsToChannel() &#123;  // .list parameters. See https://developers.google.com/calendar/api/v3/reference/events/list?hl=en  let optionalArgs = &#123;    timeMin: DTnow.toISO(),    timeMax: DTnow.plus(&#123;minutes: minsInAdvance&#125;).toISO(), // Will only show events starting in the next x minutes    showDeleted: false,    singleEvents: true,    orderBy: 'startTime'  &#125;;  let response = Calendar.Events.list(CALENDAR_ID, optionalArgs);  let events = response.items;  if (events.length &gt; 0) &#123;    for (i = 0; i &lt; events.length; i++) &#123;      let event = events[i];      let ISOStartDate = event.start.dateTime || event.start.date;      let ISOEndDate = event.end.dateTime || event.end.date;      // The Calendar API's .list function will continously return events whose endDate has not been reached yet (timeMin is based on the event's end time)      // Since this script is meant to run every minute, we have to skip these events ourselves      // if (DateTime.fromISO(ISOStartDate) &lt; DTnow.plus(&#123;minutes: minsInAdvance - 1&#125;)) &#123;      //   Logger.log(`Event $&#123;event.summary&#125; [$&#123;event.id&#125;] has already started. Skipping`);      //   continue;      // &#125;      // Build the POST request      let OptionsPayload = &#123;        \"content\": \"‌&lt;@&amp;1094230208527208539&gt;‌\", // 內容會 tag 某個群組的標籤, 這樣群組內的人才能確定跳出通知, 不會因為個人設定而消失        \"embeds\": [&#123;          \"author\": &#123;              \"name\": `$&#123;event.summary&#125;`,              \"icon_url\": \"https://cdn.discordapp.com/attachments/696400605908041794/888874282950750238/1200px-Google_Calendar_icon_28202029.png\"          &#125;,          \"timestamp\": DTnow.toISO(),          \"description\":`[Google Event Link]($&#123;event.htmlLink&#125;)`,          \"color\": 1425196,          \"fields\":[]        &#125;]      &#125;;      let FieldsStartTime = &#123;        \"name\":\"Start Time\",        \"value\": ISOToDiscordUnix(ISOStartDate) ?? NO_VALUE_FOUND,        \"inline\":false      &#125;;      let FieldsEndTime = &#123;        \"name\":\"End Time\",        \"value\":ISOToDiscordUnix(ISOEndDate) ?? NO_VALUE_FOUND,        \"inline\":false      &#125;;      let FieldsLocation = &#123;        \"name\":\"Location\",        \"value\":event.location ?? NO_VALUE_FOUND,        \"inline\":false      &#125;;      let FieldsDescription = &#123;        \"name\":\"Description\",        \"value\":event.description ?? NO_VALUE_FOUND,        \"inline\":false      &#125;;      if(ISOStartDate) &#123;        OptionsPayload.embeds[0].fields.push(FieldsStartTime);      &#125;      if(ISOEndDate) &#123;        OptionsPayload.embeds[0].fields.push(FieldsEndTime);      &#125;      if(event.location) &#123;        OptionsPayload.embeds[0].fields.push(FieldsLocation);      &#125;      if(event.description) &#123;        OptionsPayload.embeds[0].fields.push(FieldsDescription);      &#125;      let options = &#123;          \"method\": \"post\",          \"headers\": &#123;              \"Content-Type\": \"application/json\",          &#125;,          \"payload\": JSON.stringify(OptionsPayload)      &#125;;      Logger.log(options, null, 2);      UrlFetchApp.fetch(CHANNEL_POST_URL, options);    &#125;  &#125; else &#123;    Logger.log(`No events starting within $&#123;minsInAdvance&#125; minute(s) found.`);  &#125;&#125;/** * Converts an ISO string into a discord formatted timestamp */function ISOToDiscordUnix(isoString) &#123;  return `&lt;t:$&#123;Math.floor(DateTime.fromISO(isoString).toSeconds())&#125;:F&gt;`&#125;\n設定觸發條件再去 UI 設定觸發條件如下圖.\n\n執行的 function: postEventsToChannel\n部屬作業: 雲端\n活動來源: 時間驅動\n條件類型: 日計時器\n時段: 上午 7 點到 8 點\n\n\nPS. 記得 google 日曆活動固定都設定在 8 點, 這樣每天就會在早上七點多一次跳出設定的活動. 每天只會觸發一次, 如果要換時段的話日曆活動也要一起換, 依此類推.\n\n\nDiscord 完成Google script 啟動後, Discord channel 就會跳出如下圖的 alert 囉!\n\n也可以在 google 的執行項目看到每次執行的 log 紀錄.\n\nReference\nGoogle-Calendar-API-to-Discord-Webhook\n\n","dateCreated":"2024-01-08T00:00:00+08:00","dateModified":"2024-01-08T00:00:00+08:00","datePublished":"2024-01-08T00:00:00+08:00","description":"最近因友人需要一個 Discord 的 alert 提醒, 所以研究了一下怎麼單方面將 Google 日曆的內容推送到 Discord 的 channel 中且不要花到錢. 參考了此 repo Google-Calendar-API-to-Discord-Webhook, 並改寫設定讓 alert 一天只發送一次, 大幅減少 google api 的呼叫次數, 這樣就可以繼續用免費帳號使用功能. 設置步驟如下.","headline":"Google Calendar To Discord Webhook","image":["https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHHFT949fUipzkiFOBH3fAiZZUCdYojwUyX2aTonS1aIwMrx6NUIsHfUHSLzjGJFxxsG72wAo9EWJR4yQWyJJaDb6rYcBtJvTvH3UoAS4JFNDaxGhmKNaMwgElLURlRFeVkLCjkfnXmWtINWZIrPGYq0-&format=source","https://media.nownews.com/nn_media/thumbnail/2023/09/1695994487590-d3650fef35e74f04bf6010d0078f8fcd-1200x675.webp?unShow=false"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/","keywords":"JS, Discord, Google Script","thumbnailUrl":"https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHHFT949fUipzkiFOBH3fAiZZUCdYojwUyX2aTonS1aIwMrx6NUIsHfUHSLzjGJFxxsG72wAo9EWJR4yQWyJJaDb6rYcBtJvTvH3UoAS4JFNDaxGhmKNaMwgElLURlRFeVkLCjkfnXmWtINWZIrPGYq0-&format=source"}</script>
+    <meta name="description" content="最近因友人需要一個 Discord 的 alert 提醒, 所以研究了一下怎麼單方面將 Google 日曆的內容推送到 Discord 的 channel 中且不要花到錢. 參考了此 repo Google-Calendar-API-to-Discord-Webhook, 並改寫設定讓 alert 一天只發送一次, 大幅減少 google api 的呼叫次數, 這樣就可以繼續用免費帳號使用功能.">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Google Calendar To Discord Webhook">
+<meta property="og:url" content="http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="最近因友人需要一個 Discord 的 alert 提醒, 所以研究了一下怎麼單方面將 Google 日曆的內容推送到 Discord 的 channel 中且不要花到錢. 參考了此 repo Google-Calendar-API-to-Discord-Webhook, 並改寫設定讓 alert 一天只發送一次, 大幅減少 google api 的呼叫次數, 這樣就可以繼續用免費帳號使用功能.">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://media.discordapp.net/attachments/1135775611948900472/1193819554758000700/image.png?ex=65ae1a19&amp;is=659ba519&amp;hm=60e69ec50820a59e7017ed50c3abfb09a2e86a6b8d09bce6d567ab49ddfa6509&amp;=&amp;format=webp&amp;quality=lossless&amp;width=832&amp;height=415">
+<meta property="og:image" content="https://media.discordapp.net/attachments/1135775611948900472/1193820455056977940/image.png?ex=65ae1af0&amp;is=659ba5f0&amp;hm=cf3fba8e01e78e3a3e03479b65c7ce02fe1193ed47dbcb10b05af50582d13eb4&amp;=&amp;format=webp&amp;quality=lossless&amp;width=832&amp;height=415">
+<meta property="og:image" content="https://media.discordapp.net/attachments/1135775611948900472/1193822236579213412/image.png?ex=65ae1c99&amp;is=659ba799&amp;hm=5b255cffab57813776c56165859c4f2a5cf9e73da81699c18bb0203b3fbf962b&amp;=&amp;format=webp&amp;quality=lossless">
+<meta property="og:image" content="https://media.discordapp.net/attachments/1135775611948900472/1193822881562509402/image.png?ex=65ae1d33&amp;is=659ba833&amp;hm=79818e5d25df672ce72f59fdfeab9278d7cb0a634796603d2c80db4d9d565bba&amp;=&amp;format=webp&amp;quality=lossless&amp;width=832&amp;height=415">
+<meta property="article:published_time" content="2024-01-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-01-07T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="Discord">
+<meta property="article:tag" content="Google Script">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://media.discordapp.net/attachments/1135775611948900472/1193819554758000700/image.png?ex=65ae1a19&amp;is=659ba519&amp;hm=60e69ec50820a59e7017ed50c3abfb09a2e86a6b8d09bce6d567ab49ddfa6509&amp;=&amp;format=webp&amp;quality=lossless&amp;width=832&amp;height=415">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHHFT949fUipzkiFOBH3fAiZZUCdYojwUyX2aTonS1aIwMrx6NUIsHfUHSLzjGJFxxsG72wAo9EWJR4yQWyJJaDb6rYcBtJvTvH3UoAS4JFNDaxGhmKNaMwgElLURlRFeVkLCjkfnXmWtINWZIrPGYq0-&amp;format=source"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHHFT949fUipzkiFOBH3fAiZZUCdYojwUyX2aTonS1aIwMrx6NUIsHfUHSLzjGJFxxsG72wAo9EWJR4yQWyJJaDb6rYcBtJvTvH3UoAS4JFNDaxGhmKNaMwgElLURlRFeVkLCjkfnXmWtINWZIrPGYq0-&amp;format=source"/>
+    
+    
+        <meta property="og:image" content="https://media.nownews.com/nn_media/thumbnail/2023/09/1695994487590-d3650fef35e74f04bf6010d0078f8fcd-1200x675.webp?unShow=false"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://media.nownews.com/nn_media/thumbnail/2023/09/1695994487590-d3650fef35e74f04bf6010d0078f8fcd-1200x675.webp?unShow=false"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://media.nownews.com/nn_media/thumbnail/2023/09/1695994487590-d3650fef35e74f04bf6010d0078f8fcd-1200x675.webp?unShow=false');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Google Calendar To Discord Webhook
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2024-01-08T00:00:00+08:00">
+	
+		    2024 年 1 月 8 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/Frontend/">Frontend</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>最近因友人需要一個 Discord 的 alert 提醒, 所以研究了一下怎麼單方面將 Google 日曆的內容推送到 Discord 的 channel 中且不要花到錢. 參考了此 repo <a href="https://github.com/DjMuffinTops/Google-Calendar-API-to-Discord-Webhook" target="_blank" rel="noopener">Google-Calendar-API-to-Discord-Webhook</a>, 並改寫設定讓 alert 一天只發送一次, 大幅減少 google api 的呼叫次數, 這樣就可以繼續用免費帳號使用功能. 設置步驟如下.</p>
+<a id="more"></a>
+<h1 id="設置-google-script"><a href="#設置-google-script" class="headerlink" title="設置 google script"></a>設置 google script</h1><p>先去 <a href="https://script.google.com" target="_blank" rel="noopener">Google Cloud Apps Script</a> 建立一個專案, 並把 script 貼上如下.</p>
+<p><img src="https://media.discordapp.net/attachments/1135775611948900472/1193819554758000700/image.png?ex=65ae1a19&amp;is=659ba519&amp;hm=60e69ec50820a59e7017ed50c3abfb09a2e86a6b8d09bce6d567ab49ddfa6509&amp;=&amp;format=webp&amp;quality=lossless&amp;width=832&amp;height=415" alt="Google Cloud Apps Script"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// This Google Apps Script Will Send a POST to a Discord Webhook creating embed messages of any events starting within the next minute of execution.</span></span><br><span class="line"><span class="comment">// Any events that have already started will not appear.</span></span><br><span class="line"><span class="comment">// This script should be triggered every minute using Google Triggers.</span></span><br><span class="line"><span class="keyword">const</span> CHANNEL_POST_URL = <span class="string">"這邊放 Discord 的 channel url"</span>;</span><br><span class="line"><span class="keyword">const</span> CALENDAR_ID = <span class="string">"這邊放 google 日曆的 ID"</span>;</span><br><span class="line"><span class="keyword">const</span> NO_VALUE_FOUND = <span class="string">"N/A"</span>;</span><br><span class="line"><span class="keyword">const</span> minsInAdvance = <span class="number">60</span>; <span class="comment">// Set the number of minutes in advance you'd like events to be posted to discord. Must be 1 or greater 這邊因為會改成一天只有7~8點這個時段發送一次, 所以要設定 script 觸發時間後的 60 分鐘有掃到的日曆事件都要丟出來. google 日曆那邊的事件就是設定 8 點. 就能一天發一次.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Import Luxon</span></span><br><span class="line"><span class="built_in">eval</span>(UrlFetchApp.fetch(<span class="string">'https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js'</span>).getContentText());</span><br><span class="line"><span class="keyword">let</span> DateTime = luxon.DateTime;</span><br><span class="line"><span class="keyword">const</span> DTnow = DateTime.now().startOf(<span class="string">'minute'</span>); <span class="comment">// Will consider 'now' as the beginning the minute to deal with second offsets issues with trigger over time.</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">postEventsToChannel</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// .list parameters. See https://developers.google.com/calendar/api/v3/reference/events/list?hl=en</span></span><br><span class="line">  <span class="keyword">let</span> optionalArgs = &#123;</span><br><span class="line">    timeMin: DTnow.toISO(),</span><br><span class="line">    timeMax: DTnow.plus(&#123;<span class="attr">minutes</span>: minsInAdvance&#125;).toISO(), <span class="comment">// Will only show events starting in the next x minutes</span></span><br><span class="line">    showDeleted: <span class="literal">false</span>,</span><br><span class="line">    singleEvents: <span class="literal">true</span>,</span><br><span class="line">    orderBy: <span class="string">'startTime'</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">let</span> response = Calendar.Events.list(CALENDAR_ID, optionalArgs);</span><br><span class="line">  <span class="keyword">let</span> events = response.items;</span><br><span class="line">  <span class="keyword">if</span> (events.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; events.length; i++) &#123;</span><br><span class="line">      <span class="keyword">let</span> event = events[i];</span><br><span class="line">      <span class="keyword">let</span> ISOStartDate = event.start.dateTime || event.start.date;</span><br><span class="line">      <span class="keyword">let</span> ISOEndDate = event.end.dateTime || event.end.date;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// The Calendar API's .list function will continously return events whose endDate has not been reached yet (timeMin is based on the event's end time)</span></span><br><span class="line">      <span class="comment">// Since this script is meant to run every minute, we have to skip these events ourselves</span></span><br><span class="line">      <span class="comment">// if (DateTime.fromISO(ISOStartDate) &lt; DTnow.plus(&#123;minutes: minsInAdvance - 1&#125;)) &#123;</span></span><br><span class="line">      <span class="comment">//   Logger.log(`Event $&#123;event.summary&#125; [$&#123;event.id&#125;] has already started. Skipping`);</span></span><br><span class="line">      <span class="comment">//   continue;</span></span><br><span class="line">      <span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">// Build the POST request</span></span><br><span class="line">      <span class="keyword">let</span> OptionsPayload = &#123;</span><br><span class="line">        <span class="string">"content"</span>: <span class="string">"‌&lt;@&amp;1094230208527208539&gt;‌"</span>, <span class="comment">// 內容會 tag 某個群組的標籤, 這樣群組內的人才能確定跳出通知, 不會因為個人設定而消失</span></span><br><span class="line">        <span class="string">"embeds"</span>: [&#123;</span><br><span class="line">          <span class="string">"author"</span>: &#123;</span><br><span class="line">              <span class="string">"name"</span>: <span class="string">`<span class="subst">$&#123;event.summary&#125;</span>`</span>,</span><br><span class="line">              <span class="string">"icon_url"</span>: <span class="string">"https://cdn.discordapp.com/attachments/696400605908041794/888874282950750238/1200px-Google_Calendar_icon_28202029.png"</span></span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="string">"timestamp"</span>: DTnow.toISO(),</span><br><span class="line">          <span class="string">"description"</span>:<span class="string">`[Google Event Link](<span class="subst">$&#123;event.htmlLink&#125;</span>)`</span>,</span><br><span class="line">          <span class="string">"color"</span>: <span class="number">1425196</span>,</span><br><span class="line">          <span class="string">"fields"</span>:[]</span><br><span class="line">        &#125;]</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">let</span> FieldsStartTime = &#123;</span><br><span class="line">        <span class="string">"name"</span>:<span class="string">"Start Time"</span>,</span><br><span class="line">        <span class="string">"value"</span>: ISOToDiscordUnix(ISOStartDate) ?? NO_VALUE_FOUND,</span><br><span class="line">        <span class="string">"inline"</span>:<span class="literal">false</span></span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">let</span> FieldsEndTime = &#123;</span><br><span class="line">        <span class="string">"name"</span>:<span class="string">"End Time"</span>,</span><br><span class="line">        <span class="string">"value"</span>:ISOToDiscordUnix(ISOEndDate) ?? NO_VALUE_FOUND,</span><br><span class="line">        <span class="string">"inline"</span>:<span class="literal">false</span></span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">let</span> FieldsLocation = &#123;</span><br><span class="line">        <span class="string">"name"</span>:<span class="string">"Location"</span>,</span><br><span class="line">        <span class="string">"value"</span>:event.location ?? NO_VALUE_FOUND,</span><br><span class="line">        <span class="string">"inline"</span>:<span class="literal">false</span></span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">let</span> FieldsDescription = &#123;</span><br><span class="line">        <span class="string">"name"</span>:<span class="string">"Description"</span>,</span><br><span class="line">        <span class="string">"value"</span>:event.description ?? NO_VALUE_FOUND,</span><br><span class="line">        <span class="string">"inline"</span>:<span class="literal">false</span></span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(ISOStartDate) &#123;</span><br><span class="line">        OptionsPayload.embeds[<span class="number">0</span>].fields.push(FieldsStartTime);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(ISOEndDate) &#123;</span><br><span class="line">        OptionsPayload.embeds[<span class="number">0</span>].fields.push(FieldsEndTime);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(event.location) &#123;</span><br><span class="line">        OptionsPayload.embeds[<span class="number">0</span>].fields.push(FieldsLocation);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(event.description) &#123;</span><br><span class="line">        OptionsPayload.embeds[<span class="number">0</span>].fields.push(FieldsDescription);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">let</span> options = &#123;</span><br><span class="line">          <span class="string">"method"</span>: <span class="string">"post"</span>,</span><br><span class="line">          <span class="string">"headers"</span>: &#123;</span><br><span class="line">              <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="string">"payload"</span>: <span class="built_in">JSON</span>.stringify(OptionsPayload)</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      Logger.log(options, <span class="literal">null</span>, <span class="number">2</span>);</span><br><span class="line">      UrlFetchApp.fetch(CHANNEL_POST_URL, options);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    Logger.log(<span class="string">`No events starting within <span class="subst">$&#123;minsInAdvance&#125;</span> minute(s) found.`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Converts an ISO string into a discord formatted timestamp</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ISOToDiscordUnix</span>(<span class="params">isoString</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`&lt;t:<span class="subst">$&#123;<span class="built_in">Math</span>.floor(DateTime.fromISO(isoString).toSeconds())&#125;</span>:F&gt;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="設定觸發條件"><a href="#設定觸發條件" class="headerlink" title="設定觸發條件"></a>設定觸發條件</h1><p>再去 UI 設定觸發條件如下圖.</p>
+<ul>
+<li>執行的 function: postEventsToChannel</li>
+<li>部屬作業: 雲端</li>
+<li>活動來源: 時間驅動</li>
+<li>條件類型: 日計時器</li>
+<li>時段: 上午 7 點到 8 點</li>
+</ul>
+<blockquote>
+<p>PS. 記得 google 日曆活動固定都設定在 8 點, 這樣每天就會在早上七點多一次跳出設定的活動. 每天只會觸發一次, 如果要換時段的話日曆活動也要一起換, 依此類推.</p>
+</blockquote>
+<p><img src="https://media.discordapp.net/attachments/1135775611948900472/1193820455056977940/image.png?ex=65ae1af0&amp;is=659ba5f0&amp;hm=cf3fba8e01e78e3a3e03479b65c7ce02fe1193ed47dbcb10b05af50582d13eb4&amp;=&amp;format=webp&amp;quality=lossless&amp;width=832&amp;height=415" alt="設定觸發條件"></p>
+<h1 id="Discord-完成"><a href="#Discord-完成" class="headerlink" title="Discord 完成"></a>Discord 完成</h1><p>Google script 啟動後, Discord channel 就會跳出如下圖的 alert 囉!</p>
+<p><img src="https://media.discordapp.net/attachments/1135775611948900472/1193822236579213412/image.png?ex=65ae1c99&amp;is=659ba799&amp;hm=5b255cffab57813776c56165859c4f2a5cf9e73da81699c18bb0203b3fbf962b&amp;=&amp;format=webp&amp;quality=lossless" alt="Discord 完成"></p>
+<p>也可以在 google 的執行項目看到每次執行的 log 紀錄.</p>
+<p><img src="https://media.discordapp.net/attachments/1135775611948900472/1193822881562509402/image.png?ex=65ae1d33&amp;is=659ba833&amp;hm=79818e5d25df672ce72f59fdfeab9278d7cb0a634796603d2c80db4d9d565bba&amp;=&amp;format=webp&amp;quality=lossless&amp;width=832&amp;height=415" alt="google 的執行項目"></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://github.com/DjMuffinTops/Google-Calendar-API-to-Discord-Webhook" target="_blank" rel="noopener">Google-Calendar-API-to-Discord-Webhook</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Discord/" rel="tag">Discord</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Google-Script/" rel="tag">Google Script</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/JS/" rel="tag">JS</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2024/04/11/Dotnet/NET-8-SPA-with-Vite-Vue-3-dotnet-template/"
+                    data-tooltip=".NET 8 SPA with Vite and Vue 3 - dotnet Template"
+                    aria-label="上一篇: .NET 8 SPA with Vite and Vue 3 - dotnet Template"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/11/07/Python/Excel-to-Json-by-ChatGPT-using-Python/"
+                    data-tooltip="Excel to Json by ChatGPT using Python"
+                    aria-label="下一篇: Excel to Json by ChatGPT using Python"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2024/04/11/Dotnet/NET-8-SPA-with-Vite-Vue-3-dotnet-template/"
+                    data-tooltip=".NET 8 SPA with Vite and Vue 3 - dotnet Template"
+                    aria-label="上一篇: .NET 8 SPA with Vite and Vue 3 - dotnet Template"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/11/07/Python/Excel-to-Json-by-ChatGPT-using-Python/"
+                    data-tooltip="Excel to Json by ChatGPT using Python"
+                    aria-label="下一篇: Excel to Json by ChatGPT using Python"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/';
+              
+            this.page.identifier = '2024/01/08/Frontend/Google-Calendar-To-Discord-Webhook/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

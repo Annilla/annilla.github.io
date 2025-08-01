@@ -1,0 +1,1074 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Adobe XD New Feature - Auto-Animate - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"Adobe XD 新功能 Auto-animate 在 2018 年 10 月釋放，雖然現在介紹好像有點晚了，但看了介紹就覺得超威的，想要好好整理一篇順便收集目前線上不錯的 Auto-animate reference。\n\n\nauto-animate 是什麼？一般來說設計師要模擬互動的過程，通常是靠著複製並微調數個 artboards ，並透過使用者點擊切換這些 artboards 來呈現互動效果，但以往 XD 的功能只能做到點擊淡入下個 artboard，過程是直接的切換而沒有漸進式的變化。新功能 auto-animate 則是讓設計師使用 XD 在同個元件不同 artboards 做屬性的微調後，對該元件加上 auto-animate 後就會自動呈現 transition 的效果，且觸發條件除了舊的 tap（點擊） 外還新增了 drag（拖拉） 的觸發動作，這樣就可以模擬手機左右滑或上下滑的互動效果，聽起來超令人興奮的。至於元件可支援的 auto-animate 屬性例如：大小、位置、旋轉等等，可參考此官網說明。\n\nPS. XD prototype 的觸發動作除了 Tap 和 Drag 外還有 Time 和 Voice，這個等以後有機會研究再跟大家分享。\n\n\n如何製作 auto-animate？在解釋步驟前先來看一張官網 demo 左右拖拉互動的效果圖。\n\n製作流程：\n1) 將第一個使用者看到的 artboard 設為首頁（成功設置完 artboard 左上角會有房子的藍色 logo 圖示）。\n2) 將要展示的滑動過程依順序將 artboard 一個一個連結好。其中要設定的參數如下：\n\nTrigger: 設置 Drag 屬性\nAction: 設置 Auto-Animate\nDestination: 設置要連結的下個 artboard \nEasing: 選擇 transition 過程要使用的變換函數 (同 CSS)\n\n設定參數可參考下圖。\n將將！是不是很 easy ~\n\n線上 auto-animate 作品分享免費的 XD 作品我通常都是來找XDGuro，大家可以自行來挖寶，下面推薦一些我看到不錯的 auto-animate 作品。\nAuto Animate – Free XD UI kit\n這是官方寫的 demo ，裡面列出了各種常用的動畫效果，例如：Loading Bar, Number Counter, Day/Night Switch, Drag Carrousel, Pull to Refresh, Swipe Away, Parallax… 你想得到的都做得出來。真的是太神奇了～有用 XD 的設計師必載的參考文件！！\nMobile XD scrolling interaction\n這個作品也是我一看到就立馬收藏的好物！他模擬了最上方 User 資訊如何縮放漸變的過程，互動感覺非常流暢～喜歡！！\nIce Cream App animation\n這個作品也用到了經典的點擊和拖拉效果，也值得收藏!比較可惜的是左右滑動換冰淇淋的部分不知道為什麼有些卡卡的，還要再多研究一下XD\n看完了這些讓我更加愛上 XD，最近發現他也開放 plugin 功能，但目前還沒看到什麼厲害的 plugin，另外版本控制這部分也是我期待的一點，希望他能盡快有這些功能～哈哈 （使用著 Sketch 卻望著 XD 的設計師心聲）\n參考資料\nCreate prototypes using auto-animate\nSupported properties for auto-animate in XD artboard transitions\nAuto Animate – Free XD UI kit\nMobile XD scrolling interaction\nIce Cream App animation\n\n","dateCreated":"2018-12-02T00:00:00+08:00","dateModified":"2018-12-02T00:00:00+08:00","datePublished":"2018-12-02T00:00:00+08:00","description":"Adobe XD 新功能 Auto-animate 在 2018 年 10 月釋放，雖然現在介紹好像有點晚了，但看了介紹就覺得超威的，想要好好整理一篇順便收集目前線上不錯的 Auto-animate reference。","headline":"Adobe XD New Feature - Auto-Animate","image":["https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no","https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/","keywords":"UX, UI, Adobe XD","thumbnailUrl":"https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no"}</script>
+    <meta name="description" content="Adobe XD 新功能 Auto-animate 在 2018 年 10 月釋放，雖然現在介紹好像有點晚了，但看了介紹就覺得超威的，想要好好整理一篇順便收集目前線上不錯的 Auto-animate reference。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Adobe XD New Feature - Auto-Animate">
+<meta property="og:url" content="http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="Adobe XD 新功能 Auto-animate 在 2018 年 10 月釋放，雖然現在介紹好像有點晚了，但看了介紹就覺得超威的，想要好好整理一篇順便收集目前線上不錯的 Auto-animate reference。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://helpx.adobe.com/content/dam/help/en/xd/help/create-prototypes-using-auto-animate/jcr_content/main-pars/image/Drag.gif">
+<meta property="og:image" content="https://helpx.adobe.com/content/dam/help/en/xd/help/create-prototypes-using-auto-animate/jcr_content/main-pars/procedure_1208997114/proc_par/step_2/step_par/image/Setting-up-Drag.png">
+<meta property="og:image" content="https://www.xdguru.com/wp-content/uploads/2018/11/Auto-Animate-Free-UI-kit-1014x487.jpg">
+<meta property="og:image" content="https://www.xdguru.com/wp-content/uploads/2018/11/Mobile-XD-scrolling-interaction-1014x487.jpg">
+<meta property="og:image" content="https://www.xdguru.com/wp-content/uploads/2018/10/Ice-Cream-App-animation-1014x487.jpg">
+<meta property="article:published_time" content="2018-12-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2018-12-01T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="UX">
+<meta property="article:tag" content="UI">
+<meta property="article:tag" content="Adobe XD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://helpx.adobe.com/content/dam/help/en/xd/help/create-prototypes-using-auto-animate/jcr_content/main-pars/image/Drag.gif">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/15TevdlU0UA0DHjDXR8IFLjUteZ4XGxRObDpCwsIumenN6CLFYQFRcoJnS_6xYGMmbUFHxpqlXp25FcRXorD83F2vgEoldt2orwKDe1_QGMpNRhvu0KtXQ1KxuXUV7GTUSCOn4GXJMj8lCETJtDBXcyl6bi_snLs80aQJu-mSbdzJ-Bj3D_0DpmVrnfS_KyUD7I-RnQZ5FOzarAYJmXYpwjBXGZkGNc1CtiSJ1OAQPCXFsOIj0Wnw8Bpq8z0ysUDOZXt6ZWoC74yspZm10_zGEUyjm5axY0SDCxxwPcdJ_GIhoz90_L9wqRjz1NLVOBgPsDmQwWKzCd4o-M-VgjflYccFA45jcNEr5vV5Pce3JKqX9gJFIL-qVW9J5Y_qjMBZdOr7M3YWveJeo8daOKrF1CIGuInKckICK5-K4h52V_CpV_1jEPEDRfI5OGnX4AfFPnntVRmP3y8raD5ajnxgnFAj3bVmaC4XSDO9ZLJd-soMaaTqa-URYTv4WjGJZGpM-XP2MYrMVyQyafCzc90XKuxo3stdk7qL9-Hua-AQi5S5iVLacJz8LSTRqGcy8vXu_vIG8YHLOCAQAQO3pXJxcwu33BlttXskTLk-b8j2MvYr1OM25EW35MThuYOQNimlGLn7P7f5sphQiTt-aNT0mj-HrD_xE05=s250-no"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://lh3.googleusercontent.com/Ht5ducjpGZIxCwrhATVndjvHuH_-Kz2Tl3a4r071v7j_GHdCDyo5D5myiDer5DZwdhCDWb0ZSgwdusqZsgc3q2GXPXv3I_CGwluVHNyiieve2YsRUy9_-xuJONWJJZ4Fd4gxZAqXh8J57Q811ITlBRHUuA6UJQeM_9cQ52vpmFWXIgM3NBlV0_QcBebviTM6XT3EHucC0Wv4LFpCYffHzM_Aftc_YTG7QVrG5wtBg0ebGhMggyMme6j1kRuxdOI_nvoFpTYxHr58P68R5rcSdXxVXZ0FeYpKaNkmkZ7rNhsL_z3iWI7CxjbSPJD5USGFSS88OdSfp34p9dysnyk8-FJN3COPgxcZh0krE_Yn_pUhAObBn5nWC6WdZzTFCcTHhY4GDsYlsO2OsizYSscRoqCfUaZ_byBLYop2mr4-I2NsOwVTHVMCa3XLZ-bKoEei_GDNuBeSOs6s03lLVgN0-BPnXhqQkRRVSTvg74D1cu65nlDdMEe__a_H8PJxRuxo7kIzuZS2gP7vjwiKkd2bYR705P6P8mWVJf0RTDED3uTtM3it9yvTOa77wiJJtr5Y0h75S5ZrcclHDu6t9WcyFB3yrLuPBNPuieuy10HMhHXBqZqQRX8tyPZaQwNiANFgBQQ1MYs_jXPXnrj5y5-GneVm30LkL5UE=w1024-h683-no');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Adobe XD New Feature - Auto-Animate
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-12-02T00:00:00+08:00">
+	
+		    2018 年 12 月 2 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/UXUI/">UXUI</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Adobe XD 新功能 Auto-animate 在 2018 年 10 月釋放，雖然現在介紹好像有點晚了，但看了介紹就覺得超威的，想要好好整理一篇順便收集目前線上不錯的 Auto-animate reference。</p>
+<a id="more"></a>
+<hr>
+<h2 id="auto-animate-是什麼？"><a href="#auto-animate-是什麼？" class="headerlink" title="auto-animate 是什麼？"></a><code>auto-animate</code> 是什麼？</h2><p>一般來說設計師要模擬互動的過程，通常是靠著複製並微調數個 <code>artboards</code> ，並透過使用者點擊切換這些 <code>artboards</code> 來呈現互動效果，但以往 <code>XD</code> 的功能只能做到點擊淡入下個 <code>artboard</code>，過程是直接的切換而沒有漸進式的變化。新功能 <code>auto-animate</code> 則是讓設計師使用 <code>XD</code> 在同個元件不同 <code>artboards</code> 做屬性的微調後，對該元件加上 <code>auto-animate</code> 後就會自動呈現 <code>transition</code> 的效果，且觸發條件除了舊的 <code>tap</code>（點擊） 外還新增了 <code>drag</code>（拖拉） 的觸發動作，這樣就可以模擬手機左右滑或上下滑的互動效果，聽起來超令人興奮的。至於元件可支援的 <code>auto-animate</code> 屬性例如：大小、位置、旋轉等等，可參考此<a href="https://helpx.adobe.com/xd/kb/supported-auto-animate-features-in-xd.html" target="_blank" rel="noopener">官網說明</a>。</p>
+<blockquote>
+<p>PS. XD prototype 的觸發動作除了 <code>Tap</code> 和 <code>Drag</code> 外還有 <code>Time</code> 和 <code>Voice</code>，這個等以後有機會研究再跟大家分享。</p>
+</blockquote>
+<hr>
+<h2 id="如何製作-auto-animate？"><a href="#如何製作-auto-animate？" class="headerlink" title="如何製作 auto-animate？"></a>如何製作 <code>auto-animate</code>？</h2><p>在解釋步驟前先來看一張官網 demo 左右拖拉互動的效果圖。</p>
+<p><img src="https://helpx.adobe.com/content/dam/help/en/xd/help/create-prototypes-using-auto-animate/jcr_content/main-pars/image/Drag.gif" alt="模擬左右拖拉互動效果" title="模擬左右拖拉互動效果"></p>
+<p>製作流程：</p>
+<p>1) 將第一個使用者看到的 <code>artboard</code> 設為首頁（成功設置完 <code>artboard</code> 左上角會有房子的藍色 logo 圖示）。</p>
+<p>2) 將要展示的滑動過程依順序將 <code>artboard</code> 一個一個連結好。其中要設定的參數如下：</p>
+<ul>
+<li>Trigger: 設置 Drag 屬性</li>
+<li>Action: 設置 Auto-Animate</li>
+<li>Destination: 設置要連結的下個 artboard </li>
+<li>Easing: 選擇 transition 過程要使用的變換函數 (同 CSS)</li>
+</ul>
+<p>設定參數可參考下圖。<br><img src="https://helpx.adobe.com/content/dam/help/en/xd/help/create-prototypes-using-auto-animate/jcr_content/main-pars/procedure_1208997114/proc_par/step_2/step_par/image/Setting-up-Drag.png" alt="auto-animate 設定參數" title="auto-animate 設定參數"></p>
+<p>將將！是不是很 easy ~</p>
+<hr>
+<h2 id="線上-auto-animate-作品分享"><a href="#線上-auto-animate-作品分享" class="headerlink" title="線上 auto-animate 作品分享"></a>線上 <code>auto-animate</code> 作品分享</h2><p>免費的 XD 作品我通常都是來找<a href="https://www.xdguru.com/3" target="_blank" rel="noopener">XDGuro</a>，大家可以自行來挖寶，下面推薦一些我看到不錯的 <code>auto-animate</code> 作品。</p>
+<h3 id="Auto-Animate-–-Free-XD-UI-kit"><a href="#Auto-Animate-–-Free-XD-UI-kit" class="headerlink" title="Auto Animate – Free XD UI kit"></a><a href="https://www.xdguru.com/auto-animate-free-ui-kit-xd/" target="_blank" rel="noopener">Auto Animate – Free XD UI kit</a></h3><p><img src="https://www.xdguru.com/wp-content/uploads/2018/11/Auto-Animate-Free-UI-kit-1014x487.jpg" alt="Auto Animate – Free XD UI kit" title="Auto Animate – Free XD UI kit"></p>
+<p>這是官方寫的 demo ，裡面列出了各種常用的動畫效果，例如：Loading Bar, Number Counter, Day/Night Switch, Drag Carrousel, Pull to Refresh, Swipe Away, Parallax… 你想得到的都做得出來。真的是太神奇了～有用 XD 的設計師必載的參考文件！！</p>
+<h3 id="Mobile-XD-scrolling-interaction"><a href="#Mobile-XD-scrolling-interaction" class="headerlink" title="Mobile XD scrolling interaction"></a><a href="https://www.xdguru.com/mobile-xd-scrolling-interaction/" target="_blank" rel="noopener">Mobile XD scrolling interaction</a></h3><p><img src="https://www.xdguru.com/wp-content/uploads/2018/11/Mobile-XD-scrolling-interaction-1014x487.jpg" alt="Mobile XD scrolling interaction" title="Mobile XD scrolling interaction"></p>
+<p>這個作品也是我一看到就立馬收藏的好物！他模擬了最上方 User 資訊如何縮放漸變的過程，互動感覺非常流暢～喜歡！！</p>
+<h3 id="Ice-Cream-App-animation"><a href="#Ice-Cream-App-animation" class="headerlink" title="Ice Cream App animation"></a><a href="https://www.xdguru.com/ice-cream-app-animation-xd/" target="_blank" rel="noopener">Ice Cream App animation</a></h3><p><img src="https://www.xdguru.com/wp-content/uploads/2018/10/Ice-Cream-App-animation-1014x487.jpg" alt="Ice Cream App animation" title="Ice Cream App animation"></p>
+<p>這個作品也用到了經典的點擊和拖拉效果，也值得收藏!<br>比較可惜的是左右滑動換冰淇淋的部分不知道為什麼有些卡卡的，還要再多研究一下XD</p>
+<p>看完了這些讓我更加愛上 <code>XD</code>，最近發現他也開放 plugin 功能，但目前還沒看到什麼厲害的 plugin，另外版本控制這部分也是我期待的一點，希望他能盡快有這些功能～哈哈 （使用著 Sketch 卻望著 XD 的設計師心聲）</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a href="https://helpx.adobe.com/xd/help/create-prototypes-using-auto-animate.html" target="_blank" rel="noopener">Create prototypes using auto-animate</a></li>
+<li><a href="https://helpx.adobe.com/xd/kb/supported-auto-animate-features-in-xd.html" target="_blank" rel="noopener">Supported properties for auto-animate in XD artboard transitions</a></li>
+<li><a href="https://www.xdguru.com/auto-animate-free-ui-kit-xd/" target="_blank" rel="noopener">Auto Animate – Free XD UI kit</a></li>
+<li><a href="https://www.xdguru.com/mobile-xd-scrolling-interaction/" target="_blank" rel="noopener">Mobile XD scrolling interaction</a></li>
+<li><a href="https://www.xdguru.com/ice-cream-app-animation-xd/" target="_blank" rel="noopener">Ice Cream App animation</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Adobe-XD/" rel="tag">Adobe XD</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UI/" rel="tag">UI</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UX/" rel="tag">UX</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"
+                    data-tooltip=".NET Core Upgrade 2.2 with Webpack4 &amp; Vue"
+                    aria-label="上一篇: .NET Core Upgrade 2.2 with Webpack4 &amp; Vue"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/"
+                    data-tooltip="2018 My Sketch Useful Plugins"
+                    aria-label="下一篇: 2018 My Sketch Useful Plugins"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"
+                    data-tooltip=".NET Core Upgrade 2.2 with Webpack4 &amp; Vue"
+                    aria-label="上一篇: .NET Core Upgrade 2.2 with Webpack4 &amp; Vue"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/11/04/UXUI/2018-My-Sketch-Useful-Plugins/"
+                    data-tooltip="2018 My Sketch Useful Plugins"
+                    aria-label="下一篇: 2018 My Sketch Useful Plugins"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/';
+              
+            this.page.identifier = '2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1073 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>.NET Core Upgrade 2.2 with Webpack4 &amp; Vue - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"紀錄 .NET Core 升級到 2.2 和 Webpack 升到 4 要注意的地方～\n\n\n.NET Core 2.2 設定csproj 專案檔TargetFramework 版本要改成 2.2, PackageReference 改成單一個 Microsoft.AspNetCore.App，就可以囉～\n12345678&lt;Project Sdk=\"Microsoft.NET.Sdk.Web\"&gt;  &lt;PropertyGroup&gt;    &lt;TargetFramework&gt;netcoreapp2.2&lt;/TargetFramework&gt;  &lt;/PropertyGroup&gt;  &lt;ItemGroup&gt;    &lt;PackageReference Include=\"Microsoft.AspNetCore.App\" /&gt;  &lt;/ItemGroup&gt;&lt;/Project&gt;\nProgram.cs修改 Program.cs 中 class 內的程式，參考如下程式片段。\n1234567891011121314namespace dotnet_core_vue_cli&#123;  public class Program  &#123;      public static void Main(string[] args)      &#123;        CreateWebHostBuilder(args).Build().Run();      &#125;      public static IWebHostBuilder CreateWebHostBuilder(string[] args) =&gt;        WebHost.CreateDefaultBuilder(args)          .UseStartup&lt;Startup&gt;();  &#125;&#125;\n\nVScode / VS2017 launch 設定為了在 webpack 上可以依據環境變數判斷不同的 bundle 內容，所以分別在 VScode / VS2017 的 launch 檔案設定環境變數。\n.vscode/launch.json (for VScode).vscode/launch.json 在環境變數加上 &quot;NODE_ENV=development&quot;: &quot;&quot; 。這邊有個小技巧，就是 =development 是放在前面，而不是在後面的雙引號，這部分應該是一個小 Bug，但目前先用這個方式解決。\n123456...  \"env\": &#123;    \"ASPNETCORE_ENVIRONMENT\": \"Development\",    \"NODE_ENV=development\": \"\"  &#125;,...\nProperties/launchSettings.json (for VS2017)Properties/launchSettings.json 則直接加上環境變數即可。\n123456...  \"environmentVariables\": &#123;    \"ASPNETCORE_ENVIRONMENT\": \"Development\",    \"NODE_ENV\": \"development\"  &#125;...\n\nWebpack4 設定package.json更新所有 package 並執行 npm install，參考如下設定。\n123456789101112131415161718192021222324252627282930313233343536&#123;  \"name\": \"dotnet-core-vue-cli\",  ...  \"scripts\": &#123;    \"hmr\": \"cross-env ASPNETCORE_ENVIRONMENT=Development NODE_ENV=development dotnet run\",    \"build\": \"webpack --config webpack.pro.js\"  &#125;,  \"dependencies\": &#123;    \"vue\": \"^2.5.21\"  &#125;,  ...  \"devDependencies\": &#123;    \"@babel/core\": \"^7.2.2\",    \"@babel/preset-env\": \"^7.2.0\",    \"aspnet-webpack\": \"^3.0.0\",    \"babel-loader\": \"^8.0.4\",    \"cross-env\": \"^5.2.0\",    \"css-loader\": \"^2.1.0\",    \"cssnano\": \"^4.1.8\",    \"file-loader\": \"^3.0.1\",    \"mini-css-extract-plugin\": \"^0.5.0\",    \"node-sass\": \"^4.11.0\",    \"postcss-loader\": \"^3.0.0\",    \"postcss-preset-env\": \"^6.5.0\",    \"sass-loader\": \"^7.1.0\",    \"uglifyjs-webpack-plugin\": \"^2.1.1\",    \"vue-loader\": \"^15.4.2\",    \"vue-style-loader\": \"^4.1.2\",    \"vue-template-compiler\": \"^2.5.21\",    \"webpack\": \"^4.28.2\",    \"webpack-cli\": \"^3.1.2\",    \"webpack-dev-middleware\": \"^3.4.0\",    \"webpack-hot-middleware\": \"^2.24.3\",    \"webpack-merge\": \"^4.1.5\"  &#125;&#125;\n.babelrc因為升到 babel 7 之後套件會整個改成 @ 開頭的，所以舊的同名 package 就可以刪掉了。所以 babelrc 設定檔也要改成如下片段。\n12345678910&#123;  &quot;presets&quot;: [    [      &quot;@babel/preset-env&quot;,      &#123;        &quot;modules&quot;: false      &#125;    ]  ]&#125;\npostcss.config.js升級 Vue-loader 相容 Webpack 4 後就不會有自動 autoprefixer 的功能，需要自行引入 postCSS 來做這件事情。所以 postcss.config.js 設定檔要新增如下片段。\n123456module.exports = &#123;  plugins: &#123;    'postcss-preset-env': &#123;&#125;,    'cssnano': &#123;&#125;,  &#125;&#125;\nwebpack.base|config|pro.js\n這邊升級後沒有用最新 vue-cli 3 的原因是因為 aspnet-webpack HMR 預設吃的 webpack 設定是最外層的 webpack.config.js，但最新 Vue-cli 3 已經把 webpack.config.js 藏起來了，改成 vue.config.js 做後續加工處理，且我們不使用 node server ，而是用 dotnet server 做 HMR，所以其實已經不需要 vue-cli 3 了。\n\n因為我們需要分成 develop 和 production 的 webpack 設定，所以就可以把 webpack 的結構拆成一個共用的基底 webpack.base.js，然後 develop 就透過 webpack-merge 將 base 結合 webpack.config.js，而 production 則是將 base 結合 webpack.pro.js。\n以下擷取部分比較重要的地方跟大家分享。\n\nwebpack.base.js\n\n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152const path = require('path')const MiniCssExtractPlugin = require(\"mini-css-extract-plugin\")const VueLoaderPlugin = require('vue-loader/lib/plugin')const devMode = process.env.NODE_ENV === 'development'module.exports = &#123;  ...  module: &#123;    rules: [      &#123; // vue-loader 已經沒有預設 autoprefixer，所以 CSS 的部分要加上 postCSS        test: /\\.vue$/,        use: 'vue-loader'      &#125;,      &#123;        test: /\\.js$/,        use: 'babel-loader',        exclude: /node_modules/      &#125;,      &#123; // MiniCssExtractPlugin 目前在 HMR 模式沒辦法打包成獨立的 CSS 檔案，所以在開發模式的時候，必須使用 vue-style-loader 替代，變成 meta 內的 style。        test: /\\.scss?$/,        use: [          devMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,          &#123;            loader: 'css-loader',            options: &#123;              importLoaders: 2            &#125;          &#125;,          'postcss-loader', // for autoprefix          'sass-loader'        ]      &#125;,      &#123;        test: /\\.(png|jpg|gif|svg)$/,        loader: 'file-loader',        options: &#123;          publicPath: 'imgs/',          outputPath: 'imgs/',          name: '[name].[ext]?[hash]'        &#125;      &#125;    ]  &#125;,  plugins: [    // Webpack4 需使用 MiniCssExtractPlugin 打包 CSS 成獨立的 CSS    new MiniCssExtractPlugin(&#123;      filename: \"css/main.css\"    &#125;),    // Webpack4 需使用 VueLoaderPlugin 才能正確讀取 .vue    new VueLoaderPlugin()  ]&#125;\n\nwebpack.config.js\n\n12345678910111213141516171819const merge = require('webpack-merge')const base = require('./webpack.base')// 使用 webpack-merge 將 base 和 config 結合module.exports = merge(base, &#123;  /* mode 替換掉以前的 process.env    new webpack.DefinePlugin(&#123;      'process.env': &#123;        NODE_ENV: '\"development\"'      &#125;    &#125;),  */  mode: 'development',  devServer: &#123;    historyApiFallback: true,    noInfo: false,  &#125;,  devtool: '#eval-source-map',&#125;)\n\nwebpack.pro.js\n\n123456789101112131415161718192021const merge = require('webpack-merge')const base = require('./webpack.base')const UglifyJsPlugin = require('uglifyjs-webpack-plugin')// 使用 webpack-merge 將 base 和 pro 結合module.exports = merge(base, &#123;  /* mode 替換掉以前的 process.env    new webpack.DefinePlugin(&#123;      'process.env': &#123;        NODE_ENV: '\"production\"'      &#125;    &#125;),  */  mode: 'production',  devtool: '#source-map',  // 新的 Webpack 4 把優化的部份都移到 optimization 設定  // 所以 UglifyJsPlugin 替代掉之前的 webpack.optimize.UglifyJsPlugin  optimization: &#123;    minimizer: [new UglifyJsPlugin()]  &#125;&#125;)\n今天的範例在 github，下回見～\n","dateCreated":"2019-01-01T00:00:00+08:00","dateModified":"2019-01-01T00:00:00+08:00","datePublished":"2019-01-01T00:00:00+08:00","description":"紀錄 .NET Core 升級到 2.2 和 Webpack 升到 4 要注意的地方～","headline":".NET Core Upgrade 2.2 with Webpack4 & Vue","image":["http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png","http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/","keywords":"Vue, .NET Core, dotnet, Webpack, SPA, MVC, VScode","thumbnailUrl":"http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"}</script>
+    <meta name="description" content="紀錄 .NET Core 升級到 2.2 和 Webpack 升到 4 要注意的地方～">
+<meta property="og:type" content="blog">
+<meta property="og:title" content=".NET Core Upgrade 2.2 with Webpack4 &amp; Vue">
+<meta property="og:url" content="http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="紀錄 .NET Core 升級到 2.2 和 Webpack 升到 4 要注意的地方～">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2018-12-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2018-12-31T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content=".NET Core">
+<meta property="article:tag" content="dotnet">
+<meta property="article:tag" content="Webpack">
+<meta property="article:tag" content="SPA">
+<meta property="article:tag" content="MVC">
+<meta property="article:tag" content="VScode">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"/>
+    
+    
+        <meta property="og:image" content="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            .NET Core Upgrade 2.2 with Webpack4 &amp; Vue
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-01-01T00:00:00+08:00">
+	
+		    2019 年 1 月 1 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/NET-Core/">.NET Core</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>紀錄 .NET Core 升級到 2.2 和 Webpack 升到 4 要注意的地方～</p>
+<a id="more"></a>
+<hr>
+<h2 id="NET-Core-2-2-設定"><a href="#NET-Core-2-2-設定" class="headerlink" title=".NET Core 2.2 設定"></a>.NET Core 2.2 設定</h2><h3 id="csproj-專案檔"><a href="#csproj-專案檔" class="headerlink" title="csproj 專案檔"></a>csproj 專案檔</h3><p><code>TargetFramework</code> 版本要改成 2.2, <code>PackageReference</code> 改成單一個 <code>Microsoft.AspNetCore.App</code>，就可以囉～</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span> <span class="attr">Sdk</span>=<span class="string">"Microsoft.NET.Sdk.Web"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TargetFramework</span>&gt;</span>netcoreapp2.2<span class="tag">&lt;/<span class="name">TargetFramework</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.AspNetCore.App"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Program-cs"><a href="#Program-cs" class="headerlink" title="Program.cs"></a>Program.cs</h3><p>修改 <code>Program.cs</code> 中 <code>class</code> 內的程式，參考如下程式片段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">namespace dotnet_core_vue_cli</span><br><span class="line">&#123;</span><br><span class="line">  public class Program</span><br><span class="line">  &#123;</span><br><span class="line">      public static void Main(string[] args)</span><br><span class="line">      &#123;</span><br><span class="line">        CreateWebHostBuilder(args).Build().Run();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      public static IWebHostBuilder CreateWebHostBuilder(string[] args) =&gt;</span><br><span class="line">        WebHost.CreateDefaultBuilder(args)</span><br><span class="line">          .UseStartup&lt;Startup&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="VScode-VS2017-launch-設定"><a href="#VScode-VS2017-launch-設定" class="headerlink" title="VScode / VS2017 launch 設定"></a>VScode / VS2017 launch 設定</h2><p>為了在 webpack 上可以依據環境變數判斷不同的 bundle 內容，所以分別在 VScode / VS2017 的 launch 檔案設定環境變數。</p>
+<h3 id="vscode-launch-json-for-VScode"><a href="#vscode-launch-json-for-VScode" class="headerlink" title=".vscode/launch.json (for VScode)"></a>.vscode/launch.json (for VScode)</h3><p><code>.vscode/launch.json</code> 在環境變數加上 <code>&quot;NODE_ENV=development&quot;: &quot;&quot;</code> 。這邊有個小技巧，就是 <code>=development</code> 是放在前面，而不是在後面的雙引號，這部分應該是一個小 Bug，但目前先用這個方式解決。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  "env": &#123;</span><br><span class="line">    "ASPNETCORE_ENVIRONMENT": "Development",</span><br><span class="line">    "NODE_ENV=development": ""</span><br><span class="line">  &#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="Properties-launchSettings-json-for-VS2017"><a href="#Properties-launchSettings-json-for-VS2017" class="headerlink" title="Properties/launchSettings.json (for VS2017)"></a>Properties/launchSettings.json (for VS2017)</h3><p><code>Properties/launchSettings.json</code> 則直接加上環境變數即可。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  "environmentVariables": &#123;</span><br><span class="line">    "ASPNETCORE_ENVIRONMENT": "Development",</span><br><span class="line">    "NODE_ENV": "development"</span><br><span class="line">  &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="Webpack4-設定"><a href="#Webpack4-設定" class="headerlink" title="Webpack4 設定"></a>Webpack4 設定</h2><h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h3><p>更新所有 package 並執行 npm install，參考如下設定。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"dotnet-core-vue-cli"</span>,</span><br><span class="line">  ...</span><br><span class="line">  "scripts": &#123;</span><br><span class="line">    "hmr": "cross-env ASPNETCORE_ENVIRONMENT=Development NODE_ENV=development dotnet run",</span><br><span class="line">    "build": "webpack --config webpack.pro.js"</span><br><span class="line">  &#125;,</span><br><span class="line">  "dependencies": &#123;</span><br><span class="line">    "vue": "^2.5.21"</span><br><span class="line">  &#125;,</span><br><span class="line">  ...</span><br><span class="line">  "devDependencies": &#123;</span><br><span class="line">    "@babel/core": "^7.2.2",</span><br><span class="line">    "@babel/preset-env": "^7.2.0",</span><br><span class="line">    "aspnet-webpack": "^3.0.0",</span><br><span class="line">    "babel-loader": "^8.0.4",</span><br><span class="line">    "cross-env": "^5.2.0",</span><br><span class="line">    "css-loader": "^2.1.0",</span><br><span class="line">    "cssnano": "^4.1.8",</span><br><span class="line">    "file-loader": "^3.0.1",</span><br><span class="line">    "mini-css-extract-plugin": "^0.5.0",</span><br><span class="line">    "node-sass": "^4.11.0",</span><br><span class="line">    "postcss-loader": "^3.0.0",</span><br><span class="line">    "postcss-preset-env": "^6.5.0",</span><br><span class="line">    "sass-loader": "^7.1.0",</span><br><span class="line">    "uglifyjs-webpack-plugin": "^2.1.1",</span><br><span class="line">    "vue-loader": "^15.4.2",</span><br><span class="line">    "vue-style-loader": "^4.1.2",</span><br><span class="line">    "vue-template-compiler": "^2.5.21",</span><br><span class="line">    "webpack": "^4.28.2",</span><br><span class="line">    "webpack-cli": "^3.1.2",</span><br><span class="line">    "webpack-dev-middleware": "^3.4.0",</span><br><span class="line">    "webpack-hot-middleware": "^2.24.3",</span><br><span class="line">    "webpack-merge": "^4.1.5"</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="babelrc"><a href="#babelrc" class="headerlink" title=".babelrc"></a>.babelrc</h3><p>因為升到 <code>babel</code> 7 之後套件會整個改成 <code>@</code> 開頭的，所以舊的同名 package 就可以刪掉了。所以 <code>babelrc</code> 設定檔也要改成如下片段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;presets&quot;: [</span><br><span class="line">    [</span><br><span class="line">      &quot;@babel/preset-env&quot;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;modules&quot;: false</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="postcss-config-js"><a href="#postcss-config-js" class="headerlink" title="postcss.config.js"></a>postcss.config.js</h3><p>升級 <code>Vue-loader</code> 相容 <code>Webpack</code> 4 後就不會有自動 <code>autoprefixer</code> 的功能，需要自行引入 <code>postCSS</code> 來做這件事情。所以 <code>postcss.config.js</code> 設定檔要新增如下片段。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  plugins: &#123;</span><br><span class="line">    <span class="string">'postcss-preset-env'</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">'cssnano'</span>: &#123;&#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="webpack-base-config-pro-js"><a href="#webpack-base-config-pro-js" class="headerlink" title="webpack.base|config|pro.js"></a>webpack.base|config|pro.js</h3><blockquote>
+<p>這邊升級後沒有用最新 <code>vue-cli</code> 3 的原因是因為 <code>aspnet-webpack</code> HMR 預設吃的 <code>webpack</code> 設定是最外層的 <code>webpack.config.js</code>，但最新 <code>Vue-cli</code> 3 已經把 <code>webpack.config.js</code> 藏起來了，改成 <code>vue.config.js</code> 做後續加工處理，且我們不使用 <code>node server</code> ，而是用 <code>dotnet server</code> 做 <code>HMR</code>，所以其實已經不需要 <code>vue-cli</code> 3 了。</p>
+</blockquote>
+<p>因為我們需要分成 <code>develop</code> 和 <code>production</code> 的 <code>webpack</code> 設定，所以就可以把 <code>webpack</code> 的結構拆成一個共用的基底 <code>webpack.base.js</code>，然後 <code>develop</code> 就透過 <code>webpack-merge</code> 將 <code>base</code> 結合 <code>webpack.config.js</code>，而 <code>production</code> 則是將 <code>base</code> 結合 <code>webpack.pro.js</code>。</p>
+<p>以下擷取部分比較重要的地方跟大家分享。</p>
+<ul>
+<li>webpack.base.js</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line"><span class="keyword">const</span> MiniCssExtractPlugin = <span class="built_in">require</span>(<span class="string">"mini-css-extract-plugin"</span>)</span><br><span class="line"><span class="keyword">const</span> VueLoaderPlugin = <span class="built_in">require</span>(<span class="string">'vue-loader/lib/plugin'</span>)</span><br><span class="line"><span class="keyword">const</span> devMode = process.env.NODE_ENV === <span class="string">'development'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123; <span class="comment">// vue-loader 已經沒有預設 autoprefixer，所以 CSS 的部分要加上 postCSS</span></span><br><span class="line">        test: <span class="regexp">/\.vue$/</span>,</span><br><span class="line">        use: <span class="string">'vue-loader'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        use: <span class="string">'babel-loader'</span>,</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123; <span class="comment">// MiniCssExtractPlugin 目前在 HMR 模式沒辦法打包成獨立的 CSS 檔案，所以在開發模式的時候，必須使用 vue-style-loader 替代，變成 meta 內的 style。</span></span><br><span class="line">        test: <span class="regexp">/\.scss?$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          devMode ? <span class="string">'vue-style-loader'</span> : MiniCssExtractPlugin.loader,</span><br><span class="line">          &#123;</span><br><span class="line">            loader: <span class="string">'css-loader'</span>,</span><br><span class="line">            options: &#123;</span><br><span class="line">              importLoaders: <span class="number">2</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="string">'postcss-loader'</span>, <span class="comment">// for autoprefix</span></span><br><span class="line">          <span class="string">'sass-loader'</span></span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.(png|jpg|gif|svg)$/</span>,</span><br><span class="line">        loader: <span class="string">'file-loader'</span>,</span><br><span class="line">        options: &#123;</span><br><span class="line">          publicPath: <span class="string">'imgs/'</span>,</span><br><span class="line">          outputPath: <span class="string">'imgs/'</span>,</span><br><span class="line">          name: <span class="string">'[name].[ext]?[hash]'</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="comment">// Webpack4 需使用 MiniCssExtractPlugin 打包 CSS 成獨立的 CSS</span></span><br><span class="line">    <span class="keyword">new</span> MiniCssExtractPlugin(&#123;</span><br><span class="line">      filename: <span class="string">"css/main.css"</span></span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// Webpack4 需使用 VueLoaderPlugin 才能正確讀取 .vue</span></span><br><span class="line">    <span class="keyword">new</span> VueLoaderPlugin()</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>webpack.config.js</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> merge = <span class="built_in">require</span>(<span class="string">'webpack-merge'</span>)</span><br><span class="line"><span class="keyword">const</span> base = <span class="built_in">require</span>(<span class="string">'./webpack.base'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 webpack-merge 將 base 和 config 結合</span></span><br><span class="line"><span class="built_in">module</span>.exports = merge(base, &#123;</span><br><span class="line">  <span class="comment">/* mode 替換掉以前的 process.env</span></span><br><span class="line"><span class="comment">    new webpack.DefinePlugin(&#123;</span></span><br><span class="line"><span class="comment">      'process.env': &#123;</span></span><br><span class="line"><span class="comment">        NODE_ENV: '"development"'</span></span><br><span class="line"><span class="comment">      &#125;</span></span><br><span class="line"><span class="comment">    &#125;),</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  mode: <span class="string">'development'</span>,</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    historyApiFallback: <span class="literal">true</span>,</span><br><span class="line">    noInfo: <span class="literal">false</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  devtool: <span class="string">'#eval-source-map'</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>webpack.pro.js</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> merge = <span class="built_in">require</span>(<span class="string">'webpack-merge'</span>)</span><br><span class="line"><span class="keyword">const</span> base = <span class="built_in">require</span>(<span class="string">'./webpack.base'</span>)</span><br><span class="line"><span class="keyword">const</span> UglifyJsPlugin = <span class="built_in">require</span>(<span class="string">'uglifyjs-webpack-plugin'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 webpack-merge 將 base 和 pro 結合</span></span><br><span class="line"><span class="built_in">module</span>.exports = merge(base, &#123;</span><br><span class="line">  <span class="comment">/* mode 替換掉以前的 process.env</span></span><br><span class="line"><span class="comment">    new webpack.DefinePlugin(&#123;</span></span><br><span class="line"><span class="comment">      'process.env': &#123;</span></span><br><span class="line"><span class="comment">        NODE_ENV: '"production"'</span></span><br><span class="line"><span class="comment">      &#125;</span></span><br><span class="line"><span class="comment">    &#125;),</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  mode: <span class="string">'production'</span>,</span><br><span class="line">  devtool: <span class="string">'#source-map'</span>,</span><br><span class="line">  <span class="comment">// 新的 Webpack 4 把優化的部份都移到 optimization 設定</span></span><br><span class="line">  <span class="comment">// 所以 UglifyJsPlugin 替代掉之前的 webpack.optimize.UglifyJsPlugin</span></span><br><span class="line">  optimization: &#123;</span><br><span class="line">    minimizer: [<span class="keyword">new</span> UglifyJsPlugin()]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>今天的範例在 <a href="https://github.com/Annilla/dotnet-core-vue-cli/tree/v2.2.0" target="_blank" rel="noopener">github</a>，下回見～</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-Core/" rel="tag">.NET Core</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/MVC/" rel="tag">MVC</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/SPA/" rel="tag">SPA</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/VScode/" rel="tag">VScode</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Vue/" rel="tag">Vue</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Webpack/" rel="tag">Webpack</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/dotnet/" rel="tag">dotnet</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/02/09/UXUI/Google-Material-Design-Introduction/"
+                    data-tooltip="Google Material Design - Introduction"
+                    aria-label="上一篇: Google Material Design - Introduction"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/"
+                    data-tooltip="Adobe XD New Feature - Auto-Animate"
+                    aria-label="下一篇: Adobe XD New Feature - Auto-Animate"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/02/09/UXUI/Google-Material-Design-Introduction/"
+                    data-tooltip="Google Material Design - Introduction"
+                    aria-label="上一篇: Google Material Design - Introduction"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/12/02/UXUI/Adobe-XD-New-Feature-Auto-Animate/"
+                    data-tooltip="Adobe XD New Feature - Auto-Animate"
+                    aria-label="下一篇: Adobe XD New Feature - Auto-Animate"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/';
+              
+            this.page.identifier = '2019/01/01/Dotnet/NET-Core-Upgrade-2-2-with-Webpack4-Vue/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

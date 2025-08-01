@@ -1,0 +1,1057 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>D3 v4 with Vue - CANVAS Line Chart - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"前幾篇介紹完 SVG 的基本繪圖方式後，我們要來練習使用 CANVAS 來做一樣的折線圖，並在下一篇比較兩者的優缺點。\n\n\n準備隨機資料 &amp; CANVAS 畫布這邊的 Canvas 畫布因為需要動態計算寬高，所以會利用 js 動態插入 html 中。當視窗進行 resize 時，也是透過 js 清除畫布重新繪製。\n\nHTML\n\n12345678910&lt;!-- chartContain 主要就是 js 做判別插入 canvas 的定位點 --&gt;&lt;div class=\"chartContain\"&gt;  &lt;!-- calPath 是將 D3 動態算出來的值做暫時存放的位置 --&gt;  &lt;svg version=\"1.1\" id=\"calPath\"&gt;&lt;path d=\"\"&gt;&lt;/path&gt;&lt;/svg&gt;  &lt;!-- tooltip 和往常一樣是做滑過顯示資訊的功能 --&gt;  &lt;div :class=\"&#123; tooltip: true, hidden: hideTooltip&#125;\"&gt;    &lt;div class=\"name\"&gt;左營區 / 10月&lt;/div&gt;    &lt;div class=\"value\"&gt;214 件&lt;/div&gt;  &lt;/div&gt;&lt;/div&gt;\n在 randomData 完後，插入動態計算的 Canvas 畫布。\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556mounted() &#123;  // 隨機產生資料  this.randomData();&#125;,methods: &#123;  randomData() &#123; // 隨機產生資料    let min = 0;    let max = 500;    let random = [...];    // 隨機產生資料    for (let i = 0; i &lt; 3; i++) &#123;      random[i].value.forEach(e =&gt; &#123;        e.number = Math.floor(Math.random() * (max - min + 1)) + min;      &#125;);    &#125;    this.data = random;    // Init Canvas    this.initCanvas();    // Window Resize    window.addEventListener(\"resize\", this.initCanvas);  &#125;,  initCanvas() &#123; // 插入動態計算的 Canvas 區塊    let chartContain = document.querySelector(\".chartContain\");    let canvas = document.getElementById(\"canvas\");    // Clear Canvas Element    if (canvas !== null) &#123;      canvas.parentNode.removeChild(canvas);    &#125;    // Get Container Width    this.conWidth = chartContain.offsetWidth;    // For D3 Draw Canvas    this.canvas = d3      .select(\".chartContain\")      .append(\"canvas\")      .attr(\"id\", \"canvas\")      .attr(\"class\", \"chart\")      .attr(\"width\", this.conWidth)      .attr(\"height\", this.conHeight);    this.ctx = this.canvas.node().getContext(\"2d\");    // Set the parent of all other elements    this.customBase = document.createElement(\"custom\");    this.custom = d3.select(this.customBase);    // Draw Canvas    this.drawCanvas();  &#125;,&#125;\n1234567891011121314151617.lineChart &#123;  /* 說明 */  .detail &#123;    color: gray;  &#125;  .chartContain &#123; /* 放置主要畫布的容器 */    max-width: 600px;    margin: 0 auto;    position: relative;    #calPath &#123;      display: none; /* 隱藏暫時計算的 path 元件 */    &#125;    .tooltip &#123;      ...    &#125;  &#125;&#125;\n\n繪製折線圖因為這邊要仿造 SVG 進行動畫，所以會用 d3.timer 的方式，隨著計時器每次清掉畫布再進行重新繪製的動作，所以整體畫面全靠 js 繪製，而不是 html 或 css。\nmousemove 的部分是當滑鼠滑過特定的點時，需要判別是否有經過繪製的折點，顯示相對的 tooltip 資訊。\n123456789101112131415drawCanvas() &#123;  let canvas = document.querySelector(\"#canvas\");  /*-------------------------    動畫  -------------------------*/  this.timer = d3.timer(elapsed =&gt; &#123;    this.animationLine(elapsed);  &#125;);  // Canvas On Mouseover  canvas.addEventListener(\"mousemove\", e =&gt; &#123;    this.showTooltip(e);  &#125;);&#125;,\n\n折線圖動畫\n注意！這邊不使用 requestAnimationFrame() 的原因是不同瀏覽器要加相對應的前綴詞，且 mobile 支持度低，可參考線上 MDN 說明。\n\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354animationLine(elapsed) &#123;  let duration = 500;  let t = Math.min(1, elapsed / duration); // compute how far through the animation we are (0 to 1)  // Clear Canvas  this.ctx.clearRect(0, 0, this.conWidth, this.conHeight);  // 繪製不須動畫的元素  this.drawStatic();  /*-------------------------    折線  -------------------------*/  this.ctx.save();  this.lines.forEach((e, i) =&gt; &#123;    let path = document.querySelector(\"#calPath path\");    let totalLength; // Path Length    path.setAttribute(\"d\", e.d); // 這邊將 D3 算好的折點佔存在 #calPath path 上    totalLength = path.getTotalLength();    this.ctx.setLineDash([totalLength]);    this.ctx.lineDashOffset = totalLength * (1 - t);    this.ctx.beginPath(); // 開始繪製    this.lineCanvas(this.dataArray[i]);    this.ctx.strokeStyle = e.color; // 線顏色    this.ctx.stroke(); // 繪製線  &#125;);  /*-------------------------    折點  -------------------------*/  this.dots.forEach((e, i) =&gt; &#123;    // 開始繪製    this.ctx.beginPath();    // 繪製點    this.ctx.arc(e.cx, e.cy, e.r * t, 0, 2 * Math.PI);    // 填色    this.ctx.fillStyle = e.color;    this.ctx.fill();    // 邊框色    this.ctx.strokeStyle = \"#fff\";    this.ctx.stroke();    // 結束繪製    this.ctx.closePath();  &#125;);  this.ctx.restore();  // if this animation is over  if (t === 1) &#123;    // stop this timer since we are done animating.    this.timer.stop();  &#125;&#125;,\n\n繪製的前後順序會影響繪製出來的圖層疊加效果，越後面繪製出來的元素會蓋在舊的元素上方。所以不需動畫的元素(ex: X軸、Y軸、標籤…)才特別拉出來寫成一個 function 放在繪製動畫之前。\n\n\n不需動畫的元素123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139drawStatic() &#123; // 繪製不須動畫的元素  let tickSize = 6; // 軸點大小  /*-------------------------    X軸  -------------------------*/  // 繪製X軸點  this.ctx.beginPath();  this.data[0].value.forEach((d, i) =&gt; &#123;    this.ctx.moveTo(      this.xScale(i + 1) + this.chartLeft,      this.chartTop + this.chartHeight    );    this.ctx.lineTo(      this.xScale(i + 1) + this.chartLeft,      this.chartTop + this.chartHeight + tickSize    );  &#125;);  this.ctx.stroke();  // 繪製X軸線  this.ctx.beginPath();  this.ctx.moveTo(this.chartLeft, this.chartTop + this.chartHeight);  this.ctx.lineTo(    this.chartLeft + this.chartWidth,    this.chartTop + this.chartHeight  );  this.ctx.stroke();  // 繪製X軸文字  this.ctx.textAlign = \"center\";  this.ctx.textBaseline = \"top\";  this.data[0].value.forEach((d, i) =&gt; &#123;    this.ctx.fillText(      d.month,      this.xScale(i + 1) + this.chartLeft,      this.chartTop + this.chartHeight + tickSize    );  &#125;);  // 繪製X軸標籤  this.data.forEach((el, index) =&gt; &#123;    // 圓點    // 開始繪製    this.ctx.save();    this.ctx.beginPath();    // 繪製點    this.ctx.arc(      this.chartLeft + index * 100,      this.chartTop + this.chartHeight + 50,      5,      0,      2 * Math.PI    );    // 填色    this.ctx.fillStyle = this.color(index);    this.ctx.fill();    // 結束繪製    this.ctx.closePath();    // 文字    this.ctx.textAlign = \"left\";    this.ctx.textBaseline = \"middle\";    this.ctx.font = \"16px sans-serif\";    this.ctx.fillStyle = \"#000\";    this.ctx.fillText(      el.name,      this.chartLeft + index * 100 + 10,      this.chartTop + this.chartHeight + 50    );    this.ctx.restore();  &#125;);  /*-------------------------    Y軸  -------------------------*/  // Y軸節點  this.yTick = this.custom    .append(\"g\")    .attr(\"class\", \"axis axisY\")    .call(this.yAxis)    .selectAll(\"g.tick\");    // 繪製Y軸點  this.ctx.beginPath();  // 中間內部灰線  this.yTick.each((el, index, arr) =&gt; &#123;    let node = d3.select(arr[index]);    let yTrans = node.attr(\"transform\");    let yPos = Number(yTrans.split(\",\")[1].split(\")\")[0]) + this.chartTop;    // 跳過 0 的軸點    if (index === 0) return;    // 繪製軸點    this.ctx.moveTo(this.chartLeft, yPos);    this.ctx.lineTo(this.chartLeft + this.chartWidth, yPos);  &#125;);  this.ctx.strokeStyle = \"#e6e6e6\"; // 線顏色  this.ctx.stroke();  // 最上方的刻點  this.ctx.beginPath();  this.ctx.moveTo(this.chartLeft - tickSize, this.chartTop);  this.ctx.lineTo(this.chartLeft, this.chartTop);  this.ctx.strokeStyle = \"#000\"; // 線顏色  this.ctx.stroke();  // 繪製Y軸線  this.ctx.beginPath();  this.ctx.moveTo(this.chartLeft, this.chartTop);  this.ctx.lineTo(this.chartLeft, this.chartTop + this.chartHeight);  this.ctx.stroke();  // 繪製Y軸文字  this.ctx.textAlign = \"right\";  this.ctx.textBaseline = \"middle\";  this.yTick.each((el, index, arr) =&gt; &#123;    let node = d3.select(arr[index]);    let yTrans = node.attr(\"transform\");    let yPos = Number(yTrans.split(\",\")[1].split(\")\")[0]) + this.chartTop;    this.ctx.fillText(      node.property(\"innerText\"),      this.chartLeft - tickSize,      yPos    );  &#125;);  // 繪製Y軸標籤  // start by saving the current context (current orientation, origin)  this.ctx.save();  this.ctx.translate(0, 0);  this.ctx.rotate(-Math.PI / 2);  this.ctx.textAlign = \"center\";  this.ctx.textBaseline = \"top\";  this.ctx.font = \"16px sans-serif\";  this.ctx.fillText(\"件數\", -(this.chartTop + this.chartHeight / 2), 0);  this.ctx.restore(); // now restore the canvas flipping it back to its original orientation&#125;,\n其他部分跟 SVG 的做法很類似，主要觀念就是要把 html, css rendor 的部分全部移交給 js 做，線上 demo 在此，也可以在 Github查看完整程式碼，下一篇我們就要來分析 SVG 和 Canvas 的差異和各自的優勢。\n","dateCreated":"2018-06-16T00:00:00+08:00","dateModified":"2018-06-16T00:00:00+08:00","datePublished":"2018-06-16T00:00:00+08:00","description":"前幾篇介紹完 SVG 的基本繪圖方式後，我們要來練習使用 CANVAS 來做一樣的折線圖，並在下一篇比較兩者的優缺點。","headline":"D3 v4 with Vue - CANVAS Line Chart","image":["https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no","https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/","keywords":"D3, Vue, CANVAS","thumbnailUrl":"https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"}</script>
+    <meta name="description" content="前幾篇介紹完 SVG 的基本繪圖方式後，我們要來練習使用 CANVAS 來做一樣的折線圖，並在下一篇比較兩者的優缺點。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="D3 v4 with Vue - CANVAS Line Chart">
+<meta property="og:url" content="http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="前幾篇介紹完 SVG 的基本繪圖方式後，我們要來練習使用 CANVAS 來做一樣的折線圖，並在下一篇比較兩者的優缺點。">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2018-06-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2018-06-15T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="D3">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="CANVAS">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://lh3.googleusercontent.com/-eOwVjzN6KMfzEVll-unJCaKBes1MALCdB9jxG6e8lvWovjeLtdbf2NQoH0DKAM9SS12sUeOnOlQ5Q8hTMAexo9N5jIS4P2S16RDrrY9WQziVA8E-0cPxcpldO6YgU2MKg64Tn2pXchVxryU_w1QjaYaUk4P17cRXHc4XfQEp4LViItsu2Ze2Uy5llcYhUtubWfmMpAC0FN54OWYb1sY-jgQ_ps2V8GXKPmrjCXFFX_zXLEHVuyZznY4vXYyLXOVkydprDNQojOcUyok6nG-4DAgA35W3v9BazdoiW1iNU97FJwr9mBvuvUAmS-2U0lPBa34-B-Lx-5736rwQXfqOY6gQIBeusZHjFgQR_3ByxJz5KuLLOVsA0uauyYxS2jIBMFFP_d6xve19P0dNAVP5tC7Zj8S0g43Rbl9S9h8eXyjaxUVeYAG1mZibk6GEkqrawGDOXWTITTjkRS2Buhl6YNcuSxezcm_IR4NZCcsgXE3VtEeYhGpIaoaS-cMemaqEKi8F7SYtKZQvH_SM6SYakk6J0aqik0gNRTyxA0nvDlVp2ohNsMdRWFqhRJ5RfgOVfGIFkohL2DnhgHRntAGKHqqnas1uKk8tS040VoxZuYvVp24N0N9OfwnYmmMQYHh_COOdYkItMsHzhAX53dpqgyGbeyq5zL3=w1024-h551-no');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            D3 v4 with Vue - CANVAS Line Chart
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-06-16T00:00:00+08:00">
+	
+		    2018 年 6 月 16 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/D3/">D3</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>前幾篇介紹完 <code>SVG</code> 的基本繪圖方式後，我們要來練習使用 <code>CANVAS</code> 來做一樣的折線圖，並在下一篇比較兩者的優缺點。</p>
+<a id="more"></a>
+<hr>
+<h2 id="準備隨機資料-amp-CANVAS-畫布"><a href="#準備隨機資料-amp-CANVAS-畫布" class="headerlink" title="準備隨機資料 &amp; CANVAS 畫布"></a>準備隨機資料 &amp; <code>CANVAS</code> 畫布</h2><p>這邊的 <code>Canvas</code> 畫布因為需要動態計算寬高，所以會利用 <code>js</code> 動態插入 <code>html</code> 中。當視窗進行 <code>resize</code> 時，也是透過 <code>js</code> 清除畫布重新繪製。</p>
+<ul>
+<li>HTML</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- chartContain 主要就是 js 做判別插入 canvas 的定位點 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"chartContain"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- calPath 是將 D3 動態算出來的值做暫時存放的位置 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">svg</span> <span class="attr">version</span>=<span class="string">"1.1"</span> <span class="attr">id</span>=<span class="string">"calPath"</span>&gt;</span><span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">path</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- tooltip 和往常一樣是做滑過顯示資訊的功能 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">:class</span>=<span class="string">"&#123; tooltip: true, hidden: hideTooltip&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"name"</span>&gt;</span>左營區 / 10月<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"value"</span>&gt;</span>214 件<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在 randomData 完後，插入動態計算的 <code>Canvas</code> 畫布。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">mounted() &#123;</span><br><span class="line">  <span class="comment">// 隨機產生資料</span></span><br><span class="line">  <span class="keyword">this</span>.randomData();</span><br><span class="line">&#125;,</span><br><span class="line">methods: &#123;</span><br><span class="line">  randomData() &#123; <span class="comment">// 隨機產生資料</span></span><br><span class="line">    <span class="keyword">let</span> min = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> max = <span class="number">500</span>;</span><br><span class="line">    <span class="keyword">let</span> random = [...];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 隨機產生資料</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">      random[i].value.forEach(<span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">        e.number = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min + <span class="number">1</span>)) + min;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.data = random;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Init Canvas</span></span><br><span class="line">    <span class="keyword">this</span>.initCanvas();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Window Resize</span></span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">"resize"</span>, <span class="keyword">this</span>.initCanvas);</span><br><span class="line">  &#125;,</span><br><span class="line">  initCanvas() &#123; <span class="comment">// 插入動態計算的 Canvas 區塊</span></span><br><span class="line">    <span class="keyword">let</span> chartContain = <span class="built_in">document</span>.querySelector(<span class="string">".chartContain"</span>);</span><br><span class="line">    <span class="keyword">let</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">"canvas"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Clear Canvas Element</span></span><br><span class="line">    <span class="keyword">if</span> (canvas !== <span class="literal">null</span>) &#123;</span><br><span class="line">      canvas.parentNode.removeChild(canvas);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get Container Width</span></span><br><span class="line">    <span class="keyword">this</span>.conWidth = chartContain.offsetWidth;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// For D3 Draw Canvas</span></span><br><span class="line">    <span class="keyword">this</span>.canvas = d3</span><br><span class="line">      .select(<span class="string">".chartContain"</span>)</span><br><span class="line">      .append(<span class="string">"canvas"</span>)</span><br><span class="line">      .attr(<span class="string">"id"</span>, <span class="string">"canvas"</span>)</span><br><span class="line">      .attr(<span class="string">"class"</span>, <span class="string">"chart"</span>)</span><br><span class="line">      .attr(<span class="string">"width"</span>, <span class="keyword">this</span>.conWidth)</span><br><span class="line">      .attr(<span class="string">"height"</span>, <span class="keyword">this</span>.conHeight);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.ctx = <span class="keyword">this</span>.canvas.node().getContext(<span class="string">"2d"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Set the parent of all other elements</span></span><br><span class="line">    <span class="keyword">this</span>.customBase = <span class="built_in">document</span>.createElement(<span class="string">"custom"</span>);</span><br><span class="line">    <span class="keyword">this</span>.custom = d3.select(<span class="keyword">this</span>.customBase);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Draw Canvas</span></span><br><span class="line">    <span class="keyword">this</span>.drawCanvas();</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.lineChart</span> &#123;</span><br><span class="line">  <span class="comment">/* 說明 */</span></span><br><span class="line">  .detail &#123;</span><br><span class="line">    <span class="selector-tag">color</span>: <span class="selector-tag">gray</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.chartContain</span> &#123; <span class="comment">/* 放置主要畫布的容器 */</span></span><br><span class="line">    <span class="attribute">max-width</span>: <span class="number">600px</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span> auto;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    #calPath &#123;</span><br><span class="line">      <span class="selector-tag">display</span>: <span class="selector-tag">none</span>; <span class="comment">/* 隱藏暫時計算的 path 元件 */</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-class">.tooltip</span> &#123;</span><br><span class="line">      ...</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="繪製折線圖"><a href="#繪製折線圖" class="headerlink" title="繪製折線圖"></a>繪製折線圖</h2><p>因為這邊要仿造 <code>SVG</code> 進行動畫，所以會用 <code>d3.timer</code> 的方式，隨著計時器每次清掉畫布再進行重新繪製的動作，所以整體畫面全靠 <code>js</code> 繪製，而不是 <code>html</code> 或 <code>css</code>。</p>
+<p><code>mousemove</code> 的部分是當滑鼠滑過特定的點時，需要判別是否有經過繪製的折點，顯示相對的 <code>tooltip</code> 資訊。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">drawCanvas() &#123;</span><br><span class="line">  <span class="keyword">let</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">"#canvas"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    動畫</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="keyword">this</span>.timer = d3.timer(<span class="function"><span class="params">elapsed</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.animationLine(elapsed);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Canvas On Mouseover</span></span><br><span class="line">  canvas.addEventListener(<span class="string">"mousemove"</span>, e =&gt; &#123;</span><br><span class="line">    <span class="keyword">this</span>.showTooltip(e);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="折線圖動畫"><a href="#折線圖動畫" class="headerlink" title="折線圖動畫"></a>折線圖動畫</h2><blockquote>
+<p>注意！這邊不使用 <code>requestAnimationFrame()</code> 的原因是不同瀏覽器要加相對應的前綴詞，且 <code>mobile</code> 支持度低，可參考線上 <a href="https://developer.mozilla.org/zh-TW/docs/Web/API/Window.requestAnimationFrame" target="_blank" rel="noopener">MDN</a> 說明。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">animationLine(elapsed) &#123;</span><br><span class="line">  <span class="keyword">let</span> duration = <span class="number">500</span>;</span><br><span class="line">  <span class="keyword">let</span> t = <span class="built_in">Math</span>.min(<span class="number">1</span>, elapsed / duration); <span class="comment">// compute how far through the animation we are (0 to 1)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Clear Canvas</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.clearRect(<span class="number">0</span>, <span class="number">0</span>, <span class="keyword">this</span>.conWidth, <span class="keyword">this</span>.conHeight);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製不須動畫的元素</span></span><br><span class="line">  <span class="keyword">this</span>.drawStatic();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    折線</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.save();</span><br><span class="line">  <span class="keyword">this</span>.lines.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> path = <span class="built_in">document</span>.querySelector(<span class="string">"#calPath path"</span>);</span><br><span class="line">    <span class="keyword">let</span> totalLength; <span class="comment">// Path Length</span></span><br><span class="line"></span><br><span class="line">    path.setAttribute(<span class="string">"d"</span>, e.d); <span class="comment">// 這邊將 D3 算好的折點佔存在 #calPath path 上</span></span><br><span class="line">    totalLength = path.getTotalLength();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.ctx.setLineDash([totalLength]);</span><br><span class="line">    <span class="keyword">this</span>.ctx.lineDashOffset = totalLength * (<span class="number">1</span> - t);</span><br><span class="line">    <span class="keyword">this</span>.ctx.beginPath(); <span class="comment">// 開始繪製</span></span><br><span class="line">    <span class="keyword">this</span>.lineCanvas(<span class="keyword">this</span>.dataArray[i]);</span><br><span class="line">    <span class="keyword">this</span>.ctx.strokeStyle = e.color; <span class="comment">// 線顏色</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.stroke(); <span class="comment">// 繪製線</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    折點</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="keyword">this</span>.dots.forEach(<span class="function">(<span class="params">e, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 開始繪製</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">    <span class="comment">// 繪製點</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.arc(e.cx, e.cy, e.r * t, <span class="number">0</span>, <span class="number">2</span> * <span class="built_in">Math</span>.PI);</span><br><span class="line">    <span class="comment">// 填色</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.fillStyle = e.color;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fill();</span><br><span class="line">    <span class="comment">// 邊框色</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.strokeStyle = <span class="string">"#fff"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line">    <span class="comment">// 結束繪製</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.closePath();</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">this</span>.ctx.restore();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// if this animation is over</span></span><br><span class="line">  <span class="keyword">if</span> (t === <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="comment">// stop this timer since we are done animating.</span></span><br><span class="line">    <span class="keyword">this</span>.timer.stop();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>繪製的前後順序會影響繪製出來的圖層疊加效果，越後面繪製出來的元素會蓋在舊的元素上方。所以不需動畫的元素(ex: X軸、Y軸、標籤…)才特別拉出來寫成一個 function 放在繪製動畫之前。</p>
+</blockquote>
+<hr>
+<h2 id="不需動畫的元素"><a href="#不需動畫的元素" class="headerlink" title="不需動畫的元素"></a>不需動畫的元素</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">drawStatic() &#123; <span class="comment">// 繪製不須動畫的元素</span></span><br><span class="line">  <span class="keyword">let</span> tickSize = <span class="number">6</span>; <span class="comment">// 軸點大小</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    X軸</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="comment">// 繪製X軸點</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">  <span class="keyword">this</span>.data[<span class="number">0</span>].value.forEach(<span class="function">(<span class="params">d, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.ctx.moveTo(</span><br><span class="line">      <span class="keyword">this</span>.xScale(i + <span class="number">1</span>) + <span class="keyword">this</span>.chartLeft,</span><br><span class="line">      <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">this</span>.ctx.lineTo(</span><br><span class="line">      <span class="keyword">this</span>.xScale(i + <span class="number">1</span>) + <span class="keyword">this</span>.chartLeft,</span><br><span class="line">      <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight + tickSize</span><br><span class="line">    );</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製X軸線</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">  <span class="keyword">this</span>.ctx.moveTo(<span class="keyword">this</span>.chartLeft, <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight);</span><br><span class="line">  <span class="keyword">this</span>.ctx.lineTo(</span><br><span class="line">    <span class="keyword">this</span>.chartLeft + <span class="keyword">this</span>.chartWidth,</span><br><span class="line">    <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製X軸文字</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.textAlign = <span class="string">"center"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.textBaseline = <span class="string">"top"</span>;</span><br><span class="line">  <span class="keyword">this</span>.data[<span class="number">0</span>].value.forEach(<span class="function">(<span class="params">d, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fillText(</span><br><span class="line">      d.month,</span><br><span class="line">      <span class="keyword">this</span>.xScale(i + <span class="number">1</span>) + <span class="keyword">this</span>.chartLeft,</span><br><span class="line">      <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight + tickSize</span><br><span class="line">    );</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製X軸標籤</span></span><br><span class="line">  <span class="keyword">this</span>.data.forEach(<span class="function">(<span class="params">el, index</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 圓點</span></span><br><span class="line">    <span class="comment">// 開始繪製</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.save();</span><br><span class="line">    <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">    <span class="comment">// 繪製點</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.arc(</span><br><span class="line">      <span class="keyword">this</span>.chartLeft + index * <span class="number">100</span>,</span><br><span class="line">      <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight + <span class="number">50</span>,</span><br><span class="line">      <span class="number">5</span>,</span><br><span class="line">      <span class="number">0</span>,</span><br><span class="line">      <span class="number">2</span> * <span class="built_in">Math</span>.PI</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// 填色</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.fillStyle = <span class="keyword">this</span>.color(index);</span><br><span class="line">    <span class="keyword">this</span>.ctx.fill();</span><br><span class="line">    <span class="comment">// 結束繪製</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.closePath();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 文字</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.textAlign = <span class="string">"left"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.textBaseline = <span class="string">"middle"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.font = <span class="string">"16px sans-serif"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fillStyle = <span class="string">"#000"</span>;</span><br><span class="line">    <span class="keyword">this</span>.ctx.fillText(</span><br><span class="line">      el.name,</span><br><span class="line">      <span class="keyword">this</span>.chartLeft + index * <span class="number">100</span> + <span class="number">10</span>,</span><br><span class="line">      <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight + <span class="number">50</span></span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">this</span>.ctx.restore();</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*-------------------------</span></span><br><span class="line"><span class="comment">    Y軸</span></span><br><span class="line"><span class="comment">  -------------------------*/</span></span><br><span class="line">  <span class="comment">// Y軸節點</span></span><br><span class="line">  <span class="keyword">this</span>.yTick = <span class="keyword">this</span>.custom</span><br><span class="line">    .append(<span class="string">"g"</span>)</span><br><span class="line">    .attr(<span class="string">"class"</span>, <span class="string">"axis axisY"</span>)</span><br><span class="line">    .call(<span class="keyword">this</span>.yAxis)</span><br><span class="line">    .selectAll(<span class="string">"g.tick"</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 繪製Y軸點</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">  <span class="comment">// 中間內部灰線</span></span><br><span class="line">  <span class="keyword">this</span>.yTick.each(<span class="function">(<span class="params">el, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> node = d3.select(arr[index]);</span><br><span class="line">    <span class="keyword">let</span> yTrans = node.attr(<span class="string">"transform"</span>);</span><br><span class="line">    <span class="keyword">let</span> yPos = <span class="built_in">Number</span>(yTrans.split(<span class="string">","</span>)[<span class="number">1</span>].split(<span class="string">")"</span>)[<span class="number">0</span>]) + <span class="keyword">this</span>.chartTop;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 跳過 0 的軸點</span></span><br><span class="line">    <span class="keyword">if</span> (index === <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 繪製軸點</span></span><br><span class="line">    <span class="keyword">this</span>.ctx.moveTo(<span class="keyword">this</span>.chartLeft, yPos);</span><br><span class="line">    <span class="keyword">this</span>.ctx.lineTo(<span class="keyword">this</span>.chartLeft + <span class="keyword">this</span>.chartWidth, yPos);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">this</span>.ctx.strokeStyle = <span class="string">"#e6e6e6"</span>; <span class="comment">// 線顏色</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line">  <span class="comment">// 最上方的刻點</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">  <span class="keyword">this</span>.ctx.moveTo(<span class="keyword">this</span>.chartLeft - tickSize, <span class="keyword">this</span>.chartTop);</span><br><span class="line">  <span class="keyword">this</span>.ctx.lineTo(<span class="keyword">this</span>.chartLeft, <span class="keyword">this</span>.chartTop);</span><br><span class="line">  <span class="keyword">this</span>.ctx.strokeStyle = <span class="string">"#000"</span>; <span class="comment">// 線顏色</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製Y軸線</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.beginPath();</span><br><span class="line">  <span class="keyword">this</span>.ctx.moveTo(<span class="keyword">this</span>.chartLeft, <span class="keyword">this</span>.chartTop);</span><br><span class="line">  <span class="keyword">this</span>.ctx.lineTo(<span class="keyword">this</span>.chartLeft, <span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight);</span><br><span class="line">  <span class="keyword">this</span>.ctx.stroke();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製Y軸文字</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.textAlign = <span class="string">"right"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.textBaseline = <span class="string">"middle"</span>;</span><br><span class="line">  <span class="keyword">this</span>.yTick.each(<span class="function">(<span class="params">el, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> node = d3.select(arr[index]);</span><br><span class="line">    <span class="keyword">let</span> yTrans = node.attr(<span class="string">"transform"</span>);</span><br><span class="line">    <span class="keyword">let</span> yPos = <span class="built_in">Number</span>(yTrans.split(<span class="string">","</span>)[<span class="number">1</span>].split(<span class="string">")"</span>)[<span class="number">0</span>]) + <span class="keyword">this</span>.chartTop;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.ctx.fillText(</span><br><span class="line">      node.property(<span class="string">"innerText"</span>),</span><br><span class="line">      <span class="keyword">this</span>.chartLeft - tickSize,</span><br><span class="line">      yPos</span><br><span class="line">    );</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 繪製Y軸標籤</span></span><br><span class="line">  <span class="comment">// start by saving the current context (current orientation, origin)</span></span><br><span class="line">  <span class="keyword">this</span>.ctx.save();</span><br><span class="line">  <span class="keyword">this</span>.ctx.translate(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">this</span>.ctx.rotate(-<span class="built_in">Math</span>.PI / <span class="number">2</span>);</span><br><span class="line">  <span class="keyword">this</span>.ctx.textAlign = <span class="string">"center"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.textBaseline = <span class="string">"top"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.font = <span class="string">"16px sans-serif"</span>;</span><br><span class="line">  <span class="keyword">this</span>.ctx.fillText(<span class="string">"件數"</span>, -(<span class="keyword">this</span>.chartTop + <span class="keyword">this</span>.chartHeight / <span class="number">2</span>), <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">this</span>.ctx.restore(); <span class="comment">// now restore the canvas flipping it back to its original orientation</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>其他部分跟 <code>SVG</code> 的做法很類似，主要觀念就是要把 <code>html</code>, <code>css</code> rendor 的部分全部移交給 <code>js</code> 做，線上 demo <a href="https://annilla.github.io/d3-practice-vue-canvas/dist/">在此</a>，也可以在 <a href="https://github.com/Annilla/d3-practice-vue-canvas/blob/master/src/components/LineChart.vue" target="_blank" rel="noopener">Github</a>查看完整程式碼，下一篇我們就要來分析 SVG 和 Canvas 的差異和各自的優勢。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/CANVAS/" rel="tag">CANVAS</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/D3/" rel="tag">D3</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Vue/" rel="tag">Vue</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/"
+                    data-tooltip="D3 v4 with Vue - SVG VS CANVAS"
+                    aria-label="上一篇: D3 v4 with Vue - SVG VS CANVAS"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                    data-tooltip="D3 v4 with Vue - SVG Donut Chart"
+                    aria-label="下一篇: D3 v4 with Vue - SVG Donut Chart"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/06/17/D3/D3-v4-with-Vue-SVG-VS-CANVAS/"
+                    data-tooltip="D3 v4 with Vue - SVG VS CANVAS"
+                    aria-label="上一篇: D3 v4 with Vue - SVG VS CANVAS"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/05/01/D3/D3-v4-with-Vue-SVG-Donut-Chart/"
+                    data-tooltip="D3 v4 with Vue - SVG Donut Chart"
+                    aria-label="下一篇: D3 v4 with Vue - SVG Donut Chart"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/';
+              
+            this.page.identifier = '2018/06/16/D3/D3-v4-with-Vue-CANVAS-Line-Chart/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

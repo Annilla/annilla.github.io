@@ -1,0 +1,1119 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Vue 3 Studies - Why the composition API - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"Vue 3 雖然還沒出正式版，但蠻多人對新的 composition API 有所好評。剛好官網有完整的影片介紹，所以想趁這個機會開始學習。\n\n影片網址： https://www.vuemastery.com/courses/vue-3-essentials/why-the-composition-api/\n接下來會針對目前 Vue 2 的限制解釋並提出 Vue 3 的解決方式。\n影片中提出當我們的專案越來越大/醜時，三個 Vue 2 的限制：\n\nReadability as components grow：當組件越來越複雜時，程式變得越不容易閱讀。\nCode reuse patterns have drawbacks：程式片段重複使用的方式有缺點。\nLimited typescript support：typescript 支援上有限制。\n\n比較大的組件會變得越來越難閱讀和維護影片當中以搜尋組件(search.vue)為例。當我們搜尋組件想要寫兩個功能：一個功能是搜尋關鍵字結果(Search)；另一個功能是對搜尋結果做排序(Sorting)。在 Vue 2 的作法，我們可能把同一個 Search/Sorting 的功能將邏輯散佈在各個程式區塊，有可能在 components, props, data, computed, methods, lifecycle methods等。當其他開發者想要閱讀時沒辦法一眼看到功能的所有邏輯，而是需要掃描散佈在各片段的程式碼才能了解特定功能的邏輯。所以 Vue 3 要解決的是如何把同一功能的邏輯統一放在一個地方，讓閱讀上更容易。\nVue 2 將功能邏輯散佈在多個程式碼片段\nVue 3 的解決方式就是推出 composition API ，將兩種功能的程式碼片段先集中成兩個區塊，放在 setup 函式中，且他完全是選擇性的。第一次看到可能會想說：這樣是否表示我們會產生一個超巨大的程式碼在 setup 函式中嗎？答案是，不。我們接下來看看他是如何解釋的。\n我們可以把兩個功能先寫出來各自的函式，並在setup 函式 return 出來。（這裡為了方便解釋寫在同一頁，實際上會另外寫出來 js 檔案，要用的時候再引入）\n現在，程式碼片段變得更符合邏輯閱讀，但這不代表組合函式會取代組件父子關係，我們還是會先將組件父子關係區分出來，各組件的功能再以組合函式來表示。\n找不到完美的方式能在不同組件中重複使用相同邏輯影片中提到在 Vue 2 有三種方式可以在不同組件中重複使用相同邏輯。\n\nMixin：第一種是分別拉出來 Search/Sorting 各自的mixin，並在搜尋組件中引用 mixins 加入。\n\n優點：\nOrganized by feature：優點是可以依據功能組織各自邏輯。\n\n\n缺點：\nConflict prone：因為有各自的data等屬性，容易發生衝突。\nUnclear relationship：不清楚兩者 mixin 關係是否會互相影響。\nNot easy reuseble：不容易重複使用。\n\n\n\n\nMixin Factories: 第二種方式是使用客製版本的mixin傳入對應的config。\n\n優點\nEasily reusable：容易重複使用。\nClearer relationships：將兩者關係釐清楚。\n\n\n缺點\nWeak namespace：命名方式不嚴謹。\nImplicit property additions：內部添加隱藏的屬性。\nNo Instance access at runtime：Vue 運行時並不會動態生成。\n\n\n\n\nScope slots：第三種是將 Search/Sorting 分成兩個 Vue 組件，並用 slot 的方式做巢狀使用。\n\n優點\n解決 mixin 的問題\n\n\n缺點\nIncreases indentation：增加縮排。\nLots of configuration ：更多的設定值。\nLess flexible ：彈性變小。\nLess performance ：性能變差。\n\n\n\n\n\n這三種都有他的缺點，所以影片提到 composition API 使用上可以解決上述問題。就是將 Search/Sorting 兩個 composition function 各自分出 js 將邏輯寫出來。在 Vue 組件設定變數將其各自做引用函式並設定所需要的參數。\n\n優點\n程式碼精簡\n和平常的 js 使用差不多\n使用上非常有彈性\n友善的使用方式\n\n\n缺點\n要熟悉新的程式使用寫法\n\n\n\n整體來說，composition API 都是大大提升組件的邏輯組織寫法，讓開發者能更快進入狀況，用更輕鬆精簡的方式達到開發目的，我個人是非常看好且開心的，畢竟一個工程師要面對的專案實在太多，要省時省力才有效率。\n參考資料\nComposition API RFC\nWhy the Composition API\n\n","dateCreated":"2020-06-27T00:00:00+08:00","dateModified":"2020-06-27T00:00:00+08:00","datePublished":"2020-06-27T00:00:00+08:00","description":"Vue 3 雖然還沒出正式版，但蠻多人對新的 composition API 有所好評。剛好官網有完整的影片介紹，所以想趁這個機會開始學習。","headline":"Vue 3 Studies - Why the composition API","image":["https://vuejs.org/images/logo.png","https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/","keywords":"Vue","thumbnailUrl":"https://vuejs.org/images/logo.png"}</script>
+    <meta name="description" content="Vue 3 雖然還沒出正式版，但蠻多人對新的 composition API 有所好評。剛好官網有完整的影片介紹，所以想趁這個機會開始學習。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Vue 3 Studies - Why the composition API">
+<meta property="og:url" content="http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="Vue 3 雖然還沒出正式版，但蠻多人對新的 composition API 有所好評。剛好官網有完整的影片介紹，所以想趁這個機會開始學習。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3d96-4SjMB_p4-hWeSPOVnlfgcOsXoIk9PYGTL6S0mDMzbuTx3VdH5294bQdrYbITjYCyuXrsTpWXjng2H_aPb83y1kHzovuzE7dEXjhMyYB3ZZHSEJfQBgLfo_YSvaDoBQ7f2B0SP-8vZJgZYko4RihA=w2208-h1242-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3c1z4-Cy7mQ1itIsSDBCv2ydlMKfl0Uq-6ITtVczzASfVgXJ57CA66HdLv5kVdhx0RUjbRjd7Sd4UY9WLnMCu7DJa4ezAZo_QViPKXCht75yC_mzGDUS1CO3c6z193-pudoaXPEvR6eeTx5yxP60yszFg=w2208-h1242-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3fXgoNhS2-gvKQhmE2H80cBJmEXXfzqcm_vru2fzbhqAfcocu5NGjXvHNj0c9GRoR0wZvwXeCNLEV_o09u6Ziwpuv_PYNGOYWjHoC0w-yFH1fixvTO22LG6HLKj4ms4rppxbuC4h2upzsn0z-5FsjZgAA=w2208-h1242-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3eWW8YTjK_GIX91w9UCF8IRSX8PMQMkUKzPjMIU99ckLFRpZBjGh_jsTK4OsmUp2cDOpmVaiRHhsLq9UQOO32SyyhZ63zpMjSbqkWOiWT3Wrsilnx0BnxwbnieulwLw558MESaXY8P3fZEh2jbl8orP0A=w2208-h1242-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3cuCe0z_fEa50pIodm4hYC8od1Bs0objS-283HeyY-RdgKwAi8wJ6oYMynQBizr66oyqMXsUlQXkmGTttljZusYWrwuQ0IBi1PXJIwL0vY7wIJfrYLsMZJBsubn9bd9kTymExoN00egnmSqzIk-mBxuEQ=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3dJvx5OUIZEZiJR-VBBCJjDWWDlF3EfYoqT6Hruat6fvOSd8Ibv-KsrUrk2lR0sgf9ZO9CoWJ97GXELgWelH-GaTQA9VTV9Kwebx-IZnvQbSgZL4wrotK66ahn8esXsS3U3MbMWFK2drXSyN_uBBuf0LA=w1708-h1280-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3djhWxIL2elD1Nlz60lvLyec2aDpm13uSxYz3Lx7JnYYj3lYyPinDfLDesY7WwXQkW3GzT93XID13mEJCoXSK98H4KVtCVhItKl5C9zMSYhhamHQAGlUeTJZyIoTcxGsK007IzPyh3pfD26VdIEsnEmVA=w2208-h1242-no?authuser=0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/pw/ACtC-3dPPnmhsRLsSHI33vrnqj_QB8CScnf9jLwa0iM5iJfRJVhM0IW5Hs4ommjgXhu5larti1rTtA46wmwxMk2rmoQ-9kjp2CRwx5UA-s9KpjOzmH1kEQkgWXPT8YzlzJfD1_YmBF1TuQJV4wVnZiVPfspgig=w2208-h1242-no?authuser=0">
+<meta property="article:published_time" content="2020-06-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-26T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/pw/ACtC-3d96-4SjMB_p4-hWeSPOVnlfgcOsXoIk9PYGTL6S0mDMzbuTx3VdH5294bQdrYbITjYCyuXrsTpWXjng2H_aPb83y1kHzovuzE7dEXjhMyYB3ZZHSEJfQBgLfo_YSvaDoBQ7f2B0SP-8vZJgZYko4RihA=w2208-h1242-no?authuser=0">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://vuejs.org/images/logo.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://vuejs.org/images/logo.png"/>
+    
+    
+        <meta property="og:image" content="https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://cythilya.github.io/assets/vue/2017-05-21-vue-logo.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Vue 3 Studies - Why the composition API
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-06-27T00:00:00+08:00">
+	
+		    2020 年 6 月 27 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/Vue/">Vue</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Vue 3 雖然還沒出正式版，但蠻多人對新的 composition API 有所好評。剛好官網有完整的影片介紹，所以想趁這個機會開始學習。</p>
+<a id="more"></a>
+<p>影片網址： <a href="https://www.vuemastery.com/courses/vue-3-essentials/why-the-composition-api/" target="_blank" rel="noopener">https://www.vuemastery.com/courses/vue-3-essentials/why-the-composition-api/</a></p>
+<p>接下來會針對目前 Vue 2 的限制解釋並提出 Vue 3 的解決方式。</p>
+<p>影片中提出當我們的專案越來越大/醜時，三個 Vue 2 的限制：</p>
+<ol>
+<li>Readability as components grow：當組件越來越複雜時，程式變得越不容易閱讀。</li>
+<li>Code reuse patterns have drawbacks：程式片段重複使用的方式有缺點。</li>
+<li>Limited typescript support：typescript 支援上有限制。</li>
+</ol>
+<h1 id="比較大的組件會變得越來越難閱讀和維護"><a href="#比較大的組件會變得越來越難閱讀和維護" class="headerlink" title="比較大的組件會變得越來越難閱讀和維護"></a>比較大的組件會變得越來越難閱讀和維護</h1><p>影片當中以搜尋組件(search.vue)為例。當我們搜尋組件想要寫兩個功能：一個功能是搜尋關鍵字結果(Search)；另一個功能是對搜尋結果做排序(Sorting)。在 Vue 2 的作法，我們可能把同一個 Search/Sorting 的功能將邏輯散佈在各個程式區塊，有可能在 components, props, data, computed, methods, lifecycle methods等。當其他開發者想要閱讀時沒辦法一眼看到功能的所有邏輯，而是需要掃描散佈在各片段的程式碼才能了解特定功能的邏輯。所以 Vue 3 要解決的是如何把同一功能的邏輯統一放在一個地方，讓閱讀上更容易。</p>
+<p>Vue 2 將功能邏輯散佈在多個程式碼片段<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3d96-4SjMB_p4-hWeSPOVnlfgcOsXoIk9PYGTL6S0mDMzbuTx3VdH5294bQdrYbITjYCyuXrsTpWXjng2H_aPb83y1kHzovuzE7dEXjhMyYB3ZZHSEJfQBgLfo_YSvaDoBQ7f2B0SP-8vZJgZYko4RihA=w2208-h1242-no?authuser=0" alt="Vue 2 將功能邏輯散佈在多個程式碼片段"></p>
+<p>Vue 3 的解決方式就是推出 composition API ，將兩種功能的程式碼片段先集中成兩個區塊，放在 setup 函式中，且他完全是選擇性的。第一次看到可能會想說：這樣是否表示我們會產生一個超巨大的程式碼在 setup 函式中嗎？答案是，不。我們接下來看看他是如何解釋的。<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3c1z4-Cy7mQ1itIsSDBCv2ydlMKfl0Uq-6ITtVczzASfVgXJ57CA66HdLv5kVdhx0RUjbRjd7Sd4UY9WLnMCu7DJa4ezAZo_QViPKXCht75yC_mzGDUS1CO3c6z193-pudoaXPEvR6eeTx5yxP60yszFg=w2208-h1242-no?authuser=0" alt="composition API setup"></p>
+<p>我們可以把兩個功能先寫出來各自的函式，並在setup 函式 return 出來。（這裡為了方便解釋寫在同一頁，實際上會另外寫出來 js 檔案，要用的時候再引入）<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3fXgoNhS2-gvKQhmE2H80cBJmEXXfzqcm_vru2fzbhqAfcocu5NGjXvHNj0c9GRoR0wZvwXeCNLEV_o09u6Ziwpuv_PYNGOYWjHoC0w-yFH1fixvTO22LG6HLKj4ms4rppxbuC4h2upzsn0z-5FsjZgAA=w2208-h1242-no?authuser=0" alt="composition API setup"></p>
+<p>現在，程式碼片段變得更符合邏輯閱讀，但這不代表組合函式會取代組件父子關係，我們還是會先將組件父子關係區分出來，各組件的功能再以組合函式來表示。<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3eWW8YTjK_GIX91w9UCF8IRSX8PMQMkUKzPjMIU99ckLFRpZBjGh_jsTK4OsmUp2cDOpmVaiRHhsLq9UQOO32SyyhZ63zpMjSbqkWOiWT3Wrsilnx0BnxwbnieulwLw558MESaXY8P3fZEh2jbl8orP0A=w2208-h1242-no?authuser=0" alt="composition API setup"></p>
+<h1 id="找不到完美的方式能在不同組件中重複使用相同邏輯"><a href="#找不到完美的方式能在不同組件中重複使用相同邏輯" class="headerlink" title="找不到完美的方式能在不同組件中重複使用相同邏輯"></a>找不到完美的方式能在不同組件中重複使用相同邏輯</h1><p>影片中提到在 Vue 2 有三種方式可以在不同組件中重複使用相同邏輯。</p>
+<ol>
+<li><p>Mixin：第一種是分別拉出來 Search/Sorting 各自的mixin，並在搜尋組件中引用 mixins 加入。</p>
+<ul>
+<li>優點：<ul>
+<li>Organized by feature：優點是可以依據功能組織各自邏輯。</li>
+</ul>
+</li>
+<li>缺點：<ul>
+<li>Conflict prone：因為有各自的data等屬性，容易發生衝突。</li>
+<li>Unclear relationship：不清楚兩者 mixin 關係是否會互相影響。</li>
+<li>Not easy reuseble：不容易重複使用。<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3cuCe0z_fEa50pIodm4hYC8od1Bs0objS-283HeyY-RdgKwAi8wJ6oYMynQBizr66oyqMXsUlQXkmGTttljZusYWrwuQ0IBi1PXJIwL0vY7wIJfrYLsMZJBsubn9bd9kTymExoN00egnmSqzIk-mBxuEQ=w1708-h1280-no?authuser=0" alt="Mixin"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Mixin Factories: 第二種方式是使用客製版本的mixin傳入對應的config。</p>
+<ul>
+<li>優點<ul>
+<li>Easily reusable：容易重複使用。</li>
+<li>Clearer relationships：將兩者關係釐清楚。</li>
+</ul>
+</li>
+<li>缺點<ul>
+<li>Weak namespace：命名方式不嚴謹。</li>
+<li>Implicit property additions：內部添加隱藏的屬性。</li>
+<li>No Instance access at runtime：Vue 運行時並不會動態生成。<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3dJvx5OUIZEZiJR-VBBCJjDWWDlF3EfYoqT6Hruat6fvOSd8Ibv-KsrUrk2lR0sgf9ZO9CoWJ97GXELgWelH-GaTQA9VTV9Kwebx-IZnvQbSgZL4wrotK66ahn8esXsS3U3MbMWFK2drXSyN_uBBuf0LA=w1708-h1280-no?authuser=0" alt="Mixin Factories"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Scope slots：第三種是將 Search/Sorting 分成兩個 Vue 組件，並用 slot 的方式做巢狀使用。</p>
+<ul>
+<li>優點<ul>
+<li>解決 mixin 的問題</li>
+</ul>
+</li>
+<li>缺點<ul>
+<li>Increases indentation：增加縮排。</li>
+<li>Lots of configuration ：更多的設定值。</li>
+<li>Less flexible ：彈性變小。</li>
+<li>Less performance ：性能變差。<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3djhWxIL2elD1Nlz60lvLyec2aDpm13uSxYz3Lx7JnYYj3lYyPinDfLDesY7WwXQkW3GzT93XID13mEJCoXSK98H4KVtCVhItKl5C9zMSYhhamHQAGlUeTJZyIoTcxGsK007IzPyh3pfD26VdIEsnEmVA=w2208-h1242-no?authuser=0" alt="Scope slots"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>這三種都有他的缺點，所以影片提到 composition API 使用上可以解決上述問題。就是將 Search/Sorting 兩個 composition function 各自分出 js 將邏輯寫出來。在 Vue 組件設定變數將其各自做引用函式並設定所需要的參數。</p>
+<ul>
+<li>優點<ul>
+<li>程式碼精簡</li>
+<li>和平常的 js 使用差不多</li>
+<li>使用上非常有彈性</li>
+<li>友善的使用方式</li>
+</ul>
+</li>
+<li>缺點<ul>
+<li>要熟悉新的程式使用寫法<br><img src="https://lh3.googleusercontent.com/pw/ACtC-3dPPnmhsRLsSHI33vrnqj_QB8CScnf9jLwa0iM5iJfRJVhM0IW5Hs4ommjgXhu5larti1rTtA46wmwxMk2rmoQ-9kjp2CRwx5UA-s9KpjOzmH1kEQkgWXPT8YzlzJfD1_YmBF1TuQJV4wVnZiVPfspgig=w2208-h1242-no?authuser=0" alt="composition API"></li>
+</ul>
+</li>
+</ul>
+<p>整體來說，composition API 都是大大提升組件的邏輯組織寫法，讓開發者能更快進入狀況，用更輕鬆精簡的方式達到開發目的，我個人是非常看好且開心的，畢竟一個工程師要面對的專案實在太多，要省時省力才有效率。</p>
+<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><ul>
+<li><a href="https://composition-api.vuejs.org/" target="_blank" rel="noopener">Composition API RFC</a></li>
+<li><a href="https://www.vuemastery.com/courses/vue-3-essentials/why-the-composition-api/" target="_blank" rel="noopener">Why the Composition API</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Vue/" rel="tag">Vue</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/07/20/Vue/Vue-3-Studies-Setup-Reactive-References/"
+                    data-tooltip="Vue 3 Studies - Setup &amp; Reactive References"
+                    aria-label="上一篇: Vue 3 Studies - Setup &amp; Reactive References"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/05/04/UXUI/Naver-Study-Case-National-Assembly-Election-Special-Page/"
+                    data-tooltip="Naver Study Case - National Assembly election special page"
+                    aria-label="下一篇: Naver Study Case - National Assembly election special page"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/07/20/Vue/Vue-3-Studies-Setup-Reactive-References/"
+                    data-tooltip="Vue 3 Studies - Setup &amp; Reactive References"
+                    aria-label="上一篇: Vue 3 Studies - Setup &amp; Reactive References"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/05/04/UXUI/Naver-Study-Case-National-Assembly-Election-Special-Page/"
+                    data-tooltip="Naver Study Case - National Assembly election special page"
+                    aria-label="下一篇: Naver Study Case - National Assembly election special page"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/';
+              
+            this.page.identifier = '2020/06/27/Vue/Vue-3-Studies-Why-the-composition-API/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

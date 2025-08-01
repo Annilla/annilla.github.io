@@ -1,0 +1,1155 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Google Material Studies - Shrine - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"這次 Material Design 案例介紹零售業的 APP 設計，相信大家都不陌生，如何呈現大量商品給使用者也是一門學問。\n\n案例背景Shrine APP 是一個線上市場，透過推播標籤 (promoted labels) 來表達生活方式和時尚產品的特色。Shrine 的品牌美學為現代、优雅、精致。Shrine 在展示各品牌和產品背后，有著一致的美學概念。\n極簡美學Shrine 的極簡主義將使用者體驗著重在產品内容和 APP 互動。作為展示各種產品和品牌核心的统一架構，Shrine 的品牌扮演着重要的角色。\n視覺主題Shrine 的視覺主題採用去角的剪裁設計，應用在各種組件和元素上。這些元素代表 Shrine logo 的形狀，且為 Shrine 品牌的延伸設計。\n\nShrine 的互動模型是由三個重疊的圖層組成。\n\n最下層為導航和品牌元素\n中間層為主要內容\n最上層為購物車\n\n\n\n心得：以前做過大量分類的內容網站，如何讓使用者快速找到他要的類別是一門學問。極簡風格的好處是將操作簡化，並專注於呈現產品給使用者。\n\n產品架構Shrine 應用程序的資訊架構是由目錄(catalog)結構組成。一個目錄包含各分類資訊，母類別可能包含子類別。Shrine 的母類別將大群組的物品分類，例如：鞋子、配飾、連衣裙，如此一來，使用者可以看到相關的內容。採用目錄結構讓使用者瀏覽有興趣的項目、互相比對不同的產品和查看特定的產品資訊。\n導覽列Shrine 在桌機、平板和手機上使用不同形式的導覽列。手機將導覽列放在最後一個圖層，需要藉由回上頁的元件做返回的動作。平板使用頁籤(tabs)的方式導覽。桌機使用標準的導覽收納欄位。\n\n項目指標所有導覽列共用同一個選取狀態模式：當一個項目被選取，項目背後會有一個三角圖樣代表被選取的狀態。項目指標確保使用者知道他們目前所在的類別。\n\n購物車購物車可以在螢幕右下角找到。當物品加入或從購物車移除，購物清單會動態更新並反映變化。購物清單可以透過點擊 icon ，展開內容細目，或是帶使用者到購物畫面。\nyour browser does not support the video tag\n\n\n心得：項目指標用圖示的方式標示在分類文字背後，我覺得這個用法蠻大膽的，若是想要增加潮流感的話很適合。但若是在公司企業內部用的軟體可能需要考慮使用者的接受度。\n\n排版和顏色Shrine 使用 12 grid system。\nyour browser does not support the video tag\n\n水平格線Shrine 的手機和平板排版採用水平滑動的格線。欄位、間距和邊距都是從左到右，並不是我們一般常用的上到下。\n\n顏色Shrine 的顏色主題是單色系的，將主色調 Shrine Pink 使用不同亮暗做變化。底層使用 Shrine 的主色調 (Shrine Pink 100)，下方購物車使用次色調(Shrine Pink 50)。主要內容在白色背景並使用深色 Shrine Pink 900 作為文字和圖示的顏色。\n\n\nShrine Pink 100 用在 “add to cart” 來凸顯按鈕。\n標籤(chips)外框使用 Shrine Pink 100，用深色的 900 來代表被選取的標籤。\n\n\nShrine 使用圖像處理來表示狀態的變化(例如被選取的狀態)，或是背後的半透明遮罩。客制的圖像是一種加強 Shrine 品牌的方式。\n\n\n\n心得：使用水平格線設計我覺得是很大的挑戰，因為目前大宗的使用方向還是垂直為主。不推薦水平格線的設計，除非是遊戲、活動或各分類展示等特殊需求，否則可慮使用者需長期瀏覽的狀態下，水平左右滑動並不方便。\n\n文字與圖示Shrine 的文字比例提供各種內容所需。所有比例皆使用 Rubik 作為字體，包含 Rubik Light、Regular和Medium。\n\nRubik 是非襯線字體，有著略為的圓角和多種的粗細可選擇。Rubik 是非常適合 Shrine 的字體，因為他是一種清晰、時尚、現代的字體，且他的圓角帶給人溫暖、友善和有趣的感覺。\n\nShrine 使用 Material Design 預設的 icon 系統。這些 icon 在小尺寸的時候也能保持清晰和俐落。\n\n\n心得：文字選用不同於 Roboto 的圓角字體，營造柔和感是不錯的選擇。\n\n形狀和元件元件的形狀根據他們的大小來分類。形狀分類讓你可一次性設定多個元件尺寸。形狀分類包含：\n\n小元件 (Small components):浮動動作按鈕。角落各切 4dp 斜角。\n中元件 (Medium components):選單。角落各切 8dp 斜角。\n大元件 (Large components):內容區塊。左上角切 24dp 斜角。\n\n\n按鈕\n文字按鈕：按鈕沒有邊框和陰影。\n\n\n\n主要按鈕：使用主色調 Shrine Pink 100，無陰影，圓角和細長形狀。\n\n\n標籤 ChipsShrine 在產品細節頁面使用可選擇的標籤。這些客制標籤有著圓角的邊線和按鈕做區別。\n\n頁籤Shrine 在桌機和平板使用頁籤當作導覽列。他們使用客制顏色、文字和狀態。\n\n導覽列和背景區塊Shrine 使用客制的導覽抽屜在手機上。他可以透過點擊左上角的返回元件來展開導覽。Shrine 的導覽抽屜使用客製化的文字、顏色和狀態。置中的文字是另一個客制的特點。Shrine 的返回元件使用客制的顏色和形狀。背後圖層使用 app 的主色調，前圖層的左上角有一個客制的斜切角。\nyour browser does not support the video tag\n\n圖像列表Shrine 使用編排過的圖像列表來展示內容。編排過的圖像列表穿插使用不同大小（相同比例）的區塊創造有韻律的排版，且非常適合水平瀏覽內容。\n編排過的圖像列表對於內容來說非常理想，因為他提升了每個商品的重點和新穎性，讓使用者不會過快的掃描內容。\n\n購物清單Shrine 使用可展開的底部清單讓使用者可以簡單的到達購物車。\nyour browser does not support the video tag\n\n\n心得：對於圖像列表的水平滾動方式我不是很贊同，因為大多數使用者只會對前幾樣商品用比較慢的速度查看，到後面都會變成掃描式的，故意編排成眼睛不易掃瞄商品的方式，只會讓使用者變得不想用，因為他沒辦法快速的查看大量商品做比較。\n\n互動Shrine 的互動設計使用增強的淡入、較長的延遲時間來漸進式營造優雅和愉悅的環境。\n起始畫面Shrine 的產品 icon 動畫透過幾何的形狀變化來表達 logo。\nyour browser does not support the video tag\n\nicon 動畫動畫 icon 增加樂趣且引領使用者操作。\nyour browser does not support the video tag\n\n漸變得導覽列Shrine 的導覽漸變動畫強調淡出和長時間下達到放鬆和優雅的氣氛。時間延遲用於引起對重要元件的注意，例如購物車和結帳按鈕。在背後圖層使用交錯的淡入淡出來產生關連的效果。\nyour browser does not support the video tag\n\n示範當第一次增加商品到購物車時，一個示範的動畫將展示商品已放置在購物車中。\nyour browser does not support the video tag\n\n\n心得：對於會動的 icon 和示範商品放入購物車這兩個設計很有興趣，若有機會的話會想要嘗試放在專案中嘗試。\n\n總結：Shrine 這個案例除了上述提到的水平滾動設計我不是很贊同外，其他的部分都很值得學習借鏡。是個很不錯的案例，那我們下次見囉～\n參考資料\nMaterial Studies - Shrine\n\n","dateCreated":"2019-06-07T00:00:00+08:00","dateModified":"2019-06-07T00:00:00+08:00","datePublished":"2019-06-07T00:00:00+08:00","description":"這次 Material Design 案例介紹零售業的 APP 設計，相信大家都不陌生，如何呈現大量商品給使用者也是一門學問。","headline":"Google Material Studies - Shrine","image":["https://lh3.googleusercontent.com/NmeFZOUv61q1keVwsDGU-SYe54WbcTGUaBK4MUv2qpnOZUeBmoIQnctDY2i30Xg9Piub1aUE1hhv_YZkN6aeZ0OeEiFqYy4nQix_M2k6M5Zn1uy6_0BDfTzuD0YfrlezhMtIGlKoVprSIU8jy4204KOqm7k4QJL31RCgQZ6ruuJMX-Ad84Uoyr-4LqIjRdDKG63wsyVnef7GFtHTFFyAcwRfD0D0hqZfDL6X5xZ0IomCU1mnvbPi3kWvWJzFbhypokNRRLGiTRxemhwQmV1IltU_lmZ7S6pdwwsz8GaVW7T7WTXImkmvePksormq21WQJgFdgWndEQDMPoCtQZLarnSNMaHynca_Wi-33a1VAI78aI0jIIXKP7RYmh7JRVY9Mobf2qBFOGFkd64E7uBatZ5VZ8GHwqXWazRZ-I4pFF_medM8ecpPLRTar-KY01iKGMu3zYZ2Z9xMO_AI0x3ibI7XAR71_8hquDpzvUGffIOXqvX5r3H49xYpWMCpPpwfT7NYd3k1W24ncV6TLWE_9cj5pRsY1qCHeqdn2HfkRLBGY0czDFb5J47OwXn0vBzNOuYtWbLGauqZ-sUVSTeO15j2A9gMm3BR0ZmiFb7c1azsyO4n-_-0GCHvJckr4-iRRg7GocwbYjZZdsTlDGvf0bHXkAmhFhWY=s225-no","https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1XfN9LumqsUoSt6nDckGhoja4ll8EAmZI%2Fcasestudies-shrine-brandattributes.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/","keywords":"UX, UI, Material Design","thumbnailUrl":"https://lh3.googleusercontent.com/NmeFZOUv61q1keVwsDGU-SYe54WbcTGUaBK4MUv2qpnOZUeBmoIQnctDY2i30Xg9Piub1aUE1hhv_YZkN6aeZ0OeEiFqYy4nQix_M2k6M5Zn1uy6_0BDfTzuD0YfrlezhMtIGlKoVprSIU8jy4204KOqm7k4QJL31RCgQZ6ruuJMX-Ad84Uoyr-4LqIjRdDKG63wsyVnef7GFtHTFFyAcwRfD0D0hqZfDL6X5xZ0IomCU1mnvbPi3kWvWJzFbhypokNRRLGiTRxemhwQmV1IltU_lmZ7S6pdwwsz8GaVW7T7WTXImkmvePksormq21WQJgFdgWndEQDMPoCtQZLarnSNMaHynca_Wi-33a1VAI78aI0jIIXKP7RYmh7JRVY9Mobf2qBFOGFkd64E7uBatZ5VZ8GHwqXWazRZ-I4pFF_medM8ecpPLRTar-KY01iKGMu3zYZ2Z9xMO_AI0x3ibI7XAR71_8hquDpzvUGffIOXqvX5r3H49xYpWMCpPpwfT7NYd3k1W24ncV6TLWE_9cj5pRsY1qCHeqdn2HfkRLBGY0czDFb5J47OwXn0vBzNOuYtWbLGauqZ-sUVSTeO15j2A9gMm3BR0ZmiFb7c1azsyO4n-_-0GCHvJckr4-iRRg7GocwbYjZZdsTlDGvf0bHXkAmhFhWY=s225-no"}</script>
+    <meta name="description" content="這次 Material Design 案例介紹零售業的 APP 設計，相信大家都不陌生，如何呈現大量商品給使用者也是一門學問。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Google Material Studies - Shrine">
+<meta property="og:url" content="http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="這次 Material Design 案例介紹零售業的 APP 設計，相信大家都不陌生，如何呈現大量商品給使用者也是一門學問。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1KZq-VRhEx9j2HydlT4ZW9H7tR-WoOZAe%2Fcasestudies-shrine-logo-alt.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1a-_JDAJTous0ko4miSjAgVwJPHQB2hHe%2Fcasestudies-shrine-elevationchart.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1-qYMfjqAbsMb9O-lJNIsaHcKhO_p4O_s%2Fcasestudies-shrine-family.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1l0DbKUHyQKvedhajBXcnaVN8UZbn7eSF%2Fcasestudies-shrine-nav.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1bzYYXTPp9EKoZ_D98LDkdpmmekDIUAK1%2Fcasestudies-shrine-horizontalimagegrid.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1PqdLRDr8EpuHTdhT9f9HtIzxzGOjecJP%2Fcasestudies-shrine-color-1.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1ocq8e1RNTZOmpP2MXjRF1rAB4hk9nw4a%2Fcasestudies-shrine-colorcomponents.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1Vzs31NWpv0YlZ2ejSZl6PEYqofYiNSFM%2Fcasestudies-shrine-color-imagerytreatment-duotone.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F176hAMN80PxLeqkcw4zypAG5RZJFEIlq3%2Fcasestudies-shrine-color-imagerytreatment-patternscrim.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1VcsKVTP1QNKoPl52cNCHauFM0_526cdN%2Fshrinetypescale.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1rec2nbnEXesSPYTicV_qbE6D9jmCuO5h%2Fcasestudies-shrine-type-1.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F15IUNXILSXZmMGcH2q8W_vbS8YlO91vzt%2Fcasestudies-shrine-icons-alt.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1f_u-uvDtYKjS0LEIevjDCbb1ALeH2Lks%2Fshrine-shape-b.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1ZfoWLGKLkJhKTvX0Bfjc19jk_4teiBRF%2Fcasestudies-shrine-textbutton.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1dkaLfu-vECfRflUXOQDvYwFVHPmvIo_4%2Fcasestudies-shrine-buttonemphasis.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1D0EwzNkf19srLxcQ8jLzRgYddPbDYaRB%2Fcasestudies-shrine-chips.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1BkLfpj3qECEoZ41gclPvw1w6NaQNM6jm%2Fcasestudies-shrine-tabs.png">
+<meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1bzYYXTPp9EKoZ_D98LDkdpmmekDIUAK1%2Fcasestudies-shrine-horizontalimagegrid.png">
+<meta property="article:published_time" content="2019-06-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-06-06T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="UX">
+<meta property="article:tag" content="UI">
+<meta property="article:tag" content="Material Design">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1KZq-VRhEx9j2HydlT4ZW9H7tR-WoOZAe%2Fcasestudies-shrine-logo-alt.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://lh3.googleusercontent.com/NmeFZOUv61q1keVwsDGU-SYe54WbcTGUaBK4MUv2qpnOZUeBmoIQnctDY2i30Xg9Piub1aUE1hhv_YZkN6aeZ0OeEiFqYy4nQix_M2k6M5Zn1uy6_0BDfTzuD0YfrlezhMtIGlKoVprSIU8jy4204KOqm7k4QJL31RCgQZ6ruuJMX-Ad84Uoyr-4LqIjRdDKG63wsyVnef7GFtHTFFyAcwRfD0D0hqZfDL6X5xZ0IomCU1mnvbPi3kWvWJzFbhypokNRRLGiTRxemhwQmV1IltU_lmZ7S6pdwwsz8GaVW7T7WTXImkmvePksormq21WQJgFdgWndEQDMPoCtQZLarnSNMaHynca_Wi-33a1VAI78aI0jIIXKP7RYmh7JRVY9Mobf2qBFOGFkd64E7uBatZ5VZ8GHwqXWazRZ-I4pFF_medM8ecpPLRTar-KY01iKGMu3zYZ2Z9xMO_AI0x3ibI7XAR71_8hquDpzvUGffIOXqvX5r3H49xYpWMCpPpwfT7NYd3k1W24ncV6TLWE_9cj5pRsY1qCHeqdn2HfkRLBGY0czDFb5J47OwXn0vBzNOuYtWbLGauqZ-sUVSTeO15j2A9gMm3BR0ZmiFb7c1azsyO4n-_-0GCHvJckr4-iRRg7GocwbYjZZdsTlDGvf0bHXkAmhFhWY=s225-no"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://lh3.googleusercontent.com/NmeFZOUv61q1keVwsDGU-SYe54WbcTGUaBK4MUv2qpnOZUeBmoIQnctDY2i30Xg9Piub1aUE1hhv_YZkN6aeZ0OeEiFqYy4nQix_M2k6M5Zn1uy6_0BDfTzuD0YfrlezhMtIGlKoVprSIU8jy4204KOqm7k4QJL31RCgQZ6ruuJMX-Ad84Uoyr-4LqIjRdDKG63wsyVnef7GFtHTFFyAcwRfD0D0hqZfDL6X5xZ0IomCU1mnvbPi3kWvWJzFbhypokNRRLGiTRxemhwQmV1IltU_lmZ7S6pdwwsz8GaVW7T7WTXImkmvePksormq21WQJgFdgWndEQDMPoCtQZLarnSNMaHynca_Wi-33a1VAI78aI0jIIXKP7RYmh7JRVY9Mobf2qBFOGFkd64E7uBatZ5VZ8GHwqXWazRZ-I4pFF_medM8ecpPLRTar-KY01iKGMu3zYZ2Z9xMO_AI0x3ibI7XAR71_8hquDpzvUGffIOXqvX5r3H49xYpWMCpPpwfT7NYd3k1W24ncV6TLWE_9cj5pRsY1qCHeqdn2HfkRLBGY0czDFb5J47OwXn0vBzNOuYtWbLGauqZ-sUVSTeO15j2A9gMm3BR0ZmiFb7c1azsyO4n-_-0GCHvJckr4-iRRg7GocwbYjZZdsTlDGvf0bHXkAmhFhWY=s225-no"/>
+    
+    
+        <meta property="og:image" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1XfN9LumqsUoSt6nDckGhoja4ll8EAmZI%2Fcasestudies-shrine-brandattributes.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1XfN9LumqsUoSt6nDckGhoja4ll8EAmZI%2Fcasestudies-shrine-brandattributes.png"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1XfN9LumqsUoSt6nDckGhoja4ll8EAmZI%2Fcasestudies-shrine-brandattributes.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Google Material Studies - Shrine
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-06-07T00:00:00+08:00">
+	
+		    2019 年 6 月 7 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/UXUI/">UXUI</a>, <a class="category-link" href="/categories/UXUI/Material-Design/">Material Design</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>這次 Material Design 案例介紹零售業的 APP 設計，相信大家都不陌生，如何呈現大量商品給使用者也是一門學問。</p>
+<a id="more"></a>
+<h1 id="案例背景"><a href="#案例背景" class="headerlink" title="案例背景"></a>案例背景</h1><p>Shrine APP 是一個線上市場，透過推播標籤 (promoted labels) 來表達生活方式和時尚產品的特色。Shrine 的品牌美學為現代、优雅、精致。Shrine 在展示各品牌和產品背后，有著一致的美學概念。</p>
+<h3 id="極簡美學"><a href="#極簡美學" class="headerlink" title="極簡美學"></a>極簡美學</h3><p>Shrine 的極簡主義將使用者體驗著重在產品内容和 APP 互動。作為展示各種產品和品牌核心的统一架構，Shrine 的品牌扮演着重要的角色。</p>
+<h3 id="視覺主題"><a href="#視覺主題" class="headerlink" title="視覺主題"></a>視覺主題</h3><p>Shrine 的視覺主題採用去角的剪裁設計，應用在各種組件和元素上。這些元素代表 Shrine logo 的形狀，且為 Shrine 品牌的延伸設計。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1KZq-VRhEx9j2HydlT4ZW9H7tR-WoOZAe%2Fcasestudies-shrine-logo-alt.png" alt="Shrine 去角的剪裁設計" title="Shrine 去角的剪裁設計"></p>
+<p>Shrine 的互動模型是由三個重疊的圖層組成。</p>
+<ol>
+<li>最下層為導航和品牌元素</li>
+<li>中間層為主要內容</li>
+<li>最上層為購物車</li>
+</ol>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1a-_JDAJTous0ko4miSjAgVwJPHQB2hHe%2Fcasestudies-shrine-elevationchart.png" alt="Shrine 三個重疊的圖層" title="Shrine 三個重疊的圖層"></p>
+<blockquote>
+<p>心得：以前做過大量分類的內容網站，如何讓使用者快速找到他要的類別是一門學問。極簡風格的好處是將操作簡化，並專注於呈現產品給使用者。</p>
+</blockquote>
+<h1 id="產品架構"><a href="#產品架構" class="headerlink" title="產品架構"></a>產品架構</h1><p>Shrine 應用程序的資訊架構是由目錄(catalog)結構組成。一個目錄包含各分類資訊，母類別可能包含子類別。Shrine 的母類別將大群組的物品分類，例如：鞋子、配飾、連衣裙，如此一來，使用者可以看到相關的內容。採用目錄結構讓使用者瀏覽有興趣的項目、互相比對不同的產品和查看特定的產品資訊。</p>
+<h3 id="導覽列"><a href="#導覽列" class="headerlink" title="導覽列"></a>導覽列</h3><p>Shrine 在桌機、平板和手機上使用不同形式的導覽列。<br>手機將導覽列放在最後一個圖層，需要藉由回上頁的元件做返回的動作。<br>平板使用頁籤(tabs)的方式導覽。<br>桌機使用標準的導覽收納欄位。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1-qYMfjqAbsMb9O-lJNIsaHcKhO_p4O_s%2Fcasestudies-shrine-family.png" alt="Shrine 導覽列" title="Shrine 導覽列"></p>
+<h3 id="項目指標"><a href="#項目指標" class="headerlink" title="項目指標"></a>項目指標</h3><p>所有導覽列共用同一個選取狀態模式：當一個項目被選取，項目背後會有一個三角圖樣代表被選取的狀態。項目指標確保使用者知道他們目前所在的類別。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1l0DbKUHyQKvedhajBXcnaVN8UZbn7eSF%2Fcasestudies-shrine-nav.png" alt="Shrine 項目指標" title="Shrine 項目指標"></p>
+<h3 id="購物車"><a href="#購物車" class="headerlink" title="購物車"></a>購物車</h3><p>購物車可以在螢幕右下角找到。當物品加入或從購物車移除，購物清單會動態更新並反映變化。<br>購物清單可以透過點擊 icon ，展開內容細目，或是帶使用者到購物畫面。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1dgcMYf6_2L_xYYriPRcoACs_woD5LIFm%2Fcasestudies-shrine-shoppingcart-1b.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<blockquote>
+<p>心得：項目指標用圖示的方式標示在分類文字背後，我覺得這個用法蠻大膽的，若是想要增加潮流感的話很適合。但若是在公司企業內部用的軟體可能需要考慮使用者的接受度。</p>
+</blockquote>
+<h1 id="排版和顏色"><a href="#排版和顏色" class="headerlink" title="排版和顏色"></a>排版和顏色</h1><p>Shrine 使用 12 grid system。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1JSMNlunwZaOV3F0t0eSsBqn3EhwN4Idk%2Fcasestudies-shrine-grid-1a.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<h3 id="水平格線"><a href="#水平格線" class="headerlink" title="水平格線"></a>水平格線</h3><p>Shrine 的手機和平板排版採用水平滑動的格線。欄位、間距和邊距都是從左到右，並不是我們一般常用的上到下。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1bzYYXTPp9EKoZ_D98LDkdpmmekDIUAK1%2Fcasestudies-shrine-horizontalimagegrid.png" alt="Shrine 水平格線" title="Shrine 水平格線"></p>
+<h3 id="顏色"><a href="#顏色" class="headerlink" title="顏色"></a>顏色</h3><p>Shrine 的顏色主題是單色系的，將主色調 Shrine Pink 使用不同亮暗做變化。底層使用 Shrine 的主色調 (Shrine Pink 100)，下方購物車使用次色調(Shrine Pink 50)。主要內容在白色背景並使用深色 Shrine Pink 900 作為文字和圖示的顏色。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1PqdLRDr8EpuHTdhT9f9HtIzxzGOjecJP%2Fcasestudies-shrine-color-1.png" alt="Shrine 色調" title="Shrine 色調"></p>
+<ol>
+<li>Shrine Pink 100 用在 “add to cart” 來凸顯按鈕。</li>
+<li>標籤(chips)外框使用 Shrine Pink 100，用深色的 900 來代表被選取的標籤。</li>
+</ol>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1ocq8e1RNTZOmpP2MXjRF1rAB4hk9nw4a%2Fcasestudies-shrine-colorcomponents.png" alt="Shrine Pink" title="Shrine Pink"></p>
+<p>Shrine 使用圖像處理來表示狀態的變化(例如被選取的狀態)，或是背後的半透明遮罩。客制的圖像是一種加強 Shrine 品牌的方式。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1Vzs31NWpv0YlZ2ejSZl6PEYqofYiNSFM%2Fcasestudies-shrine-color-imagerytreatment-duotone.png" alt="Shrine 被選取的狀態" title="Shrine 被選取的狀態"></p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F176hAMN80PxLeqkcw4zypAG5RZJFEIlq3%2Fcasestudies-shrine-color-imagerytreatment-patternscrim.png" alt="Shrine 半透明遮罩" title="Shrine 半透明遮罩"></p>
+<blockquote>
+<p>心得：使用水平格線設計我覺得是很大的挑戰，因為目前大宗的使用方向還是垂直為主。不推薦水平格線的設計，除非是遊戲、活動或各分類展示等特殊需求，否則可慮使用者需長期瀏覽的狀態下，水平左右滑動並不方便。</p>
+</blockquote>
+<h1 id="文字與圖示"><a href="#文字與圖示" class="headerlink" title="文字與圖示"></a>文字與圖示</h1><p>Shrine 的文字比例提供各種內容所需。所有比例皆使用 Rubik 作為字體，包含 Rubik Light、Regular和Medium。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1VcsKVTP1QNKoPl52cNCHauFM0_526cdN%2Fshrinetypescale.png" alt="Shrine 字體 Rubik" title="Shrine 字體 Rubik"></p>
+<p>Rubik 是非襯線字體，有著略為的圓角和多種的粗細可選擇。Rubik 是非常適合 Shrine 的字體，因為他是一種清晰、時尚、現代的字體，且他的圓角帶給人溫暖、友善和有趣的感覺。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1rec2nbnEXesSPYTicV_qbE6D9jmCuO5h%2Fcasestudies-shrine-type-1.png" alt="Shrine Rubik" title="Shrine Rubik"></p>
+<p>Shrine 使用 Material Design 預設的 icon 系統。這些 icon 在小尺寸的時候也能保持清晰和俐落。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F15IUNXILSXZmMGcH2q8W_vbS8YlO91vzt%2Fcasestudies-shrine-icons-alt.png" alt="Shrine icon" title="Shrine icon"></p>
+<blockquote>
+<p>心得：文字選用不同於 Roboto 的圓角字體，營造柔和感是不錯的選擇。</p>
+</blockquote>
+<h1 id="形狀和元件"><a href="#形狀和元件" class="headerlink" title="形狀和元件"></a>形狀和元件</h1><p>元件的形狀根據他們的大小來分類。形狀分類讓你可一次性設定多個元件尺寸。形狀分類包含：</p>
+<ol>
+<li>小元件 (Small components):浮動動作按鈕。角落各切 4dp 斜角。</li>
+<li>中元件 (Medium components):選單。角落各切 8dp 斜角。</li>
+<li>大元件 (Large components):內容區塊。左上角切 24dp 斜角。</li>
+</ol>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1f_u-uvDtYKjS0LEIevjDCbb1ALeH2Lks%2Fshrine-shape-b.png" alt="Shrine 元件" title="Shrine 元件"></p>
+<h3 id="按鈕"><a href="#按鈕" class="headerlink" title="按鈕"></a>按鈕</h3><ol>
+<li>文字按鈕：按鈕沒有邊框和陰影。</li>
+</ol>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1ZfoWLGKLkJhKTvX0Bfjc19jk_4teiBRF%2Fcasestudies-shrine-textbutton.png" alt="Shrine 文字按鈕" title="Shrine 文字按鈕"></p>
+<ol>
+<li>主要按鈕：使用主色調 Shrine Pink 100，無陰影，圓角和細長形狀。</li>
+</ol>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1dkaLfu-vECfRflUXOQDvYwFVHPmvIo_4%2Fcasestudies-shrine-buttonemphasis.png" alt="Shrine 主要按鈕" title="Shrine 主要按鈕"></p>
+<h3 id="標籤-Chips"><a href="#標籤-Chips" class="headerlink" title="標籤 Chips"></a>標籤 Chips</h3><p>Shrine 在產品細節頁面使用可選擇的標籤。這些客制標籤有著圓角的邊線和按鈕做區別。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1D0EwzNkf19srLxcQ8jLzRgYddPbDYaRB%2Fcasestudies-shrine-chips.png" alt="Shrine 標籤" title="Shrine 標籤"></p>
+<h3 id="頁籤"><a href="#頁籤" class="headerlink" title="頁籤"></a>頁籤</h3><p>Shrine 在桌機和平板使用頁籤當作導覽列。他們使用客制顏色、文字和狀態。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1BkLfpj3qECEoZ41gclPvw1w6NaQNM6jm%2Fcasestudies-shrine-tabs.png" alt="Shrine 頁籤" title="Shrine 頁籤"></p>
+<h3 id="導覽列和背景區塊"><a href="#導覽列和背景區塊" class="headerlink" title="導覽列和背景區塊"></a>導覽列和背景區塊</h3><p>Shrine 使用客制的導覽抽屜在手機上。他可以透過點擊左上角的返回元件來展開導覽。<br>Shrine 的導覽抽屜使用客製化的文字、顏色和狀態。置中的文字是另一個客制的特點。<br>Shrine 的返回元件使用客制的顏色和形狀。背後圖層使用 app 的主色調，前圖層的左上角有一個客制的斜切角。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1o4ts_Rfz0X97TaapdQ-9YON6O3WzE3WZ%2Fcasestudies-shrine-backdrop-1b.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<h3 id="圖像列表"><a href="#圖像列表" class="headerlink" title="圖像列表"></a>圖像列表</h3><p>Shrine 使用編排過的圖像列表來展示內容。編排過的圖像列表穿插使用不同大小（相同比例）的區塊創造有韻律的排版，且非常適合水平瀏覽內容。</p>
+<p>編排過的圖像列表對於內容來說非常理想，因為他提升了每個商品的重點和新穎性，讓使用者不會過快的掃描內容。</p>
+<p><img src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1bzYYXTPp9EKoZ_D98LDkdpmmekDIUAK1%2Fcasestudies-shrine-horizontalimagegrid.png" alt="Shrine 圖像列表" title="Shrine 圖像列表"></p>
+<h3 id="購物清單"><a href="#購物清單" class="headerlink" title="購物清單"></a>購物清單</h3><p>Shrine 使用可展開的底部清單讓使用者可以簡單的到達購物車。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F10tATQMRwpM8VtaVZKbVnBv3uzaXVDEMT%2Fcasestudies-shrine-shoppingcart-1b.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<blockquote>
+<p>心得：對於圖像列表的水平滾動方式我不是很贊同，因為大多數使用者只會對前幾樣商品用比較慢的速度查看，到後面都會變成掃描式的，故意編排成眼睛不易掃瞄商品的方式，只會讓使用者變得不想用，因為他沒辦法快速的查看大量商品做比較。</p>
+</blockquote>
+<h1 id="互動"><a href="#互動" class="headerlink" title="互動"></a>互動</h1><p>Shrine 的互動設計使用增強的淡入、較長的延遲時間來漸進式營造優雅和愉悅的環境。</p>
+<h3 id="起始畫面"><a href="#起始畫面" class="headerlink" title="起始畫面"></a>起始畫面</h3><p>Shrine 的產品 icon 動畫透過幾何的形狀變化來表達 logo。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1z58j-BuFmvDzpsnkpzPnpBENPAmy-RWb%2F01-launch.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<h3 id="icon-動畫"><a href="#icon-動畫" class="headerlink" title="icon 動畫"></a>icon 動畫</h3><p>動畫 icon 增加樂趣且引領使用者操作。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1fghiYco9yt2kaHxdvpvvG5H1Rfys8xyi%2F02-icons.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<h3 id="漸變得導覽列"><a href="#漸變得導覽列" class="headerlink" title="漸變得導覽列"></a>漸變得導覽列</h3><p>Shrine 的導覽漸變動畫強調淡出和長時間下達到放鬆和優雅的氣氛。時間延遲用於引起對重要元件的注意，例如購物車和結帳按鈕。在背後圖層使用交錯的淡入淡出來產生關連的效果。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1a5xbi_QBcDBvNwKFyY10vXqAE4oJlSAb%2F03-navigationtransitions.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<h3 id="示範"><a href="#示範" class="headerlink" title="示範"></a>示範</h3><p>當第一次增加商品到購物車時，一個示範的動畫將展示商品已放置在購物車中。</p>
+<video src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1SlTir4qcIH6gcKn2ZwVzAF5dA20rFtHF%2F04-tutorial.mp4" autoplay loop style="max-width: 100%; display: block; margin-left: auto; margin-right: auto;">your browser does not support the video tag</video>
+
+<blockquote>
+<p>心得：對於會動的 icon 和示範商品放入購物車這兩個設計很有興趣，若有機會的話會想要嘗試放在專案中嘗試。</p>
+</blockquote>
+<p>總結：Shrine 這個案例除了上述提到的水平滾動設計我不是很贊同外，其他的部分都很值得學習借鏡。是個很不錯的案例，那我們下次見囉～</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a href="https://material.io/design/material-studies/shrine.html" target="_blank" rel="noopener">Material Studies - Shrine</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Material-Design/" rel="tag">Material Design</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UI/" rel="tag">UI</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UX/" rel="tag">UX</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/07/03/Frontend/React-Redux-Practice/"
+                    data-tooltip="React Redux Practice"
+                    aria-label="上一篇: React Redux Practice"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/05/01/UXUI/Google-Material-Studies-Reply/"
+                    data-tooltip="Google Material Studies - Reply"
+                    aria-label="下一篇: Google Material Studies - Reply"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/07/03/Frontend/React-Redux-Practice/"
+                    data-tooltip="React Redux Practice"
+                    aria-label="上一篇: React Redux Practice"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/05/01/UXUI/Google-Material-Studies-Reply/"
+                    data-tooltip="Google Material Studies - Reply"
+                    aria-label="下一篇: Google Material Studies - Reply"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2019/06/07/UXUI/Google-Material-Studies-Shrine/';
+              
+            this.page.identifier = '2019/06/07/UXUI/Google-Material-Studies-Shrine/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

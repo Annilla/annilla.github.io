@@ -1,0 +1,1133 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Serverless Azure SignalR with C# and Azure Functions - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～\n\n因為我習慣用 Vscode 開發，所以下面說明都是以 Vscode 為主。\n安裝環境\n安裝 Azure Functions Core Tools (v2)\n\n安裝 .NET Core SDK\n\n\n查看 Azure Functions Core Tools 版本\n1func --Version\n查看 dotnet core 版本\n1dotnet --Version\n登入 Azure 建立 Azuer SignalR\nAzure 入口網站\n\n新增 SignalR service 如下圖設定。\n\n\n注意：這篇介紹的是無伺服器的方式，所以 Service Mode 要選擇 Serverless。一個 Azure SignalR 只能選擇一個 Service Mode，所以傳統的 Classic 方式和 Serverless 只能擇一，兩者不能共用同一個 Service。\n\n設定 Azure Function1) 開啟建立好的服務，複製主要連接字串。\n\n2) 複製官網 sample\n3) 進入 src/chat/csharp。 將 local.settings.sample.json 重新命名為 local.settings.json。 將連接字串貼到 AzureSignalRConnectionString 並設定如下。\n123456789101112&#123;  \"IsEncrypted\": false,  \"Values\": &#123;    \"FUNCTIONS_WORKER_RUNTIME\": \"dotnet\",    \"AzureSignalRConnectionString\": \"Your connection string here\"  &#125;,  \"Host\": &#123;    \"LocalHttpPort\": 7071,    \"CORS\": \"http://127.0.0.1:8080,http://localhost:8080,https://azure-samples.github.io\",    \"CORSCredentials\": true  &#125;&#125;\n\n注意：Host 的部分是在 local 測試時，為了避免 CORS 的限制所設定。請務必將 local 要測試的網域加到 CORS 的值裡面。\n\n4) 開啟 Functions.cs。 官方解釋如下：此函數應用程式中有兩個 HTTP 觸發的函式\n\nGetSignalRInfo - 使用 SignalRConnectionInfo 輸入繫結來產生並傳回有效的連線資訊。\n\nSendMessage - 在要求主體中接收聊天訊息，並使用 SignalR 輸出繫結來將訊息廣播給所有已連線的用戶端應用程式。\n\n\n5) 啟動 local function 測試。\n1func start\n\nLocal Web 測試1) 因為瀏覽器若打開 html 頁面會預設使用 https 處理。所以為了避免 CORS 限制。請安裝啟動本機的 http 伺服器。 Live Server\n\n2) 用 Live Server 開啟 sample html 範本 /docs/demo/chat-v2/index.html。\n\n3) \b自動開啟後，務必輸入 apiBaseUrl local 測試為 http://localhost:7071， Name 也是必填，請輸入聊天室的使用者名稱即可。\n4) 成功之後就可以輸入訊息測試。並能多開數個分頁，測試訊息的接收是否正常。\n\n發布 Azure Function\n安裝 Azure Functions 擴充功能。\n\n\n安裝完後請務必重開 VScode。接下來我們開始發布 Azure Function。\n1) 請務必確定 VScode 只開啟 src/chat/csharp 中的 csharp 資料夾。\n\n2) 從擴充功能登入 Azure 帳號。\n\n3) 選擇要發布的地方上傳。\n\n測試連線上 Azure Functions1) 拷貝 Azure Function url，將 html 中 apiBaseUrl 改為線上的 url。\n\n\n2) 因為不同網域去打 API 會有 CORS 的限制，所以需要將測試的網址加到 Azure Function CORS 清單。\n\n\n3) 一樣使用 Live Server 開啟範本，就會成功連上囉~\n把 web 放到線上 server 測試\n注意：剛剛上面都是使用 local web 測試。若要把 web 放在線上測試的話，需要在 Azure Function 設定連線變數。官網沒寫這段，害我鬼打牆了好一陣子呀～怎麼設定變數如下圖。\n\n\n\n\n記得如果是線上 web 都要把網域再加到 CORS 清單喔～\n\n以上是無伺服器的雲端 Azure SignalR 基本安裝與設定，如果要玩地端的話可以參考官方這篇，那我們下次見～\n參考資料\n快速入門：使用 C# 搭配 Azure Functions 與 SignalR 服務來建立聊天室\n快速入門：使用 JavaScript 搭配 Azure Functions 與 SignalR 服務來建立聊天室\n使用 Visual Studio Code 開發 Azure Functions\n教學課程：開始使用 ASP.NET Core SignalR\n將訊息傳送至用戶端\nSignalR Tutorial 16 - Coding Our JavaScript (Client Side) - Part 1\n\n","dateCreated":"2019-09-10T00:00:00+08:00","dateModified":"2019-09-10T00:00:00+08:00","datePublished":"2019-09-10T00:00:00+08:00","description":"第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～","headline":"Serverless Azure SignalR with C# and Azure Functions","image":["data:image/png;base64,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","https://i.ytimg.com/vi/Dvv2hkXyHcg/maxresdefault.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/","keywords":".NET Core, dotnet, VScode, SignalR, Serverless, Azure Functions, C#","thumbnailUrl":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUcAAACaCAMAAAANQHocAAAAYFBMVEX///9ZtNlRsdhSsthIrtb4+/2n1eldttrg8Pf2+/2h0efk8vjD4vBsvN1LsNe93+633O3v9/vQ6POAxOFyvt6YzuaNyeOHx+Lh8PfW6/Sv2OvJ5PGTy+Rtvd54wd+r1urKXpEyAAAGxklEQVR4nO2df2OyIBDHEzBNE7Vyzdrq/b/LR7f1rBUHHErWyefvVvLdAfcLXCwCgUAgEAgEAoFAIBAIBAKBxxDXadtujuvjpk3zeuqneUVWm+ptl0ScyR8441Gya8p2NfWjvQx5uU+E7HS7h3MhP5t1PvUjPj/psuBSJeGVlpInWTr1gz4zbZao7fAOJoOUEOVOMhsNL1LyUzn1Iz8f9ZJLhIjfSLYMu/g1q4xjTPHaKJug5IVVJtxU7OEiC67QF1VitbXANhmFdbJzdAr8uniLTGa/d2fDVezhy6kHMilp4r4w/kXuZhzkHPSRCw4211VytR1nTl+QzdQjmoR04DZ9Dy9m6Euu7QJpnJDz27crMbqKPWIz9cAey3LcpfEXOavdxpuMnUXOSEiPMnYWuZ56eI/i7GdtnJuQlU9r/BKynXqIj+DoW8bO/5lBjJhbTWpeDBIyIZ+SXFlFMaI8D/LS+Wnqcfpma6OPrBbZsGhHEs+jWYUxnYxDdSS+16R2k3oxXEfaS6TN7iGq/pODdWRvUw/WHzZFhJ8AebCOhFMWuYU2l/B4uI5REk87XG+czNr8T9eMoCMjmh9fm/fq32TNCDpGgmZYkxgHfpU8HENHvp1wtN6ojCXW69RhI9RIAbSYqqDoRMZGc/yTgY0BVnV+rN4SSykJhofGbBkqkZ1XJ5vaN0HfxzRqdGElbyzaTskZZGkwR5ck9iozTm9JrRC704/XsTpVbw2+FP8YeRwT0+rH615SKQ0WyWm1WHxohysGVKbyQrtKsmq8QUxPrF0dBxb49lohk5GG8BSsdTqK48Bvb3SLhqQUHOqqCSOUm3V9BYxQhaHWyDjYGnsaWEi+G+H7nwTNtB6yxVyhMXhGZ2LDu7UcwxoXfTkX1pHOjg0OcpRJ/UULmjwnU6gBWyjGssYeOGHJx/uRaYGWx/GssQc0ejKeD7A8jmmNC81mxqj08RVKHdnYyWr1z3Tzmki9awVNOOZA9PmxBjolQIMk4kG+j3X27du6uIyWaiWhPyFSyN6M3jjKIuWaAG3ZRNpKD6Pa4zfKoBzyIYkkxZvxD251PpPCIqGghkjj/ZsPHaNIseid1J9kh8cP2gPA6AaiOrm+VK8gLHv8oD3w6cceFQYJHIUg4kCa+3qcUNT4gWoajUyFuSHFDcVsrQEdSfRLxX5kVKkTA4mloKOOz7ufWgE6kuhOiT1tM4qwGdIx2KMGvr/7Kdo6+tpn7r3rd2CfuVf8FfGkoyJqBjIiRJqlDK1mriiyikDTFBE/fOtFRlWrLVDAINJS4SVPoTz2Bhy74zSu/gCyB8NkLBQ/VAMfljS6xLXNZm7IrapUAPVOE+lMsTosjIEL9YIHNvnQ6MkF64U2kt1XDGUCXC0MZCmiSLUGvCLuDiTfnZc3lClU/YPWYSJu+GKxd57YmB0CjD+JlBVsThZCYJq7K+i/RWS7Nh76gOEIS4J7fgWNNgDTaQWdjoiNFvT2+X2e8lVxjAwxdRW4aYNItbDHsaMCcXwaCmUidcfAi5I6TWyO8Pt0V18QusjH6dY3xEliTSqEjPfYk7lMbG69z+ruBRq563daXCa2ffZVcwqpWx59juvhOExsbtttp70Wn0YvxX8O+NDQsujc6i+UJLRb9+hOGKqxa1qMM8NL+qjkei7giws231qa3rvC6RyK+yZFxtgWtam4NL9KicxZrv8gq6/GWkCaJWYngEil8Br4IKXSjjTe86puq49I2CwUnFAscwFlkPD7tuoi4YLbrbYkby7EGaQEU491ZL9lETRHq2s0rxCgkPnw/8VLk+OCQ1jI2q5wRs53vIC8G1NjkVZCkqnL3ILthJRn6JtsLJJUwuwv2IIX0DexsBKSos9zoUHmIQcISfv9Utj8mQCLVAYhCc/qHmyYrbNIvY5UitYA6JdKuVmkdRL4ZUEn0FzWSEEtXaYAffxVgFEyJOQs3phrGY1cC4mc2ozEuSMjtWW2xsa+VEKSjQdveccXaxBC8oKwA/4XfMe4vZAzkrELEL0JOSsZ/Vkk2xH3v2/JEVntHyHB05a/Qsp57NTX1Pr7052EFLSaUCx5w4aIEpTpW0iidQQjpVXt1NIiOee0WnkQvGPnts4ilUcOZ0L8gcyjaYR85HM/HxtTp9OtkLTzswM427xoKwhppt6jNm4WhIRoT5hlciZpMSfaHWJ2E69hDSNt7NOSNC7Q80V9iGxfORqE1JNmhc385gJzonie5NVJ+yZcJkWSHWeVZHQl3iz3RSQYu14xOe8UZMkp2wQNMdRpeW72pyLpKXbbfXNYp3XQMBAIBAKBQCAQCPzyD//kVoYOpPZmAAAAAElFTkSuQmCC"}</script>
+    <meta name="description" content="第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Serverless Azure SignalR with C# and Azure Functions">
+<meta property="og:url" content="http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://docs.microsoft.com/zh-tw/azure/azure-signalr/media/signalr-quickstart-azure-functions-javascript/signalr-quickstart-create.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/ebUg5MNe8j6YLI5O56lihd2NTFy9SHkFwW0WZdZnz25HzlKWkEpveUnMpfw9Og1Mkm2wPnqATYzpizjHtt6onCppsz7kRYnrXE-DRBapeoxUwNJLvjKR7O8nkZzNVu37tdUtRXIqFCluv42EXrrKaCQbWRKEfsSFsotts0AnmxXqpyEjB7gKkDUngv-Si0OX8UAy4nH2t5oc1uJumiSBkucK4djsxN_QQVLuBjXlFlzN1-lNt6x3j-KlraBvkCf7J9wLB7cp1_lOMldLoK6bG5ixiKebGTJly_gfZ9J4HN2JF0OCPP87eI4QsGlVPprfTGwgw6swCJaO4TiodAj0zzgPq8SX6qmCE7fS7-1gSDLK1hzTNedZ5EzcCTblltvhdsOuxgSJFc464UYaYcTfcwzZ3377cg9jzGa4ijNRdFRGHYQbvdssgoMuxA8_gRV3qmtsssBOQzKhRwFriUOcR2Mk2RnJEzCknPvIhDDq_aDuO0DJvUr18p4zLV3IK3gdawQtusInwbLdySAFB6VGiKoPK2xP6IJA1RYGUIWx3a7uEqX3KPpI0OjVY5lORd_rtCzv2m69xRSB_ygGXHYVt1_Mr_MsI-vVbpOzZtPob9L3BljtzaWXYBaDaFMeFGVKKhTHR_Gv9i12qfSZCi1j9pffRE8uAVRTmJVYozGlhqffUtNkUHxaDsO2=w1035-h483-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/3504Bocz7haQ3JPmdJwqa2XwHdc_EhIQpmtPqtOftqxaQUK5qLHeVAaSz9JNWpEhD7ezP81kEeq6LB6Loa2aL5OIYYWVjjA4GwibWVIl_pbw_BAN9IyZfTBBvmE9Vz-NRljNw1h-6deKZJZLgWT57tKi5I1ml_PwuOFGL0fh1PHbrPq6VC8YyVchEb4l0OdFYdpFz2h14pJMmelh0jV8M7lqQrIY4aK-lN0ttAn01wQZWh7nnXO-aVhFxYVdI6_-SKoDsu2LnFscOqb5QohvLZkFF3FzgPzRqraWwE4F-KRgXrfk1JPrh0r1qB0yAtu0VZfdbwk1PSXlhnabxHVn6_F0Z6pfrcaASFIkQHzrIonsxwPQm40_W5_BJvRxWCxVHQJed5--C4226IoeDXHRu3jevGzWButrAGJq0s9bCDzrmDg_u9MNKP4klPgZDmmLVfOrqZXAIOhrXmiEOvUSPdUXnIyOOzo0mtU7sFyqmf3UnCk7afZQ3uR8gxGhTSEBsVSl743Csc2-Xp84PJ4xWsmwxfi5vxrPRv3NVO5LQ6v5GB_vx49YCqaxJjYv5tZ9Fd_Hq_2S4MhASR5fSGzD_TzReNfs7p0KM333949JNKUb-e2-nLCkwxdHS0Yk-AZKQ70M-bZTUVu3HElg9UrkfqpdMyu4LtzbiimLqIOGyekCOD3FqShQ8r9q=w2206-h1378-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/91mzygWcGmu3ljW09OLhtTAfv2Ugb589jczgciy3mOSuWbCUBjOAeN2BUA-MgYWzRbaoXFWwIqoUHqzcykEA4Aw4odpSHDSboaTWxYYpnTT8CmclxtK9t2HYZWUF4HlUKk806h8Jhq3iup2I414hAKpWCtcKgPidv64aPwucq3GYS_ZKsTXudLB7MIfK0wZ_yR47MscN_9ne6KDJvzv3EU4T-1XNMJZdu6ISqzgrUUCgIh-hnUHeSUH6Vy0M1Kc4rNDjBnp14xLA899OhmeZJiB5xQ5UKbv9Icf-dT3yW7qQRSgxWnMvMWgyle_DdmFSYwLJTqMjLaCnBF_LZiS1bJMfDcuctigjp3lqhy75LDcVssUs55sG_8qmd6zgY1A1PVeEbc3faMfQwM9ANDRZA4GAPLFTVYfsp5wVR6cCkYc6tehN7Q1D2DhTrgoJCZ55r0-9nsG-uA11nh5Lmy9Fe7TmPMceVqZXWYYqdP8Q35UHa8Kgq54dfYLjJ2PLOisuHzurd-qQes4NQfhCvsnsXW78VL-UsaW29tFMS_7k7_NH4X9DFNP7oUBsv87ISO_kpm0VWAylbsilxbLT8n5xa57q3USTJuBR5e6DYixRM0L0K_ElogvfiC2TMmYg_F4M5j_Fmg-VoPrxzIt4u6CQ9sNJ6ExcujX0ZEth-aiguKyQNlK2xBs2x9L8=w1908-h938-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/AgiqJicbCJPOqOd7krSCj4eoQulKtewUr71Gs67h-Z3PWiWpQT3hUguVvqQ_Wbsg82SPMZ6Cq5BC9BLN-YkgZQTf1l7JRwd3k5l0yfztgG3Mb_rRUps_ozF1ebzft2z4rst0i4xcEdY453CtVWWHIfkpl6iGgAdDptdUUDfeWvytYg8LEZX-Z9mpkyXI79oI3sYcXVgloKf0FH3ArfwUquBNNwQEUano4e7PPOcYkvXP3d0v9eO2JvayxYfc-c3WSSHEj4rPbx6SvlbZa8O4-0Q_x-rDQuLEoa7u7kCrBnIdaw0xbRxRBhPiGGxbYUJ_s3dBstI4DKzDt-wyJyKBwwV8K5zhfy5wwx4E4grg9NVZf9dp0l2-DDoh7zjHBLCpgLU1-YdmLKp47cmwxLPA7-FnloIsldbLrBS7hv3OQAfDMEb9o8_MQb_44ELsklUVY6wSo6rY894Ew5Wmu24CBd5UbjnO_vjOvvtKNPZKrnDmvnqmofS0x1Kk-Qzy5qKgZ4M3xXt8NAwGm6qa2Xi2vTZhKwy-ApKzBz-VqaOE1VWNW4cCgUZCh00MBeYxWSCdeJOrQlHgkW_tP0zuBBZFxu88siuX6ZTxq3mpVNa7bENEjPJjCSpxMXQemG-CqhQCnGZJTBkSUArTNUSNRDaQ4jixziHJURlhdZlS04s0MGEjPgsLJGM_RKkR=w2206-h1378-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/PYziZWr5t2kOAe9sp4dAJ7f9RmUy-MVlPhZqyus33kJyLQIj61CocH4Rdj955TFA1SVQXZlsSqDhZtafBG5Z25vcLlq28mHCp8OnbxOqh65P81rNFxOH56SfUkJ91ha4KPI8ZHzzSk9zArbDgBNE9iM9NjTZ97lsDsbyO9kuqLDpuj2emQ1r9ak9iRLQXAotahmAelkr2dUiLCsbCphjQHX_fZA9k9KAsAmt2Rq7s5eBTqoHr_V3ZPHemP8QHJg41cHBMfLMwxaKKxqh7PtubOq33yRamyEsrFBfEi8mWAPfLTYmJbGD0izpZEuG1fhBamxoRt175Tgjv6qEIrwakqNQyBn_LnRoQCXYsntJ0XaWDka9yM1Vk9g4zeXp9Jdus09p3Gyj_ACYL98ESUffg8ifDiOPy7cAeFje9dM_FG3bQMtNBLn6Rq8BXXOcERuYUunQsOyalskX_8rnrfvDFGNm9I7Lm5y-wUMw59DmiuvvZsftTtM8lzhLKJDPziD1a_r13RhjLlBo1vfXM0Iq8dsGGe0G4KbinGq4kLIIx0rjg_BDDRQwQUThCUzpOVkYzkKPr7zyFTilAaZAsOeF_k54MrnLVq0sBPCUNN2EYUxI-mzWuhEtNIOzY4K-tmP1AtljaQeVRYnuDp-mMbmLfPW-2PiSf7iSlu6B03DhIpS3EfbFHW0xKEUH=w2532-h1246-no">
+<meta property="og:image" content="https://docs.microsoft.com/zh-tw/azure/includes/media/functions-install-vs-code-extension/vscode-install-extension.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/F2CzlCEtvEpCrmw7V_8x9zWfv-OYRpzWj18QN-HL_WfF6s3XCH8u8FW8QStEVeNvXCI6PDmPNKPdLolL8Vlh5EvtSYJvuYRpCADBrALiZIy510xQPTNSl4vZAiwWfFu7IXTGn9sIINa8YVH_ya_KRfkSX3-_5EvsFNJOwyQna6Itv0IaqDKpR2-TEOADt1-FN73D1WyTINzPcd3xS2IYk5EKJrloZPO1Jbj3ZlXxpvahgExMM5uxUZOR4X49neuWpuyIjxVzjdAKvY4ADg2W5cdBvQG-b02xAer7yQ6k4gB15eI3_d98HWArt-FDrMwt5EP9foIFU-dBT5V4B-C2-woI0MejtaK07QNZ082ahzsqV7odBCUVH2u3laLEVGzFRhAddf1DhpDobOQhk4-IB3XG7kYiRiWXr4lco1JTCYTDhy-TxgyHSpUsyMxtb8f--kjdQ5y1IF_uGQDRhF7dFhEUKImOFRj1Kc7sypo4uMS07dQAvFm0Nt7G5xX-IE8QOKjmgNrvOypegpsFswjQ_RDyd0YuT21ioMs4oogu8qEdanhGBc_9-lmbxa3Pfe_P2RauuKrczEJ2zIZlahNBP_e3CsPQqy1B5FwtWWk7Aej0GkqHLwJ7HmTi4oC6cH0fXQzz2ATYuSKg0VsPPeh5PGAbLsQZDZIipl1ScojTL07PltVv9ZDBYVwn=w916-h898-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/3ycoKSgCD3L5bhujgJ_qsAaR7iEmu-cDzoi3GceJ4nRtwqz9Sh9ZCNXXQ8nvcuWIUgm4mezj76JL3t3dy1lSdIi-74oqXPTDQYxol0-kaSbF5YTSgsdGI2wgSe_TN4g3UToGBBZdBHrGl9Xw784YIbzI2oFFgQ5FGaH2v3-1JkYpHJB1tde5NdND30pRpnwrbFzotRiyxOyt6lBDlWxuBbSpfIDISQa8Ya-sO79Z8r8cl2RMywRmX3WLVBI3OKVl9Gvi5OJuWmoRyb6jIfeBAWM8i89h5rwdEpCVkXvZO1BlxXRnIrp3Bo4u_EMLkC3VZb9G2KNlVkXgVel-6dL9IqoJ8oVPvorFZMV_sgZwW2_C_D6TH_1SsOs3OVlVT8lwoRjY4RGDJbaQzi7QtfZXfGk5--aTvDw7AV25IP0grR_qAt9X2_SmU4tjEWcjTYN6wG6a6FrQsRhbLhhGC1QOdD1NhyMC-tXZhz9XXuwKyC58CHc_ebYMGogv1PUuqhEy0wMrtKKtC0ZxhGZmH52BcjBrp0fIkp5JJIOeaiZelgAQLJ5-PpAvyY4OpDmSUnJle6hKAHFh6UmCFAu3v1bK4nS0zILSiPobyLEnwrkMbHAJzr44wOMTSVQlsa0ogK5GqER5NNRCACJ-61ztnUEEvdLGN3AhkWmQiCk2ya0YEECjl0LeXGuHk72f=w463-h431-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/g-Un1PRQE8Npznb4Hhi9gK6Doc7h4nunpZA3zKMEypcb5j5Ks54x20lEc2UeRykR532VeixY7u11THtW9HeALTz47SUBzzvE6vYzKZxg56VCa8GugLdxRDxvkDu0x6rZvvilshkKnPhsaNCsWEM2IkWSR3Nj1ctjhoGhn0gjjCTPz63muznRew9qqt87p-4ozb8EVNuHwIkJpCvG99uRGQ5L7cdaL6rS-CMmnJUB4EjyM15NeVCKJRpeiYJHkRnvuO_OhqLRhAVYRNtiFywIfnSviMhR1TU9XHYkq-IzS2V8cJ0FRw5u1FE9sF1BE3tjFNiuGiogDdVZ5X4JaGenHgYQU6TrACnF0I6xkHdC9oKXzXvaDgrQGos5UjNytVJeikB6DhCo0afU5vz1Qjtdn8sNRWqEAJvFAfYzVjDNtLgESZQ-ADAE099ID81UPDTnzbVYjZA8zCBkBZUNwQQOplIK-Xft_6cCFQtcsZx-ReUUJnma0MuhTd866gyM4_07eadyJ3ahZAQCZG73AvpUzxRIUsRpgjJ_-lGeEumg_CMxbF0QdEbvZfxriX7azPOitHPKC8YuXhcMAAmmD_3IEpp_VAVyadbRHWBzPtRvS8pkuMN2mFDlY1Kkabuwo5gvHF1FE9PyNodyni6pMPIJ4d2OOT8UO_5e_26Pjxsp5FOnO1nKbV5UPRqy=w916-h402-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/H_G9dyo8H_V-04HnuKLeYz_RIzpELVQEeIU2Oss1BgV4kb0ih2rs2ihnSG5V4cBpF27Bhuax9uA3jrh5jzi4NXG3xJR8g16s8Nksmlp7Q5zbI6JBkepAhstRwqkBhFiTtt2jAwGlTnWy1TXkPOqzjD8ejAxMDZYuR1Tsrrw9lHCxdicNe233wUwB_9T9Rj7CGP3SM3VvpYsBQ2EBQhrFYyCrEd7bHkMNT7lkuT1CIGT0eniiMKF5r8lmI3JWDKejkDnDj-Xhk5FJ8GhKIpbUTqfbGoYpmRCvhXkXGlPv_225nceq7FJjLbP47e7d0Xyiw4DSfpY4-eLzFQ9Pk1A36sw6u-3kko-FOEWx9hgm2wFkgUn8W-VG60dkn-edy6xzzVBG60BpNBtFU566ckPtVMv0BVtr6rcyTSghwv2BY3iJ5NNQNYl2n9wzDxGAhvp8USAVfkkooBvzISbwUHFE5mdAujs-xyUaQ7JGGwZEP2gpj5UrhW1mj2FKEtuywYk_HW02qkLII8igNcPqbHSy2xKB-hjsaERItaiDeBZvhujagZOWVhYDqdA6MvgfHm9IC8Dx2T2TtZSb6HsTNABrbi3tcRLbiG93_egs5jCaeLvkgA0yxATUZNXirp1z83sRtolFWzJOKeurzUtbT8qSlTkelW7UmZGEblCO6egJM9Oz7e-L4QE8mosh=w988-h371-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/6knLBtYnBsO_4Q_JDPw8eeF1ndcFzBRIKrQPXxJY1XU-e_Dtcsf950sXVO5EDI6CsFwAcMyQ_C_noV8rIb-tWuQZaSVgYTV9-PAn8BHzHShn_8oP_nF3-ix7-6bTR_Zd8ABaSYk1mo3LN6bED7uxK0U9mTY36PF53UpWKF018lOsSezcpuouyeM_qF8TPOsuZ4T4t2V7QBc6NM8z5qXVC3uDLPUrQFQwfegIKE_8k5kPgHMxNTPOoVChCf1k4_YEIxQDJUvGdWa36rI789G10b0VHjzCQxS4vRROdTKJ3p2nNfhDd1LxTvsuUGUnIRvcK7wozQ5G0j8hsxCv-xQJ29dgQkG8nhM8RrBX4oz4Na5_169tKWRUIbIwsJQ55UugbqxpM3OC36-BmvxZ9s3cz9ROJ4cYCkKVnREJyXo4gGMFck_h0XYxJe94-I0LXQQ3A3uGATHqRgl_CcE-1xISolLp0mYvgKpOC6XuDiZH1tRGt0xSInHwnZYuMc59fBawXeiivDGkIjacRbbUsHKr0RLPQtb6eAW1MUyVpOVMhjTQlcNWUJ_Vbsy6VtprtIeolwbUQQSNgqRSemMaS_zPCH1djV1gG-94h_8wOcm_phJ8AkfKmN1elF_gB8WTMPFvs9etI30qy60U4zba4HU2tlFYE0OnoyGHOlvaHzjBSj4Pm7zHJ8Ben9tG=w2192-h880-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/QrDuwqSA60bt68i0DoP72Ci94RwvCX6hbD_cjb-yYHhAzBboVJxMZzYIZ6lMgkZAlcv3wyBfBx9sqxwsnUpKwsB9HU8cmQiHCDEnHHLaf5ZsIe5rXI6x8yPAifMnei4xjnRoR5qBkTWoE4jw7gwIE7aDoQeu3VnWTLAndv0-N5nmdY5FoBp1h2ESAM6rvoYYdwxvyWJSJq_xaq43p-koGaoOlEyxfeiUuVGNfPadwjWg9mBAEXFNp2pBa84A4OOd6dfLX1Wzdm1cWgwRtzob9-bF1GZT8f7cj2hl2WMRdhQaP-itxxoFcSVut6uscXFkN1G93Yr7ckHLeiM04jqcMWUdf5IkAtfEInI9lDinK9gljEDCRe8xHCRewByz2Fbp6eSt_RA3RV6FqBi8-VaIuBn0aqlBvPrP7HC4lfFLqy3tdeh7T_afav5Cn2rPn6YuTn4eFGduKK6vvslTShwT208Nl7VE2I9-p9IF0Hndfty1uINjTWP66RRhvpBo40qFSNR95vDw2pGXY-QCEvZinXOk5-YK5RZ6-mmXxc-B5D7mjwbR6u0fiX58NaIL2Wce1hVkraoycTOg2Q1wN25L-OwN2zLmTe9KbwQJ3lqoTsAGuq_tGz-nfHWLpf9cXaqYX3YvEqwN2BwNAs6YKyYCnsR65zG5FlzgSM5UERmDd05BXpI7mnDlhLKF=w996-h574-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/Rp_UC6QBZeSOB_6j3kFgK-w9aZNOhE_oybskL2rkFZSdEFYrrfnylveIY0fX-wv3wODLHZyD8AOu2IUwYZebGn5Z7r_rx1jNg61SVDRhuXDYKoLpz7WTfCkcrlZqUx2iEyYJifDtSjDE8GtWehIa8QhwbX1Bvd5qV2vg3Ib5opXrbirNkPy_u-LACXcIrb2ppbRJgs18C9KQs-PY1EPOq3L0s82tpCNkDgGm7vXPVzxcof5zYRpF9VEWumxKadf5a080ALj2oqP6zmZsKJNQdLNzVr2xX8GU-n37TijB4G2masD6i1M6LcSxupOoO038I4nlYutuCUfAy4zp4VKB5xX6oFpX1cXePexfH0Lcdak1yjxSO9r53B_ZrbDC3GhG98V9YehQ7ONMzcy0-vEGyijB-D5mzP6FMgDt6qQHOBwgjOt2p7DOOfHv3em8Z08YVcjb0PJD1hLCI6L28CynDIhZKmtVFAYFJnJytd8938x7xdRJ1p4Y0QMZSBDlXj6nj7uEbRcC082NGv9Q4HCjARts7YVkriMl6mmpGcXg9SsBJhfZOLaPl9_eUP2hAu2dntZpSxg9gOVpoEK3yohgeaXLKAOgqH55KDiAikDyw5e_Waqbvz3LqbfT3wR-z5SkYjhaK9nz0pZ4p59cnOkWqu_81nqpMHdGn0quQokoh-nO7WNgfZyL-7RZ=w561-h592-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/_aALFr19DSl7A3vekHZWLNC-DKSZhWp44BLPoujaLFiCL6MDn8sxVNKZvw3IKB9-OmwOoxCHSa-ltJurLIG83osiLAaZeTjJxj8AlFnJBt3uGR2tyegFXkdoyxKpa1gDW3dZdPICSsCPiN4KMTlYAzSBdNEQoI3RnOvtkoNqruCcVph5qICYnAfBkGywtdR-dJjTyKKfuW8RZaFEPcHqqGhg35nibhg1jei8wJflLVHtN48vFNcsrAuyfGnziyEGjj-VxPocDb9ofJEHR8uRnIjL9qUOB-zGb9TA1j7Pyo1tV9UkuczX1KWXCO_jsd3rp-FDCAQ2dcHoLc6y9OagLkJSqGC7EJkaccgCuu1HRmb7_woIrvnIO8k5iYbvsf4bO7af8IBLgA-OFR_YlQpIGsXwoc1PSu-rMCGAEzSkhHsDNmTaCpyO-L-YLB7Z3vCOkavIMRpDV1ZcnLYd8jQ5USusENO0bzOXZNo4-D6sPyGhpl9g92pOoQmJ8DRgaxAqTGRxItUpkNLBDudfi-4-jGM_IDbnRTyLlWW9hLx3FLjDfA2QL0-z2Plp0NRfh9qdegDb3Ym-fmKS71Wp2g0WsVxhNhfdf9pDYcAkBDKqNF9HpIlRuATIi_HAGFGJ0W9imvB0-q2gQ1AfS2_YOIvUTK0v1Kl3-OFJuLwZqbm2kL4d-Sei-CSUkhV_=w451-h285-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/jeAfFyL52YQfyyvIpqgAMgrqCLGm3yBtZDYfH_VXbFExgRV2kTjgkj5TOad0fZ4EkwPYyKOfKrgajprSXSsqmn4Tdcp_73h5YRS0VBZz55ZoHE6_ojFZ7TmeAOnd7ONKRQFxzr5jRZEZd34eWwVahN9o9bZYgcBWpebxN0fIihVQdrf3a6meMzzLPRH1HVX8hXwXr_W0j3FKVAz2Lf2-cNa1Bni_eycfszIrU7XIf8fiVuldSBReqZgd5NtbSuiRJSPFIuCjg08_X9e2aCeeKYBfjuy9tS7c2V4f0gUk3CoC9W-Beyh3ueJ17TkIm0BhzbUqWt8y374DL7FQKr55GaHzz734aRkvVOQnUNeR6efL1KVcriTVDwNCbjuqovljM7_b7VvQtY9O766_F8R1TNMRz26z6sqN9QfFbEFGEBbmECjJbecN8VKb-gTZ_4qSqnHTyiI-UCzcWPddZkoZ1mRridVcnZexsEQ6TD-k7upFmprShkVX-MuP-QIjR6MPqS0QCiwTbzSLB6rwgXbdylDIh6oUlc-5PrpYBhetsdjEIKqIDQNKOkEngxCuZn50bixXooAT78orR4EatTwcd67ERYGRqJRB4KQOxSfHaJCuq9ut53NvM9lPxsPsO0f_kuFsYL46-sSodOnd2-CE2dtRUK-nrqejDhWL_9EdLwBTrlAM9Dqph-Yt=w989-h560-no">
+<meta property="article:published_time" content="2019-09-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-09-09T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content=".NET Core">
+<meta property="article:tag" content="dotnet">
+<meta property="article:tag" content="VScode">
+<meta property="article:tag" content="SignalR">
+<meta property="article:tag" content="Serverless">
+<meta property="article:tag" content="Azure Functions">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://docs.microsoft.com/zh-tw/azure/azure-signalr/media/signalr-quickstart-azure-functions-javascript/signalr-quickstart-create.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="data:image/png;base64,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"/>
+        <meta class="swiftype" name="image" data-type="enum" content="data:image/png;base64,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"/>
+    
+    
+        <meta property="og:image" content="https://i.ytimg.com/vi/Dvv2hkXyHcg/maxresdefault.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://i.ytimg.com/vi/Dvv2hkXyHcg/maxresdefault.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://i.ytimg.com/vi/Dvv2hkXyHcg/maxresdefault.jpg');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Serverless Azure SignalR with C# and Azure Functions
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-09-10T00:00:00+08:00">
+	
+		    2019 年 9 月 10 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/NET-Core/">.NET Core</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>第一次接觸使用 Azure SignalR，順便玩玩看雲端託管的服務，那我們就來開始吧～</p>
+<a id="more"></a>
+<p>因為我習慣用 <code>Vscode</code> 開發，所以下面說明都是以 <code>Vscode</code> 為主。</p>
+<h2 id="安裝環境"><a href="#安裝環境" class="headerlink" title="安裝環境"></a>安裝環境</h2><ul>
+<li><p>安裝 <a href="https://github.com/Azure/azure-functions-core-tools#installing" target="_blank" rel="noopener">Azure Functions Core Tools (v2)</a></p>
+</li>
+<li><p>安裝 <a href="https://dotnet.microsoft.com/download" target="_blank" rel="noopener">.NET Core SDK</a></p>
+</li>
+</ul>
+<p>查看 Azure Functions Core Tools 版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func --Version</span><br></pre></td></tr></table></figure>
+<p>查看 dotnet core 版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet --Version</span><br></pre></td></tr></table></figure>
+<h2 id="登入-Azure-建立-Azuer-SignalR"><a href="#登入-Azure-建立-Azuer-SignalR" class="headerlink" title="登入 Azure 建立 Azuer SignalR"></a>登入 Azure 建立 Azuer SignalR</h2><ul>
+<li><a href="https://portal.azure.com/" target="_blank" rel="noopener">Azure 入口網站</a></li>
+</ul>
+<p>新增 SignalR service 如下圖設定。</p>
+<p><img src="https://docs.microsoft.com/zh-tw/azure/azure-signalr/media/signalr-quickstart-azure-functions-javascript/signalr-quickstart-create.png" alt="SignalR 設定" title="SignalR 設定"></p>
+<blockquote>
+<p>注意：這篇介紹的是無伺服器的方式，所以 Service Mode 要選擇 Serverless。一個 Azure SignalR 只能選擇一個 Service Mode，所以傳統的 Classic 方式和 Serverless 只能擇一，兩者不能共用同一個 Service。</p>
+</blockquote>
+<h2 id="設定-Azure-Function"><a href="#設定-Azure-Function" class="headerlink" title="設定 Azure Function"></a>設定 Azure Function</h2><p>1) 開啟建立好的服務，複製主要連接字串。</p>
+<p><img src="https://lh3.googleusercontent.com/ebUg5MNe8j6YLI5O56lihd2NTFy9SHkFwW0WZdZnz25HzlKWkEpveUnMpfw9Og1Mkm2wPnqATYzpizjHtt6onCppsz7kRYnrXE-DRBapeoxUwNJLvjKR7O8nkZzNVu37tdUtRXIqFCluv42EXrrKaCQbWRKEfsSFsotts0AnmxXqpyEjB7gKkDUngv-Si0OX8UAy4nH2t5oc1uJumiSBkucK4djsxN_QQVLuBjXlFlzN1-lNt6x3j-KlraBvkCf7J9wLB7cp1_lOMldLoK6bG5ixiKebGTJly_gfZ9J4HN2JF0OCPP87eI4QsGlVPprfTGwgw6swCJaO4TiodAj0zzgPq8SX6qmCE7fS7-1gSDLK1hzTNedZ5EzcCTblltvhdsOuxgSJFc464UYaYcTfcwzZ3377cg9jzGa4ijNRdFRGHYQbvdssgoMuxA8_gRV3qmtsssBOQzKhRwFriUOcR2Mk2RnJEzCknPvIhDDq_aDuO0DJvUr18p4zLV3IK3gdawQtusInwbLdySAFB6VGiKoPK2xP6IJA1RYGUIWx3a7uEqX3KPpI0OjVY5lORd_rtCzv2m69xRSB_ygGXHYVt1_Mr_MsI-vVbpOzZtPob9L3BljtzaWXYBaDaFMeFGVKKhTHR_Gv9i12qfSZCi1j9pffRE8uAVRTmJVYozGlhqffUtNkUHxaDsO2=w1035-h483-no" alt="複製主要連接字串" title="複製主要連接字串"></p>
+<p>2) 複製官網 <a href="https://github.com/Azure-Samples/signalr-service-quickstart-serverless-chat" target="_blank" rel="noopener">sample</a></p>
+<p>3) 進入 <code>src/chat/csharp</code>。 將 <code>local.settings.sample.json</code> 重新命名為 <code>local.settings.json</code>。 將連接字串貼到 <code>AzureSignalRConnectionString</code> 並設定如下。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"IsEncrypted"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">"Values"</span>: &#123;</span><br><span class="line">    <span class="attr">"FUNCTIONS_WORKER_RUNTIME"</span>: <span class="string">"dotnet"</span>,</span><br><span class="line">    <span class="attr">"AzureSignalRConnectionString"</span>: <span class="string">"Your connection string here"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"Host"</span>: &#123;</span><br><span class="line">    <span class="attr">"LocalHttpPort"</span>: <span class="number">7071</span>,</span><br><span class="line">    <span class="attr">"CORS"</span>: <span class="string">"http://127.0.0.1:8080,http://localhost:8080,https://azure-samples.github.io"</span>,</span><br><span class="line">    <span class="attr">"CORSCredentials"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：Host 的部分是在 local 測試時，為了避免 CORS 的限制所設定。請務必將 local 要測試的網域加到 CORS 的值裡面。</p>
+</blockquote>
+<p>4) 開啟 Functions.cs。 官方解釋如下：此函數應用程式中有兩個 HTTP 觸發的函式</p>
+<ul>
+<li><p>GetSignalRInfo - 使用 SignalRConnectionInfo 輸入繫結來產生並傳回有效的連線資訊。</p>
+</li>
+<li><p>SendMessage - 在要求主體中接收聊天訊息，並使用 SignalR 輸出繫結來將訊息廣播給所有已連線的用戶端應用程式。</p>
+</li>
+</ul>
+<p>5) 啟動 local function 測試。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func start</span><br></pre></td></tr></table></figure>
+<p><img src="https://lh3.googleusercontent.com/3504Bocz7haQ3JPmdJwqa2XwHdc_EhIQpmtPqtOftqxaQUK5qLHeVAaSz9JNWpEhD7ezP81kEeq6LB6Loa2aL5OIYYWVjjA4GwibWVIl_pbw_BAN9IyZfTBBvmE9Vz-NRljNw1h-6deKZJZLgWT57tKi5I1ml_PwuOFGL0fh1PHbrPq6VC8YyVchEb4l0OdFYdpFz2h14pJMmelh0jV8M7lqQrIY4aK-lN0ttAn01wQZWh7nnXO-aVhFxYVdI6_-SKoDsu2LnFscOqb5QohvLZkFF3FzgPzRqraWwE4F-KRgXrfk1JPrh0r1qB0yAtu0VZfdbwk1PSXlhnabxHVn6_F0Z6pfrcaASFIkQHzrIonsxwPQm40_W5_BJvRxWCxVHQJed5--C4226IoeDXHRu3jevGzWButrAGJq0s9bCDzrmDg_u9MNKP4klPgZDmmLVfOrqZXAIOhrXmiEOvUSPdUXnIyOOzo0mtU7sFyqmf3UnCk7afZQ3uR8gxGhTSEBsVSl743Csc2-Xp84PJ4xWsmwxfi5vxrPRv3NVO5LQ6v5GB_vx49YCqaxJjYv5tZ9Fd_Hq_2S4MhASR5fSGzD_TzReNfs7p0KM333949JNKUb-e2-nLCkwxdHS0Yk-AZKQ70M-bZTUVu3HElg9UrkfqpdMyu4LtzbiimLqIOGyekCOD3FqShQ8r9q=w2206-h1378-no" alt="local function 啟動" title="local function 啟動"></p>
+<h2 id="Local-Web-測試"><a href="#Local-Web-測試" class="headerlink" title="Local Web 測試"></a>Local Web 測試</h2><p>1) 因為瀏覽器若打開 html 頁面會預設使用 https 處理。所以為了避免 CORS 限制。請安裝啟動本機的 http 伺服器。 <a href="https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer" target="_blank" rel="noopener">Live Server</a></p>
+<p><img src="https://lh3.googleusercontent.com/91mzygWcGmu3ljW09OLhtTAfv2Ugb589jczgciy3mOSuWbCUBjOAeN2BUA-MgYWzRbaoXFWwIqoUHqzcykEA4Aw4odpSHDSboaTWxYYpnTT8CmclxtK9t2HYZWUF4HlUKk806h8Jhq3iup2I414hAKpWCtcKgPidv64aPwucq3GYS_ZKsTXudLB7MIfK0wZ_yR47MscN_9ne6KDJvzv3EU4T-1XNMJZdu6ISqzgrUUCgIh-hnUHeSUH6Vy0M1Kc4rNDjBnp14xLA899OhmeZJiB5xQ5UKbv9Icf-dT3yW7qQRSgxWnMvMWgyle_DdmFSYwLJTqMjLaCnBF_LZiS1bJMfDcuctigjp3lqhy75LDcVssUs55sG_8qmd6zgY1A1PVeEbc3faMfQwM9ANDRZA4GAPLFTVYfsp5wVR6cCkYc6tehN7Q1D2DhTrgoJCZ55r0-9nsG-uA11nh5Lmy9Fe7TmPMceVqZXWYYqdP8Q35UHa8Kgq54dfYLjJ2PLOisuHzurd-qQes4NQfhCvsnsXW78VL-UsaW29tFMS_7k7_NH4X9DFNP7oUBsv87ISO_kpm0VWAylbsilxbLT8n5xa57q3USTJuBR5e6DYixRM0L0K_ElogvfiC2TMmYg_F4M5j_Fmg-VoPrxzIt4u6CQ9sNJ6ExcujX0ZEth-aiguKyQNlK2xBs2x9L8=w1908-h938-no" alt="Live Server" title="Live Server"></p>
+<p>2) 用 <code>Live Server</code> 開啟 sample html 範本 <code>/docs/demo/chat-v2/index.html</code>。</p>
+<p><img src="https://lh3.googleusercontent.com/AgiqJicbCJPOqOd7krSCj4eoQulKtewUr71Gs67h-Z3PWiWpQT3hUguVvqQ_Wbsg82SPMZ6Cq5BC9BLN-YkgZQTf1l7JRwd3k5l0yfztgG3Mb_rRUps_ozF1ebzft2z4rst0i4xcEdY453CtVWWHIfkpl6iGgAdDptdUUDfeWvytYg8LEZX-Z9mpkyXI79oI3sYcXVgloKf0FH3ArfwUquBNNwQEUano4e7PPOcYkvXP3d0v9eO2JvayxYfc-c3WSSHEj4rPbx6SvlbZa8O4-0Q_x-rDQuLEoa7u7kCrBnIdaw0xbRxRBhPiGGxbYUJ_s3dBstI4DKzDt-wyJyKBwwV8K5zhfy5wwx4E4grg9NVZf9dp0l2-DDoh7zjHBLCpgLU1-YdmLKp47cmwxLPA7-FnloIsldbLrBS7hv3OQAfDMEb9o8_MQb_44ELsklUVY6wSo6rY894Ew5Wmu24CBd5UbjnO_vjOvvtKNPZKrnDmvnqmofS0x1Kk-Qzy5qKgZ4M3xXt8NAwGm6qa2Xi2vTZhKwy-ApKzBz-VqaOE1VWNW4cCgUZCh00MBeYxWSCdeJOrQlHgkW_tP0zuBBZFxu88siuX6ZTxq3mpVNa7bENEjPJjCSpxMXQemG-CqhQCnGZJTBkSUArTNUSNRDaQ4jixziHJURlhdZlS04s0MGEjPgsLJGM_RKkR=w2206-h1378-no" alt="開啟 sample html 範本" title="開啟 sample html 範本"></p>
+<p>3) 自動開啟後，務必輸入 <code>apiBaseUrl</code> local 測試為 <code>http://localhost:7071</code>， Name 也是必填，請輸入聊天室的使用者名稱即可。</p>
+<p>4) 成功之後就可以輸入訊息測試。並能多開數個分頁，測試訊息的接收是否正常。</p>
+<p><img src="https://lh3.googleusercontent.com/PYziZWr5t2kOAe9sp4dAJ7f9RmUy-MVlPhZqyus33kJyLQIj61CocH4Rdj955TFA1SVQXZlsSqDhZtafBG5Z25vcLlq28mHCp8OnbxOqh65P81rNFxOH56SfUkJ91ha4KPI8ZHzzSk9zArbDgBNE9iM9NjTZ97lsDsbyO9kuqLDpuj2emQ1r9ak9iRLQXAotahmAelkr2dUiLCsbCphjQHX_fZA9k9KAsAmt2Rq7s5eBTqoHr_V3ZPHemP8QHJg41cHBMfLMwxaKKxqh7PtubOq33yRamyEsrFBfEi8mWAPfLTYmJbGD0izpZEuG1fhBamxoRt175Tgjv6qEIrwakqNQyBn_LnRoQCXYsntJ0XaWDka9yM1Vk9g4zeXp9Jdus09p3Gyj_ACYL98ESUffg8ifDiOPy7cAeFje9dM_FG3bQMtNBLn6Rq8BXXOcERuYUunQsOyalskX_8rnrfvDFGNm9I7Lm5y-wUMw59DmiuvvZsftTtM8lzhLKJDPziD1a_r13RhjLlBo1vfXM0Iq8dsGGe0G4KbinGq4kLIIx0rjg_BDDRQwQUThCUzpOVkYzkKPr7zyFTilAaZAsOeF_k54MrnLVq0sBPCUNN2EYUxI-mzWuhEtNIOzY4K-tmP1AtljaQeVRYnuDp-mMbmLfPW-2PiSf7iSlu6B03DhIpS3EfbFHW0xKEUH=w2532-h1246-no" alt="測試訊息接收" title="測試訊息接收"></p>
+<h2 id="發布-Azure-Function"><a href="#發布-Azure-Function" class="headerlink" title="發布 Azure Function"></a>發布 Azure Function</h2><ul>
+<li>安裝 <a href="vscode:extension/ms-azuretools.vscode-azurefunctions" target="_blank" rel="noopener">Azure Functions</a> 擴充功能。</li>
+</ul>
+<p><img src="https://docs.microsoft.com/zh-tw/azure/includes/media/functions-install-vs-code-extension/vscode-install-extension.png" alt="Azure Functions" title="Azure Functions"></p>
+<p>安裝完後請務必重開 VScode。接下來我們開始發布 Azure Function。</p>
+<p>1) 請務必確定 VScode 只開啟 src/chat/csharp 中的 csharp 資料夾。</p>
+<p><img src="https://lh3.googleusercontent.com/F2CzlCEtvEpCrmw7V_8x9zWfv-OYRpzWj18QN-HL_WfF6s3XCH8u8FW8QStEVeNvXCI6PDmPNKPdLolL8Vlh5EvtSYJvuYRpCADBrALiZIy510xQPTNSl4vZAiwWfFu7IXTGn9sIINa8YVH_ya_KRfkSX3-_5EvsFNJOwyQna6Itv0IaqDKpR2-TEOADt1-FN73D1WyTINzPcd3xS2IYk5EKJrloZPO1Jbj3ZlXxpvahgExMM5uxUZOR4X49neuWpuyIjxVzjdAKvY4ADg2W5cdBvQG-b02xAer7yQ6k4gB15eI3_d98HWArt-FDrMwt5EP9foIFU-dBT5V4B-C2-woI0MejtaK07QNZ082ahzsqV7odBCUVH2u3laLEVGzFRhAddf1DhpDobOQhk4-IB3XG7kYiRiWXr4lco1JTCYTDhy-TxgyHSpUsyMxtb8f--kjdQ5y1IF_uGQDRhF7dFhEUKImOFRj1Kc7sypo4uMS07dQAvFm0Nt7G5xX-IE8QOKjmgNrvOypegpsFswjQ_RDyd0YuT21ioMs4oogu8qEdanhGBc_9-lmbxa3Pfe_P2RauuKrczEJ2zIZlahNBP_e3CsPQqy1B5FwtWWk7Aej0GkqHLwJ7HmTi4oC6cH0fXQzz2ATYuSKg0VsPPeh5PGAbLsQZDZIipl1ScojTL07PltVv9ZDBYVwn=w916-h898-no" alt="csharp 資料夾" title="csharp 資料夾"></p>
+<p>2) 從擴充功能登入 Azure 帳號。</p>
+<p><img src="https://lh3.googleusercontent.com/3ycoKSgCD3L5bhujgJ_qsAaR7iEmu-cDzoi3GceJ4nRtwqz9Sh9ZCNXXQ8nvcuWIUgm4mezj76JL3t3dy1lSdIi-74oqXPTDQYxol0-kaSbF5YTSgsdGI2wgSe_TN4g3UToGBBZdBHrGl9Xw784YIbzI2oFFgQ5FGaH2v3-1JkYpHJB1tde5NdND30pRpnwrbFzotRiyxOyt6lBDlWxuBbSpfIDISQa8Ya-sO79Z8r8cl2RMywRmX3WLVBI3OKVl9Gvi5OJuWmoRyb6jIfeBAWM8i89h5rwdEpCVkXvZO1BlxXRnIrp3Bo4u_EMLkC3VZb9G2KNlVkXgVel-6dL9IqoJ8oVPvorFZMV_sgZwW2_C_D6TH_1SsOs3OVlVT8lwoRjY4RGDJbaQzi7QtfZXfGk5--aTvDw7AV25IP0grR_qAt9X2_SmU4tjEWcjTYN6wG6a6FrQsRhbLhhGC1QOdD1NhyMC-tXZhz9XXuwKyC58CHc_ebYMGogv1PUuqhEy0wMrtKKtC0ZxhGZmH52BcjBrp0fIkp5JJIOeaiZelgAQLJ5-PpAvyY4OpDmSUnJle6hKAHFh6UmCFAu3v1bK4nS0zILSiPobyLEnwrkMbHAJzr44wOMTSVQlsa0ogK5GqER5NNRCACJ-61ztnUEEvdLGN3AhkWmQiCk2ya0YEECjl0LeXGuHk72f=w463-h431-no" alt="登入 Azure 帳號" title="登入 Azure 帳號"></p>
+<p>3) 選擇要發布的地方上傳。</p>
+<p><img src="https://lh3.googleusercontent.com/g-Un1PRQE8Npznb4Hhi9gK6Doc7h4nunpZA3zKMEypcb5j5Ks54x20lEc2UeRykR532VeixY7u11THtW9HeALTz47SUBzzvE6vYzKZxg56VCa8GugLdxRDxvkDu0x6rZvvilshkKnPhsaNCsWEM2IkWSR3Nj1ctjhoGhn0gjjCTPz63muznRew9qqt87p-4ozb8EVNuHwIkJpCvG99uRGQ5L7cdaL6rS-CMmnJUB4EjyM15NeVCKJRpeiYJHkRnvuO_OhqLRhAVYRNtiFywIfnSviMhR1TU9XHYkq-IzS2V8cJ0FRw5u1FE9sF1BE3tjFNiuGiogDdVZ5X4JaGenHgYQU6TrACnF0I6xkHdC9oKXzXvaDgrQGos5UjNytVJeikB6DhCo0afU5vz1Qjtdn8sNRWqEAJvFAfYzVjDNtLgESZQ-ADAE099ID81UPDTnzbVYjZA8zCBkBZUNwQQOplIK-Xft_6cCFQtcsZx-ReUUJnma0MuhTd866gyM4_07eadyJ3ahZAQCZG73AvpUzxRIUsRpgjJ_-lGeEumg_CMxbF0QdEbvZfxriX7azPOitHPKC8YuXhcMAAmmD_3IEpp_VAVyadbRHWBzPtRvS8pkuMN2mFDlY1Kkabuwo5gvHF1FE9PyNodyni6pMPIJ4d2OOT8UO_5e_26Pjxsp5FOnO1nKbV5UPRqy=w916-h402-no" alt="上傳 Azure Functions" title="上傳 Azure Functions"></p>
+<h2 id="測試連線上-Azure-Functions"><a href="#測試連線上-Azure-Functions" class="headerlink" title="測試連線上 Azure Functions"></a>測試連線上 Azure Functions</h2><p>1) 拷貝 Azure Function url，將 html 中 <code>apiBaseUrl</code> 改為線上的 url。</p>
+<p><img src="https://lh3.googleusercontent.com/H_G9dyo8H_V-04HnuKLeYz_RIzpELVQEeIU2Oss1BgV4kb0ih2rs2ihnSG5V4cBpF27Bhuax9uA3jrh5jzi4NXG3xJR8g16s8Nksmlp7Q5zbI6JBkepAhstRwqkBhFiTtt2jAwGlTnWy1TXkPOqzjD8ejAxMDZYuR1Tsrrw9lHCxdicNe233wUwB_9T9Rj7CGP3SM3VvpYsBQ2EBQhrFYyCrEd7bHkMNT7lkuT1CIGT0eniiMKF5r8lmI3JWDKejkDnDj-Xhk5FJ8GhKIpbUTqfbGoYpmRCvhXkXGlPv_225nceq7FJjLbP47e7d0Xyiw4DSfpY4-eLzFQ9Pk1A36sw6u-3kko-FOEWx9hgm2wFkgUn8W-VG60dkn-edy6xzzVBG60BpNBtFU566ckPtVMv0BVtr6rcyTSghwv2BY3iJ5NNQNYl2n9wzDxGAhvp8USAVfkkooBvzISbwUHFE5mdAujs-xyUaQ7JGGwZEP2gpj5UrhW1mj2FKEtuywYk_HW02qkLII8igNcPqbHSy2xKB-hjsaERItaiDeBZvhujagZOWVhYDqdA6MvgfHm9IC8Dx2T2TtZSb6HsTNABrbi3tcRLbiG93_egs5jCaeLvkgA0yxATUZNXirp1z83sRtolFWzJOKeurzUtbT8qSlTkelW7UmZGEblCO6egJM9Oz7e-L4QE8mosh=w988-h371-no" alt="Copy Azure Function url" title="Copy Azure Function url"></p>
+<p><img src="https://lh3.googleusercontent.com/6knLBtYnBsO_4Q_JDPw8eeF1ndcFzBRIKrQPXxJY1XU-e_Dtcsf950sXVO5EDI6CsFwAcMyQ_C_noV8rIb-tWuQZaSVgYTV9-PAn8BHzHShn_8oP_nF3-ix7-6bTR_Zd8ABaSYk1mo3LN6bED7uxK0U9mTY36PF53UpWKF018lOsSezcpuouyeM_qF8TPOsuZ4T4t2V7QBc6NM8z5qXVC3uDLPUrQFQwfegIKE_8k5kPgHMxNTPOoVChCf1k4_YEIxQDJUvGdWa36rI789G10b0VHjzCQxS4vRROdTKJ3p2nNfhDd1LxTvsuUGUnIRvcK7wozQ5G0j8hsxCv-xQJ29dgQkG8nhM8RrBX4oz4Na5_169tKWRUIbIwsJQ55UugbqxpM3OC36-BmvxZ9s3cz9ROJ4cYCkKVnREJyXo4gGMFck_h0XYxJe94-I0LXQQ3A3uGATHqRgl_CcE-1xISolLp0mYvgKpOC6XuDiZH1tRGt0xSInHwnZYuMc59fBawXeiivDGkIjacRbbUsHKr0RLPQtb6eAW1MUyVpOVMhjTQlcNWUJ_Vbsy6VtprtIeolwbUQQSNgqRSemMaS_zPCH1djV1gG-94h_8wOcm_phJ8AkfKmN1elF_gB8WTMPFvs9etI30qy60U4zba4HU2tlFYE0OnoyGHOlvaHzjBSj4Pm7zHJ8Ben9tG=w2192-h880-no" alt="修改 apiBaseUrl" title="修改 apiBaseUrl"></p>
+<p>2) 因為不同網域去打 API 會有 CORS 的限制，所以需要將測試的網址加到 Azure Function CORS 清單。</p>
+<p><img src="https://lh3.googleusercontent.com/QrDuwqSA60bt68i0DoP72Ci94RwvCX6hbD_cjb-yYHhAzBboVJxMZzYIZ6lMgkZAlcv3wyBfBx9sqxwsnUpKwsB9HU8cmQiHCDEnHHLaf5ZsIe5rXI6x8yPAifMnei4xjnRoR5qBkTWoE4jw7gwIE7aDoQeu3VnWTLAndv0-N5nmdY5FoBp1h2ESAM6rvoYYdwxvyWJSJq_xaq43p-koGaoOlEyxfeiUuVGNfPadwjWg9mBAEXFNp2pBa84A4OOd6dfLX1Wzdm1cWgwRtzob9-bF1GZT8f7cj2hl2WMRdhQaP-itxxoFcSVut6uscXFkN1G93Yr7ckHLeiM04jqcMWUdf5IkAtfEInI9lDinK9gljEDCRe8xHCRewByz2Fbp6eSt_RA3RV6FqBi8-VaIuBn0aqlBvPrP7HC4lfFLqy3tdeh7T_afav5Cn2rPn6YuTn4eFGduKK6vvslTShwT208Nl7VE2I9-p9IF0Hndfty1uINjTWP66RRhvpBo40qFSNR95vDw2pGXY-QCEvZinXOk5-YK5RZ6-mmXxc-B5D7mjwbR6u0fiX58NaIL2Wce1hVkraoycTOg2Q1wN25L-OwN2zLmTe9KbwQJ3lqoTsAGuq_tGz-nfHWLpf9cXaqYX3YvEqwN2BwNAs6YKyYCnsR65zG5FlzgSM5UERmDd05BXpI7mnDlhLKF=w996-h574-no" alt="功能設定" title="功能設定"></p>
+<p><img src="https://lh3.googleusercontent.com/Rp_UC6QBZeSOB_6j3kFgK-w9aZNOhE_oybskL2rkFZSdEFYrrfnylveIY0fX-wv3wODLHZyD8AOu2IUwYZebGn5Z7r_rx1jNg61SVDRhuXDYKoLpz7WTfCkcrlZqUx2iEyYJifDtSjDE8GtWehIa8QhwbX1Bvd5qV2vg3Ib5opXrbirNkPy_u-LACXcIrb2ppbRJgs18C9KQs-PY1EPOq3L0s82tpCNkDgGm7vXPVzxcof5zYRpF9VEWumxKadf5a080ALj2oqP6zmZsKJNQdLNzVr2xX8GU-n37TijB4G2masD6i1M6LcSxupOoO038I4nlYutuCUfAy4zp4VKB5xX6oFpX1cXePexfH0Lcdak1yjxSO9r53B_ZrbDC3GhG98V9YehQ7ONMzcy0-vEGyijB-D5mzP6FMgDt6qQHOBwgjOt2p7DOOfHv3em8Z08YVcjb0PJD1hLCI6L28CynDIhZKmtVFAYFJnJytd8938x7xdRJ1p4Y0QMZSBDlXj6nj7uEbRcC082NGv9Q4HCjARts7YVkriMl6mmpGcXg9SsBJhfZOLaPl9_eUP2hAu2dntZpSxg9gOVpoEK3yohgeaXLKAOgqH55KDiAikDyw5e_Waqbvz3LqbfT3wR-z5SkYjhaK9nz0pZ4p59cnOkWqu_81nqpMHdGn0quQokoh-nO7WNgfZyL-7RZ=w561-h592-no" alt="CORS 清單" title="CORS 清單"></p>
+<p>3) 一樣使用 <code>Live Server</code> 開啟範本，就會成功連上囉~</p>
+<h2 id="把-web-放到線上-server-測試"><a href="#把-web-放到線上-server-測試" class="headerlink" title="把 web 放到線上 server 測試"></a>把 web 放到線上 server 測試</h2><blockquote>
+<p>注意：剛剛上面都是使用 local web 測試。若要把 web 放在線上測試的話，需要在 Azure Function 設定連線變數。官網沒寫這段，害我鬼打牆了好一陣子呀～怎麼設定變數如下圖。</p>
+</blockquote>
+<p><img src="https://lh3.googleusercontent.com/_aALFr19DSl7A3vekHZWLNC-DKSZhWp44BLPoujaLFiCL6MDn8sxVNKZvw3IKB9-OmwOoxCHSa-ltJurLIG83osiLAaZeTjJxj8AlFnJBt3uGR2tyegFXkdoyxKpa1gDW3dZdPICSsCPiN4KMTlYAzSBdNEQoI3RnOvtkoNqruCcVph5qICYnAfBkGywtdR-dJjTyKKfuW8RZaFEPcHqqGhg35nibhg1jei8wJflLVHtN48vFNcsrAuyfGnziyEGjj-VxPocDb9ofJEHR8uRnIjL9qUOB-zGb9TA1j7Pyo1tV9UkuczX1KWXCO_jsd3rp-FDCAQ2dcHoLc6y9OagLkJSqGC7EJkaccgCuu1HRmb7_woIrvnIO8k5iYbvsf4bO7af8IBLgA-OFR_YlQpIGsXwoc1PSu-rMCGAEzSkhHsDNmTaCpyO-L-YLB7Z3vCOkavIMRpDV1ZcnLYd8jQ5USusENO0bzOXZNo4-D6sPyGhpl9g92pOoQmJ8DRgaxAqTGRxItUpkNLBDudfi-4-jGM_IDbnRTyLlWW9hLx3FLjDfA2QL0-z2Plp0NRfh9qdegDb3Ym-fmKS71Wp2g0WsVxhNhfdf9pDYcAkBDKqNF9HpIlRuATIi_HAGFGJ0W9imvB0-q2gQ1AfS2_YOIvUTK0v1Kl3-OFJuLwZqbm2kL4d-Sei-CSUkhV_=w451-h285-no" alt="Configuration" title="Configuration"></p>
+<p><img src="https://lh3.googleusercontent.com/jeAfFyL52YQfyyvIpqgAMgrqCLGm3yBtZDYfH_VXbFExgRV2kTjgkj5TOad0fZ4EkwPYyKOfKrgajprSXSsqmn4Tdcp_73h5YRS0VBZz55ZoHE6_ojFZ7TmeAOnd7ONKRQFxzr5jRZEZd34eWwVahN9o9bZYgcBWpebxN0fIihVQdrf3a6meMzzLPRH1HVX8hXwXr_W0j3FKVAz2Lf2-cNa1Bni_eycfszIrU7XIf8fiVuldSBReqZgd5NtbSuiRJSPFIuCjg08_X9e2aCeeKYBfjuy9tS7c2V4f0gUk3CoC9W-Beyh3ueJ17TkIm0BhzbUqWt8y374DL7FQKr55GaHzz734aRkvVOQnUNeR6efL1KVcriTVDwNCbjuqovljM7_b7VvQtY9O766_F8R1TNMRz26z6sqN9QfFbEFGEBbmECjJbecN8VKb-gTZ_4qSqnHTyiI-UCzcWPddZkoZ1mRridVcnZexsEQ6TD-k7upFmprShkVX-MuP-QIjR6MPqS0QCiwTbzSLB6rwgXbdylDIh6oUlc-5PrpYBhetsdjEIKqIDQNKOkEngxCuZn50bixXooAT78orR4EatTwcd67ERYGRqJRB4KQOxSfHaJCuq9ut53NvM9lPxsPsO0f_kuFsYL46-sSodOnd2-CE2dtRUK-nrqejDhWL_9EdLwBTrlAM9Dqph-Yt=w989-h560-no" alt="Add Variable" title="Add Variable"></p>
+<blockquote>
+<p>記得如果是線上 web 都要把網域再加到 CORS 清單喔～</p>
+</blockquote>
+<p>以上是無伺服器的雲端 Azure SignalR 基本安裝與設定，如果要玩地端的話可以參考官方<a href="https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/signalr?view=aspnetcore-2.2&amp;tabs=visual-studio" target="_blank" rel="noopener">這篇</a>，那我們下次見～</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a href="https://docs.microsoft.com/zh-tw/azure/azure-signalr/signalr-quickstart-azure-functions-csharp" target="_blank" rel="noopener">快速入門：使用 C# 搭配 Azure Functions 與 SignalR 服務來建立聊天室</a></li>
+<li><a href="https://docs.microsoft.com/zh-tw/azure/azure-signalr/signalr-quickstart-azure-functions-javascript" target="_blank" rel="noopener">快速入門：使用 JavaScript 搭配 Azure Functions 與 SignalR 服務來建立聊天室</a></li>
+<li><a href="https://docs.microsoft.com/zh-tw/azure/azure-functions/functions-develop-vs-code" target="_blank" rel="noopener">使用 Visual Studio Code 開發 Azure Functions</a></li>
+<li><a href="https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/signalr?view=aspnetcore-2.2&amp;tabs=visual-studio" target="_blank" rel="noopener">教學課程：開始使用 ASP.NET Core SignalR</a></li>
+<li><a href="https://docs.microsoft.com/zh-tw/aspnet/core/signalr/hubs?view=aspnetcore-2.2#send-messages-to-clients" target="_blank" rel="noopener">將訊息傳送至用戶端</a></li>
+<li><a href="https://youtu.be/MK8n8pg9bLE" target="_blank" rel="noopener">SignalR Tutorial 16 - Coding Our JavaScript (Client Side) - Part 1</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NET-Core/" rel="tag">.NET Core</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Azure-Functions/" rel="tag">Azure Functions</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/C/" rel="tag">C#</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Serverless/" rel="tag">Serverless</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/SignalR/" rel="tag">SignalR</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/VScode/" rel="tag">VScode</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/dotnet/" rel="tag">dotnet</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/10/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3/"
+                    data-tooltip=".NET Core 3.0 SPA with Vue-Cli 3 - Start New Project"
+                    aria-label="上一篇: .NET Core 3.0 SPA with Vue-Cli 3 - Start New Project"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/07/04/Frontend/Grab-Data-To-CSV-By-Using-NodeJS/"
+                    data-tooltip="Grab Data to CSV by using NodeJS"
+                    aria-label="下一篇: Grab Data to CSV by using NodeJS"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/10/Dotnet/NET-Core-3-SPA-with-Vue-Cli-3/"
+                    data-tooltip=".NET Core 3.0 SPA with Vue-Cli 3 - Start New Project"
+                    aria-label="上一篇: .NET Core 3.0 SPA with Vue-Cli 3 - Start New Project"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/07/04/Frontend/Grab-Data-To-CSV-By-Using-NodeJS/"
+                    data-tooltip="Grab Data to CSV by using NodeJS"
+                    aria-label="下一篇: Grab Data to CSV by using NodeJS"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/';
+              
+            this.page.identifier = '2019/09/10/Dotnet/Serverless-Azure-SignalR-with-C-and-Azure-Functions/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

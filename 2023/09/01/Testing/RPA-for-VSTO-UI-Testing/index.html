@@ -1,0 +1,1107 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>RPA for VSTO UI Testing - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近專案越來越多 Excel 的 VSTO 設計, 但做完後需要大量的手動測試, 每次測試都是看心情, 所以總是會有漏掉的部分. 但有些功能特別重要, 像是修改資料, 寄信等動作. 至少這對 User 來說做重要的功能要先統一測試規格, 加速動作, 減少人工測試的時間, 特別情況再用手動測試就好。這篇文章紀錄用 Microsoft RPA 做 VSTO 測試時, 流程動作設定的技巧。\n\n技巧一 VSTO 開啟VSTO 通常開啟會需要一段比較長的時間, 因為包含連接 API, 準備資料, 產生 UI 等等. 而且每次開啟的時間都不一樣長, 所以不介意用 RPA 開. 這邊的做法是建議先開好 VSTO, 然後請 RPA 直接針對開好的 VSTO 做事情.\nMain 主要流程如下:\n\n附加至執行中的 Excel: 設定開啟的 VSTO 檔案名稱. 注意! 這裡會產生變數 ExcelInstance 代表此 Excel 給下一步驟使用.\n設定使用中 Excel 工作表: 用剛剛產生的 ExcelInstance 變數, 設定啟用工作表時搭配 “名字” 並輸入要執行的 sheet 名稱.\n\n\n\n\n技巧二 輸入資料至表格接下來要針對設定好的 sheet 做資料輸入和批次貼上的動作。\n從 Excel 讀取批次貼上Main 主要流程如下:\n\n從 Excel 工作表中取得第一個可用資料行/資料列: 會取得空白的行數 (FirstFreeColumn) 跟列數 (FirstFreeRow), 等下貼資料用.\n啟動 Excel: 選擇讀取的資料來源檔案並儲存到變數 ExcelFlashData.\n讀取自 Excel 工作表: 從 ExcelFlashData 讀取表格儲存資料到變數 FlashData. 注意! 這邊記得把進階點開, 選擇”第一行範圍包含欄名稱”, 這樣他才知道第一列為表頭, 等下才不會貼到表頭, 只會貼內容的部分.\n寫入 Excel 工作表: 將資料 FlashData 貼到欄 A 和 列 FirstFreeRow.\n關閉 Excel: 複製完將 ExcelFlashData 檔案關閉. 不關的話會一直留在畫面上.\n\n\n\n\n\n\n\n輸入當天日期也可以讀取電腦的當下時間寫入特定的某個欄位中.\nMain 主要流程如下:\n\n取得目前日期與時間: 將目前日期時間除存在變數 CurrentDateTime.\n寫入 Excel 工作表: 可將 CurrentDateTime 拆分為年,月,日再重新組合成想要的格式貼到指定欄位中.\n\n\n\n\n技巧三 Ribbon 操作Ribbon 主要就是靠 RPA 新增 UI 元素的方式, 再配合滑鼠鍵盤命令完成操作模擬.\n下拉選單Main 主要流程如下:\n\n按一下視窗中的 UI 元素: 要先新增下拉選單的 UI 元素, 然後請 RPA 去點此元素。\n傳送按鍵: 注意! 因為下拉選單是浮動選單, RPA 用內建的清單選擇會選不到, 所以這裡是用鍵盤傳送方向鍵(下-&gt;下-&gt;Enter)的方式來選擇要的下拉項目。\n\n\n\n\n\n輸入框和按鈕Main 主要流程如下:\n\n填入視窗中的文字欄位: 要先新增輸入框的 UI 元素, 然後請 RPA 去輸入要的文字訊息。\n按一下視窗中的 UI 元素: 要先新增按鈕的 UI 元素, 然後請 RPA 去點擊。\n\n\n\n\n\n\n","dateCreated":"2023-09-01T00:00:00+08:00","dateModified":"2023-09-01T00:00:00+08:00","datePublished":"2023-09-01T00:00:00+08:00","description":"最近專案越來越多 Excel 的 VSTO 設計, 但做完後需要大量的手動測試, 每次測試都是看心情, 所以總是會有漏掉的部分. 但有些功能特別重要, 像是修改資料, 寄信等動作. 至少這對 User 來說做重要的功能要先統一測試規格, 加速動作, 減少人工測試的時間, 特別情況再用手動測試就好。這篇文章紀錄用 Microsoft RPA 做 VSTO 測試時, 流程動作設定的技巧。","headline":"RPA for VSTO UI Testing","image":["https://picx.zhimg.com/v2-8bc8d8efe02b13b406abfd9be1256e35_l.jpg?source=172ae18b","https://media.discordapp.net/attachments/1135775611948900472/1147077602658484234/162092721_xl.png?width=794&height=423"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/","keywords":"Testing, RPA","thumbnailUrl":"https://picx.zhimg.com/v2-8bc8d8efe02b13b406abfd9be1256e35_l.jpg?source=172ae18b"}</script>
+    <meta name="description" content="最近專案越來越多 Excel 的 VSTO 設計, 但做完後需要大量的手動測試, 每次測試都是看心情, 所以總是會有漏掉的部分. 但有些功能特別重要, 像是修改資料, 寄信等動作. 至少這對 User 來說做重要的功能要先統一測試規格, 加速動作, 減少人工測試的時間, 特別情況再用手動測試就好。這篇文章紀錄用 Microsoft RPA 做 VSTO 測試時, 流程動作設定的技巧。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="RPA for VSTO UI Testing">
+<meta property="og:url" content="http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="最近專案越來越多 Excel 的 VSTO 設計, 但做完後需要大量的手動測試, 每次測試都是看心情, 所以總是會有漏掉的部分. 但有些功能特別重要, 像是修改資料, 寄信等動作. 至少這對 User 來說做重要的功能要先統一測試規格, 加速動作, 減少人工測試的時間, 特別情況再用手動測試就好。這篇文章紀錄用 Microsoft RPA 做 VSTO 測試時, 流程動作設定的技巧。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/XIFS4XL.png">
+<meta property="og:image" content="https://i.imgur.com/zsPmO6b.png">
+<meta property="og:image" content="https://i.imgur.com/lIWuJYA.png">
+<meta property="og:image" content="https://i.imgur.com/3e9ksPv.png">
+<meta property="og:image" content="https://i.imgur.com/D7zoaqa.png">
+<meta property="og:image" content="https://i.imgur.com/igja3zw.png">
+<meta property="og:image" content="https://i.imgur.com/msk8MoU.png">
+<meta property="og:image" content="https://i.imgur.com/T3MEBmX.png">
+<meta property="og:image" content="https://i.imgur.com/P1HHoeH.png">
+<meta property="og:image" content="https://i.imgur.com/r7xjkLv.png">
+<meta property="og:image" content="https://i.imgur.com/rflsPke.png">
+<meta property="og:image" content="https://i.imgur.com/8Yc5k5P.png">
+<meta property="og:image" content="https://i.imgur.com/Fs3uzvZ.png">
+<meta property="og:image" content="https://i.imgur.com/jLAOxX8.png">
+<meta property="og:image" content="https://i.imgur.com/dKCqWRO.png">
+<meta property="og:image" content="https://i.imgur.com/bEgonOp.png">
+<meta property="og:image" content="https://i.imgur.com/fsYbhdU.png">
+<meta property="og:image" content="https://i.imgur.com/O7ouE7q.png">
+<meta property="og:image" content="https://i.imgur.com/CzMozei.png">
+<meta property="og:image" content="https://i.imgur.com/XQxAhgM.png">
+<meta property="og:image" content="https://i.imgur.com/Tkc0B84.png">
+<meta property="article:published_time" content="2023-08-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-31T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="Testing">
+<meta property="article:tag" content="RPA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/XIFS4XL.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://picx.zhimg.com/v2-8bc8d8efe02b13b406abfd9be1256e35_l.jpg?source=172ae18b"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://picx.zhimg.com/v2-8bc8d8efe02b13b406abfd9be1256e35_l.jpg?source=172ae18b"/>
+    
+    
+        <meta property="og:image" content="https://media.discordapp.net/attachments/1135775611948900472/1147077602658484234/162092721_xl.png?width=794&amp;height=423"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://media.discordapp.net/attachments/1135775611948900472/1147077602658484234/162092721_xl.png?width=794&amp;height=423"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://media.discordapp.net/attachments/1135775611948900472/1147077602658484234/162092721_xl.png?width=794&amp;height=423');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            RPA for VSTO UI Testing
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2023-09-01T00:00:00+08:00">
+	
+		    2023 年 9 月 1 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/RPA/">RPA</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>最近專案越來越多 Excel 的 VSTO 設計, 但做完後需要大量的手動測試, 每次測試都是看心情, 所以總是會有漏掉的部分. 但有些功能特別重要, 像是修改資料, 寄信等動作. 至少這對 User 來說做重要的功能要先統一測試規格, 加速動作, 減少人工測試的時間, 特別情況再用手動測試就好。這篇文章紀錄用 Microsoft RPA 做 VSTO 測試時, 流程動作設定的技巧。</p>
+<a id="more"></a>
+<h1 id="技巧一-VSTO-開啟"><a href="#技巧一-VSTO-開啟" class="headerlink" title="技巧一 VSTO 開啟"></a>技巧一 VSTO 開啟</h1><p>VSTO 通常開啟會需要一段比較長的時間, 因為包含連接 API, 準備資料, 產生 UI 等等. 而且每次開啟的時間都不一樣長, 所以不介意用 RPA 開. 這邊的做法是建議先開好 VSTO, 然後請 RPA 直接針對開好的 VSTO 做事情.</p>
+<p>Main 主要流程如下:</p>
+<ol>
+<li>附加至執行中的 Excel: 設定開啟的 VSTO 檔案名稱. <strong>注意! 這裡會產生變數 ExcelInstance 代表此 Excel 給下一步驟使用.</strong></li>
+<li>設定使用中 Excel 工作表: 用剛剛產生的 ExcelInstance 變數, 設定啟用工作表時搭配 “名字” 並輸入要執行的 sheet 名稱.</li>
+</ol>
+<p><img src="https://i.imgur.com/XIFS4XL.png" alt="Main 流程 - VSTO 開啟"></p>
+<p><img src="https://i.imgur.com/zsPmO6b.png" alt="附加至執行中的 Excel"></p>
+<p><img src="https://i.imgur.com/lIWuJYA.png" alt="設定使用中 Excel 工作表"></p>
+<h1 id="技巧二-輸入資料至表格"><a href="#技巧二-輸入資料至表格" class="headerlink" title="技巧二 輸入資料至表格"></a>技巧二 輸入資料至表格</h1><p>接下來要針對設定好的 sheet 做資料輸入和批次貼上的動作。</p>
+<h2 id="從-Excel-讀取批次貼上"><a href="#從-Excel-讀取批次貼上" class="headerlink" title="從 Excel 讀取批次貼上"></a>從 Excel 讀取批次貼上</h2><p>Main 主要流程如下:</p>
+<ol>
+<li>從 Excel 工作表中取得第一個可用資料行/資料列: 會取得空白的行數 (FirstFreeColumn) 跟列數 (FirstFreeRow), 等下貼資料用.</li>
+<li>啟動 Excel: 選擇讀取的資料來源檔案並儲存到變數 ExcelFlashData.</li>
+<li>讀取自 Excel 工作表: 從 ExcelFlashData 讀取表格儲存資料到變數 FlashData. <strong>注意! 這邊記得把進階點開, 選擇”第一行範圍包含欄名稱”, 這樣他才知道第一列為表頭, 等下才不會貼到表頭, 只會貼內容的部分.</strong></li>
+<li>寫入 Excel 工作表: 將資料 FlashData 貼到欄 A 和 列 FirstFreeRow.</li>
+<li>關閉 Excel: 複製完將 ExcelFlashData 檔案關閉. 不關的話會一直留在畫面上.</li>
+</ol>
+<p><img src="https://i.imgur.com/3e9ksPv.png" alt="Main 流程 - 從 Excel 讀取批次貼上"></p>
+<p><img src="https://i.imgur.com/D7zoaqa.png" alt="從 Excel 工作表中取得第一個可用資料行/資料列"></p>
+<p><img src="https://i.imgur.com/igja3zw.png" alt="啟動 Excel"></p>
+<p><img src="https://i.imgur.com/msk8MoU.png" alt="讀取自 Excel 工作表"></p>
+<p><img src="https://i.imgur.com/T3MEBmX.png" alt="寫入 Excel 工作表"></p>
+<p><img src="https://i.imgur.com/P1HHoeH.png" alt="關閉 Excel"></p>
+<h2 id="輸入當天日期"><a href="#輸入當天日期" class="headerlink" title="輸入當天日期"></a>輸入當天日期</h2><p>也可以讀取電腦的當下時間寫入特定的某個欄位中.</p>
+<p>Main 主要流程如下:</p>
+<ol>
+<li>取得目前日期與時間: 將目前日期時間除存在變數 CurrentDateTime.</li>
+<li>寫入 Excel 工作表: 可將 CurrentDateTime 拆分為年,月,日再重新組合成想要的格式貼到指定欄位中.</li>
+</ol>
+<p><img src="https://i.imgur.com/r7xjkLv.png" alt="Main 流程 - 輸入當天日期"></p>
+<p><img src="https://i.imgur.com/rflsPke.png" alt="取得目前日期與時間"></p>
+<p><img src="https://i.imgur.com/8Yc5k5P.png" alt="寫入 Excel 工作表"></p>
+<h1 id="技巧三-Ribbon-操作"><a href="#技巧三-Ribbon-操作" class="headerlink" title="技巧三 Ribbon 操作"></a>技巧三 Ribbon 操作</h1><p>Ribbon 主要就是靠 RPA 新增 UI 元素的方式, 再配合滑鼠鍵盤命令完成操作模擬.</p>
+<h2 id="下拉選單"><a href="#下拉選單" class="headerlink" title="下拉選單"></a>下拉選單</h2><p>Main 主要流程如下:</p>
+<ol>
+<li>按一下視窗中的 UI 元素: 要先新增下拉選單的 UI 元素, 然後請 RPA 去點此元素。</li>
+<li>傳送按鍵: <strong>注意! 因為下拉選單是浮動選單, RPA 用內建的清單選擇會選不到, 所以這裡是用鍵盤傳送方向鍵(下-&gt;下-&gt;Enter)的方式來選擇要的下拉項目。</strong></li>
+</ol>
+<p><img src="https://i.imgur.com/Fs3uzvZ.png" alt="Main 流程 - 下拉選單"></p>
+<p><img src="https://i.imgur.com/jLAOxX8.png" alt="新增下拉選單的 UI 元素"></p>
+<p><img src="https://i.imgur.com/dKCqWRO.png" alt="按一下視窗中的 UI 元素"></p>
+<p><img src="https://i.imgur.com/bEgonOp.png" alt="傳送按鍵"></p>
+<h2 id="輸入框和按鈕"><a href="#輸入框和按鈕" class="headerlink" title="輸入框和按鈕"></a>輸入框和按鈕</h2><p>Main 主要流程如下:</p>
+<ol>
+<li>填入視窗中的文字欄位: 要先新增輸入框的 UI 元素, 然後請 RPA 去輸入要的文字訊息。</li>
+<li>按一下視窗中的 UI 元素: 要先新增按鈕的 UI 元素, 然後請 RPA 去點擊。</li>
+</ol>
+<p><img src="https://i.imgur.com/fsYbhdU.png" alt="Main 流程 - 輸入框和按鈕"></p>
+<p><img src="https://i.imgur.com/O7ouE7q.png" alt="新增輸入框的 UI 元素"></p>
+<p><img src="https://i.imgur.com/CzMozei.png" alt="填入視窗中的文字欄位"></p>
+<p><img src="https://i.imgur.com/XQxAhgM.png" alt="新增按鈕的 UI 元素"></p>
+<p><img src="https://i.imgur.com/Tkc0B84.png" alt="按一下視窗中的 UI 元素"></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/RPA/" rel="tag">RPA</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Testing/" rel="tag">Testing</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/10/02/Frontend/Connect-Redis-with-NodeJS/"
+                    data-tooltip="Connect Redis with NodeJS"
+                    aria-label="上一篇: Connect Redis with NodeJS"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/08/01/UXUI/Figma-2023-Conf-The-Future-of-Responsive-Design/"
+                    data-tooltip="Figma 2023 Conf - The Future of Responsive Design"
+                    aria-label="下一篇: Figma 2023 Conf - The Future of Responsive Design"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/10/02/Frontend/Connect-Redis-with-NodeJS/"
+                    data-tooltip="Connect Redis with NodeJS"
+                    aria-label="上一篇: Connect Redis with NodeJS"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2023/08/01/UXUI/Figma-2023-Conf-The-Future-of-Responsive-Design/"
+                    data-tooltip="Figma 2023 Conf - The Future of Responsive Design"
+                    aria-label="下一篇: Figma 2023 Conf - The Future of Responsive Design"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2023/09/01/Testing/RPA-for-VSTO-UI-Testing/';
+              
+            this.page.identifier = '2023/09/01/Testing/RPA-for-VSTO-UI-Testing/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>

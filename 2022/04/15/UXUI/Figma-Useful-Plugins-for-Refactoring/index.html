@@ -1,0 +1,1052 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Anny Chang - F2E &amp; UI Designer">
+    <title>Figma Useful Plugins for Refactoring - Anny Chang - F2E &amp; UI Designer</title>
+    <meta name="author" content="Anny Chang">
+    
+        <meta name="keywords" content="Anny Chang,Front-End Engineer (F2E),UI Designer,Design thinking,">
+    
+    
+        <link rel="icon" href="http://annilla.github.io/assets/images/icon144.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"},"articleBody":"最近 Figma 功能換到團隊的訂閱制，終於可以使用 Library 的功能了！但之前還沒換過去之前，檔案內的 Components 都是在 Local 原檔案中，現在該是 Refactor 整理的時候了，把共用的 Components 改用 Library 的，並重新整理檔案。此篇紀錄其中碰到的問題並寫出使用了哪些 Plugin 來改善 Refactor 的效率。\n\n找出哪裡用了 Local Components之前文章有介紹過 Locator 這個 Plugin，但若有大量 Components ，每個點右鍵等他跑的時間會拉很長，很沒有效率。後來找到一個更好的套件叫 Instance Finder，他只要跑一次之後，就會把整個檔案的內容記住，所以只要開著視窗，選取要找的 component ，點擊 find 按鈕就可以很快地列出來，而且他有上一個下一個的按鈕，可以快速的瀏覽各 component 位置，非常方便。\n\n替換成 Library 的 Components替換 Components 有兩種情境，一種是他本身就是 component 只要換成 Library 的，另一種是他還不是 component，只是普通的 Group 要怎麼做替換？以下分這兩種情境解釋替換方法。\nLocal Components 替換 Library Components因為本身已經是 Components，所以用上述的 Plugin - Instance Finder 找出後，點找出來的母項目即可全選相同的 instance ，並用 Figma 右側 Design 視窗替換 Library Components 即可。\n\nGroup 替換 Library Components另一種比較棘手的情況是要替換的標的物不是 component，只是一般的 Group。這個時候 Figma 右側 Design 視窗也不會跳出來給你選，那該怎麼辦呢？我找到了另一個超好用的 Plugin - Team Library Component Browser，只要將此套件先去 Library 的檔案按 Save or update this library data，然後去你要執行的檔案把視窗叫出來，就可以選取要替換的 Library Component 直接按 Swap 做替換，其中裡面還有一些小設定可以調整，看是要保持原始大小之類的，就留給各位玩玩看囉～\n\n快速編排大量的 Artboards當專案長的越來越大後，大量的 Artboards 會變得不易維護，這時候就需要 Plugin 來快速一鍵編排了。Plugin - Organize Layers 使用上就非常便利。但使用前提是每個 Artboards 的名稱要依照層次的方式命名，ex: 類別/01/1-xxxx，第一層通常放分類，第二層依照頁面取流水號，第三層開頭放的是頁面第幾步驟，xxxx 放描述，如此命名有個好處是，當要做 prototype 的時候，list 會直接依照前面的命名方式排序，能快速選到要 navigate to 的頁面。名稱的命名好之後，開 Plugin 的視窗就能選擇要使用第幾階層來編排 Artboards，也可以設定 x, y 的間距，最後點選按鈕一鍵編排，之後只要新增的頁面也按照一樣的方式命名，按鈕一鍵就能幫你排的舒舒服服，好開心～\n\nReference\nFigma Plugin - Instance Finder\nFigma Plugin - Team Library Component Browser\nFigma Plugin - Organize Layers\n\n","dateCreated":"2022-04-15T00:00:00+08:00","dateModified":"2022-04-15T00:00:00+08:00","datePublished":"2022-04-15T00:00:00+08:00","description":"最近 Figma 功能換到團隊的訂閱制，終於可以使用 Library 的功能了！但之前還沒換過去之前，檔案內的 Components 都是在 Local 原檔案中，現在該是 Refactor 整理的時候了，把共用的 Components 改用 Library 的，並重新整理檔案。此篇紀錄其中碰到的問題並寫出使用了哪些 Plugin 來改善 Refactor 的效率。","headline":"Figma Useful Plugins for Refactoring","image":["https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi","https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/"},"publisher":{"@type":"Organization","name":"Anny Chang","sameAs":["https://github.com/Annilla","https://www.facebook.com/profile.php?id=100002453201106"],"image":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f"}},"url":"http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/","keywords":"UX, UI, Figma","thumbnailUrl":"https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi"}</script>
+    <meta name="description" content="最近 Figma 功能換到團隊的訂閱制，終於可以使用 Library 的功能了！但之前還沒換過去之前，檔案內的 Components 都是在 Local 原檔案中，現在該是 Refactor 整理的時候了，把共用的 Components 改用 Library 的，並重新整理檔案。此篇紀錄其中碰到的問題並寫出使用了哪些 Plugin 來改善 Refactor 的效率。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Figma Useful Plugins for Refactoring">
+<meta property="og:url" content="http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/index.html">
+<meta property="og:site_name" content="Anny Chang - F2E &amp; UI Designer">
+<meta property="og:description" content="最近 Figma 功能換到團隊的訂閱制，終於可以使用 Library 的功能了！但之前還沒換過去之前，檔案內的 Components 都是在 Local 原檔案中，現在該是 Refactor 整理的時候了，把共用的 Components 改用 Library 的，並重新整理檔案。此篇紀錄其中碰到的問題並寫出使用了哪些 Plugin 來改善 Refactor 的效率。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://s3-alpha-sig.figma.com/plugins/741895659787979282/534/8ebee8c4-63f1-4b5b-9935-97ebb35df46c-cover?Expires=1650844800&amp;Signature=LzzmLj0XhilqL7RPnqceLi75Hk4hJtfI7jH9sOSbPS1KPTIhqGt1RPArsOhFX45GrH5UcKd9sHXxAuuNga3Wc-H2~WTjaHB8jhCXxWuLEBTI6McuC4MJMFzUTR88KyWvrwkcwobmweNslTRMg5cbUfdytqzBCymD7I07bYMRpmpy-MRYSwOd4sWF7eHSvf9UOl5l9~30UIvauqH7p7sND4FOpPlNaTE2vdtlmvejSOmiTWUdSeRmqA-MBENtMbudomQz6wSXLqlFLlu1p02ylE0Ot4iATgIDs7v1VQ6T0~nAcT3t~NoZiHtQx8E5GhAY8icfAwdV6mOCs40Xvjxx0A__&amp;Key-Pair-Id=APKAINTVSUGEWH5XD5UA">
+<meta property="og:image" content="https://help.figma.com/hc/article_attachments/360091725133/Instance_swap_30fps.gif">
+<meta property="og:image" content="https://s3-alpha-sig.figma.com/plugins/813970431341620710/26936/896b8404-d633-477e-b791-17d5e451c7d6-cover?Expires=1650844800&amp;Signature=gItyd~3boSUPCQ0KwD0CQNu08vM2tiDrCZsFqlRrjVNLl7FMirV9lgCNVTcYiRSbMXeDenD~3cBpGT2dkBwe8W0OkHlBTOBLa2bHDFDRLV9Be9AERLzELw6ajVtok2~morNFEtJSSIli0VKuqhsSN-bAZZbP-Klp-FgDGD9aMXZ7IzWP6Cz7GV933pdawj~~lUnH-mlmfuwXRrhL6ZRtBebrOto~jWVLL1qB3SGKb2xBj8cUtRmowSZoPIvt00MbdfcQsYvV1cmfHxZdZh56ynrnQ0gS0lSi9m4p-1uokitV00TC6sNVbSYvj~KQ0as6aF~TGBXrCHZ~zAjd3rXT5w__&amp;Key-Pair-Id=APKAINTVSUGEWH5XD5UA">
+<meta property="og:image" content="https://s3-alpha-sig.figma.com/plugins/786286754606650597/5647/352fce3d-b02d-47f5-960d-68458702ee42-cover?Expires=1650844800&amp;Signature=OiDG34Lcmk4sNLqZ71LN0CmeUgbUBD6OCzGp1ZglRvtSqJu5V1zcPZV9OiDsnbEwqLI2633wvk8BoncCSUjdVnjiteqpRX4JWHlWTg0cLEpL3dZCDdMWZhudNCgcd69uA9roElA4LStn9gkLJgDdSgHGj0BMh8flp27qGOMd--jEOub4GFJfQIElGFsoNggSbwQodErSONS~7kYox1cWIEvZ-z9rTKHYIQhCbHJYGxoDzP1Ir7e4piMMAKJjGyLQFm5lmD7jooq66KVoGvXveu6poX5C96drB-LSLU1s7dFiLk1ey-Wi1EgK2qfyWQCkrNQP~SrZy7u0OS06CnkpRA__&amp;Key-Pair-Id=APKAINTVSUGEWH5XD5UA">
+<meta property="article:published_time" content="2022-04-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-14T16:00:00.000Z">
+<meta property="article:author" content="Anny Chang">
+<meta property="article:tag" content="UX">
+<meta property="article:tag" content="UI">
+<meta property="article:tag" content="Figma">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s3-alpha-sig.figma.com/plugins/741895659787979282/534/8ebee8c4-63f1-4b5b-9935-97ebb35df46c-cover?Expires=1650844800&amp;Signature=LzzmLj0XhilqL7RPnqceLi75Hk4hJtfI7jH9sOSbPS1KPTIhqGt1RPArsOhFX45GrH5UcKd9sHXxAuuNga3Wc-H2~WTjaHB8jhCXxWuLEBTI6McuC4MJMFzUTR88KyWvrwkcwobmweNslTRMg5cbUfdytqzBCymD7I07bYMRpmpy-MRYSwOd4sWF7eHSvf9UOl5l9~30UIvauqH7p7sND4FOpPlNaTE2vdtlmvejSOmiTWUdSeRmqA-MBENtMbudomQz6wSXLqlFLlu1p02ylE0Ot4iATgIDs7v1VQ6T0~nAcT3t~NoZiHtQx8E5GhAY8icfAwdV6mOCs40Xvjxx0A__&amp;Key-Pair-Id=APKAINTVSUGEWH5XD5UA">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=640"/>
+    
+    
+        <meta property="og:image" content="https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/hoz3ba7owjjzrg9dxrqi"/>
+    
+    
+        <meta property="og:image" content="https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-3jxohp17zbv5z4pvmssjv1l7m57yzlnv3moec5jf5xb0yejbzarbntmtmskl.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53403504-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-53403504-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Anny Chang - F2E &amp; UI Designer
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打開鏈接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=90" alt="作者的圖片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="閱讀有關作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Anny Chang</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首頁"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首頁</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分類"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分類</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="標籤"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">標籤</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="所有文章"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">所有文章</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜尋"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜尋</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="關於"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">關於</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Annilla"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.facebook.com/profile.php?id=100002453201106"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="Atom"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Atom</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-left
+                    "
+             style="background-image:url('https://miro.medium.com/max/1400/1*BfTmRqrzxB90_e9i1-cj2g.png');"
+             data-behavior="4">
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaOut
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Figma Useful Plugins for Refactoring
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-04-15T00:00:00+08:00">
+	
+		    2022 年 4 月 15 日
+    	
+    </time>
+    
+        <span>分類 </span>
+        
+    <a class="category-link" href="/categories/UXUI/">UXUI</a>, <a class="category-link" href="/categories/UXUI/Figma/">Figma</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>最近 Figma 功能換到團隊的訂閱制，終於可以使用 Library 的功能了！但之前還沒換過去之前，檔案內的 Components 都是在 Local 原檔案中，現在該是 Refactor 整理的時候了，把共用的 Components 改用 Library 的，並重新整理檔案。此篇紀錄其中碰到的問題並寫出使用了哪些 Plugin 來改善 Refactor 的效率。</p>
+<a id="more"></a>
+<h1 id="找出哪裡用了-Local-Components"><a href="#找出哪裡用了-Local-Components" class="headerlink" title="找出哪裡用了 Local Components"></a>找出哪裡用了 Local Components</h1><p>之前文章有介紹過 Locator 這個 Plugin，但若有大量 Components ，每個點右鍵等他跑的時間會拉很長，很沒有效率。後來找到一個更好的套件叫 <a href="https://www.figma.com/community/plugin/741895659787979282/Instance-Finder" target="_blank" rel="noopener">Instance Finder</a>，他只要跑一次之後，就會把整個檔案的內容記住，所以只要開著視窗，選取要找的 component ，點擊 find 按鈕就可以很快地列出來，而且他有上一個下一個的按鈕，可以快速的瀏覽各 component 位置，非常方便。</p>
+<p><img src="https://s3-alpha-sig.figma.com/plugins/741895659787979282/534/8ebee8c4-63f1-4b5b-9935-97ebb35df46c-cover?Expires=1650844800&amp;Signature=LzzmLj0XhilqL7RPnqceLi75Hk4hJtfI7jH9sOSbPS1KPTIhqGt1RPArsOhFX45GrH5UcKd9sHXxAuuNga3Wc-H2~WTjaHB8jhCXxWuLEBTI6McuC4MJMFzUTR88KyWvrwkcwobmweNslTRMg5cbUfdytqzBCymD7I07bYMRpmpy-MRYSwOd4sWF7eHSvf9UOl5l9~30UIvauqH7p7sND4FOpPlNaTE2vdtlmvejSOmiTWUdSeRmqA-MBENtMbudomQz6wSXLqlFLlu1p02ylE0Ot4iATgIDs7v1VQ6T0~nAcT3t~NoZiHtQx8E5GhAY8icfAwdV6mOCs40Xvjxx0A__&amp;Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="Instance Finder"></p>
+<h1 id="替換成-Library-的-Components"><a href="#替換成-Library-的-Components" class="headerlink" title="替換成 Library 的 Components"></a>替換成 Library 的 Components</h1><p>替換 Components 有兩種情境，一種是他本身就是 component 只要換成 Library 的，另一種是他還不是 component，只是普通的 Group 要怎麼做替換？以下分這兩種情境解釋替換方法。</p>
+<h2 id="Local-Components-替換-Library-Components"><a href="#Local-Components-替換-Library-Components" class="headerlink" title="Local Components 替換 Library Components"></a>Local Components 替換 Library Components</h2><p>因為本身已經是 Components，所以用上述的 Plugin - Instance Finder 找出後，點找出來的母項目即可全選相同的 instance ，並用 Figma 右側 Design 視窗替換 Library Components 即可。</p>
+<p><img src="https://help.figma.com/hc/article_attachments/360091725133/Instance_swap_30fps.gif" alt="Figma 右側 Design 視窗替換 Library Components"></p>
+<h2 id="Group-替換-Library-Components"><a href="#Group-替換-Library-Components" class="headerlink" title="Group 替換 Library Components"></a>Group 替換 Library Components</h2><p>另一種比較棘手的情況是要替換的標的物不是 component，只是一般的 Group。這個時候 Figma 右側 Design 視窗也不會跳出來給你選，那該怎麼辦呢？我找到了另一個超好用的 Plugin - <a href="https://www.figma.com/community/plugin/813970431341620710/Team-Library-Component-Browser" target="_blank" rel="noopener">Team Library Component Browser</a>，只要將此套件先去 Library 的檔案按 <code>Save or update this library data</code>，然後去你要執行的檔案把視窗叫出來，就可以選取要替換的 Library Component 直接按 Swap 做替換，其中裡面還有一些小設定可以調整，看是要保持原始大小之類的，就留給各位玩玩看囉～</p>
+<p><img src="https://s3-alpha-sig.figma.com/plugins/813970431341620710/26936/896b8404-d633-477e-b791-17d5e451c7d6-cover?Expires=1650844800&amp;Signature=gItyd~3boSUPCQ0KwD0CQNu08vM2tiDrCZsFqlRrjVNLl7FMirV9lgCNVTcYiRSbMXeDenD~3cBpGT2dkBwe8W0OkHlBTOBLa2bHDFDRLV9Be9AERLzELw6ajVtok2~morNFEtJSSIli0VKuqhsSN-bAZZbP-Klp-FgDGD9aMXZ7IzWP6Cz7GV933pdawj~~lUnH-mlmfuwXRrhL6ZRtBebrOto~jWVLL1qB3SGKb2xBj8cUtRmowSZoPIvt00MbdfcQsYvV1cmfHxZdZh56ynrnQ0gS0lSi9m4p-1uokitV00TC6sNVbSYvj~KQ0as6aF~TGBXrCHZ~zAjd3rXT5w__&amp;Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="Team Library Component Browser"></p>
+<h1 id="快速編排大量的-Artboards"><a href="#快速編排大量的-Artboards" class="headerlink" title="快速編排大量的 Artboards"></a>快速編排大量的 Artboards</h1><p>當專案長的越來越大後，大量的 Artboards 會變得不易維護，這時候就需要 Plugin 來快速一鍵編排了。Plugin - <a href="https://www.figma.com/community/plugin/786286754606650597/Organize-Layers" target="_blank" rel="noopener">Organize Layers</a> 使用上就非常便利。但使用前提是每個 Artboards 的名稱要依照層次的方式命名，ex: 類別/01/1-xxxx，第一層通常放分類，第二層依照頁面取流水號，第三層開頭放的是頁面第幾步驟，xxxx 放描述，如此命名有個好處是，當要做 prototype 的時候，list 會直接依照前面的命名方式排序，能快速選到要 navigate to 的頁面。名稱的命名好之後，開 Plugin 的視窗就能選擇要使用第幾階層來編排 Artboards，也可以設定 x, y 的間距，最後點選按鈕一鍵編排，之後只要新增的頁面也按照一樣的方式命名，按鈕一鍵就能幫你排的舒舒服服，好開心～</p>
+<p><img src="https://s3-alpha-sig.figma.com/plugins/786286754606650597/5647/352fce3d-b02d-47f5-960d-68458702ee42-cover?Expires=1650844800&amp;Signature=OiDG34Lcmk4sNLqZ71LN0CmeUgbUBD6OCzGp1ZglRvtSqJu5V1zcPZV9OiDsnbEwqLI2633wvk8BoncCSUjdVnjiteqpRX4JWHlWTg0cLEpL3dZCDdMWZhudNCgcd69uA9roElA4LStn9gkLJgDdSgHGj0BMh8flp27qGOMd--jEOub4GFJfQIElGFsoNggSbwQodErSONS~7kYox1cWIEvZ-z9rTKHYIQhCbHJYGxoDzP1Ir7e4piMMAKJjGyLQFm5lmD7jooq66KVoGvXveu6poX5C96drB-LSLU1s7dFiLk1ey-Wi1EgK2qfyWQCkrNQP~SrZy7u0OS06CnkpRA__&amp;Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="Organize Layers"></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://www.figma.com/community/plugin/741895659787979282/Instance-Finder" target="_blank" rel="noopener">Figma Plugin - Instance Finder</a></li>
+<li><a href="https://www.figma.com/community/plugin/813970431341620710/Team-Library-Component-Browser" target="_blank" rel="noopener">Figma Plugin - Team Library Component Browser</a></li>
+<li><a href="https://www.figma.com/community/plugin/786286754606650597/Organize-Layers" target="_blank" rel="noopener">Figma Plugin - Organize Layers</a></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">標籤</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Figma/" rel="tag">Figma</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UI/" rel="tag">UI</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/UX/" rel="tag">UX</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/05/18/VScode/VScode-Extension-Azure-Static-Web-Apps/"
+                    data-tooltip="VScode Extension - Azure Static Web Apps"
+                    aria-label="上一篇: VScode Extension - Azure Static Web Apps"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/03/04/Dotnet/NET-6-SPA-with-Vue-Cli-Webpack-Base/"
+                    data-tooltip=".NET 6 SPA with Vue-Cli Webpack Base - Start New Project"
+                    aria-label="下一篇: .NET 6 SPA with Vue-Cli Webpack Base - Start New Project"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2025 Anny Chang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/05/18/VScode/VScode-Extension-Azure-Static-Web-Apps/"
+                    data-tooltip="VScode Extension - Azure Static Web Apps"
+                    aria-label="上一篇: VScode Extension - Azure Static Web Apps"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/03/04/Dotnet/NET-6-SPA-with-Vue-Cli-Webpack-Base/"
+                    data-tooltip=".NET 6 SPA with Vue-Cli Webpack Base - Start New Project"
+                    aria-label="下一篇: .NET 6 SPA with Vue-Cli Webpack Base - Start New Project"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/374893f797cb60493c52ee173d81808f?s=110" alt="作者的圖片"/>
+        
+            <h4 id="about-card-name">Anny Chang</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Taiwan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">沒有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/14/Webpack/Webpack-3-Tutorial-Installation-and-Config/"
+                            aria-label=": Webpack 3 Tutorial - Installation and Config"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Installation and Config</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="什麼是-Webpack"><a href="#什麼是-Webpack" class="headerlink" title="什麼是 Webpack ?"></a>什麼是 Webpack ?</h1><p><code>Webpack</code> 是針對所有前端程式的管理整合工具。工程師編寫程式模組（<code>html</code>, <code>css</code>, <code>js</code>, <code>sass</code>, <code>pug</code>, <code>babel</code>, … etc.），使用 <code>webpack</code> 打包輸出靜態資產（assets）,配合<code>Babel</code>, <code>ES6</code>使用，可以寫出乾淨可復用的代碼，做到更好的前端程式管理。這一篇先示範基礎安裝和設定基本描述檔。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/06/30/Webpack/Webpack-3-Tutorial-HTML-Webpack-Plugin/"
+                            aria-label=": Webpack 3 Tutorial - HTML Webpack Plugin"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - HTML Webpack Plugin</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年6月30日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹使用 <code>HTML Webpack Plugin</code>，他可以自動生成 <code>html</code> 並將 <code>app.bundle.js</code> 自動加在 <code>html</code> 結尾處。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/08/01/Webpack/Webpack-3-Tutorial-Style-CSS-and-Sass-loaders/"
+                            aria-label=": Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Style, CSS, Sass and Postcss loaders</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年8月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何將 <code>CSS</code> 、 <code>SASS</code> 引入 <code>Webpack</code> 專案中，並使用 <code>postcss</code> 的 <code>autoprefixer</code> 自動將 <code>CSS</code> 加入相對的瀏覽器前綴。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/09/02/Webpack/Webpack-3-Tutorial-Webpack-Dev-Server/"
+                            aria-label=": Webpack 3 Tutorial - Webpack Dev Server"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - Webpack Dev Server</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>webpack-dev-server</code>，並展示 <code>Hot Reload</code> 功能。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/10/01/Webpack/Webpack-3-Tutorial-add-Babel-loader-to-write-js-use-ES6/"
+                            aria-label=": Webpack 3 Tutorial - add Babel loader to write js use ES6"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add Babel loader to write js use ES6</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>babel-loader</code>，並使用 <code>ES6</code> 語法測試撰寫 <code>js</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <img class="media-image" src="https://camo.githubusercontent.com/d18f4a7a64244f703efcb322bf298dcb4ca38856/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/11/01/Webpack/Webpack-3-Tutorial-add-PUG-templates-to-write-html/"
+                            aria-label=": Webpack 3 Tutorial - add PUG templates to write html"
+                        >
+                            <h3 class="media-heading">Webpack 3 Tutorial - add PUG templates to write html</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年11月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>此篇介紹如何加入並使用 <code>pug-loader</code>，並使用 <code>PUG</code> 語法測試撰寫 <code>html</code>。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/02/Dotnet/NET-Core-2-0-SPA-with-Vue-Cli/"
+                            aria-label=": .NET Core 2.0 SPA with Vue-Cli - Start New Project"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 SPA with Vue-Cli - Start New Project</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>.Net Core</code> 可以不用開啟慢吞吞的 <code>IDE</code>，即可快速建立專案。本篇全程使用 <code>VScode</code>，手把手教你如何用 <code>.NET Core 2.0 MVC</code> + <code>vue-cli</code> 起始一個 <code>SPA</code> 專案。當然， <code>HMR</code> (Hot Module Replacement) 神器也會一併附上啦。<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <img class="media-image" src="http://www.dotnetcurry.com/images/dotnetcore/vuejs-templates/modernwebdev.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2017/12/25/Dotnet/NET-Core-2-0-Debug-with-VScode/"
+                            aria-label=": .NET Core 2.0 Debug with VScode"
+                        >
+                            <h3 class="media-heading">.NET Core 2.0 Debug with VScode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>這次要教大家如何使用 <code>VScode</code> debug <code>.Net Core</code> 的專案喔～<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/02/03/D3/D3-v4-with-Vue-SVG-Line-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Line Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Line Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年2月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><code>D3</code> 是一個 <code>js library</code> ，讓開發者在向量繪圖時，能快速算出圖表物件在繪圖區域的路徑座標、座標軸、動態顏色等許多好用的 <code>function</code>。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <img class="media-image" src="https://lh3.googleusercontent.com/0ql8YPK9TWE2Iw2k5riCgtn6op1D95u8PM6OpYAiq1dZsrJ580p9Cmprzs4lMk8WAHeO81FEcsbR76fEphaIz67O6YylI2bxFQu3BHhcm3k0IP6whT76GyTmsR7HANYz1KeJVTTG2X4-KxV7zh_FsAhdZ8j-gz2BcWsaYonzgm2-bzEDNEvkCTiH9klL6RGWE9YhK_BfjR402BCev0Uq5nwNwEhHjqBeIpv-ePFTAux2RXkdXZ9iz67SKQ0h_q-w7vB9oPzPrg8FZUwK-WbM0uoKQI5IZP0BUXf9eyE8_fFa3YPO9u4V1Dhcf6YsMfCIvO6OpYvh5PeWKpDWm2q80MmUKrAp0G2nthLFwcC5JZlfWWiM-mPbZ04Oklp61oOOLA6bdBJCvMtmwCiycopM3bXsmCA06hK4hDyjRiT_foULVswowzSRc7KsL-p5ayX6Gg2mmdX45Ile4Tw7NjLk8-bVBHhC6gb6DnbDFitOQ6RVKSwXn6WK98i11j3PykdwonGTkc4_9Q9v-dOWSVSpdE1Ouy0wjCDFn0tYH7OPF1tRnht7JgbdrWw0p-AJ9O_jHy6K-BQN4I6n9HchsrRvZE9rITTXd8lv6hj5KG_2JQ0vWIpNqGrif6OH4pik7olcv3v45Z210q2ufPkmoPQIHTEeKQvRbEUN=w600-h200-no" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="http://annilla.github.io/2018/03/04/D3/D3-v4-with-Vue-SVG-Horizontal-Bar-Chart/"
+                            aria-label=": D3 v4 with Vue - SVG Horizontal Bar Chart"
+                        >
+                            <h3 class="media-heading">D3 v4 with Vue - SVG Horizontal Bar Chart</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年3月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>今天要來練習用 <code>D3</code> 搭配 <code>Vue</code> 做簡易的 <code>SVG</code> 橫條圖囉～</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="沒有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 82 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-znmud32ivgtest3qeaqrtfqs00ruwcqofuxvvngh6a2octbjifxgxlnp9eth.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://annilla.github.io/2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/';
+              
+            this.page.identifier = '2022/04/15/UXUI/Figma-Useful-Plugins-for-Refactoring/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'anny-chang';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('LCYI2MVFA7', '653a1c55a785578623b2c89180d87cf8');
+      var algoliaIndex = algoliaClient.initIndex('Anny-Chang-blog');
+    </script>
+
+
+    </body>
+</html>
